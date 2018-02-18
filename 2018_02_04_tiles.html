@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset=utf-8 />
+    <title>Prioritization of locations for off-grid rural electrification in Tanzania</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css"
+    integrity="sha512-M2wvCLH6DSRazYeZRIm1JnYyh22purTM+FDB5CsyxtQJYeKq83arPe5wgbNmcFXGqiSH2XR8dT/fJISVA1r/zQ=="
+    crossorigin=""/>
+
+    <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"
+    integrity="sha512-lInM/apFSqyy1o6s89K4iQUKg6ppXEgsVxT35HbzUupEVRh2Eu9Wdl4tHj7dZO0s1uvplcYGmt3498TtHq+log=="
+    crossorigin=""></script>
+	
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+
+    <script src="https://unpkg.com/leaflet.vectorgrid@latest/dist/Leaflet.VectorGrid.bundled.js"></script>
+	<script src="http://ionden.com/a/plugins/ion.rangeSlider/static/js/ion-rangeSlider/ion.rangeSlider.js"></script>
+	<script type="text/javascript" src="ion.rangeSlider.js"></script>
+	
+	<link rel="stylesheet" href="http://ionden.com/a/plugins/ion.rangeSlider/static/css/ion.rangeSlider.css"/>
+	<link rel="stylesheet" href="http://ionden.com/a/plugins/ion.rangeSlider/static/css/ion.rangeSlider.skinFlat.css"/>
+	
+	
+	
+	
+	
+	<script src="src/GIBSMetadata.js"></script>
+	<script src="src/GIBSLayer.js"></script>
+
+    <style>
+    body {
+      margin:0;
+      padding:0;
+    }
+    #map {
+      position:absolute;
+      top:0;
+      bottom:0;
+      width:100%;
+    }
+    </style>
+  </head>
+  <body>
+
+    <div id='map'></div>
+
+    <!-- File for map -->
+   <!-- <script src="simple.js"></script>-->
+	<script src="grid.js"></script>
+	
+    <div class="range-slider">
+    <input type="text" class="js-range-slider" value="" />
+	</div>
+	<div class="extra-controls">
+    Placeholder for some buttons to change slider behavior
+	</div>
+
+body {
+    margin: 40px 15px;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+}
+	
+.range-slider {
+    position: relative;
+    height: 80px;
+}
+.extra-controls {
+    position: relative;
+    border-top: 3px solid #000;
+    padding: 10px 0 0;
+}
+	
+	
+    <script>
+
+    // Object to hold our map options
+    var options = {
+        center: [-6, 35],
+        zoom: 6,
+        minZoom: 6,
+        maxZoom: 19,
+      },
+      map = L.map('map', options); // Create map object and pass it our options object from above
+      // load map tiles and add to map
+			
+	//var tiles = L.vectorGrid.protobuf("tiles4/{z}/{x}/{y}.pbf", {
+	//							rendererFactory: L.canvas.tile,
+	//							attribution: 'Something'}).addTo(map);
+								
+	
+      
+	var osm = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+	maxZoom: 19, attribution: '&copy; <a 	href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'});
+
+	var topo = L.tileLayer('http://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', { 
+	maxZoom: 19, attribution: 'Map data: &copy;  <a href="https://opentopomap.org">OpenTopoMap</a> ' });
+	
+	
+	var nl = L.tileLayer('https://map1.vis.earthdata.nasa.gov/wmts-webmerc/VIIRS_CityLights_2012/default/{time}/{tilematrixset}{maxZoom}/{z}/{y}/{x}.{format}', {
+	attribution: 'Imagery provided by services from the Global Imagery Browse Services (GIBS), operated by the NASA/GSFC/Earth Science Data and Information System (<a href="https://earthdata.nasa.gov">ESDIS</a>) with funding provided by NASA/HQ.',
+	minZoom: 1,
+	maxZoom: 8,
+	format: 'jpg',
+	time: '',
+	tilematrixset: 'GoogleMapsCompatible_Level'
+	});
+	
+	var ae = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+	attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+	});
+	
+	L.control.scale({position: 'topright'}).addTo(map);
+
+	var baseMaps = {
+		"osm": osm,
+   		"topo":topo,
+		"night lights": nl,
+		"aerial imagery": ae
+	//	"tiles":tiles
+  };
+	var overlayMaps = {
+    "simple": cluster_tileLayer,
+    };
+
+  map.addLayer(osm)
+  
+      map.createPane('parcelPane');
+      map.getPane('parcelPane').style.zIndex = 650;
+
+// add village cluster data set
+	  
+		var highlight;
+		var clearHighlight = function() {
+			if (highlight) {
+				cluster_tileLayer.resetFeatureStyle(highlight);
+			}
+			highlight = null;
+		};
+	  
+      var cluster_tileLayer = L.vectorGrid.protobuf("tiles4/{z}/{x}/{y}.pbf", {
+        rendererFactory: L.canvas.tile,
+        vectorTileLayerStyles: {
+          sliced: {
+            fillColor: '#FF0000',
+			fillOpacity: 0.5,
+            color: "blue",
+            weight: 1
+          }
+        },
+        maxZoom: 22,
+        interactive: true,
+        getFeatureId: function(f) {
+				return f.properties.r_0___I.toString();
+			}
+		})
+		.on('mouseover', function(e) {
+			var properties = e.layer.properties;
+			L.popup()
+				.setContent(
+					"Area: " + properties.area + "<br>" +
+					"Distance: " + properties.distance + "<br>" +
+					"Grid connection: " + properties.grid + "<br>" 
+					)
+				.setLatLng(e.latlng)
+				.openOn(map);
+
+			clearHighlight();
+			highlight = properties.r_0___I.toString();
+
+			var style = {
+				fillColor: '#FF0000',
+				fillOpacity: 0.5,
+				stroke: true,
+				fill: true,
+				color: 'red',
+				opacity: 0.5,
+				weight: 2,
+			};
+			cluster_tileLayer.setFeatureStyle(properties.r_0___I.toString(), style);
+		})
+		
+		map.addLayer(cluster_tileLayer);
+
+		map.on('click', clearHighlight);
+		
+//add grid data set
+var gridstyle = {
+    "color": "#ff7800",
+    "weight": 2,
+    "opacity": 0.85,
+	"smoothFactor": 5
+};
+
+var grid=L.geoJson(grid, {
+	style: gridstyle
+}).addTo(map);
+
+		// var grid_tileLayer = L.vectorGrid.slicer(grid, {
+        // rendererFactory: L.canvas.tile,
+        // vectorTileLayerStyles: {
+          // sliced: {
+            // fillColor: '#FF0000',
+			// fillOpacity: 0.5,
+            // color: "green",
+            // weight: 2
+          // }
+        // },
+        // maxZoom: 22,
+        // interactive: true,
+        // getFeatureId: function(f) {
+				// return f.properties.ID.toString();
+			// }
+		// })
+		// .on('mouseover', function(e) {
+			// var properties = e.layer.properties;
+			// L.popup()
+				// .setContent(
+					// "Voltage (kV): " + voltage_kV + "<br>" +
+					// "Status: " + status + "<br>" +
+					// "Source: " + source + "<br>" 
+					// )
+				// .setLatLng(e.latlng)
+				// .openOn(map);
+
+			// clearHighlight();
+			// highlight = properties.ID.toString();
+
+			// var style = {
+				// fillColor: '#FF0000',
+				// fillOpacity: 0.5,
+				// stroke: true,
+				// fill: true,
+				// color: 'red',
+				// opacity: 0.5,
+				// weight: 2,
+			// };
+			// grid_tileLayer.setFeatureStyle(properties.ID.toString(), style);
+		// })
+		
+		
+		L.tileLayer('http://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+	
+			
+     
+
+	//function onEachFeature (feature, layer){
+	//var area = feature.properties.area;
+	//var grid = feature.properties.grid;
+	//var popupContent = area + "<br>"+ grid+"<br>";
+	//layer.bindPopup(popupContent);}
+
+	//var simple = L.geoJson(simple, {
+	//onEachFeature:  onEachFeature
+	//}).addTo(map)
+
+	  
+	 var overlayMaps = {
+    "simple": cluster_tileLayer,
+	"power grid":grid
+    };
+
+	
+
+//add slider
+
+// var $range = $(".js-range-slider");
+
+// $range.ionRangeSlider({
+    // type: "double",
+    // min: 100,
+    // max: 1000,
+    // from: 300,
+    // to: 800
+// }).addTo(map);
+	
+	
+	
+	
+//add watermark
+	
+L.Control.Watermark = L.Control.extend({
+    onAdd: function(map) {
+        var img = L.DomUtil.create('img');
+
+        img.src = 'watermark.gif';
+        img.style.width = '350px';
+
+        return img;
+    },
+
+    onRemove: function(map) {
+        // Nothing to do here
+    }
+});
+
+L.control.watermark = function(opts) {
+    return new L.Control.Watermark(opts);
+}
+
+L.control.watermark({ position: 'bottomleft' }).addTo(map);
+	
+L.control.layers(baseMaps, overlayMaps).addTo(map);
+
+// var legend = L.control({position: 'bottomright'});
+// legend.onAdd = function (map) {
+
+    // var div = L.DomUtil.create('div', 'info legend'),
+    // grades = [0, 10, 20, 50, 100, 200, 500, 1000],
+    // labels = [];
+
+    ////loop through our density intervals and generate a label with a colored square for each interval
+    // for (var i = 0; i < grades.length; i++) {
+        // div.innerHTML +=
+            // '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
+            // grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+// }
+
+// return div;
+// };
+
+
+//legend.addTo(map);
+
+      </script>
+</body>
+</html>
