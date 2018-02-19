@@ -1,417 +1,326 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset=utf-8 />
     <title>Prioritization of locations for off-grid rural electrification in Tanzania</title>
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
 
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css"
-    integrity="sha512-M2wvCLH6DSRazYeZRIm1JnYyh22purTM+FDB5CsyxtQJYeKq83arPe5wgbNmcFXGqiSH2XR8dT/fJISVA1r/zQ=="
-    crossorigin=""/>
-
-    <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"
-    integrity="sha512-lInM/apFSqyy1o6s89K4iQUKg6ppXEgsVxT35HbzUupEVRh2Eu9Wdl4tHj7dZO0s1uvplcYGmt3498TtHq+log=="
-    crossorigin=""></script>
-	
-	<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-
-    <script src="https://unpkg.com/leaflet.vectorgrid@latest/dist/Leaflet.VectorGrid.bundled.js"></script>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" integrity="sha512-M2wvCLH6DSRazYeZRIm1JnYyh22purTM+FDB5CsyxtQJYeKq83arPe5wgbNmcFXGqiSH2XR8dT/fJISVA1r/zQ==" crossorigin="" />
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-	<link rel="stylesheet" href="toggle.css" />
-    <!--<link rel="stylesheet" href="screen.css" />-->
-    <style>
-        body {
-            padding: 0;
-            margin: 0;
-        }
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.3.0/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.3.0/dist/MarkerCluster.Default.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-sidebar-v2@3.0.2/css/leaflet-sidebar.min.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/11.0.3/nouislider.min.css" rel="stylesheet">
+</head>
 
-        html, body, #map {
-            height: 100%;
-            font: 10pt "Helvetica Neue", Arial, Helvetica, sans-serif;
-        }
-
-        .lorem {
-            font-style: italic;
-            color: #AAA;
-        }
-    </style>
-
-	<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.3.0/dist/MarkerCluster.css" />
-	<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.3.0/dist/MarkerCluster.Default.css" />
-	<script src="https://unpkg.com/leaflet.markercluster@1.3.0/dist/leaflet.markercluster-src.js"></script>
-    
-    <link rel="stylesheet" href="css/leaflet-sidebar.css" />
-    <link rel="stylesheet" href="css/nouislider.css" />
-    <!--<link href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/11.0.3/nouislider.min.css" rel="stylesheet">-->
-    
-	
-	<script src="data/points.js"></script>
-
-	
-    <style>
-    body {
-      margin:0;
-      padding:0;
-    }
-    #map {
-      position:absolute;
-      top:0;
-      bottom:0;
-      width:100%;
-    }
-    </style>
-  </head>
-  <body>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/11.0.3/nouislider.min.js"></script>
+<body>
     <div id='map'></div>
 
-    <div id="progress"><div id="progress-bar"></div></div>
-	<div id="map"></div>
-      
-        <div id="sidebar" class="sidebar collapsed">
-        <!-- Nav tabs -->
-        <div class="sidebar-tabs">
+    <div id="progress">
+        <div id="progress-bar"></div>
+    </div>
+    <div id="map"></div>
+
+    <div id="sidebar" class="leaflet-sidebar">
+        <div class="leaflet-sidebar-tabs">
             <ul role="tablist">
                 <li><a href="#home" role="tab"><i class="fa fa-bars"></i></a></li>
-                <li><a href="#data-sources" role="tab"><i class="fa fa-link"></i></a></li>
+                <li class="#data-sources"><a href="#messages" role="tab"><i class="fa fa-link"></i></a></li>
                 <li><a href="https://github.com/catcad" role="tab" target="_blank"><i class="fa fa-github"></i></a></li>
             </ul>
-
             <ul role="tablist">
                 <li><a href="#settings" role="tab"><i class="fa fa-filter"></i></a></li>
             </ul>
         </div>
-
-        <!-- Tab panes -->
-        <div class="sidebar-content">
-            <div class="sidebar-pane" id="home">
-                <h1 class="sidebar-header">
-                    Village priorization in Tanzania
-                    <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
-                </h1>
-
-                <p>A responsive sidebar for mapping libraries like <a href="http://leafletjs.com/">Leaflet</a> or <a href="http://openlayers.org/">OpenLayers</a>.</p>
-
-                <p class="lorem">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
-
-                <p class="lorem">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
-
-                
+        <div class="leaflet-sidebar-content">
+            <div class="leaflet-sidebar-pane active" id="home">
+                <h1 class="leaflet-sidebar-header">
+					 Village priorization in Tanzania
+					<div class="leaflet-sidebar-close"><i class="fa fa-caret-left"></i></div>
+				</h1>
+                <p>A responsive sidebar for mapping libraries</p>
             </div>
 
-            <div class="sidebar-pane" id="data-sources">
-                <h1 class="sidebar-header">Data sources<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>          
+            <div class="leaflet-sidebar-pane" id="data-sources">
+                <h1 class="leaflet-sidebar-header">Data sources<span class="leaflet-sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
             </div>
-            <div class="sidebar-pane" id="settings">
-                <h1 class="sidebar-header">Settings<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
-                <h2>Distance to grid</h2><br>
-                    <div id="sliderdist"></div> <br>
-                <h2>Population</h2><br>
-                    <div id="sliderpop"></div> <br>
+            <div class="leaflet-sidebar-pane" id="settings">
+                <h1 class="leaflet-sidebar-header">Filter<span class="leaflet-sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
+                <h2>Distance to grid</h2>
+                <br>
+                <div id="sliderdist"></div>
+                <br>
+                <h2>Population</h2>
+                <br>
+                <div id="sliderpop"></div>
+                <br>
                 <h2>Only with social infrastucture</h2>
-                    <label class="switch">
+                <label class="switch">
                     <input type="checkbox" id="checkboxinfra">
                     <span class="slider"></span>
-                    </label>
+                </label>
             </div>
         </div>
     </div>
 
-      
-    <!-- File for map -->
-   <!-- <script src="simple.js"></script>-->
-	<script src="grid.js"></script>
-      
-    <script src="javascript/leaflet-sidebar.js"></script>  
-    <script src="wNumb.js"></script>
+    <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js" integrity="sha512-lInM/apFSqyy1o6s89K4iQUKg6ppXEgsVxT35HbzUupEVRh2Eu9Wdl4tHj7dZO0s1uvplcYGmt3498TtHq+log==" crossorigin=""></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.3.0/dist/leaflet.markercluster-src.js"></script>
+    <script src="https://unpkg.com/leaflet.vectorgrid@latest/dist/Leaflet.VectorGrid.bundled.js"></script>
+
+    <script src="data/grid.js"></script>
+    <script src="data/points.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/leaflet-sidebar-v2@3.0.2/js/leaflet-sidebar.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/wnumb/1.1.0/wNumb.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/11.0.3/nouislider.min.js"></script>
 
     <script>
+        var options = {
+                center: [-6, 35],
+                zoom: 6,
+                minZoom: 6,
+                maxZoom: 19,
+                zoomControl: false,
+            },
+            map = L.map('map', options);
 
-    // Object to hold our map options
-    var options = {
-        center: [-6, 35],
-        zoom: 6,
-        minZoom: 6,
-        maxZoom: 19,
-        zoomControl: false,
-      },
-      map = L.map('map', options); // Create map object and pass it our options object from above
-      // load map tiles and add to map
-									
-	               
         L.control.zoom({
-            position:'topright'
+            position: 'topright'
         }).addTo(map);
-        
-      
-	var osm = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-	maxZoom: 19, attribution: '&copy; <a 	href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'});
 
-	var topo = L.tileLayer('http://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', { 
-	maxZoom: 19, attribution: 'Map data: &copy;  <a href="https://opentopomap.org">OpenTopoMap</a> ' });
-	
-	
-	var nl = L.tileLayer('https://map1.vis.earthdata.nasa.gov/wmts-webmerc/VIIRS_CityLights_2012/default/{time}/{tilematrixset}{maxZoom}/{z}/{y}/{x}.{format}', {
-	attribution: 'Imagery provided by services from the Global Imagery Browse Services (GIBS), operated by the NASA/GSFC/Earth Science Data and Information System (<a href="https://earthdata.nasa.gov">ESDIS</a>) with funding provided by NASA/HQ.',
-	minZoom: 1,
-	maxZoom: 8,
-	format: 'jpg',
-	time: '',
-	tilematrixset: 'GoogleMapsCompatible_Level'
-	});
-	
-	var ae = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-	attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
-	});
-	
-	L.control.scale({position: 'topright'}).addTo(map);
+        var osm = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a 	href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(map);
 
-	var baseMaps = {
-		"osm": osm,
-   		"topo":topo,
-		"night lights": nl,
-		"aerial imagery": ae
-	//	"tiles":tiles
-  };
-	var overlayMaps = {
-    "simple": cluster_tileLayer,
-    };
+        var topo = L.tileLayer('http://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: 'Map data: &copy;  <a href="https://opentopomap.org">OpenTopoMap</a> '
+        });
 
-  map.addLayer(osm)
-  
+        var nl = L.tileLayer('https://map1.vis.earthdata.nasa.gov/wmts-webmerc/VIIRS_CityLights_2012/default/{time}/{tilematrixset}{maxZoom}/{z}/{y}/{x}.{format}', {
+            attribution: 'Imagery provided by services from the Global Imagery Browse Services (GIBS), operated by the NASA/GSFC/Earth Science Data and Information System (<a href="https://earthdata.nasa.gov">ESDIS</a>) with funding provided by NASA/HQ.',
+            minZoom: 1,
+            maxZoom: 8,
+            format: 'jpg',
+            time: '',
+            tilematrixset: 'GoogleMapsCompatible_Level'
+        });
 
-// add village cluster data set
-	  
-		var highlight;
-		var clearHighlight = function() {
-			if (highlight) {
-				cluster_tileLayer.resetFeatureStyle(highlight);
-			}
-			highlight = null;
-		};
-	  
-      var cluster_tileLayer = L.vectorGrid.protobuf("tiles4/{z}/{x}/{y}.pbf", {
-        rendererFactory: L.canvas.tile,
-        vectorTileLayerStyles: {
-          sliced: {
-            fillColor: '#FF0000',
-			fillOpacity: 0.5,
-            color: "blue",
-            weight: 1
-          }
-        },
-        maxZoom: 22,
-        interactive: true,
-        getFeatureId: function(f) {
-				return f.properties.r_0___I.toString();
-			}
-		})
-		.on('mouseover', function(e) {
-			var properties = e.layer.properties;
-			L.popup()
-				.setContent(
-					"Area: " + properties.area + "<br>" +
-					"Distance: " + properties.distance + "<br>" +
-					"Grid connection: " + properties.grid + "<br>" 
-					)
-				.setLatLng(e.latlng)
-				.openOn(map);
+        var ae = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+            attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+        });
 
-			clearHighlight();
-			highlight = properties.r_0___I.toString();
+        L.control.scale({
+            position: 'topright'
+        }).addTo(map);
 
-			var style = {
-				fillColor: '#FF0000',
-				fillOpacity: 0.5,
-				stroke: true,
-				fill: true,
-				color: 'red',
-				opacity: 0.5,
-				weight: 2,
-			};
-			cluster_tileLayer.setFeatureStyle(properties.r_0___I.toString(), style);
-		})
-		
-		map.addLayer(cluster_tileLayer);
-
-		map.on('click', clearHighlight);
-		
-//add grid data set
-var gridstyle = {
-    "color": "#ff7800",
-    "weight": 2,
-    "opacity": 0.85,
-	"smoothFactor": 5
-};
-
-var grid=L.geoJson(grid, {
-	style: gridstyle
-}).addTo(map);
-
-		
-		
-L.tileLayer('http://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-
-	  
-	 var overlayMaps = {
-    "simple": cluster_tileLayer,
-	"power grid":grid
-    };
-
-//add markercluster
-        
-	
-
-    var markers = L.markerClusterGroup({ chunkedLoading: true });
-    const DIST=0;
-    const POP=1;
-    const INFRA=2;
-	const LONG=3;
-	const LAT=4;
-	const INFO=5;    
-    
-    var currentfilter={mindist:0,maxdist:120,minpop:0,maxpop:20000,infra:0};
-    map.addEventListener('filterchange', function (filter){
-			markers.clearLayers()
-			var markerList = [];
-			console.log('start creating markers: ' + window.performance.now());
-			for (var i = 0; i < points.length; i++) {
-				var point = points[i];
-				if (point[DIST]>filter.mindist&&point[DIST]<filter.maxdist
-                   &&point[POP]>filter.minpop&&point[POP]<filter.maxpop
-                    &&point[INFRA]>=filter.infra
-                   ){
-					var info=point[INFO];
-					var title = `ID ${info.ID} <br/> Population ${info.POP} <br/> Distance  ${info.DIST}`;
-					var marker = L.marker(L.latLng(point[LAT], point[LONG]), point[INFO]);
-					marker.bindPopup(title);
-					markerList.push(marker);
-				}
-			}
-			
-			console.log('markers show:'+markerList.Length);
-			console.log('start clustering: ' + window.performance.now());
-			markers.addLayers(markerList);
-			map.addLayer(markers);
-			console.log('end clustering: ' + window.performance.now());
-		});
-        
-        map.fireEvent('filterchange',currentfilter)	;
-	
-	
-	noUiSlider.create(sliderpop, {
-		start: [currentfilter.minpop, currentfilter.maxpop],
-		connect: true,
-		range: {
-			'min': currentfilter.minpop,
-			'max': currentfilter.maxpop
-		},
-        format: wNumb({
-		decimals: 0,
-		thousand: '.'
-		}),
-		tooltips: true,
-		pips: { // Show a scale with the slider
-			mode: 'steps',
-            step: 10,
-			stepped: true,
-			density: 4
-		}
-	});	
-	sliderpop.noUiSlider.on('change', function(values){
-			currentfilter.minpop=values[0];
-			currentfilter.maxpop=values[1];
-			map.fireEvent('filterchange',currentfilter);
-	});
-        
-	noUiSlider.create(sliderdist, {
-		start: [currentfilter.mindist, currentfilter.maxdist],
-		connect: true,
-        step: 1,
-		range: {
-			'min': currentfilter.mindist,
-			'max': currentfilter.maxdist
-		},
-        format: wNumb({
-		decimals: 0,
-		thousand: '.'
-		}),
-		tooltips: false,
-    	pips: { // Show a scale with the slider
-			mode: 'count',
-            stepped: false,
-			values: 7
-		}
-	});	
-	sliderdist.noUiSlider.on('change', function(values){
-			currentfilter.mindist=values[0];
-			currentfilter.maxdist=values[1];
-			map.fireEvent('filterchange',currentfilter);
-	});
-
-    checkboxinfra=document.getElementById('checkboxinfra');    
-        checkboxinfra.onchange=function(e){
-            currentfilter.infra=e.target.checked;
-            map.fireEvent('filterchange',currentfilter);
+        var baseMaps = {
+            "osm": osm,
+            "topo": topo,
+            "night lights": nl,
+            "aerial imagery": ae
         };
-    var sidebar = L.control.sidebar('sidebar', {
+        var overlayMaps = {
+            "simple": cluster_tileLayer,
+        };
+
+        //map.addLayer(osm)
+
+        // add village cluster data set
+
+        var highlight;
+        var clearHighlight = function() {
+            if (highlight) {
+                cluster_tileLayer.resetFeatureStyle(highlight);
+            }
+            highlight = null;
+        };
+
+        var cluster_tileLayer = L.vectorGrid.protobuf("tiles4/{z}/{x}/{y}.pbf", {
+                rendererFactory: L.canvas.tile,
+                vectorTileLayerStyles: {
+                    sliced: {
+                        fillColor: '#FF0000',
+                        fillOpacity: 0.5,
+                        color: "blue",
+                        weight: 1
+                    }
+                },
+                maxZoom: 22,
+                interactive: true,
+                getFeatureId: function(f) {
+                    return f.properties.r_0___I.toString();
+                }
+            })
+            .on('mouseover', function(e) {
+                var properties = e.layer.properties;
+                L.popup()
+                    .setContent(
+                        "Area: " + properties.area + "<br>" +
+                        "Distance: " + properties.distance + "<br>" +
+                        "Grid connection: " + properties.grid + "<br>"
+                    )
+                    .setLatLng(e.latlng)
+                    .openOn(map);
+
+                clearHighlight();
+                highlight = properties.r_0___I.toString();
+
+                var style = {
+                    fillColor: '#FF0000',
+                    fillOpacity: 0.5,
+                    stroke: true,
+                    fill: true,
+                    color: 'red',
+                    opacity: 0.5,
+                    weight: 2,
+                };
+                cluster_tileLayer.setFeatureStyle(properties.r_0___I.toString(), style);
+            })
+
+        map.addLayer(cluster_tileLayer);
+
+        map.on('click', clearHighlight);
+
+        //add grid data set
+        var gridstyle = {
+            "color": "#ff7800",
+            "weight": 2,
+            "opacity": 0.85,
+            "smoothFactor": 5
+        };
+
+        var grid = L.geoJson(grid, {
+            style: gridstyle
+        }).addTo(map);
+
+        var overlayMaps = {
+            "simple": cluster_tileLayer,
+            "power grid": grid
+        };
+        L.control.layers(baseMaps, overlayMaps).addTo(map);
+
+        //background 
+        //L.tileLayer('http://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+        //add markercluster
+        var markers = L.markerClusterGroup({
+            chunkedLoading: true
+        });
+        const DIST = 0;
+        const POP = 1;
+        const INFRA = 2;
+        const LONG = 3;
+        const LAT = 4;
+        const INFO = 5;
+        var currentfilter = {
+            mindist: 0,
+            maxdist: 120,
+            minpop: 0,
+            maxpop: 20000,
+            infra: 0
+        };
+        map.addEventListener('filterchange', function(filter) {
+            markers.clearLayers()
+            var markerList = [];
+            for (var i = 0; i < points.length; i++) {
+                var point = points[i];
+                if (point[DIST] > filter.mindist && point[DIST] < filter.maxdist && point[POP] > filter.minpop && point[POP] < filter.maxpop && point[INFRA] >= filter.infra) {
+                    var info = point[INFO];
+                    var title = `ID ${info.ID} <br/> Population ${info.POP} <br/> Distance  ${info.DIST}`;
+                    var marker = L.marker(L.latLng(point[LAT], point[LONG]), point[INFO]);
+                    marker.bindPopup(title);
+                    markerList.push(marker);
+                }
+            }
+            markers.addLayers(markerList);
+            map.addLayer(markers);
+        });
+        map.fireEvent('filterchange', currentfilter);
+
+        //slider
+        noUiSlider.create(sliderpop, {
+            start: [currentfilter.minpop, currentfilter.maxpop],
+            connect: true,
+            range: {
+                'min': currentfilter.minpop,
+                'max': currentfilter.maxpop
+            },
+            format: wNumb({
+                decimals: 0,
+                thousand: '.'
+            }),
+            tooltips: true,
+            pips: { // Show a scale with the slider
+                mode: 'steps',
+                step: 10,
+                stepped: true,
+                density: 4
+            }
+        });
+        sliderpop.noUiSlider.on('change', function(values) {
+            currentfilter.minpop = values[0];
+            currentfilter.maxpop = values[1];
+            map.fireEvent('filterchange', currentfilter);
+        });
+
+        noUiSlider.create(sliderdist, {
+            start: [currentfilter.mindist, currentfilter.maxdist],
+            connect: true,
+            step: 1,
+            range: {
+                'min': currentfilter.mindist,
+                'max': currentfilter.maxdist
+            },
+            format: wNumb({
+                decimals: 0,
+                thousand: '.'
+            }),
+            tooltips: false,
+            pips: { // Show a scale with the slider
+                mode: 'count',
+                stepped: false,
+                values: 7
+            }
+        });
+        sliderdist.noUiSlider.on('change', function(values) {
+            currentfilter.mindist = values[0];
+            currentfilter.maxdist = values[1];
+            map.fireEvent('filterchange', currentfilter);
+        });
+
+        checkboxinfra = document.getElementById('checkboxinfra');
+        checkboxinfra.onchange = function(e) {
+            currentfilter.infra = e.target.checked;
+            map.fireEvent('filterchange', currentfilter);
+        };
+        //sidebar
+        var sidebar = L.control.sidebar({
+            container: 'sidebar',
             closeButton: true,
             position: 'left'
-        
+        }).addTo(map);
+
+        //add watermark
+        L.Control.Watermark = L.Control.extend({
+            onAdd: function(map) {
+                var img = L.DomUtil.create('img');
+                img.src = 'images/watermark.gif';
+                img.style.width = '350px';
+                return img;
+            },
+            onRemove: function(map) {}
         });
-        
-    map.addControl(sidebar);
-    setTimeout(function () {
-        sidebar.open();
-        }, 500);
-    
-        
-        
-//add watermark
-	
-L.Control.Watermark = L.Control.extend({
-    onAdd: function(map) {
-        var img = L.DomUtil.create('img');
-
-        img.src = 'watermark.gif';
-        img.style.width = '350px';
-
-        return img;
-    },
-
-    onRemove: function(map) {
-        // Nothing to do here
-    }
-});
-
-L.control.watermark = function(opts) {
-    return new L.Control.Watermark(opts);
-}
-
-L.control.watermark({ position: 'bottomright' }).addTo(map);
-	
-L.control.layers(baseMaps, overlayMaps).addTo(map);
-
-// var legend = L.control({position: 'bottomright'});
-// legend.onAdd = function (map) {
-
-    // var div = L.DomUtil.create('div', 'info legend'),
-    // grades = [0, 10, 20, 50, 100, 200, 500, 1000],
-    // labels = [];
-
-    ////loop through our density intervals and generate a label with a colored square for each interval
-    // for (var i = 0; i < grades.length; i++) {
-        // div.innerHTML +=
-            // '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
-            // grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
-// }
-
-// return div;
-// };
-
-
-//legend.addTo(map);
-
-      </script>
+        L.control.watermark = function(opts) {
+            return new L.Control.Watermark(opts);
+        }
+        L.control.watermark({
+            position: 'bottomright'
+        }).addTo(map);
+    </script>
 </body>
+
 </html>
