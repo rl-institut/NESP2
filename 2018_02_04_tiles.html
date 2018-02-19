@@ -145,17 +145,18 @@
                     sliced: {
                         fillColor: '#FF0000',
                         fillOpacity: 0.5,
-                        color: "blue",
+                        color: "gray",
                         weight: 1
                     }
                 },
                 maxZoom: 22,
+                minZoom: 10,
                 interactive: true,
                 getFeatureId: function(f) {
                     return f.properties.r_0___I.toString();
                 }
             })
-            .on('mouseover', function(e) {
+            .on('click', function(e) {
                 var properties = e.layer.properties;
                 L.popup()
                     .setContent(
