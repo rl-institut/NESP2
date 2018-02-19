@@ -16,19 +16,38 @@
 	<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 
     <script src="https://unpkg.com/leaflet.vectorgrid@latest/dist/Leaflet.VectorGrid.bundled.js"></script>
-	<script src="http://ionden.com/a/plugins/ion.rangeSlider/static/js/ion-rangeSlider/ion.rangeSlider.js"></script>
-	<script type="text/javascript" src="ion.rangeSlider.js"></script>
-	
-	<link rel="stylesheet" href="http://ionden.com/a/plugins/ion.rangeSlider/static/css/ion.rangeSlider.css"/>
-	<link rel="stylesheet" href="http://ionden.com/a/plugins/ion.rangeSlider/static/css/ion.rangeSlider.skinFlat.css"/>
-	
-	
-	
-	
-	
-	<script src="src/GIBSMetadata.js"></script>
-	<script src="src/GIBSLayer.js"></script>
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="toggle.css" />
+    <!--<link rel="stylesheet" href="screen.css" />-->
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+        }
 
+        html, body, #map {
+            height: 100%;
+            font: 10pt "Helvetica Neue", Arial, Helvetica, sans-serif;
+        }
+
+        .lorem {
+            font-style: italic;
+            color: #AAA;
+        }
+    </style>
+
+	<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.3.0/dist/MarkerCluster.css" />
+	<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.3.0/dist/MarkerCluster.Default.css" />
+	<script src="https://unpkg.com/leaflet.markercluster@1.3.0/dist/leaflet.markercluster-src.js"></script>
+    
+    <link rel="stylesheet" href="css/leaflet-sidebar.css" />
+    <link rel="stylesheet" href="css/nouislider.css" />
+    <!--<link href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/11.0.3/nouislider.min.css" rel="stylesheet">-->
+    
+	
+	<script src="data/points.js"></script>
+
+	
     <style>
     body {
       margin:0;
@@ -43,37 +62,69 @@
     </style>
   </head>
   <body>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/11.0.3/nouislider.min.js"></script>
     <div id='map'></div>
 
+    <div id="progress"><div id="progress-bar"></div></div>
+	<div id="map"></div>
+      
+        <div id="sidebar" class="sidebar collapsed">
+        <!-- Nav tabs -->
+        <div class="sidebar-tabs">
+            <ul role="tablist">
+                <li><a href="#home" role="tab"><i class="fa fa-bars"></i></a></li>
+                <li><a href="#data-sources" role="tab"><i class="fa fa-link"></i></a></li>
+                <li><a href="https://github.com/catcad" role="tab" target="_blank"><i class="fa fa-github"></i></a></li>
+            </ul>
+
+            <ul role="tablist">
+                <li><a href="#settings" role="tab"><i class="fa fa-filter"></i></a></li>
+            </ul>
+        </div>
+
+        <!-- Tab panes -->
+        <div class="sidebar-content">
+            <div class="sidebar-pane" id="home">
+                <h1 class="sidebar-header">
+                    Village priorization in Tanzania
+                    <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
+                </h1>
+
+                <p>A responsive sidebar for mapping libraries like <a href="http://leafletjs.com/">Leaflet</a> or <a href="http://openlayers.org/">OpenLayers</a>.</p>
+
+                <p class="lorem">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
+
+                <p class="lorem">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
+
+                
+            </div>
+
+            <div class="sidebar-pane" id="data-sources">
+                <h1 class="sidebar-header">Data sources<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>          
+            </div>
+            <div class="sidebar-pane" id="settings">
+                <h1 class="sidebar-header">Settings<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
+                <h2>Distance to grid</h2><br>
+                    <div id="sliderdist"></div> <br>
+                <h2>Population</h2><br>
+                    <div id="sliderpop"></div> <br>
+                <h2>Only with social infrastucture</h2>
+                    <label class="switch">
+                    <input type="checkbox" id="checkboxinfra">
+                    <span class="slider"></span>
+                    </label>
+            </div>
+        </div>
+    </div>
+
+      
     <!-- File for map -->
    <!-- <script src="simple.js"></script>-->
 	<script src="grid.js"></script>
-	
-    <div class="range-slider">
-    <input type="text" class="js-range-slider" value="" />
-	</div>
-	<div class="extra-controls">
-    Placeholder for some buttons to change slider behavior
-	</div>
+      
+    <script src="javascript/leaflet-sidebar.js"></script>  
+    <script src="wNumb.js"></script>
 
-body {
-    margin: 40px 15px;
-    font-family: Arial, sans-serif;
-    font-size: 12px;
-}
-	
-.range-slider {
-    position: relative;
-    height: 80px;
-}
-.extra-controls {
-    position: relative;
-    border-top: 3px solid #000;
-    padding: 10px 0 0;
-}
-	
-	
     <script>
 
     // Object to hold our map options
@@ -82,15 +133,16 @@ body {
         zoom: 6,
         minZoom: 6,
         maxZoom: 19,
+        zoomControl: false,
       },
       map = L.map('map', options); // Create map object and pass it our options object from above
       // load map tiles and add to map
-			
-	//var tiles = L.vectorGrid.protobuf("tiles4/{z}/{x}/{y}.pbf", {
-	//							rendererFactory: L.canvas.tile,
-	//							attribution: 'Something'}).addTo(map);
-								
-	
+									
+	               
+        L.control.zoom({
+            position:'topright'
+        }).addTo(map);
+        
       
 	var osm = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 	maxZoom: 19, attribution: '&copy; <a 	href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'});
@@ -127,8 +179,6 @@ body {
 
   map.addLayer(osm)
   
-      map.createPane('parcelPane');
-      map.getPane('parcelPane').style.zIndex = 650;
 
 // add village cluster data set
 	  
@@ -198,64 +248,9 @@ var grid=L.geoJson(grid, {
 	style: gridstyle
 }).addTo(map);
 
-		// var grid_tileLayer = L.vectorGrid.slicer(grid, {
-        // rendererFactory: L.canvas.tile,
-        // vectorTileLayerStyles: {
-          // sliced: {
-            // fillColor: '#FF0000',
-			// fillOpacity: 0.5,
-            // color: "green",
-            // weight: 2
-          // }
-        // },
-        // maxZoom: 22,
-        // interactive: true,
-        // getFeatureId: function(f) {
-				// return f.properties.ID.toString();
-			// }
-		// })
-		// .on('mouseover', function(e) {
-			// var properties = e.layer.properties;
-			// L.popup()
-				// .setContent(
-					// "Voltage (kV): " + voltage_kV + "<br>" +
-					// "Status: " + status + "<br>" +
-					// "Source: " + source + "<br>" 
-					// )
-				// .setLatLng(e.latlng)
-				// .openOn(map);
-
-			// clearHighlight();
-			// highlight = properties.ID.toString();
-
-			// var style = {
-				// fillColor: '#FF0000',
-				// fillOpacity: 0.5,
-				// stroke: true,
-				// fill: true,
-				// color: 'red',
-				// opacity: 0.5,
-				// weight: 2,
-			// };
-			// grid_tileLayer.setFeatureStyle(properties.ID.toString(), style);
-		// })
 		
 		
-		L.tileLayer('http://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-
-	
-			
-     
-
-	//function onEachFeature (feature, layer){
-	//var area = feature.properties.area;
-	//var grid = feature.properties.grid;
-	//var popupContent = area + "<br>"+ grid+"<br>";
-	//layer.bindPopup(popupContent);}
-
-	//var simple = L.geoJson(simple, {
-	//onEachFeature:  onEachFeature
-	//}).addTo(map)
+L.tileLayer('http://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
 	  
 	 var overlayMaps = {
@@ -263,23 +258,115 @@ var grid=L.geoJson(grid, {
 	"power grid":grid
     };
 
+//add markercluster
+        
 	
 
-//add slider
+    var markers = L.markerClusterGroup({ chunkedLoading: true });
+    const DIST=0;
+    const POP=1;
+    const INFRA=2;
+	const LONG=3;
+	const LAT=4;
+	const INFO=5;    
+    
+    var currentfilter={mindist:0,maxdist:120,minpop:0,maxpop:20000,infra:0};
+    map.addEventListener('filterchange', function (filter){
+			markers.clearLayers()
+			var markerList = [];
+			console.log('start creating markers: ' + window.performance.now());
+			for (var i = 0; i < points.length; i++) {
+				var point = points[i];
+				if (point[DIST]>filter.mindist&&point[DIST]<filter.maxdist
+                   &&point[POP]>filter.minpop&&point[POP]<filter.maxpop
+                    &&point[INFRA]>=filter.infra
+                   ){
+					var info=point[INFO];
+					var title = `ID ${info.ID} <br/> Population ${info.POP} <br/> Distance  ${info.DIST}`;
+					var marker = L.marker(L.latLng(point[LAT], point[LONG]), point[INFO]);
+					marker.bindPopup(title);
+					markerList.push(marker);
+				}
+			}
+			
+			console.log('markers show:'+markerList.Length);
+			console.log('start clustering: ' + window.performance.now());
+			markers.addLayers(markerList);
+			map.addLayer(markers);
+			console.log('end clustering: ' + window.performance.now());
+		});
+        
+        map.fireEvent('filterchange',currentfilter)	;
+	
+	
+	noUiSlider.create(sliderpop, {
+		start: [currentfilter.minpop, currentfilter.maxpop],
+		connect: true,
+		range: {
+			'min': currentfilter.minpop,
+			'max': currentfilter.maxpop
+		},
+        format: wNumb({
+		decimals: 0,
+		thousand: '.'
+		}),
+		tooltips: true,
+		pips: { // Show a scale with the slider
+			mode: 'steps',
+            step: 10,
+			stepped: true,
+			density: 4
+		}
+	});	
+	sliderpop.noUiSlider.on('change', function(values){
+			currentfilter.minpop=values[0];
+			currentfilter.maxpop=values[1];
+			map.fireEvent('filterchange',currentfilter);
+	});
+        
+	noUiSlider.create(sliderdist, {
+		start: [currentfilter.mindist, currentfilter.maxdist],
+		connect: true,
+        step: 1,
+		range: {
+			'min': currentfilter.mindist,
+			'max': currentfilter.maxdist
+		},
+        format: wNumb({
+		decimals: 0,
+		thousand: '.'
+		}),
+		tooltips: false,
+    	pips: { // Show a scale with the slider
+			mode: 'count',
+            stepped: false,
+			values: 7
+		}
+	});	
+	sliderdist.noUiSlider.on('change', function(values){
+			currentfilter.mindist=values[0];
+			currentfilter.maxdist=values[1];
+			map.fireEvent('filterchange',currentfilter);
+	});
 
-// var $range = $(".js-range-slider");
-
-// $range.ionRangeSlider({
-    // type: "double",
-    // min: 100,
-    // max: 1000,
-    // from: 300,
-    // to: 800
-// }).addTo(map);
-	
-	
-	
-	
+    checkboxinfra=document.getElementById('checkboxinfra');    
+        checkboxinfra.onchange=function(e){
+            currentfilter.infra=e.target.checked;
+            map.fireEvent('filterchange',currentfilter);
+        };
+    var sidebar = L.control.sidebar('sidebar', {
+            closeButton: true,
+            position: 'left'
+        
+        });
+        
+    map.addControl(sidebar);
+    setTimeout(function () {
+        sidebar.open();
+        }, 500);
+    
+        
+        
 //add watermark
 	
 L.Control.Watermark = L.Control.extend({
@@ -301,7 +388,7 @@ L.control.watermark = function(opts) {
     return new L.Control.Watermark(opts);
 }
 
-L.control.watermark({ position: 'bottomleft' }).addTo(map);
+L.control.watermark({ position: 'bottomright' }).addTo(map);
 	
 L.control.layers(baseMaps, overlayMaps).addTo(map);
 
