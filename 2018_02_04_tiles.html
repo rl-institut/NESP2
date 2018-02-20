@@ -54,19 +54,18 @@
             </div>
             <div class="leaflet-sidebar-pane" id="settings">
                 <h1 class="leaflet-sidebar-header">Filter<span class="leaflet-sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
-                <h2>Distance to grid</h2>
-                <br>
-                <div id="sliderdist"></div>
-                <br>
-                <h2>Population</h2>
-                <br>
-                <div id="sliderpop"></div>
-                <br>
-                <h2>Only with social infrastucture</h2>
-                <label class="switch">
-                    <input type="checkbox" id="checkboxinfra">
-                    <span class="slider"></span>
-                </label>
+                <h3>Distance to grid (km)</h3>
+                    <p>Existing grid infrastructure in close distance can present a risk to mini-grid development, since grid extension may connect those locations to the national grid infrastructure in foreseeable future. Here a minimum distance to the grid can be selected.</p>
+                    <div id="sliderdist"></div>
+                <h3>Population</h3>
+                    <p>Attractive mini-grid locations require a minimum number of customers to form an attractive investment. Certain mini-grid solutions target a specific location size. Here a minimum or maximum number of population per cluster can be selected.</p><br>
+                    <div id="sliderpop"></div>
+                <h3>Social infrastucture</h3>
+                    <p>Social institutions such as schools, hospitals, public infrastructure or water points can be used as a proxy of socio-economic activity . Here locations without any of those can be excluded.</p><br>
+                    <label class="switch">
+                        <input type="checkbox" id="checkboxinfra">
+                        <span class="slider"></span>
+                    </label>
             </div>
         </div>
     </div>
@@ -246,6 +245,7 @@
         noUiSlider.create(sliderpop, {
             start: [currentfilter.minpop, currentfilter.maxpop],
             connect: true,
+            step: 100,
             range: {
                 'min': currentfilter.minpop,
                 'max': currentfilter.maxpop
@@ -255,11 +255,9 @@
                 thousand: '.'
             }),
             tooltips: true,
-            pips: { // Show a scale with the slider
-                mode: 'steps',
-                step: 10,
-                stepped: true,
-                density: 4
+          	pips: {
+                mode: 'range',
+                density: 3
             }
         });
         sliderpop.noUiSlider.on('change', function(str,h,values) {
@@ -276,15 +274,15 @@
                 'min': currentfilter.mindist,
                 'max': currentfilter.maxdist
             },
-            format: wNumb({
-                decimals: 0,
-                thousand: '.'
-            }),
+//            format: wNumb({
+//                decimals: 0,
+//                thousand: '.'
+//            }),
             tooltips: false,
-            pips: { // Show a scale with the slider
+            pips: {
                 mode: 'count',
-                stepped: false,
-                values: 7
+                values: 7,
+                density: 4
             }
         });
         sliderdist.noUiSlider.on('change', function(str,h,values) {

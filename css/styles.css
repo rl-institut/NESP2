@@ -12,6 +12,13 @@ body {
  .noUi-connect {
      background: #210B61;
 }
+
+.noUi-target {
+    margin-bottom: 50px;
+    margin-top: 30px;
+}
+
+
  .switch {
      position: relative;
      display: inline-block;
