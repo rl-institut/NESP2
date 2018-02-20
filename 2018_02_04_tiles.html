@@ -142,10 +142,11 @@
         var cluster_tileLayer = L.vectorGrid.protobuf("data/clustertiles/{z}/{x}/{y}.pbf", {
                 rendererFactory: L.canvas.tile,
                 vectorTileLayerStyles: {
-                    sliced: {
-                        fillColor: '#FF0000',
+                    cluster: {
+						fill: true,
+                        fillColor: 'lightgray',
                         fillOpacity: 0.5,
-                        color: "gray",
+                        color: 'gray',
                         weight: 1
                     }
                 },
