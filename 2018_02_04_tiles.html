@@ -81,8 +81,9 @@
                 center: [-6, 35],
                 zoom: 6,
                 minZoom: 6,
-                maxZoom: 19,
+                maxZoom: 14,
                 zoomControl: false,
+                maxBounds:[[-12,29],[0,41]]
             },
             map = L.map('map', options);
 
@@ -127,10 +128,7 @@
             "simple": cluster_tileLayer,
         };
 
-        //map.addLayer(osm)
-
         // add village cluster data set
-
         var highlight;
         var clearHighlight = function() {
             if (highlight) {
@@ -184,7 +182,6 @@
             })
 
         map.addLayer(cluster_tileLayer);
-
         map.on('click', clearHighlight);
 
         //add grid data set
@@ -194,19 +191,15 @@
             "opacity": 0.85,
             "smoothFactor": 5
         };
-
         var grid = L.geoJson(grid, {
             style: gridstyle
         }).addTo(map);
 
         var overlayMaps = {
-            "simple": cluster_tileLayer,
+            "population clusters": cluster_tileLayer,
             "power grid": grid
         };
         L.control.layers(baseMaps, overlayMaps).addTo(map);
-
-        //background 
-        //L.tileLayer('http://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
         //add markercluster
         var markers = L.markerClusterGroup({
