@@ -256,7 +256,7 @@
                 density: 4
             }
         });
-        sliderpop.noUiSlider.on('change', function(values) {
+        sliderpop.noUiSlider.on('change', function(str,h,values) {
             currentfilter.minpop = values[0];
             currentfilter.maxpop = values[1];
             map.fireEvent('filterchange', currentfilter);
@@ -281,7 +281,7 @@
                 values: 7
             }
         });
-        sliderdist.noUiSlider.on('change', function(values) {
+        sliderdist.noUiSlider.on('change', function(str,h,values) {
             currentfilter.mindist = values[0];
             currentfilter.maxdist = values[1];
             map.fireEvent('filterchange', currentfilter);
