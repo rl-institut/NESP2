@@ -1,0 +1,231 @@
+<html>
+  <head>
+    <title>Prioritization of locations for off-grid rural electrification in Tanzania - Step by step guide</title>
+</head>
+
+   
+  <body>
+
+    <div>
+
+		<h1>Prioritization algorithm</h1>
+
+		<h2>Tool development</h2>
+
+		<h3>1. Import of input data</h3>
+
+		<ul>
+			<li>Village polygons NBS</li>
+			<li>Grids from REA</li>
+			<li>CIESIN high resolution settlement layer (HRSL)</li>
+			<li>Global Settlement layer from JRC</li>
+			<li>Mini-Grid sites</li>
+			<li>Schools</li>
+			<li>Health sites</li>
+			<li>Mobile phone coverage</li>
+		</ul>  
+
+
+
+		<h3>2. Streamlining data formats, extents and CRS</h3>
+
+
+		<h3>3. Analysis & Processing steps / Documentation on the spot for each step</h3>
+
+			<ul>
+				<li>Distance calculations from point locations to the grid</li>
+				<li>Grid length per village polygon</li>
+				<li>Overlaying the OSM village extracts with the village polygons</li>
+				<li>Decide on how and which population and village data to use (points vs. OSM polygons of residential areas vs. administrative village area polygons from NBS)</li>
+				<li>Additional village features, added to village information</li>
+				<ul>
+					<li>Schools</li>
+					<li>Health sites</li>
+					<li>Mobile phone coverage</li>
+				</ul>
+				<li>Exclusion criteria definitions and implementation</li>
+				<li>Ranking criteria definition: Implementation of filtering function accordingly</li>
+			</ul>	
+
+		<h3>4. Output the prioritized locations</h3>
+		<ul>
+			<li>Webmap</li>
+			<li>Raw data formats (e.g. csv, json files) to upload to energydata.info</li>
+		</ul>
+
+
+
+		<h3>5. Upload metadata for each used data source</h3>
+		<br/>
+		<br/>
+
+		<h3>First insights into understanding the village data</h3>
+
+		<p>OSM + HRSL data show that many villages are well represented in OSM while some are not existing at all</p>
+
+		<p>Official village polygons indicate 17196 villages, OSM village data show x residential areas</p>
+
+		<p>The polygonised villages are sometimes covering one village in more than one polygon</p>
+
+
+		<img src="images/image004.png" width="605" height="292"> <br/>
+
+
+		<br/>  <img src="images/image005.png" width="605" height="379">
+
+
+		<p>Resampling of the HRSL
+		to a lower resolution was done with the help of the warp function in QGIS, in
+		order to aggregate isolated pixels <br /> into more uniform populated surfaces. The
+		resampling was done with two algorithms (nearest neighbor (NN) and bilinear
+		interpolation (BI))<br />, each with 3 factors: 2, 5, 10 and 20. From the visual
+		inspection, the Bilinear Interpolation with factor 2 seems to give the best
+		results <br />(the ones that have the lesser data loss: view examples below). The
+		resulting file was then vectorized.</p>
+
+
+   
+		<img src="images//image025.png" width="605" height="340">
+
+		<p>Figure 1 Resampled with NN, F=20</p>
+
+
+		<img src="images/image026.png" width="604" height="388">
+
+		<p>Figure 2 Resampled with BI, F=20</p>
+
+
+		<img src="images/image010.png" width="604" height="367">
+
+		<p>Figure 3 Resampled with NN, F=10</p>
+
+		<img src="images/image011.png"  width="605" height="429">
+		<p>Figure 4 Resampled with BI, F=10</p>
+
+		<img src="images/image027.png"  width="605" height="468">
+		<p>Figure 5 Resampled with BI, F=2</p>
+
+		<p>Figures 5 and 6 show that resampling by a factor of 2 shows good approximation of village extents, with minimum data loss, therefore this file was vectorized.(below)</p>
+
+		<img src="images/image014.png" width="375" height="301">
+
+		<p>Figure 6 Snapshot of vector file resulted from the BI with F=2</p> <br/>
+
+		<p>The vectorization still leads to 984942 settlement polygons which we are trying to simplify in
+		order to select and detect the village clusters with a reasonable size for
+		mini-grid development. Smaller structures, such as isolated farms, are more
+		likely to be electrified via stand-alone systems such as SHS.</p>
+
+		<p>For further insight into the population data, the raster file resampled with BI and F=2 was chosen and vectorized.</p>
+
+		<p>The next steps involve
+		processing of the different available datasets in order to better understand
+		them: buffering of the vector file and application of the zonal statistics
+		algorithm in QGIS, that shows statistical population data based on each polygon
+		as an output. The files used were: HRSL population layer (raster) and TZ
+		villages (vector file which includes census data).</p>
+
+		<p>After inspecting the
+		resulted vector file, the first conclusions are that there are various
+		differences between the HRSL data and the census data. For some villages the
+		difference could be up to -43000 or +23000 inhabitants (pictures below). Almost 5000 (out of 17196) villages have no census data.</p>
+
+		<p>Below, there are pictures of the extreme differences and one example of a village where the
+		difference between census and HRSL data (CFB) is 0.</p>
+
+		<p>For the village of Kanyenja, CFB is approximately -26000, most of it
+		concentrated in the northwest corner.Katindiuka is another example of a mismatch, where CFB is -44000, mostly concentrated in the
+		North.</p>
+		<p>The Wasa and Nkalama villages are the other extremes, where CFB is +23000 and +21000 respectively. Lastly,
+		Nayeme village, where CFB is 0. It can be seen that the polygon is completely covered by built-up area.</p>
+
+		<img src="images/image015.png" width="319" height="331">
+
+		<p>Figure 7 Village of Kanyenja</p>
+
+
+		<img src="images/image016.png"  width="356" height="265"<br/>
+		<p>Figure 8 Katindiuka Village</p>
+
+		<img src="images/image017.png"  width="326" height="321">
+
+		<p>Figure 9 Village of Wasa(Census-HRSL difference +23000)</p>
+
+		<img src="images/image018.png" width="321" height="300">
+
+		<p>Figure 10 Village of Mkalama (Census-HRSL difference is +21000)</p>
+
+
+		<img src="images/image019.png" width="604" height="343">
+
+		<p>Figure 11 Village of Nayeme</span> (difference is 0).</p>
+
+		<br/>
+
+		<h3>Improvement of grid data</h3>
+
+
+		<p>Clean grid data – the grid data contained data from 4 sources: AICD, WorldBank, REA and OpenStreetMaps. 
+		However, WB and AICD data is not accurate, therefore was excluded from the analysis. Also, the 600 kV lines
+		in the dataset are most probably mislabeled.</p>
+
+		<p>Distance to grid was calculated from the centroids of each population cluster to the
+		grid. This was done with the help of different algorithms:</p>
+		<ol>
+			<li>V.distance for calculating the distance from each centroid to the grid</li>
+			<li>The resulting dataset was then joined with the original centroid dataset (based on the unique IDs)</li>
+			<li>Two new separate datasets were created, which specifically show which clusters are off grid and which are on grid. This was done with the help of the "select by location" algorithm, with the settings to select the clusters that do/not intersect with the grid, resulting in two shapefiles.
+				<ul>
+					<li>On grid shapefile shows 6778 clusters connected to the grid.</li>
+					<li>Off grid shapefile shows 28933 polygons that are not intersected by the grid, which shows a slight difference from the older analysis, with an outdaed grid dataset.</li>
+				</ul>
+			</li>
+		</ol>
+		<br/>
+		<img src="images/image020.png" width="557" height="403">
+
+		<p>Figure 12 Snapshot of cluster layer (on and off grid)</p>
+		<br/>
+
+		<p>The prioritization excel sheet contains population and surface area data based on
+		the unique id of every village. Population density data was also calculated.
+		Each ranking system (population, area, number of schools, health sites, water
+		access points) represents a number (0..1) which is basically the (population/pop density/area…) of the respective village relative
+		to the biggest number in the dataset. Considering weighting factors for each
+		criterion, a global ranking resulted, with “1” being Dar es	Salaam.</p>
+		<br/>
+
+		<p>From the cluster shapefiles (centroids and polygons) a few entries were deleted, as they
+		were out of scope (some were outside the boarders of Tanzania; some were not
+		covering a village). However, the entries were saved in separate files. The two
+		polygon files (off and on grid) were merged again into one. The latest step is
+		to bring into the Cluster centroid file the information contained in the "TZ_village" vector file (village, ward, district and region
+		names, and global horizontal irradiance).</p>
+
+		<p>One other issue encountered in the data analysis was the fact that island cities and
+		villages were considered with no access to the grid (but they nevertheless have
+		access to electricity) and with a relatively big distance to the grid. This
+		caused problems in the rankings, so they were filtered out from the dataset.
+		Moreover, the sites with less than 100 inhabitants were also taken out of the
+		dataset, some of them being inaccurately classified as villages or out of scope
+		for mini grid development (see example below). They were saved separately, as a
+		shapefile and as a new tab in the prioritization excel file.</p>
+
+		<img src="images/image021.png" width="533" height="408">
+
+		<p>Figure 13 Example of a false positive</p>
+
+		<p>The Shapefile version has been cleaned of unnecessary information, such as number
+		of public buildings, health sites, etc. and except the grading system; also a
+		rank was implemented for ease of visualization. In the excel file, the second
+		tab is the legend for each column. This includes a short description, source
+		and date of download.</p>
+
+
+	</div>
+
+
+
+
+</body>
+</html>
