@@ -9,6 +9,11 @@ body {
  .leaflet-sidebar-header, .leaflet-sidebar-tabs > li.active, .leaflet-sidebar-tabs > ul > li.active {
      background-color: #808080;
 }
+
+.leaflet-sidebar-pane p {
+    margin-top: 40px;
+}
+
  .noUi-connect {
      background: #210B61;
 }

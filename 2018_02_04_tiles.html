@@ -28,10 +28,12 @@
             <ul role="tablist">
                 <li><a href="#home" role="tab"><i class="fa fa-bars"></i></a></li>
                 <li><a href=#data-sources role="tab"><i class="fa fa-link"></i></a></li>
+                <li><a href="#settings" role="tab"><i class="fa fa-filter"></i></a></li>
                 <li><a href="https://github.com/catcad" role="tab" target="_blank"><i class="fa fa-github"></i></a></li>
+                
             </ul>
             <ul role="tablist">
-                <li><a href="#settings" role="tab"><i class="fa fa-filter"></i></a></li>
+                <li><a href="#about" role="tab"><i class="fa fa-question-circle"></i></a></li>
             </ul>
         </div>
         <div class="leaflet-sidebar-content">
@@ -50,23 +52,34 @@
 				<p>Region, District, Ward and Village shapefiles from <a href="http://portal-nbs-tz.opendata.arcgis.com/datasets/" target="_blank">NBS GIS Open Data Portal</a>.</p>
 				<p>Global Horizontal Irradiance raster dataset from <a href="http://globalsolaratlas.info/downloads/tanzania" target="_blank">Global Solar Atlas</a>.</p>
 				<p>Number of healthsites and water sources dataset from <a href="http://portal-nbs-tz.opendata.arcgis.com/datasets/" target="_blank">NBS GIS Open Data Portal</a>.</p>
-				<p>The processing steps are described with details and examples in <a href="description.html" target="_blank">this section</a>.</p>
+				<p>The processing steps for preparing the data for the prioritization are described with details and examples in <a href="methodology_prioritization.html" target="_blank">this section</a>.</p>
+                <p>An overview of the web-map development is provided <a href="methodology_webmap.html" target="_blank">here</a>.</p>
             </div>
             <div class="leaflet-sidebar-pane" id="settings">
                 <h1 class="leaflet-sidebar-header">Filter<span class="leaflet-sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
-                <h3>Distance to grid (km)</h3>
-                    <p>Existing grid infrastructure in close distance can present a risk to mini-grid development, since grid extension may connect those locations to the national grid infrastructure in foreseeable future. Here a minimum distance to the grid can be selected.</p>
+                <p><h3>Distance to grid (km)</h3>
+                    Existing grid infrastructure in close distance can present a risk to mini-grid development, since grid extension may connect those locations to the national grid infrastructure in foreseeable future. Here a minimum distance to the grid can be selected.</p>
                     <div id="sliderdist"></div>
-                <h3>Population</h3>
-                    <p>Attractive mini-grid locations require a minimum number of customers to form an attractive investment. Certain mini-grid solutions target a specific location size. Here a minimum or maximum number of population per cluster can be selected.</p><br>
+                <p><h3>Population</h3>
+                    Attractive mini-grid locations require a minimum number of customers to form an attractive investment. Certain mini-grid solutions target a specific location size. Here a minimum or maximum number of population per cluster can be selected.</p><br>
                     <div id="sliderpop"></div>
-                <h3>Social infrastucture</h3>
-                    <p>Social institutions such as schools, hospitals, public infrastructure or water points can be used as a proxy of socio-economic activity . Here locations without any of those can be excluded.</p><br>
+                <p><h3>Social infrastucture</h3>
+                    Social institutions such as schools, hospitals, public infrastructure or water points can be used as a proxy of socio-economic activity . Here locations without any of those can be excluded.</p><br>
                     <label class="switch">
                         <input type="checkbox" id="checkboxinfra">
                         <span class="slider"></span>
                     </label>
             </div>
+            <div class="leaflet-sidebar-pane" id="about">
+                <h1 class="leaflet-sidebar-header">
+					 About the map
+					<div class="leaflet-sidebar-close"><i class="fa fa-caret-left"></i></div>
+				</h1>
+                <p>The web-map was created within the Worldbank/IFC financed project Prioritization of locations for off-grid rural electrification in Tanzania (Selection #xxxx). </p>
+                <p>It was developed by a consortium of <a href="http://www.integration.org/" target="_blank">Integration Energy and Environment</a>, <a href="http://www.rafikipower.com/" target="_blank">E.ON Off Grid Solutions</a> and <a href="http://reiner-lemoine-institut.de/en/" target="_blank">Reiner Lemoine Institute</a>.</p>
+                <p><img src="images/watermark.gif" width="100%" height="auto" alt="Picture not found">
+                </p>
+            
         </div>
     </div>
 
@@ -303,22 +316,22 @@
             position: 'left'
         }).addTo(map);
 
-        //add watermark
-        L.Control.Watermark = L.Control.extend({
-            onAdd: function(map) {
-                var img = L.DomUtil.create('img');
-                img.src = 'images/watermark.gif';
-                img.style.width = '350px';
-                return img;
-            },
-            onRemove: function(map) {}
-        });
-        L.control.watermark = function(opts) {
-            return new L.Control.Watermark(opts);
-        }
-        L.control.watermark({
-            position: 'bottomright'
-        }).addTo(map);
+//        //add watermark
+//        L.Control.Watermark = L.Control.extend({
+//            onAdd: function(map) {
+//                var img = L.DomUtil.create('img');
+//                img.src = 'images/watermark.gif';
+//                img.style.width = '350px';
+//                return img;
+//            },
+//            onRemove: function(map) {}
+//        });
+//        L.control.watermark = function(opts) {
+//            return new L.Control.Watermark(opts);
+//        }
+//        L.control.watermark({
+//            position: 'bottomright'
+//        }).addTo(map);
     </script>
 </body>
 
