@@ -112,7 +112,7 @@
                 center: [-6, 35],
                 zoom: 6,
                 minZoom: 6,
-                maxZoom: 14,
+                maxZoom: 19,
                 zoomControl: false,
                 maxBounds:[[-12,29],[0,41]]
             },
@@ -155,38 +155,58 @@
             "night lights": nl,
             "aerial imagery": ae
         };
-        var overlayMaps = {
-            "simple": cluster_tileLayer,
-        };
 
         // add village cluster data set
         var highlight;
         var clearHighlight = function() {
             if (highlight) {
-                cluster_tileLayer.resetFeatureStyle(highlight);
+                vecTileLayer.resetFeatureStyle(highlight);
             }
             highlight = null;
         };
 
-        var cluster_tileLayer = L.vectorGrid.protobuf("data/clustertiles/{z}/{x}/{y}.pbf", {
+        var vecTileLayer = L.vectorGrid.protobuf("data/tiles/{z}/{x}/{y}.pbf", {
                 rendererFactory: L.canvas.tile,
                 vectorTileLayerStyles: {
-                    cluster: {
-						fill: true,
-                        fillColor: 'lightgray',
-                        fillOpacity: 0.5,
-                        color: 'gray',
+                    cluster: function(prop,zoom){
+												if (prop.Access=="no"){
+													color="lightgray";
+												}else{
+													color="red";
+												}
+												return{
+													fill: true,
+													fillColor: color,
+													fillOpacity: 0.5,
+													color: 'gray',
+													weight: 1
+												};
+                    },
+                       regions: function(prop,zoom){
+											 if (zoom>7){
+													return {stroke: false};
+												}else{
+													return{
+														color: 'green',
+														weight: 5,
+														opacity: 0.5
+													};
+												}
+										},
+                    
+                        grid: {
+                        color: 'orange',
                         weight: 1
                     }
                 },
-                maxZoom: 22,
-                minZoom: 10,
+                maxZoom: 15,
+                minZoom: 5,
                 interactive: true,
-                getFeatureId: function(f) {
-                    return f.properties.r_0___I.toString();
-                }
+                //getFeatureId: function(f) {
+                //    return f.properties.r_0___I.toString();
+                //}
             })
-            .on('click', function(e) {
+            .on('click', function(e) {/*
                 var properties = e.layer.properties;
                 L.popup()
                     .setContent(
@@ -209,10 +229,10 @@
                     opacity: 0.5,
                     weight: 2,
                 };
-                cluster_tileLayer.setFeatureStyle(properties.r_0___I.toString(), style);
+                tileLayer.setFeatureStyle(properties.r_0___I.toString(), style); */
             })
 
-        map.addLayer(cluster_tileLayer);
+        map.addLayer(vecTileLayer);
         map.on('click', clearHighlight);
 
         //add grid data set
@@ -222,13 +242,13 @@
             "opacity": 0.85,
             "smoothFactor": 5
         };
-        var grid = L.geoJson(grid, {
+        /*var grid = L.geoJson(grid, {
             style: gridstyle
-        }).addTo(map);
+        }).addTo(map); */
 
         var overlayMaps = {
-            "population clusters": cluster_tileLayer,
-            "power grid": grid
+            "population clusters": vecTileLayer
+            //"power grid": grid
         };
         L.control.layers(baseMaps, overlayMaps).addTo(map);
 
