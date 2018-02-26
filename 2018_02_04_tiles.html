@@ -123,7 +123,7 @@
             position: 'topright'
         }).addTo(map);
 
-        var osm = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
             attribution: '&copy; <a 	href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         }).addTo(map);
@@ -183,9 +183,9 @@
                             };
                         } else {
                             return {
-                                color: 'green',
+                                color: 'LightGreen',
                                 weight: 5,
-                                opacity: 0.5
+                                opacity: 0.3
                             };
                         }
                     },
