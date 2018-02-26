@@ -31,7 +31,7 @@
                 <li><a href="#settings" role="tab"><i class="fa fa-filter"></i></a></li>
                 <li><a href="#download" role="tab"><i class="fa fa-arrow-circle-down"></i></a></li>
                 <li><a href="https://github.com/catcad" role="tab" target="_blank"><i class="fa fa-github"></i></a></li>
-                
+
             </ul>
             <ul role="tablist">
                 <li><a href="#about" role="tab"><i class="fa fa-question-circle"></i></a></li>
@@ -43,35 +43,37 @@
 					 Village priorization in Tanzania
 					<div class="leaflet-sidebar-close"><i class="fa fa-caret-left"></i></div>
 				</h1>
-                <p>The overall objective of this project is to prioritize locations for off-grid rural electrification in Tanzania. New datasets will be developed that will enable faster and more accurate market analysis  for  distributed  energy  services  companies  (DESCOs)  operating  in  Tanzania,  including household locations and indicators on ability to pay, potential for productive uses of electricity and up-to-date data on national electricity grid transmission and distribution line locations. Collectively, it is expected that these datasets will help DESCOs operating in, or seeking to enter, Tanzania to narrow down geographic areas that could be interesting markets for their off-grid energy services. </p>
-                <p>This objective will be achieved by a combination of remote sensing, GIS analyses and other data collection.  These  activities  are  complemented  by stakeholder  workshops  and  local  capacity development.  </p>
+                <p>The overall objective of this project is to prioritize locations for off-grid rural electrification in Tanzania. New datasets will be developed that will enable faster and more accurate market analysis for distributed energy services companies (DESCOs) operating in Tanzania, including household locations and indicators on ability to pay, potential for productive uses of electricity and up-to-date data on national electricity grid transmission and distribution line locations. Collectively, it is expected that these datasets will help DESCOs operating in, or seeking to enter, Tanzania to narrow down geographic areas that could be interesting markets for their off-grid energy services. </p>
+                <p>This objective will be achieved by a combination of remote sensing, GIS analyses and other data collection. These activities are complemented by stakeholder workshops and local capacity development. </p>
             </div>
 
             <div class="leaflet-sidebar-pane" id="data-sources">
                 <h1 class="leaflet-sidebar-header">Data sources<span class="leaflet-sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
                 <p>The data for the analysis was ownloaded form the following sources:</p>
                 <p>High Resolution Settlement Layer: <a href="https://ciesin.columbia.edu/data/hrsl/#data" target="_blank">CIESIN</a>.</p>
-				<p>Region, District, Ward and Village shapefiles: <a href="http://portal-nbs-tz.opendata.arcgis.com/datasets/" target="_blank">NBS GIS Open Data Portal</a>.</p>
-				<p>Global Horizontal Irradiance raster dataset: <a href="http://globalsolaratlas.info/downloads/tanzania" target="_blank">Global Solar Atlas</a>.</p>
-				<p>Number of healthsites and water sources dataset: <a href="http://portal-nbs-tz.opendata.arcgis.com/datasets/" target="_blank">NBS GIS Open Data Portal</a>.</p>
-				<p>The processing steps for preparing the data for the prioritization are described with details and examples in <a href="methodology_prioritization.html" target="_blank">this section</a>.</p>
+                <p>Region, District, Ward and Village shapefiles: <a href="http://portal-nbs-tz.opendata.arcgis.com/datasets/" target="_blank">NBS GIS Open Data Portal</a>.</p>
+                <p>Global Horizontal Irradiance raster dataset: <a href="http://globalsolaratlas.info/downloads/tanzania" target="_blank">Global Solar Atlas</a>.</p>
+                <p>Number of healthsites and water sources dataset: <a href="http://portal-nbs-tz.opendata.arcgis.com/datasets/" target="_blank">NBS GIS Open Data Portal</a>.</p>
+                <p>The processing steps for preparing the data for the prioritization are described with details and examples in <a href="methodology_prioritization.html" target="_blank">this section</a>.</p>
                 <p>An overview of the web-map development is provided <a href="methodology_webmap.html" target="_blank">here</a>.</p>
                 <p>Resulting data sets can be down</p>
             </div>
             <div class="leaflet-sidebar-pane" id="settings">
                 <h1 class="leaflet-sidebar-header">Filter<span class="leaflet-sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
-                <p><h3>Distance to grid (km)</h3>
-                    Existing grid infrastructure in close distance can present a risk to mini-grid development, since grid extension may connect those locations to the national grid infrastructure in foreseeable future. Here a minimum distance to the grid can be selected.</p>
-                    <div id="sliderdist"></div>
-                <p><h3>Population</h3>
-                    Attractive mini-grid locations require a minimum number of customers to form an attractive investment. Certain mini-grid solutions target a specific location size. Here a minimum or maximum number of population per cluster can be selected.</p><br>
-                    <div id="sliderpop"></div>
-                <p><h3>Social infrastucture</h3>
-                    Social institutions such as schools, hospitals, public infrastructure or water points can be used as a proxy of socio-economic activity . Here locations without any of those can be excluded.</p><br>
-                    <label class="switch">
-                        <input type="checkbox" id="checkboxinfra">
-                        <span class="slider"></span>
-                    </label>
+                <p>
+                    <h3>Distance to grid (km)</h3> Existing grid infrastructure in close distance can present a risk to mini-grid development, since grid extension may connect those locations to the national grid infrastructure in foreseeable future. Here a minimum distance to the grid can be selected.</p>
+                <div id="sliderdist"></div>
+                <p>
+                    <h3>Population</h3> Attractive mini-grid locations require a minimum number of customers to form an attractive investment. Certain mini-grid solutions target a specific location size. Here a minimum or maximum number of population per cluster can be selected.</p>
+                <br>
+                <div id="sliderpop"></div>
+                <p>
+                    <h3>Social infrastucture</h3> Social institutions such as schools, hospitals, public infrastructure or water points can be used as a proxy of socio-economic activity . Here locations without any of those can be excluded.</p>
+                <br>
+                <label class="switch">
+                    <input type="checkbox" id="checkboxinfra">
+                    <span class="slider"></span>
+                </label>
             </div>
             <div class="leaflet-sidebar-pane" id="about">
                 <h1 class="leaflet-sidebar-header">
@@ -82,290 +84,288 @@
                 <p>It was developed by a consortium of <a href="http://www.integration.org/" target="_blank">Integration Energy and Environment</a>, <a href="http://www.rafikipower.com/" target="_blank">E.ON Off Grid Solutions</a> and <a href="http://reiner-lemoine-institut.de/en/" target="_blank">Reiner Lemoine Institute</a>.</p>
                 <p><img src="images/watermark.gif" width="100%" height="auto" alt="Picture not found">
                 </p>
-                
-            <div class="leaflet-sidebar-pane" id="download">
-                <h1 class="leaflet-sidebar-header">
+
+                <div class="leaflet-sidebar-pane" id="download">
+                    <h1 class="leaflet-sidebar-header">
 					 About the map
 					<div class="leaflet-sidebar-close"><i class="fa fa-caret-left"></i></div>
 				</h1>
-                <p>The web-map was created within the Worldbank/IFC financed project Prioritization of locations for off-grid rural electrification in Tanzania (Selection #xxxx). </p>
-                <p>It was developed by a consortium of <a href="http://www.integration.org/" target="_blank">Integration Energy and Environment</a>, <a href="http://www.rafikipower.com/" target="_blank">E.ON Off Grid Solutions</a> and <a href="http://reiner-lemoine-institut.de/en/" target="_blank">Reiner Lemoine Institute</a>.</p>
-                <p><img src="images/watermark.gif" width="100%" height="auto" alt="Picture not found">
-                </p>
+                    <p>The web-map was created within the Worldbank/IFC financed project Prioritization of locations for off-grid rural electrification in Tanzania (Selection #xxxx). </p>
+                    <p>It was developed by a consortium of <a href="http://www.integration.org/" target="_blank">Integration Energy and Environment</a>, <a href="http://www.rafikipower.com/" target="_blank">E.ON Off Grid Solutions</a> and <a href="http://reiner-lemoine-institut.de/en/" target="_blank">Reiner Lemoine Institute</a>.</p>
+                    <p><img src="images/watermark.gif" width="100%" height="auto" alt="Picture not found">
+                    </p>
+                </div>
             </div>
         </div>
-    </div>
 
-    <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js" integrity="sha512-lInM/apFSqyy1o6s89K4iQUKg6ppXEgsVxT35HbzUupEVRh2Eu9Wdl4tHj7dZO0s1uvplcYGmt3498TtHq+log==" crossorigin=""></script>
-    <script src="https://unpkg.com/leaflet.markercluster@1.3.0/dist/leaflet.markercluster-src.js"></script>
-    <script src="https://unpkg.com/leaflet.vectorgrid@latest/dist/Leaflet.VectorGrid.bundled.js"></script>
+        <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js" integrity="sha512-lInM/apFSqyy1o6s89K4iQUKg6ppXEgsVxT35HbzUupEVRh2Eu9Wdl4tHj7dZO0s1uvplcYGmt3498TtHq+log==" crossorigin=""></script>
+        <script src="https://unpkg.com/leaflet.markercluster@1.3.0/dist/leaflet.markercluster-src.js"></script>
+        <script src="https://unpkg.com/leaflet.vectorgrid@latest/dist/Leaflet.VectorGrid.bundled.js"></script>
 
-    <script src="data/grid.js"></script>
-    <script src="data/points.js"></script>
+        <script src="data/points.js"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/leaflet-sidebar-v2@3.0.2/js/leaflet-sidebar.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/wnumb/1.1.0/wNumb.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/11.0.3/nouislider.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/leaflet-sidebar-v2@3.0.2/js/leaflet-sidebar.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/wnumb/1.1.0/wNumb.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/11.0.3/nouislider.min.js"></script>
 
-    <script>
-        var options = {
-                center: [-6, 35],
-                zoom: 6,
-                minZoom: 6,
-                maxZoom: 19,
-                zoomControl: false,
-                maxBounds:[[-12,29],[0,41]]
-            },
-            map = L.map('map', options);
-
-        L.control.zoom({
-            position: 'topright'
-        }).addTo(map);
-
-        var osm = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-            attribution: '&copy; <a 	href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-        }).addTo(map);
-
-        var topo = L.tileLayer('http://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-            attribution: 'Map data: &copy;  <a href="https://opentopomap.org">OpenTopoMap</a> '
-        });
-
-        var nl = L.tileLayer('https://map1.vis.earthdata.nasa.gov/wmts-webmerc/VIIRS_CityLights_2012/default/{time}/{tilematrixset}{maxZoom}/{z}/{y}/{x}.{format}', {
-            attribution: 'Imagery provided by services from the Global Imagery Browse Services (GIBS), operated by the NASA/GSFC/Earth Science Data and Information System (<a href="https://earthdata.nasa.gov">ESDIS</a>) with funding provided by NASA/HQ.',
-            minZoom: 1,
-            maxZoom: 8,
-            format: 'jpg',
-            time: '',
-            tilematrixset: 'GoogleMapsCompatible_Level'
-        });
-
-        var ae = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-            attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
-        });
-
-        L.control.scale({
-            position: 'topright'
-        }).addTo(map);
-
-        var baseMaps = {
-            "osm": osm,
-            "topo": topo,
-            "night lights": nl,
-            "aerial imagery": ae
-        };
-
-        // add village cluster data set
-        var highlight;
-        var clearHighlight = function() {
-            if (highlight) {
-                vecTileLayer.resetFeatureStyle(highlight);
-            }
-            highlight = null;
-        };
-
-        var vecTileLayer = L.vectorGrid.protobuf("data/tiles/{z}/{x}/{y}.pbf", {
-                rendererFactory: L.canvas.tile,
-                vectorTileLayerStyles: {
-                    cluster: function(prop,zoom){
-												if (prop.Access=="no"){
-													color="lightgray";
-												}else{
-													color="red";
-												}
-												return{
-													fill: true,
-													fillColor: color,
-													fillOpacity: 0.5,
-													color: 'gray',
-													weight: 1
-												};
-                    },
-                       regions: function(prop,zoom){
-											 if (zoom>7){
-													return {stroke: false};
-												}else{
-													return{
-														color: 'green',
-														weight: 5,
-														opacity: 0.5
-													};
-												}
-										},
-                    
-                        grid: {
-                        color: 'orange',
-                        weight: 1
-                    }
+        <script>
+            var options = {
+                    center: [-6, 35],
+                    zoom: 6,
+                    minZoom: 6,
+                    maxZoom: 19,
+                    zoomControl: false,
+                    maxBounds: [
+                        [-12, 29],
+                        [0, 41]
+                    ]
                 },
-                maxZoom: 15,
-                minZoom: 5,
-                interactive: true,
-                //getFeatureId: function(f) {
-                //    return f.properties.r_0___I.toString();
-                //}
-            })
-            .on('click', function(e) {/*
-                var properties = e.layer.properties;
-                L.popup()
-                    .setContent(
-                        "Area: " + properties.area + "<br>" +
-                        "Distance: " + properties.distance + "<br>" +
-                        "Grid connection: " + properties.grid + "<br>"
-                    )
-                    .setLatLng(e.latlng)
-                    .openOn(map);
+                map = L.map('map', options);
 
-                clearHighlight();
-                highlight = properties.r_0___I.toString();
+            L.control.zoom({
+                position: 'topright'
+            }).addTo(map);
 
-                var style = {
-                    fillColor: '#FF0000',
-                    fillOpacity: 0.5,
-                    stroke: true,
-                    fill: true,
-                    color: 'red',
-                    opacity: 0.5,
-                    weight: 2,
-                };
-                tileLayer.setFeatureStyle(properties.r_0___I.toString(), style); */
-            })
+            var osm = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '&copy; <a 	href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            }).addTo(map);
 
-        map.addLayer(vecTileLayer);
-        map.on('click', clearHighlight);
+            var topo = L.tileLayer('http://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: 'Map data: &copy;  <a href="https://opentopomap.org">OpenTopoMap</a> '
+            });
 
-        //add grid data set
-        var gridstyle = {
-            "color": "#ff7800",
-            "weight": 2,
-            "opacity": 0.85,
-            "smoothFactor": 5
-        };
-        /*var grid = L.geoJson(grid, {
-            style: gridstyle
-        }).addTo(map); */
+            var nl = L.tileLayer('https://map1.vis.earthdata.nasa.gov/wmts-webmerc/VIIRS_CityLights_2012/default/{time}/{tilematrixset}{maxZoom}/{z}/{y}/{x}.{format}', {
+                attribution: 'Imagery provided by services from the Global Imagery Browse Services (GIBS), operated by the NASA/GSFC/Earth Science Data and Information System (<a href="https://earthdata.nasa.gov">ESDIS</a>) with funding provided by NASA/HQ.',
+                minZoom: 1,
+                maxZoom: 8,
+                format: 'jpg',
+                time: '',
+                tilematrixset: 'GoogleMapsCompatible_Level'
+            });
 
-        var overlayMaps = {
-            "population clusters": vecTileLayer
-            //"power grid": grid
-        };
-        L.control.layers(baseMaps, overlayMaps).addTo(map);
+            var ae = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+            });
 
-        //add markercluster
-        var markers = L.markerClusterGroup({
-            chunkedLoading: true
-        });
-        const DIST = 0;
-        const POP = 1;
-        const INFRA = 2;
-        const LONG = 3;
-        const LAT = 4;
-        const INFO = 5;
-        var currentfilter = {
-            mindist: 0,
-            maxdist: 120,
-            minpop: 0,
-            maxpop: 20000,
-            infra: 0
-        };
-        map.addEventListener('filterchange', function(filter) {
-            markers.clearLayers()
-            var markerList = [];
-            for (var i = 0; i < points.length; i++) {
-                var point = points[i];
-                if (point[DIST] > filter.mindist && point[DIST] < filter.maxdist && point[POP] > filter.minpop && point[POP] < filter.maxpop && point[INFRA] >= filter.infra) {
-                    var info = point[INFO];
-                    var title = `ID ${info.ID} <br/> Population ${info.POP} <br/> Distance  ${info.DIST}`;
-                    var marker = L.marker(L.latLng(point[LAT], point[LONG]), point[INFO]);
-                    marker.bindPopup(title);
-                    markerList.push(marker);
+            L.control.scale({
+                position: 'topright'
+            }).addTo(map);
+
+            var baseMaps = {
+                "osm": osm,
+                "topo": topo,
+                "night lights": nl,
+                "aerial imagery": ae
+            };
+
+            // add village cluster data set
+            var highlight;
+            var clearHighlight = function() {
+                if (highlight) {
+                    vecTileLayer.resetFeatureStyle(highlight);
                 }
-            }
-            markers.addLayers(markerList);
-            map.addLayer(markers);
-        });
-        map.fireEvent('filterchange', currentfilter);
+                highlight = null;
+            };
 
-        //slider
-        noUiSlider.create(sliderpop, {
-            start: [currentfilter.minpop, currentfilter.maxpop],
-            connect: true,
-            step: 100,
-            range: {
-                'min': currentfilter.minpop,
-                'max': currentfilter.maxpop
-            },
-            format: wNumb({
-                decimals: 0,
-                thousand: '.'
-            }),
-            tooltips: true,
-          	pips: {
-                mode: 'range',
-                density: 3
-            }
-        });
-        sliderpop.noUiSlider.on('change', function(str,h,values) {
-            currentfilter.minpop = values[0];
-            currentfilter.maxpop = values[1];
+            var vecTileLayer = L.vectorGrid.protobuf("data/tiles/{z}/{x}/{y}.pbf", {
+                    rendererFactory: L.canvas.tile,
+                    vectorTileLayerStyles: {
+                        cluster: function(prop, zoom) {
+                            if (prop.Access == "no") {
+                                color = "lightgray";
+                            } else {
+                                color = "red";
+                            }
+                            return {
+                                fill: true,
+                                fillColor: color,
+                                fillOpacity: 0.5,
+                                color: 'gray',
+                                weight: 1
+                            };
+                        },
+                        regions: function(prop, zoom) {
+                            if (zoom > 7) {
+                                return {
+                                    stroke: false
+                                };
+                            } else {
+                                return {
+                                    color: 'green',
+                                    weight: 5,
+                                    opacity: 0.5
+                                };
+                            }
+                        },
+
+                        grid: {
+                            color: "#ff7800",
+							weight: 2,
+							opacity: 0.85,
+							smoothFactor: 5
+                        }
+                    },
+                    maxZoom: 15,
+                    minZoom: 5,
+                    interactive: true,
+                    //getFeatureId: function(f) {
+                    //    return f.properties.r_0___I.toString();
+                    //}
+                })
+                .on('click', function(e) {
+                    /*
+                                    var properties = e.layer.properties;
+                                    L.popup()
+                                        .setContent(
+                                            "Area: " + properties.area + "<br>" +
+                                            "Distance: " + properties.distance + "<br>" +
+                                            "Grid connection: " + properties.grid + "<br>"
+                                        )
+                                        .setLatLng(e.latlng)
+                                        .openOn(map);
+
+                                    clearHighlight();
+                                    highlight = properties.r_0___I.toString();
+
+                                    var style = {
+                                        fillColor: '#FF0000',
+                                        fillOpacity: 0.5,
+                                        stroke: true,
+                                        fill: true,
+                                        color: 'red',
+                                        opacity: 0.5,
+                                        weight: 2,
+                                    };
+                                    tileLayer.setFeatureStyle(properties.r_0___I.toString(), style); */
+                })
+
+            map.addLayer(vecTileLayer);
+            map.on('click', clearHighlight);
+
+           
+
+            var overlayMaps = {
+                "overlay": vecTileLayer
+                    //"power grid": grid
+            };
+            L.control.layers(baseMaps, overlayMaps).addTo(map);
+
+            //add markercluster
+            var markers = L.markerClusterGroup({
+                chunkedLoading: true
+            });
+            const DIST = 0;
+            const POP = 1;
+            const INFRA = 2;
+            const LONG = 3;
+            const LAT = 4;
+            const INFO = 5;
+            var currentfilter = {
+                mindist: 0,
+                maxdist: 120,
+                minpop: 0,
+                maxpop: 20000,
+                infra: 0
+            };
+            map.addEventListener('filterchange', function(filter) {
+                markers.clearLayers()
+                var markerList = [];
+                for (var i = 0; i < points.length; i++) {
+                    var point = points[i];
+                    if (point[DIST] > filter.mindist && point[DIST] < filter.maxdist && point[POP] > filter.minpop && point[POP] < filter.maxpop && point[INFRA] >= filter.infra) {
+                        var info = point[INFO];
+                        var title = `ID ${info.ID} <br/> Population ${info.POP} <br/> Distance  ${info.DIST}`;
+                        var marker = L.marker(L.latLng(point[LAT], point[LONG]), point[INFO]);
+                        marker.bindPopup(title);
+                        markerList.push(marker);
+                    }
+                }
+                markers.addLayers(markerList);
+                map.addLayer(markers);
+            });
             map.fireEvent('filterchange', currentfilter);
-        });
 
-        noUiSlider.create(sliderdist, {
-            start: [currentfilter.mindist, currentfilter.maxdist],
-            connect: true,
-            step: 1,
-            range: {
-                'min': currentfilter.mindist,
-                'max': currentfilter.maxdist
-            },
-//            format: wNumb({
-//                decimals: 0,
-//                thousand: '.'
-//            }),
-            tooltips: false,
-            pips: {
-                mode: 'count',
-                values: 7,
-                density: 4
-            }
-        });
-        sliderdist.noUiSlider.on('change', function(str,h,values) {
-            currentfilter.mindist = values[0];
-            currentfilter.maxdist = values[1];
-            map.fireEvent('filterchange', currentfilter);
-        });
+            //slider
+            noUiSlider.create(sliderpop, {
+                start: [currentfilter.minpop, currentfilter.maxpop],
+                connect: true,
+                step: 100,
+                range: {
+                    'min': currentfilter.minpop,
+                    'max': currentfilter.maxpop
+                },
+                format: wNumb({
+                    decimals: 0,
+                    thousand: '.'
+                }),
+                tooltips: true,
+                pips: {
+                    mode: 'range',
+                    density: 3
+                }
+            });
+            sliderpop.noUiSlider.on('change', function(str, h, values) {
+                currentfilter.minpop = values[0];
+                currentfilter.maxpop = values[1];
+                map.fireEvent('filterchange', currentfilter);
+            });
 
-        checkboxinfra = document.getElementById('checkboxinfra');
-        checkboxinfra.onchange = function(e) {
-            currentfilter.infra = e.target.checked;
-            map.fireEvent('filterchange', currentfilter);
-        };
-        //sidebar
-        var sidebar = L.control.sidebar({
-            container: 'sidebar',
-            closeButton: true,
-            position: 'left'
-        }).addTo(map);
+            noUiSlider.create(sliderdist, {
+                start: [currentfilter.mindist, currentfilter.maxdist],
+                connect: true,
+                step: 1,
+                range: {
+                    'min': currentfilter.mindist,
+                    'max': currentfilter.maxdist
+                },
+                //            format: wNumb({
+                //                decimals: 0,
+                //                thousand: '.'
+                //            }),
+                tooltips: false,
+                pips: {
+                    mode: 'count',
+                    values: 7,
+                    density: 4
+                }
+            });
+            sliderdist.noUiSlider.on('change', function(str, h, values) {
+                currentfilter.mindist = values[0];
+                currentfilter.maxdist = values[1];
+                map.fireEvent('filterchange', currentfilter);
+            });
 
-//        //add watermark
-//        L.Control.Watermark = L.Control.extend({
-//            onAdd: function(map) {
-//                var img = L.DomUtil.create('img');
-//                img.src = 'images/watermark.gif';
-//                img.style.width = '350px';
-//                return img;
-//            },
-//            onRemove: function(map) {}
-//        });
-//        L.control.watermark = function(opts) {
-//            return new L.Control.Watermark(opts);
-//        }
-//        L.control.watermark({
-//            position: 'bottomright'
-//        }).addTo(map);
-    </script>
+            checkboxinfra = document.getElementById('checkboxinfra');
+            checkboxinfra.onchange = function(e) {
+                currentfilter.infra = e.target.checked;
+                map.fireEvent('filterchange', currentfilter);
+            };
+            //sidebar
+            var sidebar = L.control.sidebar({
+                container: 'sidebar',
+                closeButton: true,
+                position: 'left'
+            }).addTo(map);
+
+            //        //add watermark
+            //        L.Control.Watermark = L.Control.extend({
+            //            onAdd: function(map) {
+            //                var img = L.DomUtil.create('img');
+            //                img.src = 'images/watermark.gif';
+            //                img.style.width = '350px';
+            //                return img;
+            //            },
+            //            onRemove: function(map) {}
+            //        });
+            //        L.control.watermark = function(opts) {
+            //            return new L.Control.Watermark(opts);
+            //        }
+            //        L.control.watermark({
+            //            position: 'bottomright'
+            //        }).addTo(map);
+        </script>
 </body>
 
 </html>
