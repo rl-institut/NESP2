@@ -10,6 +10,11 @@ body {
      background-color: #808080;
 }
 
+.leaflet-sidebar-pane span {
+   position: absolute;
+   bottom: 0;
+}
+
 .leaflet-sidebar-pane p {
     margin-top: 40px;
 }
