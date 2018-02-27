@@ -4,7 +4,10 @@ body {
 }
  html,body, #map {
      height: 100%;
-     font: 10pt "Helvetica Neue", Arial, Helvetica, sans-serif;
+     font: Helvetica, Arial,  sans-serif;
+		 font-size: 0.8vw;
+     font-family: Helvetica, Arial, sans-serif;
+		 line-height: 150%;
 }
  .leaflet-sidebar-header, .leaflet-sidebar-tabs > li.active, .leaflet-sidebar-tabs > ul > li.active {
      background-color: #808080;
