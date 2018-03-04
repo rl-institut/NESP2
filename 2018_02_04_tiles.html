@@ -216,7 +216,6 @@
             .on('click', function(e) {
                 this.clearHighlight(this);
                 var properties = e.layer.properties;
-                console.log(properties);
                 if (properties.Access !== undefined) {
                     type = "c";
                     ID = "c" + properties.ID;
@@ -263,6 +262,12 @@
             })
         vecTileLayer.highlight = null;
         vecTileLayer.hidden = null;
+        vecTileLayer.hiddenstyle = {
+                       fillColor: 'lightgray',
+                       fillOpacity: 0.1,
+                       opacity: 0.1,
+                       fill: true
+                 };
         vecTileLayer.clearHidden = function (e) {
 			if (e.hidden){
 				for (nid in e.hidden){
@@ -276,6 +281,12 @@
                 e.resetFeatureStyle(e.highlight);
             }
             e.highlight = null;
+            if (e.hidden){
+				for (nid in e.hidden){
+					var id=e.hidden[nid];
+					e.setFeatureStyle(id,e.hiddenstyle);
+				}
+			}
         };
 
         map.addLayer(vecTileLayer);
@@ -286,18 +297,12 @@
             vecTileLayer.clearHighlight(vecTileLayer)
         });
 
-        var overlayMaps = {
-            "overlay": vecTileLayer
-                //"power grid": grid
-        };
-        L.control.layers(baseMaps, overlayMaps).addTo(map);
-
         //add markercluster
         var markers = L.markerClusterGroup({
             chunkedLoading: true
         });
         
-        //Marker Cluster filter for electrification data
+        //Cluster filter for electrification data
         //(c) F. Zimmermann, 2018
         //Licensed under BSD 3-Clause
         const DIST = 0;
@@ -314,13 +319,8 @@
             infra: 0
         };
         map.addEventListener('filterchange', function(filter) {
+			vecTileLayer.clearHidden(vecTileLayer);
 			var hiddenIDs=[]
-			var hiddenstyle = {
-                       fillColor: 'lightgray',
-                       fillOpacity: 0.1,
-                       opacity: 0.1,
-                       fill: true
-                 };
             var vt=vecTileLayer._vectorTiles;
 			for (vtkey in vt){
 				var f=vt[vtkey]._features;
@@ -328,15 +328,11 @@
 					var prop=f[fkey].feature.properties;
 					if (!(prop.D>filter.mindist && prop.D<filter.maxdist && prop.P>filter.minpop && prop.P<filter.maxpop)){
 						hiddenIDs.push("c"+prop.ID);
-						vecTileLayer.setFeatureStyle("c"+prop.ID, hiddenstyle);
-					}
+						vecTileLayer.setFeatureStyle("c"+prop.ID, vecTileLayer.hiddenstyle);
+					}				
 				}
 			}
-			console.log(hiddenIDs);
-            vecTileLayer.clearHidden(vecTileLayer);
             vecTileLayer.hidden=hiddenIDs;
-
-            
             markers.clearLayers()
             var markerList = [];           
             for (var i = 0; i < points.length; i++) {
@@ -352,7 +348,6 @@
             markers.addLayers(markerList);
             map.addLayer(markers);
         });
-        map.fireEvent('filterchange', currentfilter);
 
         //slider
         noUiSlider.create(sliderpop, {
@@ -415,6 +410,12 @@
             closeButton: true,
             position: 'left'
         }).addTo(map);
+
+        var overlayMaps = {
+            "marker": markers
+        };
+        L.control.layers(baseMaps, overlayMaps).addTo(map);
+        map.fireEvent('filterchange', currentfilter);
 
         //        //add watermark
         //        L.Control.Watermark = L.Control.extend({
