@@ -227,6 +227,7 @@
                         Village: ${properties.V} <br/>
                         Ward: ${properties.W} <br/>
                         Grid access: ${properties.Access} <br/>
+                        ID: ${properties.ID}
 						`;
                 } else if (properties.type !== undefined) {
                     type = "g";
@@ -261,9 +262,18 @@
                 }
             })
         vecTileLayer.highlight = null;
+        vecTileLayer.hidden = null;
+        vecTileLayer.clearHidden = function (e) {
+			if (e.hidden){
+				for (nid in e.hidden){
+					var id=e.hidden[nid];
+					e.resetFeatureStyle(id);
+				}
+			}
+		};	
         vecTileLayer.clearHighlight = function(e) {
             if (e.highlight) {
-                vecTileLayer.resetFeatureStyle(e.highlight);
+                e.resetFeatureStyle(e.highlight);
             }
             e.highlight = null;
         };
@@ -304,8 +314,31 @@
             infra: 0
         };
         map.addEventListener('filterchange', function(filter) {
+			var hiddenIDs=[]
+			var hiddenstyle = {
+                       fillColor: 'lightgray',
+                       fillOpacity: 0.1,
+                       opacity: 0.1,
+                       fill: true
+                 };
+            var vt=vecTileLayer._vectorTiles;
+			for (vtkey in vt){
+				var f=vt[vtkey]._features;
+				for (fkey in f){
+					var prop=f[fkey].feature.properties;
+					if (!(prop.D>filter.mindist && prop.D<filter.maxdist && prop.P>filter.minpop && prop.P<filter.maxpop)){
+						hiddenIDs.push("c"+prop.ID);
+						vecTileLayer.setFeatureStyle("c"+prop.ID, hiddenstyle);
+					}
+				}
+			}
+			console.log(hiddenIDs);
+            vecTileLayer.clearHidden(vecTileLayer);
+            vecTileLayer.hidden=hiddenIDs;
+
+            
             markers.clearLayers()
-            var markerList = [];
+            var markerList = [];           
             for (var i = 0; i < points.length; i++) {
                 var point = points[i];
                 if (point[DIST] > filter.mindist && point[DIST] < filter.maxdist && point[POP] > filter.minpop && point[POP] < filter.maxpop && point[INFRA] >= filter.infra) {
