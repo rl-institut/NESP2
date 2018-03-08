@@ -109,7 +109,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/11.0.3/nouislider.min.js"></script>
 
     <script>
-        var options = {
+		//Cluster filter for electrification data
+        //(c) F. Zimmermann, 2018
+        //Licensed under BSD 3-Clause
+        
+        let options = {
                 center: [-6, 35],
                 zoom: 6,
                 minZoom: 6,
@@ -126,17 +130,17 @@
             position: 'topright'
         }).addTo(map);
 
-        var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        let osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
-            attribution: '&copy; <a 	href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         }).addTo(map);
 
-        var topo = L.tileLayer('http://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+        let topo = L.tileLayer('http://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
             attribution: 'Map data: &copy;  <a href="https://opentopomap.org">OpenTopoMap</a> '
         });
 
-        var nl = L.tileLayer('https://map1.vis.earthdata.nasa.gov/wmts-webmerc/VIIRS_CityLights_2012/default/{time}/{tilematrixset}{maxZoom}/{z}/{y}/{x}.{format}', {
+        let nl = L.tileLayer('https://map1.vis.earthdata.nasa.gov/wmts-webmerc/VIIRS_CityLights_2012/default/{time}/{tilematrixset}{maxZoom}/{z}/{y}/{x}.{format}', {
             attribution: 'Imagery provided by services from the Global Imagery Browse Services (GIBS), operated by the NASA/GSFC/Earth Science Data and Information System (<a href="https://earthdata.nasa.gov">ESDIS</a>) with funding provided by NASA/HQ.',
             minZoom: 1,
             maxZoom: 8,
@@ -145,24 +149,22 @@
             tilematrixset: 'GoogleMapsCompatible_Level'
         });
 
-        var ae = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+        let ae = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
             attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
         });
 
         L.control.scale({
             position: 'bottomright'
         }).addTo(map);
-
-        var baseMaps = {
+		
+        let baseMaps = {
             "osm": osm,
             "topo": topo,
             "night lights": nl,
             "aerial imagery": ae
         };
 
-        // add village cluster data set
-
-        var vecTileLayer = L.vectorGrid.protobuf("data/tiles/{z}/{x}/{y}.pbf", {
+        let vecTileLayer = L.vectorGrid.protobuf("data/tiles/{z}/{x}/{y}.pbf", {
                 rendererFactory: L.canvas.tile,
                 vectorTileLayerStyles: {
                     cluster: function(prop, zoom) {
@@ -213,18 +215,22 @@
                 }
             })
             .on('click', function(e) {
-                this.clearHighlight(this);
-                var properties = e.layer.properties;
+                this.clearHighlight();
+                let properties = e.layer.properties;
                 if (properties.Access !== undefined) {
                     type = "c";
                     ID = "c" + properties.ID;
                     popup = `
-
                         Region: ${properties.Region} <br/>
                         District: ${properties.District} <br/>
                         Village: ${properties.V} <br/>
                         Ward: ${properties.W} <br/>
                         Grid access: ${properties.Access} <br/>
+						Distance to grid: ${properties.D} km <br/>
+                        Population: ${properties.P} (Density: ${properties.Density}/km&sup2;) <br/>
+                        Area: ${properties.A} km&sup2; <br/>
+                        Healthcare/School/Water Point/Public Building:: ${properties.HC}/${properties.SC}/${properties.HC}/${properties.PC} <br/>
+                        Rank: ${properties.OARank} <br/>
                         ID: ${properties.ID}
 						`;
                 } else if (properties.type !== undefined) {
@@ -245,7 +251,7 @@
                         .setLatLng(e.latlng)
                         .openOn(map);
                     this.highlight = ID;
-                    var style = {
+                    let style = {
                         fillColor: '#0000FF',
                         fillOpacity: 0.5,
                         stroke: true,
@@ -267,50 +273,41 @@
             opacity: 0.1,
             fill: true
         };
-        vecTileLayer.clearHidden = function(e) {
-            if (e.hidden) {
-                for (nid in e.hidden) {
-                    var id = e.hidden[nid];
-                    e.resetFeatureStyle(id);
+        vecTileLayer.clearHidden = function() {
+            if (this.hidden) {
+                for (nid in this.hidden) {
+                    let id = this.hidden[nid];
+                    this.resetFeatureStyle(id);
                 }
             }
         };
-        vecTileLayer.clearHighlight = function(e) {
-            if (e.highlight) {
-                e.resetFeatureStyle(e.highlight);
+        vecTileLayer.clearHighlight = function() {
+            if (this.highlight) {
+                this.resetFeatureStyle(this.highlight);
             }
-            e.highlight = null;
-            if (e.hidden) {
-                for (nid in e.hidden) {
-                    var id = e.hidden[nid];
-                    e.setFeatureStyle(id, e.hiddenstyle);
+            this.highlight = null;
+            if (this.hidden) {
+                for (nid in this.hidden) {
+                    let id = this.hidden[nid];
+                    this.setFeatureStyle(id, this.hiddenstyle);
                 }
             }
         };
 
         map.addLayer(vecTileLayer);
         map.on('click', function() {
-            vecTileLayer.clearHighlight(vecTileLayer)
+            vecTileLayer.clearHighlight()
         });
         map.on('popupclose', function() {
-            vecTileLayer.clearHighlight(vecTileLayer)
+            vecTileLayer.clearHighlight()
         });
 
-        //add markercluster
-        var markers = L.markerClusterGroup({
+        let markers = L.markerClusterGroup({
             chunkedLoading: true
         });
 
-        //Cluster filter for electrification data
-        //(c) F. Zimmermann, 2018
-        //Licensed under BSD 3-Clause
-        const DIST = 0;
-        const POP = 1;
-        const INFRA = 2;
-        const LONG = 3;
-        const LAT = 4;
-        const INFO = 5;
-        var currentfilter = {
+        const DIST = 0,POP = 1, INFRA = 2,LONG = 3,LAT = 4,INFO = 5;
+        let currentfilter = {
             mindist: 0,
             maxdist: 120,
             minpop: 0,
@@ -318,52 +315,62 @@
             infra: 0
         };
 
-        markers.filter = function(e, filter, map) {
-            e.clearLayers()
-            var markerList = [];
-            for (var i = 0; i < points.length; i++) {
-                var point = points[i];
+        markers.filter = function(filter, map) {
+            this.clearLayers()
+            let markerList = [];
+            for (let i = 0; i < points.length; i++) {
+                let point = points[i];
                 if (point[DIST] > filter.mindist && point[DIST] < filter.maxdist && point[POP] > filter.minpop && point[POP] < filter.maxpop && point[INFRA] >= filter.infra) {
-                    var info = point[INFO];
-                    var title = `ID ${info.ID} <br/> Population: ${info.POP} <br/> Distance to grid: ${info.DIST} km`;
-                    var marker = L.marker(L.latLng(point[LAT], point[LONG]), point[INFO]);
+                    let info = point[INFO];
+                    let title = `
+                     Region: ${info.R} <br/>
+                     District: ${info.D} <br/>
+                     Village: ${info.V} <br/>
+                     Ward: ${info.W} <br/>
+                     Population: ${info.POP} <br/>
+                     Population Density: ${info.DENS} /km&sup2; <br/>
+                     Distance to Grid: ${info.DIST} km <br/>
+                     Infrastructure: ${info.INFRA?'yes':'no'} <br/>
+                     Rank: ${info.RANK} <br/>
+                     ID ${info.ID} <br/>
+`;
+                    let marker = L.marker(L.latLng(point[LAT], point[LONG]), point[INFO]);
                     marker.bindPopup(title);
                     markerList.push(marker);
                 }
             }
-            e.addLayers(markerList);
-            map.addLayer(e);
+            this.addLayers(markerList);
+            map.addLayer(this);
         };
 
-        vecTileLayer.filter = function(e, filter) {
-            e.clearHidden(e);
-            var hiddenIDs = []
-            var vt = e._vectorTiles;
+        vecTileLayer.filter = function(filter) {
+            this.clearHidden();
+            let hiddenIDs = [];
+            let vt = this._vectorTiles;
             for (vtkey in vt) {
-                var f = vt[vtkey]._features;
+                let f = vt[vtkey]._features;
                 for (fkey in f) {
-                    var prop = f[fkey].feature.properties;
-                    if (!(prop.D > filter.mindist && prop.D < filter.maxdist && prop.P > filter.minpop && prop.P < filter.maxpop)) {
+                    let prop = f[fkey].feature.properties;
+                    if (prop.Access=="no"&& (!(prop.D > filter.mindist && prop.D < filter.maxdist && prop.P > filter.minpop && prop.P < filter.maxpop && (prop.HC+prop.SC+prop.WC+prop.PC)>=filter.infra ))) { 
                         hiddenIDs.push("c" + prop.ID);
-                        e.setFeatureStyle("c" + prop.ID, e.hiddenstyle);
+                        this.setFeatureStyle("c" + prop.ID, this.hiddenstyle);
                     }
                 }
             }
-            e.hidden = hiddenIDs;
+            this.hidden = hiddenIDs;
         };
 
         map.addEventListener('filterchange', function(filter) {
-            vecTileLayer.filter(vecTileLayer, currentfilter);
+            vecTileLayer.filter(currentfilter);
             //if (map.hasLayer(markers)){
-            markers.filter(markers, currentfilter, map);
+            markers.filter(currentfilter, map);
             //}
         });
 
         vecTileLayer.on('load', function() {
-            vecTileLayer.filter(vecTileLayer, currentfilter);
+            vecTileLayer.filter(currentfilter);
         });
 
-        //slider
         noUiSlider.create(sliderpop, {
             start: [currentfilter.minpop, currentfilter.maxpop],
             connect: true,
@@ -421,14 +428,14 @@
             }, 100);
 
         };
-        //sidebar
-        var sidebar = L.control.sidebar({
+
+        let sidebar = L.control.sidebar({
             container: 'sidebar',
             closeButton: true,
             position: 'left'
         }).addTo(map);
 
-        var overlayMaps = {
+        let overlayMaps = {
             "marker": markers
         };
         L.control.layers(baseMaps, overlayMaps).addTo(map);
@@ -437,7 +444,7 @@
         //        //add watermark
         //        L.Control.Watermark = L.Control.extend({
         //            onAdd: function(map) {
-        //                var img = L.DomUtil.create('img');
+        //                let img = L.DomUtil.create('img');
         //                img.src = 'images/watermark.gif';
         //                img.style.width = '350px';
         //                return img;
