@@ -18,12 +18,6 @@
 <body>
 
     <div id='map'></div>
-
-    <div id="progress">
-        <div id="progress-bar"></div>
-    </div>
-    <div id="map"></div>
-
     <div id="sidebar" class="leaflet-sidebar">
         <div class="leaflet-sidebar-tabs">
             <ul role="tablist">
@@ -40,9 +34,9 @@
         <div class="leaflet-sidebar-content">
             <div class="leaflet-sidebar-pane active" id="home">
                 <h1 class="leaflet-sidebar-header">
-					 Village priorization in Tanzania
-					<div class="leaflet-sidebar-close"><i class="fa fa-caret-left"></i></div>
-				</h1>
+                     Village priorization in Tanzania
+                    <div class="leaflet-sidebar-close"><i class="fa fa-caret-left"></i></div>
+                </h1>
                 <p>The overall objective of this project is to prioritize locations for off-grid rural electrification in Tanzania. New datasets will be developed that will enable faster and more accurate market analysis for distributed energy services companies (DESCOs) operating in Tanzania, including household locations and indicators on ability to pay, potential for productive uses of electricity and up-to-date data on national electricity grid transmission and distribution line locations. Collectively, it is expected that these datasets will help DESCOs operating in, or seeking to enter, Tanzania to narrow down geographic areas that could be interesting markets for their off-grid energy services. </p>
                 <p>This objective will be achieved by a combination of remote sensing, GIS analyses and other data collection. These activities are complemented by stakeholder workshops and local capacity development. </p>
                 <span><p><a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.</p></span>
@@ -78,9 +72,9 @@
             </div>
             <div class="leaflet-sidebar-pane" id="about">
                 <h1 class="leaflet-sidebar-header">
-					 About the map
-					<div class="leaflet-sidebar-close"><i class="fa fa-caret-left"></i></div>
-				</h1>
+                     About the map
+                    <div class="leaflet-sidebar-close"><i class="fa fa-caret-left"></i></div>
+                </h1>
                 <p>The web-map was created within the Worldbank/IFC financed project Prioritization of locations for off-grid rural electrification in Tanzania (Selection #1249011). </p>
                 <p>It was developed by a consortium of <a href="http://www.integration.org/" target="_blank">Integration Energy and Environment</a>, <a href="http://www.rafikipower.com/" target="_blank">E.ON Off Grid Solutions</a> and <a href="http://reiner-lemoine-institut.de/en/" target="_blank">Reiner Lemoine Institute</a>.</p>
                 <p><img src="images/watermark.gif" width="100%" height="auto" alt="Picture not found">
@@ -89,9 +83,9 @@
             </div>
             <div class="leaflet-sidebar-pane" id="download">
                 <h1 class="leaflet-sidebar-header">
-						Download
-						<div class="leaflet-sidebar-close"><i class="fa fa-caret-left"></i></div>
-					</h1>
+                        Download
+                        <div class="leaflet-sidebar-close"><i class="fa fa-caret-left"></i></div>
+                    </h1>
                 <p>Data visualized in the map can be downloaded from <a href="https://energydata.info/dataset/prioritization-of-locations-for-off-grid-rural-electrification-in-tanzania" target="_blank">Energydata.info</a> here. Available formats are geojson, shapefile or csv. </p>
                 <span><p><a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.</p></span>
             </div>
@@ -109,7 +103,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/11.0.3/nouislider.min.js"></script>
 
     <script>
-		//Cluster filter for electrification data
+        //Cluster filter for electrification data
         //(c) F. Zimmermann, 2018
         //Licensed under BSD 3-Clause
         
@@ -123,8 +117,8 @@
                     [-13, 26],
                     [1, 41]
                 ]
-            },
-            map = L.map('map', options);
+            };
+        let map = L.map('map', options);
 
         L.control.zoom({
             position: 'topright'
@@ -156,7 +150,7 @@
         L.control.scale({
             position: 'bottomright'
         }).addTo(map);
-		
+        
         let baseMaps = {
             "osm": osm,
             "topo": topo,
@@ -226,21 +220,21 @@
                         Village: ${properties.V} <br/>
                         Ward: ${properties.W} <br/>
                         Grid access: ${properties.Access} <br/>
-						Distance to grid: ${properties.D} km <br/>
+                        Distance to grid: ${properties.D} km <br/>
                         Population: ${properties.P} (Density: ${properties.Density}/km&sup2;) <br/>
                         Area: ${properties.A} km&sup2; <br/>
                         Healthcare/School/Water Point/Public Building:: ${properties.HC}/${properties.SC}/${properties.HC}/${properties.PC} <br/>
                         Rank: ${properties.OARank} <br/>
                         ID: ${properties.ID}
-						`;
+                        `;
                 } else if (properties.type !== undefined) {
                     type = "g";
                     ID = "g" + properties.ID;
                     popup = `
-								ID ${properties.ID} <br/> 
-								Voltage : ${properties.kV} kV <br/> 
-								Source:: ${properties.sources} <br/>
-								`;
+                                ID ${properties.ID} <br/>
+                                Voltage : ${properties.kV} kV <br/>
+                                Source:: ${properties.sources} <br/>
+                                `;
                 } else {
                     type = "r";
                     ID = "r" + properties.OBJECTID;
@@ -258,13 +252,13 @@
                         fill: true,
                         color: '#0000FF',
                         opacity: 0.5,
-                        weight: 2,
+                        weight: 2
                     };
 
                     this.setFeatureStyle(ID, style);
                     L.DomEvent.stop(e);
                 }
-            })
+            });
         vecTileLayer.highlight = null;
         vecTileLayer.hidden = null;
         vecTileLayer.hiddenstyle = {
@@ -275,7 +269,7 @@
         };
         vecTileLayer.clearHidden = function() {
             if (this.hidden) {
-                for (nid in this.hidden) {
+                for (let nid in this.hidden) {
                     let id = this.hidden[nid];
                     this.resetFeatureStyle(id);
                 }
@@ -287,7 +281,7 @@
             }
             this.highlight = null;
             if (this.hidden) {
-                for (nid in this.hidden) {
+                for (let nid in this.hidden) {
                     let id = this.hidden[nid];
                     this.setFeatureStyle(id, this.hiddenstyle);
                 }
@@ -296,10 +290,10 @@
 
         map.addLayer(vecTileLayer);
         map.on('click', function() {
-            vecTileLayer.clearHighlight()
+            vecTileLayer.clearHighlight();
         });
         map.on('popupclose', function() {
-            vecTileLayer.clearHighlight()
+            vecTileLayer.clearHighlight();
         });
 
         let markers = L.markerClusterGroup({
@@ -316,7 +310,7 @@
         };
 
         markers.filter = function(filter, map) {
-            this.clearLayers()
+            this.clearLayers();
             let markerList = [];
             for (let i = 0; i < points.length; i++) {
                 let point = points[i];
@@ -333,7 +327,7 @@
                      Infrastructure: ${info.INFRA?'yes':'no'} <br/>
                      Rank: ${info.RANK} <br/>
                      ID ${info.ID} <br/>
-`;
+                    `;
                     let marker = L.marker(L.latLng(point[LAT], point[LONG]), point[INFO]);
                     marker.bindPopup(title);
                     markerList.push(marker);
@@ -347,11 +341,11 @@
             this.clearHidden();
             let hiddenIDs = [];
             let vt = this._vectorTiles;
-            for (vtkey in vt) {
+            for (let vtkey in vt) {
                 let f = vt[vtkey]._features;
-                for (fkey in f) {
+                for (let fkey in f) {
                     let prop = f[fkey].feature.properties;
-                    if (prop.Access=="no"&& (!(prop.D > filter.mindist && prop.D < filter.maxdist && prop.P > filter.minpop && prop.P < filter.maxpop && (prop.HC+prop.SC+prop.WC+prop.PC)>=filter.infra ))) { 
+                    if (prop.Access=="no"&& (!(prop.D > filter.mindist && prop.D < filter.maxdist && prop.P > filter.minpop && prop.P < filter.maxpop && (prop.HC+prop.SC+prop.WC+prop.PC)>=filter.infra ))) {
                         hiddenIDs.push("c" + prop.ID);
                         this.setFeatureStyle("c" + prop.ID, this.hiddenstyle);
                     }
@@ -362,9 +356,7 @@
 
         map.addEventListener('filterchange', function(filter) {
             vecTileLayer.filter(currentfilter);
-            //if (map.hasLayer(markers)){
             markers.filter(currentfilter, map);
-            //}
         });
 
         vecTileLayer.on('load', function() {
@@ -424,7 +416,7 @@
         checkboxinfra.onchange = function(e) {
             currentfilter.infra = e.target.checked;
             setTimeout(function() {
-                map.fireEvent('filterchange', currentfilter)
+                map.fireEvent('filterchange', currentfilter);
             }, 100);
 
         };
