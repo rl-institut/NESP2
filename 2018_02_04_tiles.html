@@ -445,6 +445,7 @@
             "Priority Clusters": markers
         };
         L.control.layers(baseMaps, overlayMaps).addTo(map);
+        map.on("layeradd",function (){vecTileLayer.bringToFront();});
         map.fireEvent("filterchange", currentfilter);
 
         //        //add watermark
