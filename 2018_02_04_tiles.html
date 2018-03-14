@@ -215,36 +215,32 @@
                     var ID = properties.ID;
                     let public=["School","Healthcare","Water Point","Public Building"].filter(function (v,i){i++;return i==properties.SC||i==properties.HC*2||i==properties.WC*3||i==properties.PC*4}).join(",<br/>");
                     public=public||"No Data";
-                    var popup=`
-                    <table>
-                      <tr><td align="right"><b>Region</b>:</td><td>${properties.Region}</td></tr>
-                      <tr><td align="right"><b>District</b>:</td><td>${properties.District}</td></tr>
-                      <tr><td align="right"><b>Village</b>:</td><td>${properties.V}</td></tr>
-                      <tr><td align="right"><b>Ward</b>:</td><td>${properties.W}</td></tr>
-                      <tr><td align="right"><b>Grid access</b>:</td><td>${properties.Access}</td></tr>
-                      `;
+                    var popup='\
+                    <table>\
+                      <tr><td align="right"><b>Region</b>:</td><td>'+properties.Region+'</td></tr>\
+                      <tr><td align="right"><b>District</b>:</td><td>'+properties.District+'</td></tr>\
+                      <tr><td align="right"><b>Village</b>:</td><td>'+properties.V+'</td></tr>\
+                      <tr><td align="right"><b>Ward</b>:</td><td>'+properties.W+'</td></tr>\
+                      <tr><td align="right"><b>Grid access</b>:</td><td>'+properties.Access+'</td></tr>';
                     if (properties.Access === "no"){
-                          popup=popup+`
-                          <tr><td align="right"><b>Dist. to Grid</b>:</td><td>${properties.D} km</td></tr>
-                          <tr><td align="right"><b>Population</b>:</td><td>${properties.P}</td></tr>
-                          <tr><td align="right"><b>Pop. Density</b>:</td><td>${properties.Density}</td></tr>
-                          <tr><td align="right"><b>Area</b>:</td><td>${properties.A} km&sup2;</td></tr>
-                          <tr><td align="right"><b>Social Infra.</b>:</td><td>${public}</td></tr>
-                          <tr><td align="right"><b>Rank</b>:</td><td>${properties.OARank}</td></tr>
-                          <tr><td align="right"><b>ID</b>:</td><td>${properties.ID}</td></tr>
-                          `;
-                    }
-                    popup=popup+`
-                    </table>
-                    `;
+                          popup=popup+'\
+                          <tr><td align="right"><b>Dist. to Grid</b>:</td><td>'+properties.D+' km</td></tr>\
+                          <tr><td align="right"><b>Population</b>:</td><td>'+properties.P+'</td></tr>\
+                          <tr><td align="right"><b>Pop. Density</b>:</td><td>'+properties.Density+'</td></tr>\
+                          <tr><td align="right"><b>Area</b>:</td><td>'+properties.A+' km&sup2;</td></tr>\
+                          <tr><td align="right"><b>Social Infra.</b>:</td><td>'+public+'</td></tr>\
+                          <tr><td align="right"><b>Rank</b>:</td><td>'+properties.OARank+'</td></tr>\
+                          <tr><td align="right"><b>ID</b>:</td><td>'+properties.ID+'</td></tr>';
+										}
+                    popup=popup+'\
+                    </table>';
                 } else if (properties.type !== undefined) {
                     var type = "g";
                     var ID = "g" + properties.ID;
-                    var popup = `
-                                <b>Voltage</b>: ${properties.kV} kV <br/>
-                                <b>Source</b>: ${properties.sources} <br/>
-                                <b>ID</b>: ${properties.ID}
-                                `;
+                    var popup = '\
+                                <b>Voltage</b>: '+properties.kV+' kV <br/>\
+                                <b>Source</b>: '+properties.sources+' <br/>\
+                                <b>ID</b>: '+properties.ID+'';
                 } else {
                     var type = "r";
                     var ID = "r" + properties.OBJECTID;
@@ -324,22 +320,21 @@
                 let point = points[i];
                 if (point[DIST] > filter.mindist && point[DIST] < filter.maxdist && point[POP] > filter.minpop && point[POP] < filter.maxpop && point[INFRA] >= filter.infra) {
                     let info = point[INFO];
-                    let title = `
-                    <table>
-                      <tr><td align="center" colspan="2"><b><u>Priority Cluster</u></b></td></tr>
-                      <tr><td align="right"><b>Region</b>:</td><td>${info.R}</td></tr>
-                      <tr><td align="right"><b>District</b>:</td><td>${info.D}</td></tr>
-                      <tr><td align="right"><b>Village</b>:</td><td>${info.V}</td></tr>
-                      <tr><td align="right"><b>Ward</b>:</td><td>${info.W}</td></tr>
-                      <tr><td align="right"><b>Grid Access</b>:</td><td>no</td></tr>
-                      <tr><td align="right"><b>Dist. to Grid</b>:</td><td>${info.DIST} km</td></tr>
-                      <tr><td align="right"><b>Population</b>:</td><td>${info.POP}</td></tr>
-                      <tr><td align="right"><b>Pop. Density</b>:</td><td>${info.DENS}/km&sup2;</td></tr>
-                      <tr><td align="right"><b>Social Infra.</b>:</td><td>${info.INFRA?"yes":"No Data"}</td></tr>
-                      <tr><td align="right"><b>Rank</b>:</td><td>${info.RANK}</td></tr>
-                      <tr><td align="right"><b>ID</b>:</td><td>${info.ID}</td></tr>
-                    </table>
-                    `;
+                    let title = '\
+                    <table>\
+                      <tr><td align="center" colspan="2"><b><u>Priority Cluster</u></b></td></tr>\
+                      <tr><td align="right"><b>Region</b>:</td><td>'+info.R+'</td></tr>\
+                      <tr><td align="right"><b>District</b>:</td><td>'+info.D+'</td></tr>\
+                      <tr><td align="right"><b>Village</b>:</td><td>'+info.V+'</td></tr>\
+                      <tr><td align="right"><b>Ward</b>:</td><td>'+info.W+'</td></tr>\
+                      <tr><td align="right"><b>Grid Access</b>:</td><td>no</td></tr>\
+                      <tr><td align="right"><b>Dist. to Grid</b>:</td><td>'+info.DIST+' km</td></tr>\
+                      <tr><td align="right"><b>Population</b>:</td><td>'+info.POP+'</td></tr>\
+                      <tr><td align="right"><b>Pop. Density</b>:</td><td>'+info.DENS+'/km&sup2;</td></tr>\
+                      <tr><td align="right"><b>Social Infra.</b>:</td><td>'+info.INFRA?"yes":"No Data"+'</td></tr>\
+                      <tr><td align="right"><b>Rank</b>:</td><td>'+info.RANK+'</td></tr>\
+                      <tr><td align="right"><b>ID</b>:</td><td>'+info.ID+'</td></tr>\
+                    </table>';
                     let marker = L.marker(L.latLng(point[LAT], point[LONG]), point[INFO]);
                     marker.bindPopup(title);
                     markerList.push(marker);
