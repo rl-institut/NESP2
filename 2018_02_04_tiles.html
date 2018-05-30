@@ -37,49 +37,53 @@
                      Village priorization Tanzania
                     <div class="leaflet-sidebar-close"><i class="fa fa-times"></i></div>
                 </h1>
-                <p>The overall objective of this project is to prioritize locations for off-grid rural electrification in Tanzania. New datasets will be developed that will enable faster and more accurate market analysis for distributed energy services companies (DESCOs) operating in Tanzania, including household locations and indicators on ability to pay, potential for productive uses of electricity and up-to-date data on national electricity grid transmission and distribution line locations. Collectively, it is expected that these datasets will help DESCOs operating in, or seeking to enter, Tanzania to narrow down geographic areas that could be interesting markets for their off-grid energy services. </p>
-                <p>This objective will be achieved by a combination of remote sensing, GIS analyses and other data collection. These activities are complemented by stakeholder workshops and local capacity development. </p>
+                <p>This tool was developed to support private and public actors in Tanzania to quickly and accurately prioritize villages by their potential for off-grid electrification, based on information such as population density, distance to grid, solar resource and others. </p>
+				<p>This is intended as a first stop and a companion to the Tanzania <a href="http://www.minigrids.go.tz/" target="_blank">Mini-Grids Information Portal</a>. The menu on the left provides access to further information about the tool, links to data sources and outputs, and filters to refine the results displayed in the tool.</p>
+				<p>In addition to this tool, detailed house-hold level maps are being created of almost every rural village in Tanzania. This data will become visible in this tool as it is created and added to <a href="https://www.openstreetmap.org/search?query=tanzania#map=6/-6.402/34.993" target="_blank">OpenStreetMap</a>.</p>
+				<p>This tool was developed by the International Finance Corporation in cooperation with the Government of Tanzania and the <a href="http://rea.go.tz/" target="_blank">Rural Energy Agency</a>, supported by the <a href="https://reiner-lemoine-institut.de/" target="_blank">Reiner Lemoine Institut</a>, <a href="http://integration.org/" target="_blank">INTEGRATION environment and energy</a>, and the <a href="https://www.hotosm.org/" target="_blank">Humanitarian Openstreetmap Team</a>.</p>
                 
                 <p class="license"><a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.</p>
             </div>
 
             <div class="leaflet-sidebar-pane" id="data-sources">
                 <h1 class="leaflet-sidebar-header">Data sources<span class="leaflet-sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
-                <p>The data for the analysis was downloaded form the following sources:</p>
-                <p>High Resolution Settlement Layer: <a href="https://ciesin.columbia.edu/data/hrsl/#data" target="_blank">CIESIN</a>.</p>
-                <p>Region, District, Ward and Village shapefiles: <a href="http://portal-nbs-tz.opendata.arcgis.com/datasets/" target="_blank">NBS GIS Open Data Portal</a>.</p>
-                <p>Global Horizontal Irradiance raster dataset: <a href="http://globalsolaratlas.info/downloads/tanzania" target="_blank">Global Solar Atlas</a>.</p>
-                <p>Number of healthsites and water sources dataset: <a href="http://portal-nbs-tz.opendata.arcgis.com/datasets/" target="_blank">NBS GIS Open Data Portal</a>.</p>
-                <p>The processing steps for preparing the data for the prioritization with details and examples and an overview of the web-map development are described  in <a href="methodology_prioritization.html" target="_blank">this section</a>.</p>
+                <p><h3>Access input data</h3>
+				The data for the analysis was downloaded form the following sources:
+				High Resolution Settlement Layer: <a href="https://ciesin.columbia.edu/data/hrsl/#data" target="_blank">CIESIN</a>.<br>
+                Region, District, Ward and Village shapefiles: <a href="http://portal-nbs-tz.opendata.arcgis.com/datasets/" target="_blank">NBS GIS Open Data Portal</a>.<br>
+                Global Horizontal Irradiance raster dataset: <a href="http://globalsolaratlas.info/downloads/tanzania" target="_blank">Global Solar Atlas</a>.<br>
+                Number of healthsites and water sources dataset: <a href="http://portal-nbs-tz.opendata.arcgis.com/datasets/" target="_blank">NBS GIS Open Data Portal</a>.<br>
+                The processing steps for preparing the data for the prioritization are described with details and examples in <a href="methodology_prioritization.html" target="_blank">this section</a>.</p>
+				<p><h3>Methodology for data preparation</h3> 
+                An overview of the web-map development is provided <a href="methodology_webmap.html" target="_blank">here</a>.</p>
                 
 
             </div>
             <div class="leaflet-sidebar-pane" id="settings">
                 <h1 class="leaflet-sidebar-header">Filter<span class="leaflet-sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
-                <p>
-                    <h3>Distance to grid (km)</h3> Existing grid infrastructure in close distance can present a risk to mini-grid development, since grid extension may connect those locations to the national grid infrastructure in foreseeable future. Here a minimum distance to the grid can be selected.</p>
+                 <h3>Distance to grid (km)</h3> Use this to filter the results to villages further or closer to existing grid infrastructure. Proximity to grid infrastructure can indicate ease of connection, while more remote locations may be more suitable to off-grid solutions.<br>
                 <div id="sliderdist"></div>
-                <p>
-                    <h3>Population</h3> Attractive mini-grid locations require a minimum number of customers to form an attractive investment. Certain mini-grid solutions target a specific location size. Here a minimum or maximum number of population per cluster can be selected.</p>
+                    <h3>Population range</h3> Use this to filter the results to a desired population range. Note that this data may not agree with the latest census data.
                 <br>
                 <div id="sliderpop"></div>
-                <p>
-                    <h3>Social infrastucture</h3> Social institutions such as schools, hospitals, public infrastructure or water points can be used as a proxy of socio-economic activity . Here locations without any of those can be excluded.</p>
+                
+                    <h3>Presence of social infrastructure</h3> If selected, this will filter the results to only show those villages with social infrastructure such as schools, hospitals, public institutions and water points.
+
                 <br>
                 <label class="switch">
                     <input type="checkbox" id="checkboxinfra">
                     <span class="slider"></span>
                 </label>
+				
+				<h3>Multi-criteria ranking</h3> Each village is ranked based on a number of criteria. This can be adjusted by downloading the complete data as a CSV file from the menu and choosing a ranking that suits your needs, but here a quick overview is given. It ranges from 0.01 to 0.25 and combined the above described criteria and ranks the villages according to their scoring.
+                <br>
             </div>
             <div class="leaflet-sidebar-pane" id="about">
                 <h1 class="leaflet-sidebar-header">
                      About the map
                     <div class="leaflet-sidebar-close"><i class="fa fa-caret-left"></i></div>
                 </h1>
-                <p>The web-map was created within the Worldbank/IFC financed project Prioritization of locations for off-grid rural electrification in Tanzania (Selection #1249011). </p>
-                <p>It was developed by a consortium of <a href="http://www.integration.org/" target="_blank">Integration Energy and Environment</a>, <a href="http://www.rafikipower.com/" target="_blank">E.ON Off Grid Solutions</a> and <a href="http://reiner-lemoine-institut.de/en/" target="_blank">Reiner Lemoine Institute</a>.</p>
-                <p><img src="images/watermark.gif" width="100%" height="auto" alt="Picture not found">
-                </p>
+               <p>Source code for the webmap can be found <a href="https://github.com/catcad/maptz" target="_blank">here</a>.</p>
                 <p class="license"><a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.</p>
             </div>
             <div class="leaflet-sidebar-pane" id="download">
@@ -87,7 +91,9 @@
                         Download
                         <div class="leaflet-sidebar-close"><i class="fa fa-caret-left"></i></div>
                     </h1>
-                <p>Data visualized in the map can be downloaded from <a href="https://energydata.info/dataset/prioritization-of-locations-for-off-grid-rural-electrification-in-tanzania" target="_blank">Energydata.info</a> here. Available formats are geojson, shapefile or csv. </p>
+                <p>The data visualized in this tool can be <a href="https://energydata.info/dataset/prioritization-of-locations-for-off-grid-rural-electrification-in-tanzania" target="_blank">downloaded from ENERGYDATA.INFO</a>. This will allow complete exploration, and filtering villages and results much more freely. Available formats are GeoJSON, Shapefile or CSV. </p>
+                <p>To access the detailed data with the houses, buildings and roads individually mapped, please visit <a href="https://www.openstreetmap.org/search?query=tanzania#map=6/-6.402/34.993" target="_blank">OpenStreetMap</a> and find the area of interest.</p>
+				<p>To download the OpenStreetMap data to use in software such as <a href="https://www.qgis.org" target="_blank">QGIS</a>, please use the <a href="https://export.hotosm.org/en/v3/" target="_blank">HOT Export Tool</a> where you can select the area of interest and the required data for download.</p>
                 <p class="license"><a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.</p>
             </div>
         </div>
@@ -384,10 +390,15 @@
                 decimals: 0,
                 thousand: "."
             }),
-            tooltips: true,
-            pips: {
-                mode: "range",
-                density: 3
+            tooltips: false,
+            //pips: {
+            //    mode: 'range',
+            //    density: 3
+            //}
+			pips: {
+                mode: 'count',
+                values: 5,
+                density: 4
             }
         });
         sliderpop.noUiSlider.on("change", function(str, h, values) {
