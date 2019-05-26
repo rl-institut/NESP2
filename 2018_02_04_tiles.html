@@ -156,7 +156,7 @@
             "Aerial Imagery": ae
         };
 
-        let vecTileLayer = L.vectorGrid.protobuf("http://www.zimf.de/services/nesp/tiles/{z}/{x}/{y}.pbf", {
+        let vecTileLayer = L.vectorGrid.protobuf("https://www.zimf.de/mbtileserver/services/nesp/tiles/{z}/{x}/{y}.pbf", {
                 rendererFactory: L.canvas.tile,
                 vectorTileLayerStyles: {
                     ng_cluster_attr: function(prop, zoom) {
