@@ -61,22 +61,15 @@
             </div>
             <div class="leaflet-sidebar-pane" id="settings">
                 <h1 class="leaflet-sidebar-header">Filter<span class="leaflet-sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
-                 <h3>Distance to grid (km)</h3> Use this to filter the results to villages further or closer to existing grid infrastructure. Proximity to grid infrastructure can indicate ease of connection, while more remote locations may be more suitable to off-grid solutions.<br>
-                <div id="sliderdist"></div>
+                 <h3>Cluster Area</h3> Use this to filter the results by area in km2<br>
+                <div id="sliderarea"></div>
                     <h3>Population range</h3> Use this to filter the results to a desired population range. Note that this data may not agree with the latest census data.
                 <br>
                 <div id="sliderpop"></div>
                 
-                    <h3>Presence of social infrastructure</h3> If selected, this will filter the results to only show those villages with social infrastructure such as schools, hospitals, public institutions and water points.
-
-                <br>
-                <label class="switch">
-                    <input type="checkbox" id="checkboxinfra">
-                    <span class="slider"></span>
-                </label>
 				
-				<h3>Multi-criteria ranking</h3> Each village is ranked based on a number of criteria. This can be adjusted by downloading the complete data as a CSV file from the menu and choosing a ranking that suits your needs, but here a quick overview is given. It ranges from 0.01 to 0.25 and combined the above described criteria and ranks the villages according to their scoring.
-                <br>
+				<!-- <h3>Multi-criteria ranking</h3> Each village is ranked based on a number of criteria. This can be adjusted by downloading the complete data as a CSV file from the menu and choosing a ranking that suits your needs, but here a quick overview is given. It ranges from 0.01 to 0.25 and combined the above described criteria and ranks the villages according to their scoring.
+                <br> -->
             </div>
             <div class="leaflet-sidebar-pane" id="about">
                 <h1 class="leaflet-sidebar-header">
@@ -102,7 +95,7 @@
     <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js" integrity="sha512-lInM/apFSqyy1o6s89K4iQUKg6ppXEgsVxT35HbzUupEVRh2Eu9Wdl4tHj7dZO0s1uvplcYGmt3498TtHq+log==" crossorigin=""></script>
     <script src="https://unpkg.com/leaflet.markercluster@1.3.0/dist/leaflet.markercluster-src.js" integrity="sha384-NAOEbWFcjnXc7U9GkULPhupHZNAbqru9dS3c+4ANYAwtFoVAWuVuMVDH0DIy4ESp" crossorigin=""></script>
     <script src="https://unpkg.com/leaflet.vectorgrid@1.3.0/dist/Leaflet.VectorGrid.bundled.js" integrity="sha384-FON5fTjCTtPuBgUS1r2H/PGXstH0Rk23YKjZmB6qITkbFqBcqtey/rPo9eXwOWpx" crossorigin=""></script>
-    <script src="data/points.js"></script>
+    <!-- <script src="data/points.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/leaflet-sidebar-v2@3.0.2/js/leaflet-sidebar.min.js" integrity="sha384-LzTQ6yhqVy/ipjMq5MMk98mo0E64Wtu9K1Jm5OeKPolnqrlv3FMdc457RoOANGMb" crossorigin=""></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/wnumb/1.1.0/wNumb.min.js" integrity="sha384-9NhfMwMkkA6dDFEyj5CxOiYaL6KqLjKINTJkR7e5SlZthrndR9oB/SJsi5PBNnjw" crossorigin=""></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/11.0.3/nouislider.min.js" integrity="sha384-sxnhs+25aQQN+rABTQEEYOIX5CW20SBJyXt9oGMT5VDacFTTWGXKotTEAe8BUiwb" crossorigin=""></script>
@@ -114,8 +107,8 @@
 
         let options = {
                 center: [3, 10],
-                zoom: 7,
-                minZoom: 6,
+                zoom: 8,
+                minZoom: 8,
                 maxZoom: 15,
                 zoomControl: false,
                 maxBounds: [
@@ -163,11 +156,11 @@
             "Aerial Imagery": ae
         };
 
-        let vecTileLayer = L.vectorGrid.protobuf("data/tiles/{z}/{x}/{y}.pbf", {
+        let vecTileLayer = L.vectorGrid.protobuf("http://www.zimf.de/services/nesp/tiles/{z}/{x}/{y}.pbf", {
                 rendererFactory: L.canvas.tile,
                 vectorTileLayerStyles: {
-                    long_list_prelim: function(prop, zoom) {
-                        if (prop.id > 0) {
+                    ng_cluster_attr: function(prop, zoom) {
+                        if (prop.FID > 0) {
                             color = "lightgray";
                         } else {
                             color = "red";
@@ -204,49 +197,37 @@
                 minZoom: 5,
                 interactive: true,
                 getFeatureId: function(f) {
-                    if (f.properties.Access !== undefined) {
-                        return f.properties.ID;
+                    if (f.properties.FID !== undefined) {
+                        return f.properties.FID;
                     }
-                    if (f.properties.type !== undefined) {
-                        return "g" + f.properties.ID;
+                    if (f.properties.osm_id !== undefined) {
+                        return "g" + f.properties.osm_id;
                     }
                     return "r" + f.properties.OBJECTID;
                 }
             })
             .on("click", function(e) {
+                console.log('click')
                 this.clearHighlight();
                 let properties = e.layer.properties;
-                if (properties.Access !== undefined) {
+                console.log(properties)
+                if (properties.FID !== undefined) {
                     var type = "c";
-                    var ID = properties.ID;
-                    let public=["School","Healthcare","Water Point","Public Building"].filter(function (v,i){i++;return i==properties.SC||i==properties.HC*2||i==properties.WC*3||i==properties.PC*4}).join(",<br/>");
-                    public=public||"No Data";
+                    var ID = properties.FID;
                     var popup='\
                     <table>\
-                      <tr><td align="right"><b>Region</b>:</td><td>'+properties.Region+'</td></tr>\
-                      <tr><td align="right"><b>District</b>:</td><td>'+properties.District+'</td></tr>\
-                      <tr><td align="right"><b>Village</b>:</td><td>'+properties.V+'</td></tr>\
-                      <tr><td align="right"><b>Ward</b>:</td><td>'+properties.W+'</td></tr>\
-                      <tr><td align="right"><b>Grid access</b>:</td><td>'+properties.Access+'</td></tr>';
-                    if (properties.Access === "no"){
-                          popup=popup+'\
-                          <tr><td align="right"><b>Dist. to Grid</b>:</td><td>'+properties.D+' km</td></tr>\
-                          <tr><td align="right"><b>Population</b>:</td><td>'+properties.P+'</td></tr>\
-                          <tr><td align="right"><b>Pop. Density</b>:</td><td>'+properties.Density+'</td></tr>\
-                          <tr><td align="right"><b>Area</b>:</td><td>'+properties.A+' km&sup2;</td></tr>\
-                          <tr><td align="right"><b>Social Infra.</b>:</td><td>'+public+'</td></tr>\
-                          <tr><td align="right"><b>Rank</b>:</td><td>'+properties.OARank+'</td></tr>\
-                          <tr><td align="right"><b>ID</b>:</td><td>'+properties.ID+'</td></tr>';
-										}
-                    popup=popup+'\
+                      <tr><td align="right"><b>Admin1</b>:</td><td>'+properties.admin1+'</td></tr>\
+                      <tr><td align="right"><b>Admin2</b>:</td><td>'+properties.admin2+'</td></tr>\
+                      <tr><td align="right"><b>Area</b>:</td><td>'+parseFloat(properties.area_km2).toFixed(2)+' km2</td></tr>\
+                      <tr><td align="right"><b>Population</b>:</td><td>'+parseFloat(properties.pop_hrsl).toFixed(0)+'</td></tr>\
                     </table>';
-                } else if (properties.type !== undefined) {
+                } else if (properties.osm_id !== undefined) {
                     var type = "g";
-                    var ID = "g" + properties.ID;
+                    var ID = "g" + properties.osm_id;
                     var popup = '\
-                                <b>Voltage</b>: '+properties.kV+' kV <br/>\
-                                <b>Source</b>: '+properties.sources+' <br/>\
-                                <b>ID</b>: '+properties.ID+'';
+                                <b>Voltage</b>: '+properties.voltage+' kV <br/>\
+                                <b>Operator</b>: '+properties.operator+'<br/>\
+                                ';
                 } else {
                     var type = "r";
                     var ID = "r" + properties.OBJECTID;
@@ -275,9 +256,10 @@
         vecTileLayer.hidden = null;
         vecTileLayer.hiddenstyle = {
             fillColor: "lightgray",
-            fillOpacity: 0.1,
-            opacity: 0.1,
-            fill: true
+            fillOpacity: 0.,
+            opacity: 0.05,
+            fill: true,
+            color: "lightgray"
         };
         vecTileLayer.clearHidden = function() {
             if (this.hiddenIDs) {
@@ -306,49 +288,48 @@
             vecTileLayer.clearHighlight();
         });
 
-        let markers = L.markerClusterGroup({
-            chunkedLoading: true
-        });
+        // let markers = L.markerClusterGroup({
+        //     chunkedLoading: true
+        // });
 
-        const DIST = 0,POP = 1, INFRA = 2,LONG = 3,LAT = 4,INFO = 5;
+        // const AREA = 0,POP = 1,LONG = 3,LAT = 4,INFO = 5;
         let currentfilter = {
-            mindist: 0,
-            maxdist: 120,
+            minarea: 0,
+            maxarea: 1,
             minpop: 0,
             maxpop: 20000,
-            infra: 0
         };
 
-        markers.filter = function(filter, map) {
-            this.clearLayers();
-            let markerList = [];
-            for (let i = 0; i < points.length; i++) {
-                let point = points[i];
-                if (point[DIST] > filter.mindist && point[DIST] < filter.maxdist && point[POP] > filter.minpop && point[POP] < filter.maxpop && point[INFRA] >= filter.infra) {
-                    let info = point[INFO];
-                    let title = '\
-                    <table>\
-                      <tr><td align="center" colspan="2"><b><u>Priority Cluster</u></b></td></tr>\
-                      <tr><td align="right"><b>Region</b>:</td><td>'+info.R+'</td></tr>\
-                      <tr><td align="right"><b>District</b>:</td><td>'+info.D+'</td></tr>\
-                      <tr><td align="right"><b>Village</b>:</td><td>'+info.V+'</td></tr>\
-                      <tr><td align="right"><b>Ward</b>:</td><td>'+info.W+'</td></tr>\
-                      <tr><td align="right"><b>Grid Access</b>:</td><td>no</td></tr>\
-                      <tr><td align="right"><b>Dist. to Grid</b>:</td><td>'+info.DIST+' km</td></tr>\
-                      <tr><td align="right"><b>Population</b>:</td><td>'+info.POP+'</td></tr>\
-                      <tr><td align="right"><b>Pop. Density</b>:</td><td>'+info.DENS+'/km&sup2;</td></tr>\
-                      <tr><td align="right"><b>Social Infra.</b>:</td><td>'+(info.INFRA?'yes':'No Data')+'</td></tr>\
-                      <tr><td align="right"><b>Rank</b>:</td><td>'+info.RANK+'</td></tr>\
-                      <tr><td align="right"><b>ID</b>:</td><td>'+info.ID+'</td></tr>\
-                    </table>';
-                    let marker = L.marker(L.latLng(point[LAT], point[LONG]), point[INFO]);
-                    marker.bindPopup(title);
-                    markerList.push(marker);
-                }
-            }
-            this.addLayers(markerList);
-            map.addLayer(this);
-        };
+        // markers.filter = function(filter, map) {
+        //     this.clearLayers();
+        //     let markerList = [];
+        //     for (let i = 0; i < points.length; i++) {
+        //         let point = points[i];
+        //         if (point[AREA] > filter.minarea && point[AREA] < filter.maxarea && point[POP] > filter.minpop && point[POP] < filter.maxpop) {
+        //             let info = point[INFO];
+        //             let title = '\
+        //             <table>\
+        //               <tr><td align="center" colspan="2"><b><u>Priority Cluster</u></b></td></tr>\
+        //               <tr><td align="right"><b>Region</b>:</td><td>'+info.R+'</td></tr>\
+        //               <tr><td align="right"><b>District</b>:</td><td>'+info.D+'</td></tr>\
+        //               <tr><td align="right"><b>Village</b>:</td><td>'+info.V+'</td></tr>\
+        //               <tr><td align="right"><b>Ward</b>:</td><td>'+info.W+'</td></tr>\
+        //               <tr><td align="right"><b>Grid Access</b>:</td><td>no</td></tr>\
+        //               <tr><td align="right"><b>Dist. to Grid</b>:</td><td>'+info.DIST+' km</td></tr>\
+        //               <tr><td align="right"><b>Population</b>:</td><td>'+info.POP+'</td></tr>\
+        //               <tr><td align="right"><b>Pop. Density</b>:</td><td>'+info.DENS+'/km&sup2;</td></tr>\
+        //               <tr><td align="right"><b>Social Infra.</b>:</td><td>'+(info.INFRA?'yes':'No Data')+'</td></tr>\
+        //               <tr><td align="right"><b>Rank</b>:</td><td>'+info.RANK+'</td></tr>\
+        //               <tr><td align="right"><b>ID</b>:</td><td>'+info.ID+'</td></tr>\
+        //             </table>';
+        //             let marker = L.marker(L.latLng(point[LAT], point[LONG]), point[INFO]);
+        //             marker.bindPopup(title);
+        //             markerList.push(marker);
+        //         }
+        //     }
+        //     this.addLayers(markerList);
+        //     map.addLayer(this);
+        // };
 
         vecTileLayer.filter = function(filter) {
             let newhiddenIDs = [];
@@ -356,13 +337,16 @@
             for (let vtkey in vt) {
                 let f = vt[vtkey]._features;
                 for (let fkey in f) {
+                    
                     let prop = f[fkey].feature.properties;
-                    if (prop.Access=="no"){
-                        if (!(prop.D > filter.mindist && prop.D < filter.maxdist && prop.P > filter.minpop && prop.P < filter.maxpop && (prop.HC+prop.SC+prop.WC+prop.PC)>=filter.infra )) {
-                            newhiddenIDs.push(prop.ID);
-                            this.setFeatureStyle(prop.ID, this.hiddenstyle);
-                        } else if (this.hiddenIDs.indexOf(prop.ID) > -1){
-                            this.resetFeatureStyle(prop.ID);
+                    if (typeof prop.area_km2 !== 'undefined'){
+                        if (!(prop.area_km2 > filter.minarea && prop.area_km2 < filter.maxarea && prop.pop_hrsl > filter.minpop && prop.pop_hrsl < filter.maxpop)) {
+                            newhiddenIDs.push(prop.FID);
+                            if (this.hiddenIDs.indexOf(prop.FID) == -1){
+                                this.setFeatureStyle(prop.FID, this.hiddenstyle);
+                            }
+                        } else if (this.hiddenIDs.indexOf(prop.FID) > -1){
+                            this.resetFeatureStyle(prop.FID);
                         }
                     }
                 }
@@ -372,7 +356,7 @@
 
         map.addEventListener("filterchange", function(filter) {
             vecTileLayer.filter(currentfilter);
-            markers.filter(currentfilter, map);
+            // markers.filter(currentfilter, map);
         });
 
         vecTileLayer.on("load", function(e) {
@@ -407,18 +391,18 @@
             map.fireEvent("filterchange", currentfilter);
         });
 
-        noUiSlider.create(sliderdist, {
-            start: [currentfilter.mindist, currentfilter.maxdist],
+        noUiSlider.create(sliderarea, {
+            start: [currentfilter.minarea, currentfilter.maxarea],
             connect: true,
-            step: 1,
+            step: 0.05,
             range: {
-                "min": currentfilter.mindist,
-                "max": currentfilter.maxdist
+                "min": currentfilter.minarea,
+                "max": currentfilter.maxarea,
             },
-            //            format: wNumb({
-            //                decimals: 0,
-            //                thousand: "."
-            //            }),
+            format: wNumb({
+                decimals: 3,
+                thousand: "."
+            }),
             tooltips: false,
             pips: {
                 mode: "count",
@@ -426,20 +410,20 @@
                 density: 4
             }
         });
-        sliderdist.noUiSlider.on("change", function(str, h, values) {
-            currentfilter.mindist = values[0];
-            currentfilter.maxdist = values[1];
+        sliderarea.noUiSlider.on("change", function(str, h, values) {
+            currentfilter.minarea = values[0];
+            currentfilter.maxarea = values[1];
             map.fireEvent("filterchange", currentfilter);
         });
 
-        checkboxinfra = document.getElementById("checkboxinfra");
-        checkboxinfra.onchange = function(e) {
-            currentfilter.infra = e.target.checked;
-            setTimeout(function() {
-                map.fireEvent("filterchange", currentfilter);
-            }, 100);
+        // checkboxinfra = document.getElementById("checkboxinfra");
+        // checkboxinfra.onchange = function(e) {
+        //     currentfilter.infra = e.target.checked;
+        //     setTimeout(function() {
+        //         map.fireEvent("filterchange", currentfilter);
+        //     }, 100);
 
-        };
+        // };
 
         let sidebar = L.control.sidebar({
             container: "sidebar",
@@ -448,7 +432,7 @@
         }).addTo(map);
 
         let overlayMaps = {
-            "Priority Clusters": markers
+            // "Priority Clusters": markers
         };
         L.control.layers(baseMaps, overlayMaps).addTo(map);
         map.on("layeradd",function (){vecTileLayer.bringToFront();});
