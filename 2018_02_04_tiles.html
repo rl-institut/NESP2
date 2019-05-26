@@ -256,8 +256,8 @@
         vecTileLayer.hidden = null;
         vecTileLayer.hiddenstyle = {
             fillColor: "lightgray",
-            fillOpacity: 0.,
-            opacity: 0.05,
+            fillOpacity: 0.3,
+            opacity: 0,
             fill: true,
             color: "lightgray"
         };
@@ -294,10 +294,10 @@
 
         // const AREA = 0,POP = 1,LONG = 3,LAT = 4,INFO = 5;
         let currentfilter = {
-            minarea: 0.01,
-            maxarea: 50,
-            minpop: 0,
-            maxpop: 20000,
+            minarea: 0.001,
+            maxarea: 100,
+            minpop: 1,
+            maxpop: 1000000,
         };
 
         // markers.filter = function(filter, map) {
@@ -362,57 +362,64 @@
         vecTileLayer.on("load", function(e) {
             vecTileLayer.filter(currentfilter);
         });
+        let logFormat = function(decimals){
+            return wNumb({
+                decimals: decimals,
+                thousand: ",",
+                encoder: function(val){
+                    return Math.pow(10,val);
+                },
+                decoder: function(val){
+                    return Math.log10(val);
+                }
+            })
+        };
+
         noUiSlider.create(sliderpop, {
             start: [currentfilter.minpop, currentfilter.maxpop],
             connect: true,
-            step: 100,
             range: {
-                "min": currentfilter.minpop,
-                "max": currentfilter.maxpop
+                "min": Math.log10(currentfilter.minpop),
+                "max": Math.log10(currentfilter.maxpop)
             },
-            format: wNumb({
-                decimals: 0,
-                thousand: "."
-            }),
-            tooltips: false,
+            format: logFormat(0),
+            tooltips: true,
             //pips: {
             //    mode: 'range',
             //    density: 3
             //}
 			pips: {
-                mode: 'count',
-                values: 5,
-                density: 4
+                format: logFormat(0),
+                mode: "count",
+                values: Math.log10(currentfilter.maxpop)-Math.log10(currentfilter.minpop)+1,
+                density: 100
             }
         });
         sliderpop.noUiSlider.on("change", function(str, h, values) {
-            currentfilter.minpop = values[0];
-            currentfilter.maxpop = values[1];
+            currentfilter.minpop = Math.pow(10,values[0]);
+            currentfilter.maxpop = Math.pow(10,values[1]);
             map.fireEvent("filterchange", currentfilter);
         });
 
         noUiSlider.create(sliderarea, {
             start: [currentfilter.minarea, currentfilter.maxarea],
             connect: true,
-            step: 0.05,
             range: {
-                "min": currentfilter.minarea,
-                "max": currentfilter.maxarea,
+                "min": Math.log10(currentfilter.minarea),
+                "max": Math.log10(currentfilter.maxarea)
             },
-            format: wNumb({
-                decimals: 3,
-                thousand: "."
-            }),
-            tooltips: false,
+            format: logFormat(2),
+            tooltips: true,
             pips: {
+                format: logFormat(2),
                 mode: "count",
-                values: 7,
-                density: 4
+                values: Math.log10(currentfilter.maxarea)-Math.log10(currentfilter.minarea)+1,
+                density: 100
             }
         });
         sliderarea.noUiSlider.on("change", function(str, h, values) {
-            currentfilter.minarea = values[0];
-            currentfilter.maxarea = values[1];
+            currentfilter.minarea = Math.pow(10,values[0]);
+            currentfilter.maxarea = Math.pow(10,values[1]);
             map.fireEvent("filterchange", currentfilter);
         });
 
