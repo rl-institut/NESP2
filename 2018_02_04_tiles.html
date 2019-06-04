@@ -112,8 +112,8 @@
                 maxZoom: 15,
                 zoomControl: false,
                 maxBounds: [
-                    [4, 10],
-                    [15, 4]
+                    [3, 11],
+                    [16, 3]
                 ]
             };
         let map = L.map("map", options);
@@ -161,7 +161,7 @@
                 vectorTileLayerStyles: {
                     ng_cluster_attr: function(prop, zoom) {
                         if (prop.FID > 0) {
-                            color = "lightgray";
+                            color = "red";
                         } else {
                             color = "red";
                         }
