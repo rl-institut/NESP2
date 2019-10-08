@@ -63,9 +63,9 @@
                 <h1 class="leaflet-sidebar-header">Filter<span class="leaflet-sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
                  <h3>Cluster Area</h3> Use this to filter the results by area in km2<br>
                 <div id="sliderarea"></div>
-                    <h3>Population range</h3> Use this to filter the results to a desired population range. Note that this data may not agree with the latest census data.
-                <br>
-                <div id="sliderpop"></div>
+                    //<h3>Population range</h3> Use this to filter the results to a desired population range. Note that this data may not agree with the latest census data.
+                //<br>
+                //<div id="sliderpop"></div>
                 
 				
 				<!-- <h3>Multi-criteria ranking</h3> Each village is ranked based on a number of criteria. This can be adjusted by downloading the complete data as a CSV file from the menu and choosing a ranking that suits your needs, but here a quick overview is given. It ranges from 0.01 to 0.25 and combined the above described criteria and ranks the villages according to their scoring.
@@ -374,31 +374,31 @@
             })
         };
 
-        noUiSlider.create(sliderpop, {
-            start: [currentfilter.minpop, currentfilter.maxpop],
-            connect: true,
-            range: {
-                "min": Math.log10(currentfilter.minpop),
-                "max": Math.log10(currentfilter.maxpop)
-            },
-            format: logFormat(0),
-            tooltips: true,
+        //noUiSlider.create(sliderpop, {
+          //start: [currentfilter.minpop, currentfilter.maxpop],
+            //connect: true,
+            //range: {
+                //"min": Math.log10(currentfilter.minpop),
+                "//max": Math.log10(currentfilter.maxpop)
+            //},
+            //format: logFormat(0),
+            //tooltips: true,
             //pips: {
             //    mode: 'range',
             //    density: 3
             //}
-			pips: {
-                format: logFormat(0),
-                mode: "count",
-                values: Math.log10(currentfilter.maxpop)-Math.log10(currentfilter.minpop)+1,
-                density: 100
-            }
-        });
-        sliderpop.noUiSlider.on("change", function(str, h, values) {
-            currentfilter.minpop = Math.pow(10,values[0]);
-            currentfilter.maxpop = Math.pow(10,values[1]);
-            map.fireEvent("filterchange", currentfilter);
-        });
+		//	pips: {
+                //format: logFormat(0),
+                //mode: "count",
+                //values: Math.log10(currentfilter.maxpop)-Math.log10(currentfilter.minpop)+1,
+                //density: 100
+            //}
+        //});
+        //sliderpop.noUiSlider.on("change", function(str, h, values) {
+            //currentfilter.minpop = Math.pow(10,values[0]);
+            //currentfilter.maxpop = Math.pow(10,values[1]);
+            //map.fireEvent("filterchange", currentfilter);
+        //});
 
         noUiSlider.create(sliderarea, {
             start: [currentfilter.minarea, currentfilter.maxarea],
