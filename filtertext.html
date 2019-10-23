@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet debug page</title>
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.0-beta.2/leaflet.css" />
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.0-beta.2/leaflet.js"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="screen.css" />
+
+	<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.3.0/dist/MarkerCluster.css" />
+	<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.3.0/dist/MarkerCluster.Default.css" />
+	<script src="https://unpkg.com/leaflet.markercluster@1.3.0/dist/leaflet.markercluster-src.js"></script>
+	
+	<script src="data/points.js"></script>
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/11.0.3/nouislider.min.css" rel="stylesheet">
+
+
+</head>
+<body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/11.0.3/nouislider.min.js"></script>
+
+	<div id="map"></div>
+	<div id="slider"></div>
+	
+	
+	<script type="text/javascript">
+		var tiles = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+				maxZoom: 18,
+				attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors, Points &copy 2012 LINZ'
+			}),
+			latlng = L.latLng(-6, 35);
+
+		var map = L.map('map', { center: latlng, zoom: 13, layers: [tiles] });
+
+		var markers = L.markerClusterGroup({ chunkedLoading: true });
+
+		const DIST=0;
+		const POP=1;
+		const INFRA=2;
+		const LONG=3;
+		const LAT=4;
+		const INFO=5;
+		
+		var currentfilter={mindist:0,maxdist:120};
+		map.addEventListener('filterchange', function (filter){
+			markers.clearLayers()
+			var markerList = [];
+			console.log('start creating markers: ' + window.performance.now());
+
+			for (var i = 0; i < points.length; i++) {
+				var point = points[i];
+				if (point[DIST]>filter.mindist&&point[DIST]<filter.maxdist){
+					var info=point[INFO];
+					var title = `ID ${info.ID} <br/> Population ${info.POP} <br/> Distance  ${info.DIST}`;
+					var marker = L.marker(L.latLng(point[LAT], point[LONG]), point[INFO]);
+					marker.bindPopup(title);
+					markerList.push(marker);
+				}
+			}
+			
+			console.log('markers show:'+markerList.Length);
+			console.log('start clustering: ' + window.performance.now());
+
+			markers.addLayers(markerList);
+			map.addLayer(markers);
+
+			console.log('end clustering: ' + window.performance.now());
+		});
+		
+	map.fireEvent('filterchange',currentfilter)	;
+	
+	
+	noUiSlider.create(slider, {
+		start: [currentfilter.mindist, currentfilter.maxdist],
+		connect: true,
+		range: {
+			'min': 0,
+			'max': 120
+		},
+		tooltips: true,
+		pips: { // Show a scale with the slider
+			mode: 'steps',
+			stepped: true,
+			density: 4
+		}
+	});	
+
+	slider.noUiSlider.on('update', function(values){
+			currentfilter.mindist=values[0];
+			currentfilter.maxdist=values[1];
+			map.fireEvent('filterchange',currentfilter);
+	});
+
+
+	</script>
+</body>
+</html>
