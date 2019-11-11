@@ -49,6 +49,17 @@ body {
   text-align: center;
 }
 
+.layers{
+  margin-left: 15px;
+  text-align: left;
+}
+
+.layer{
+  margin-left: 30px;
+  text-align: left;
+}
+
+
  .noUi-connect {
      background: #210B61;
 }
