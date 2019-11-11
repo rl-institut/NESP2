@@ -12,7 +12,6 @@ body {
 
 .split {
   height: 100%;
-  width: 70%;
   position: fixed;
   z-index: 1;
   top: 0;
@@ -20,12 +19,34 @@ body {
   padding-top: 20px;
 }
 
+* {
+  box-sizing: border-box;
+}
+
+.column {
+  float: left;
+  width: 50%;
+  padding: 5px;
+}
+
+.row::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
 .left{
   left:0;
+  width: 30%;
 }
 
 .right{
   right:0;
+  width: 70%;
+}
+
+.level{
+  text-align: center;
 }
 
  .noUi-connect {
