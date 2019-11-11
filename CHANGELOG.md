@@ -19,12 +19,5 @@ Here is a template for new release sections
 ## [Unreleased]
 
 ### Added
-- one thing
-
-### Changed
-- another thing
-
-### Removed
-- yet another thing
-
+- content of https://github.com/catcad/nesp2 (#2)
 
