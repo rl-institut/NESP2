@@ -9,18 +9,56 @@ body {
      font-family: Helvetica, Arial, sans-serif;
      line-height: 150%;
 }
- .leaflet-sidebar-header, .leaflet-sidebar-tabs > li.active, .leaflet-sidebar-tabs > ul > li.active {
-     background-color: #808080;
+
+.split {
+  height: 100%;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  overflow-x: hidden;
+  padding-top: 20px;
 }
 
-.leaflet-sidebar-pane .license {
-   position: absolute;
-   bottom: 0;
+* {
+  box-sizing: border-box;
 }
 
-.leaflet-sidebar-pane p {
-    margin-top: 40px;
+.column {
+  float: left;
+  width: 50%;
+  padding: 5px;
 }
+
+.row::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.left{
+  left:0;
+  width: 30%;
+}
+
+.right{
+  right:0;
+  width: 70%;
+}
+
+.level{
+  text-align: center;
+}
+
+.layers{
+  margin-left: 15px;
+  text-align: left;
+}
+
+.layer{
+  margin-left: 30px;
+  text-align: left;
+}
+
 
  .noUi-connect {
      background: #210B61;
