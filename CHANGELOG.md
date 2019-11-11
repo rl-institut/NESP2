@@ -16,15 +16,19 @@ Here is a template for new release sections
 ### Removed
 -
 ```
+
 ## [Unreleased]
 
 ### Added
-- one thing
-
+-
 ### Changed
-- another thing
-
+-
 ### Removed
-- yet another thing
+-
 
+
+## [0.0.1] 2019-11-11
+
+### Added
+- content of https://github.com/catcad/nesp2 (#2)
 
