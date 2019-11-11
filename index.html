@@ -63,13 +63,6 @@
                 <h1 class="leaflet-sidebar-header">Filter<span class="leaflet-sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
                  <h3>Cluster Area</h3> Use this to filter the results by area in km2<br>
                 <div id="sliderarea"></div>
-                <!--    //<h3>Population range</h3> Use this to filter the results to a desired population range. Note that this data may not agree with the latest census data.
-                //<br>
-                //<div id="sliderpop"></div>
-                
-				
-				<!-- <h3>Multi-criteria ranking</h3> Each village is ranked based on a number of criteria. This can be adjusted by downloading the complete data as a CSV file from the menu and choosing a ranking that suits your needs, but here a quick overview is given. It ranges from 0.01 to 0.25 and combined the above described criteria and ranks the villages according to their scoring.
-                <br> -->
             </div>
             <div class="leaflet-sidebar-pane" id="about">
                 <h1 class="leaflet-sidebar-header">
@@ -287,10 +280,6 @@
             vecTileLayer.clearHighlight();
         });
 
-        // let markers = L.markerClusterGroup({
-        //     chunkedLoading: true
-        // });
-
         // const AREA = 0,POP = 1,LONG = 3,LAT = 4,INFO = 5;
         let currentfilter = {
             minarea: 0.001,
@@ -298,37 +287,6 @@
             minpop: 1,
             maxpop: 1000000,
         };
-
-        // markers.filter = function(filter, map) {
-        //     this.clearLayers();
-        //     let markerList = [];
-        //     for (let i = 0; i < points.length; i++) {
-        //         let point = points[i];
-        //         if (point[AREA] > filter.minarea && point[AREA] < filter.maxarea && point[POP] > filter.minpop && point[POP] < filter.maxpop) {
-        //             let info = point[INFO];
-        //             let title = '\
-        //             <table>\
-        //               <tr><td align="center" colspan="2"><b><u>Priority Cluster</u></b></td></tr>\
-        //               <tr><td align="right"><b>Region</b>:</td><td>'+info.R+'</td></tr>\
-        //               <tr><td align="right"><b>District</b>:</td><td>'+info.D+'</td></tr>\
-        //               <tr><td align="right"><b>Village</b>:</td><td>'+info.V+'</td></tr>\
-        //               <tr><td align="right"><b>Ward</b>:</td><td>'+info.W+'</td></tr>\
-        //               <tr><td align="right"><b>Grid Access</b>:</td><td>no</td></tr>\
-        //               <tr><td align="right"><b>Dist. to Grid</b>:</td><td>'+info.DIST+' km</td></tr>\
-        //               <tr><td align="right"><b>Population</b>:</td><td>'+info.POP+'</td></tr>\
-        //               <tr><td align="right"><b>Pop. Density</b>:</td><td>'+info.DENS+'/km&sup2;</td></tr>\
-        //               <tr><td align="right"><b>Social Infra.</b>:</td><td>'+(info.INFRA?'yes':'No Data')+'</td></tr>\
-        //               <tr><td align="right"><b>Rank</b>:</td><td>'+info.RANK+'</td></tr>\
-        //               <tr><td align="right"><b>ID</b>:</td><td>'+info.ID+'</td></tr>\
-        //             </table>';
-        //             let marker = L.marker(L.latLng(point[LAT], point[LONG]), point[INFO]);
-        //             marker.bindPopup(title);
-        //             markerList.push(marker);
-        //         }
-        //     }
-        //     this.addLayers(markerList);
-        //     map.addLayer(this);
-        // };
 
         vecTileLayer.filter = function(filter) {
             let newhiddenIDs = [];
@@ -374,32 +332,6 @@
             })
         };
 
-        //noUiSlider.create(sliderpop, {
-          //start: [currentfilter.minpop, currentfilter.maxpop],
-            //connect: true,
-            //range: {
-                //"min": Math.log10(currentfilter.minpop),
-                //max": Math.log10(currentfilter.maxpop)
-            //},
-            //format: logFormat(0),
-            //tooltips: true,
-            //pips: {
-            //    mode: 'range',
-            //    density: 3
-            //}
-		//	pips: {
-                //format: logFormat(0),
-                //mode: "count",
-                //values: Math.log10(currentfilter.maxpop)-Math.log10(currentfilter.minpop)+1,
-                //density: 100
-            //}
-        //});
-        //sliderpop.noUiSlider.on("change", function(str, h, values) {
-            //currentfilter.minpop = Math.pow(10,values[0]);
-            //currentfilter.maxpop = Math.pow(10,values[1]);
-            //map.fireEvent("filterchange", currentfilter);
-        //});
-
         noUiSlider.create(sliderarea, {
             start: [currentfilter.minarea, currentfilter.maxarea],
             connect: true,
@@ -422,15 +354,6 @@
             map.fireEvent("filterchange", currentfilter);
         });
 
-        // checkboxinfra = document.getElementById("checkboxinfra");
-        // checkboxinfra.onchange = function(e) {
-        //     currentfilter.infra = e.target.checked;
-        //     setTimeout(function() {
-        //         map.fireEvent("filterchange", currentfilter);
-        //     }, 100);
-
-        // };
-
         let sidebar = L.control.sidebar({
             container: "sidebar",
             closeButton: true,
@@ -444,22 +367,6 @@
         map.on("layeradd",function (){vecTileLayer.bringToFront();});
         map.fireEvent("filterchange", currentfilter);
 
-        //        //add watermark
-        //        L.Control.Watermark = L.Control.extend({
-        //            onAdd: function(map) {
-        //                let img = L.DomUtil.create('img');
-        //                img.src = 'images/watermark.gif';
-        //                img.style.width = '350px';
-        //                return img;
-        //            },
-        //            onRemove: function(map) {}
-        //        });
-        //        L.control.watermark = function(opts) {
-        //            return new L.Control.Watermark(opts);
-        //        }
-        //        L.control.watermark({
-        //            position: 'bottomright'
-        //        }).addTo(map);
     </script>
 </body>
 
