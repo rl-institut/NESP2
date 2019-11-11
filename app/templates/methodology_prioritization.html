@@ -1,7 +1,7 @@
 <html>
   <head>
     <title>Prioritization of locations for off-grid rural electrification in Tanzania - Step by step guide</title>
-		  <link rel="stylesheet" href="css/styles.css" />
+    	<link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
 			<style>
 			body {margin: 2vw; /*vw=viewpoint width*/;
 			background-color:#F2EFE9};
@@ -100,10 +100,10 @@
 		<p>The polygonised villages are sometimes covering one village in more than one polygon</p>
 
 
-		<img src="images/image004.png" width="605" height="292"> <br/>
+		<img src="static/images/image004.png" width="605" height="292"> <br/>
 
 
-		<br/>  <img src="images/image005.png" width="605" height="379">
+		<br/>  <img src="static/images/image005.png" width="605" height="379">
 
 
 		<p>Resampling of the HRSL
@@ -117,29 +117,29 @@
 
 
    
-		<img src="images//image025.png" width="605" height="340">
+		<img src="static/images//image025.png" width="605" height="340">
 
 		<p>Figure 1 Resampled with NN, F=20</p>
 
 
-		<img src="images/image026.png" width="604" height="388">
+		<img src="static/images/image026.png" width="604" height="388">
 
 		<p>Figure 2 Resampled with BI, F=20</p>
 
 
-		<img src="images/image010.png" width="604" height="367">
+		<img src="static/images/image010.png" width="604" height="367">
 
 		<p>Figure 3 Resampled with NN, F=10</p>
 
-		<img src="images/image011.png"  width="605" height="429">
+		<img src="static/images/image011.png"  width="605" height="429">
 		<p>Figure 4 Resampled with BI, F=10</p>
 
-		<img src="images/image027.png"  width="605" height="468">
+		<img src="static/images/image027.png"  width="605" height="468">
 		<p>Figure 5 Resampled with BI, F=2</p>
 
 		<p>Figures 5 and 6 show that resampling by a factor of 2 shows good approximation of village extents, with minimum data loss, therefore this file was vectorized.(below)</p>
 
-		<img src="images/image014.png" width="375" height="301">
+		<img src="static/images/image014.png" width="375" height="301">
 
 		<p>Figure 6 Snapshot of vector file resulted from the BI with F=2</p> <br/>
 
@@ -171,24 +171,24 @@
 		<p>The Wasa and Nkalama villages are the other extremes, where CFB is +23000 and +21000 respectively. Lastly,
 		Nayeme village, where CFB is 0. It can be seen that the polygon is completely covered by built-up area.</p>
 
-		<img src="images/image015.png" width="319" height="331">
+		<img src="static/images/image015.png" width="319" height="331">
 
 		<p>Figure 7 Village of Kanyenja</p>
 
 
-		<img src="images/image016.png"  width="356" height="265"<br/>
+		<img src="static/images/image016.png"  width="356" height="265"<br/>
 		<p>Figure 8 Katindiuka Village</p>
 
-		<img src="images/image017.png"  width="326" height="321">
+		<img src="static/images/image017.png"  width="326" height="321">
 
 		<p>Figure 9 Village of Wasa(Census-HRSL difference +23000)</p>
 
-		<img src="images/image018.png" width="321" height="300">
+		<img src="static/images/image018.png" width="321" height="300">
 
 		<p>Figure 10 Village of Mkalama (Census-HRSL difference is +21000)</p>
 
 
-		<img src="images/image019.png" width="604" height="343">
+		<img src="static/images/image019.png" width="604" height="343">
 
 		<p>Figure 11 Village of Nayeme</span> (difference is 0).</p>
 
@@ -197,7 +197,7 @@
 		<h3>Improvement of grid data</h3>
 
 
-		<p>Clean grid data – the grid data contained data from 4 sources: AICD, WorldBank, REA and OpenStreetMaps. 
+		<p>Clean grid data ï¿½ the grid data contained data from 4 sources: AICD, WorldBank, REA and OpenStreetMaps. 
 		However, WB and AICD data is not accurate, therefore was excluded from the analysis. Also, the 600 kV lines
 		in the dataset are most probably mislabeled.</p>
 
@@ -214,7 +214,7 @@
 			</li>
 		</ol>
 		<br/>
-		<img src="images/image020.png" width="557" height="403">
+		<img src="static/images/image020.png" width="557" height="403">
 
 		<p>Figure 12 Snapshot of cluster layer (on and off grid)</p>
 		<br/>
@@ -222,9 +222,9 @@
 		<p>The prioritization excel sheet contains population and surface area data based on
 		the unique id of every village. Population density data was also calculated.
 		Each ranking system (population, area, number of schools, health sites, water
-		access points) represents a number (0..1) which is basically the (population/pop density/area…) of the respective village relative
+		access points) represents a number (0..1) which is basically the (population/pop density/areaï¿½) of the respective village relative
 		to the biggest number in the dataset. Considering weighting factors for each
-		criterion, a global ranking resulted, with “1” being Dar es	Salaam.</p>
+		criterion, a global ranking resulted, with ï¿½1ï¿½ being Dar es	Salaam.</p>
 		<br/>
 
 		<p>From the cluster shapefiles (centroids and polygons) a few entries were deleted, as they
@@ -243,7 +243,7 @@
 		for mini grid development (see example below). They were saved separately, as a
 		shapefile and as a new tab in the prioritization excel file.</p>
 
-		<img src="images/image021.png" width="533" height="408">
+		<img src="static/images/image021.png" width="533" height="408">
 
 		<p>Figure 13 Example of a false positive</p>
 
