@@ -20,7 +20,7 @@ Here is a template for new release sections
 ## [Unreleased]
 
 ### Added
--
+- flask structure (#21)
 ### Changed
 -
 ### Removed
