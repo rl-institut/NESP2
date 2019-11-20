@@ -19,19 +19,19 @@
   <div id="sidebar" class="split left">
     <div class="row">
       <div class="column level">
-        <button> national </button>
+        <button onclick="national_button_fun()"> national </button>
       </div>
       <div class="column level">
-        <button> state </button>
+        <button onclick="state_button_fun()"> state </button>
       </div>
     </div>
     <div id="village" class="level">
-      <button> village </button>
+      <button onclick="village_button_fun()"> village </button>
     </div>
     <div id="layers" class="layers">
       <p> LAYERS </p>
     </div>
-    <div id="states" class="layer">
+    <div id="states" class="layer n_show s_show v_hide">
       <p> States (Data availability)
         <input type="checkbox" id="states_cb" onclick="states_cb_fun()">
         <div class="substate" style="display:none">Grid tracking</div>
@@ -39,12 +39,17 @@
         <div class="substate" style="display:none">Surveying</div>
       </p>
     </div>
-    <div id="building_density" class="layer">
+    <div id="lgas" class="layer n_show s_hide v_hide">
+      <p> LGAs 
+        <input type="checkbox" name="lgas_cb" value="lgas_check">
+      </p>
+    </div>
+    <div id="building_density" class="layer n_hide s_show v_hide" style="display:none">
       <p> Building Density 
         <input type="checkbox" name="building_density_cb" value="building_density_check">
       </p>
     </div>
-    <div id="clusters" class="layer">
+    <div id="clusters" class="layer n_show s_show v_show">
       <p> Clusters 
         <input type="checkbox" id="clusters_cb" onclick="clusters_cb_fun()">
         <div class="subcluster" style="display:none">FILTERS</div>
@@ -53,9 +58,14 @@
         <button class="subcluster" style="display:none"> Download Cluster Data </button>
       </p>
     </div>
-    <div id="grid" class="layer">
+    <div id="grid" class="layer n_show s_show v_show">
       <p> Grid 
         <input type="checkbox" name="grid_cb" value="grid_check">
+      </p>
+    </div>
+    <div id="infrastructure" class="layer n_hide s_hide v_show" style="display:none">
+      <p> Infrastructure 
+        <input type="checkbox" name="infrastructure_cb" value="infrastructure_check">
       </p>
     </div>
   </div>
