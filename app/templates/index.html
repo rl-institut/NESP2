@@ -28,15 +28,31 @@
     <div id="village" class="level">
       <button onclick="village_button_fun()"> village </button>
     </div>
+    <div id="state_selection" class="dropdown n_hide s_show v_hide" style="display:none">
+      <br>
+      <select>
+        <option value="none">Select a State ...</option>
+        <option value="akwa">Akwa</option>
+        <option value="borno">Borno</option>
+        <option value="gombe">Gombe</option>
+        <option value="yobe">Yobe</option>
+      </select>
+    </div>
     <div id="layers" class="layers">
       <p> LAYERS </p>
     </div>
     <div id="states" class="layer n_show s_show v_hide">
       <p> States (Data availability)
         <input type="checkbox" id="states_cb" onclick="states_cb_fun()">
-        <div class="substate" style="display:none">Grid tracking</div>
-        <div class="substate" style="display:none">Remote mapping</div>
-        <div class="substate" style="display:none">Surveying</div>
+        <div class="substate" style="display:none"> Grid tracking
+          <input type="radio" name="state_radio">
+        </div>
+        <div class="substate" style="display:none">Remote mapping
+          <input type="radio" name="state_radio">
+        </div>
+        <div class="substate" style="display:none">Surveying
+          <input type="radio" name="state_radio">
+        </div>
       </p>
     </div>
     <div id="lgas" class="layer n_show s_hide v_hide">
