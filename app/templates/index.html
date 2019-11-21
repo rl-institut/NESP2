@@ -15,46 +15,87 @@
 </head>
 
 <body>
-
-      <div id="map" class="split right"></div>
-      <div id="sidebar" class="split left">
-        <div class="row">
-          <div class="column level">
-            <p> national </p>
-          </div>
-          <div class="column level">
-            <p> state </p>
-          </div>
-        </div>
-        <div id="village" class="level">
-          <p> village </p>
-        </div>
-        <div id="layers" class="layers">
-          <p> LAYERS </p>
-        </div>
-        <div id="states" class="layer">
-          <p> States </p>
-        </div>
-        <div id="building_density" class="layer">
-          <p> Building Density </p>
-        </div>
-        <div id="clusters" class="layer">
-          <p> Clusters </p>
-        </div>
-        <div id="grid" class="layer">
-          <p> Grid </p>
-        </div>
+  <div id="map" class="split right"></div>
+  <div id="sidebar" class="split left">
+    <div class="row">
+      <div class="column level">
+        <button onclick="national_button_fun()"> national </button>
       </div>
+      <div class="column level">
+        <button onclick="state_button_fun()"> state </button>
+      </div>
+    </div>
+    <div id="village" class="level">
+      <button onclick="village_button_fun()"> village </button>
+    </div>
+    <div id="state_selection" class="dropdown n_hide s_show v_hide" style="display:none">
+      <br>
+      <select>
+        <option value="none">Select a State ...</option>
+        <option value="akwa">Akwa</option>
+        <option value="borno">Borno</option>
+        <option value="gombe">Gombe</option>
+        <option value="yobe">Yobe</option>
+      </select>
+    </div>
+    <div id="layers" class="layers">
+      <p> LAYERS </p>
+    </div>
+    <div id="states" class="layer n_show s_show v_hide">
+      <p> States (Data availability)
+        <input type="checkbox" id="states_cb" onclick="states_cb_fun()">
+        <div class="substate" style="display:none"> Grid tracking
+          <input type="radio" name="state_radio">
+        </div>
+        <div class="substate" style="display:none">Remote mapping
+          <input type="radio" name="state_radio">
+        </div>
+        <div class="substate" style="display:none">Surveying
+          <input type="radio" name="state_radio">
+        </div>
+      </p>
+    </div>
+    <div id="lgas" class="layer n_show s_hide v_hide">
+      <p> LGAs 
+        <input type="checkbox" name="lgas_cb" value="lgas_check">
+      </p>
+    </div>
+    <div id="building_density" class="layer n_hide s_show v_hide" style="display:none">
+      <p> Building Density 
+        <input type="checkbox" name="building_density_cb" value="building_density_check">
+      </p>
+    </div>
+    <div id="clusters" class="layer n_show s_show v_show">
+      <p> Clusters 
+        <input type="checkbox" id="clusters_cb" onclick="clusters_cb_fun()">
+        <div class="subcluster" style="display:none">FILTERS</div>
+        <div class="subcluster" style="display:none">Area</div>
+        <div class="subcluster" style="display:none">Distance to Grid</div>
+        <button class="subcluster" style="display:none"> Download Cluster Data </button>
+      </p>
+    </div>
+    <div id="grid" class="layer n_show s_show v_show">
+      <p> Grid 
+        <input type="checkbox" name="grid_cb" value="grid_check">
+      </p>
+    </div>
+    <div id="infrastructure" class="layer n_hide s_hide v_show" style="display:none">
+      <p> Infrastructure 
+        <input type="checkbox" name="infrastructure_cb" value="infrastructure_check">
+      </p>
+    </div>
+  </div>
 
+  <script src="{{ url_for('static', filename='js/sidebar.js') }}" />
 
-		<script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
-    <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js" integrity="sha512-lInM/apFSqyy1o6s89K4iQUKg6ppXEgsVxT35HbzUupEVRh2Eu9Wdl4tHj7dZO0s1uvplcYGmt3498TtHq+log==" crossorigin=""></script>
-    <script src="https://unpkg.com/leaflet.markercluster@1.3.0/dist/leaflet.markercluster-src.js" integrity="sha384-NAOEbWFcjnXc7U9GkULPhupHZNAbqru9dS3c+4ANYAwtFoVAWuVuMVDH0DIy4ESp" crossorigin=""></script>
-    <script src="https://unpkg.com/leaflet.vectorgrid@1.3.0/dist/Leaflet.VectorGrid.bundled.js" integrity="sha384-FON5fTjCTtPuBgUS1r2H/PGXstH0Rk23YKjZmB6qITkbFqBcqtey/rPo9eXwOWpx" crossorigin=""></script>
-    <!-- <script src="static/data/points.js"></script> -->
-    <script src="https://cdn.jsdelivr.net/npm/leaflet-sidebar-v2@3.0.2/js/leaflet-sidebar.min.js" integrity="sha384-LzTQ6yhqVy/ipjMq5MMk98mo0E64Wtu9K1Jm5OeKPolnqrlv3FMdc457RoOANGMb" crossorigin=""></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/wnumb/1.1.0/wNumb.min.js" integrity="sha384-9NhfMwMkkA6dDFEyj5CxOiYaL6KqLjKINTJkR7e5SlZthrndR9oB/SJsi5PBNnjw" crossorigin=""></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/11.0.3/nouislider.min.js" integrity="sha384-sxnhs+25aQQN+rABTQEEYOIX5CW20SBJyXt9oGMT5VDacFTTWGXKotTEAe8BUiwb" crossorigin=""></script>
+  <script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
+  <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js" integrity="sha512-lInM/apFSqyy1o6s89K4iQUKg6ppXEgsVxT35HbzUupEVRh2Eu9Wdl4tHj7dZO0s1uvplcYGmt3498TtHq+log==" crossorigin=""></script>
+  <script src="https://unpkg.com/leaflet.markercluster@1.3.0/dist/leaflet.markercluster-src.js" integrity="sha384-NAOEbWFcjnXc7U9GkULPhupHZNAbqru9dS3c+4ANYAwtFoVAWuVuMVDH0DIy4ESp" crossorigin=""></script>
+  <script src="https://unpkg.com/leaflet.vectorgrid@1.3.0/dist/Leaflet.VectorGrid.bundled.js" integrity="sha384-FON5fTjCTtPuBgUS1r2H/PGXstH0Rk23YKjZmB6qITkbFqBcqtey/rPo9eXwOWpx" crossorigin=""></script>
+  <!-- <script src="static/data/points.js"></script> -->
+  <script src="https://cdn.jsdelivr.net/npm/leaflet-sidebar-v2@3.0.2/js/leaflet-sidebar.min.js" integrity="sha384-LzTQ6yhqVy/ipjMq5MMk98mo0E64Wtu9K1Jm5OeKPolnqrlv3FMdc457RoOANGMb" crossorigin=""></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/wnumb/1.1.0/wNumb.min.js" integrity="sha384-9NhfMwMkkA6dDFEyj5CxOiYaL6KqLjKINTJkR7e5SlZthrndR9oB/SJsi5PBNnjw" crossorigin=""></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/11.0.3/nouislider.min.js" integrity="sha384-sxnhs+25aQQN+rABTQEEYOIX5CW20SBJyXt9oGMT5VDacFTTWGXKotTEAe8BUiwb" crossorigin=""></script>
 
     <script>
         //Cluster filter for electrification data
