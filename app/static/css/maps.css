@@ -50,6 +50,23 @@ body {
   text-align: center;
 }
 
+#sidebar .switch-paddle {
+  border-radius: 100px;
+  height: 1.5rem;
+  width: 3.5rem;
+}
+
+#sidebar input:checked~.switch-paddle {
+  border-radius: 100px;
+  background-color: #1DD069;
+}
+
+#sidebar .switch-paddle::after {
+  border-radius: 100px;
+  width: 1rem;
+  height: 1rem;
+}
+
 #sidebar .sidebar-levels {
   padding-left: 1rem;
   padding-right: 1rem;
