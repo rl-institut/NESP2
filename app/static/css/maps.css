@@ -50,6 +50,11 @@ body {
   text-align: center;
 }
 
+#sidebar .sidebar-levels {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
 .sidebar__btn {
   padding: 0 .25rem 1rem;
 }
