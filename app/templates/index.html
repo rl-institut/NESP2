@@ -53,6 +53,31 @@
 			</div>
 		</div>
 	</div>
+
+	<div class="grid-x">
+		<div class="cell">
+			<button class="button" type="button" data-toggle="example-dropdown">Toggle Dropdown</button>
+			<div class="dropdown-pane" id="example-dropdown" data-dropdown data-auto-focus="true">
+				Example form in a dropdown.
+				<form>
+					<div class="grid-container">
+						<div class="grid-x grid-margin-x">
+							<div class="cell medium-6">
+								<label>Name
+									<input type="text" placeholder="Kirk, James T.">
+								</label>
+							</div>
+							<div class="cell medium-6">
+								<label>Rank
+									<input type="text" placeholder="Captain">
+								</label>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
 	
 	<div class="grid-x">
 	  <div id="layers" class="cell layers">
@@ -106,8 +131,9 @@
 
   </div>
 
-  <script src="{{ url_for('static', filename='js/sidebar.js') }}" />
-  <script src="{{ url_for('static', filename='js/foundation.min.js') }}" />
+	<script src="{{ url_for('static', filename='js/sidebar.js') }}" />
+	<script src="{{ url_for('static', filename='js/jquery-3.4.1.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/foundation.min.js') }}"></script>
 
   <script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
   <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js" integrity="sha512-lInM/apFSqyy1o6s89K4iQUKg6ppXEgsVxT35HbzUupEVRh2Eu9Wdl4tHj7dZO0s1uvplcYGmt3498TtHq+log==" crossorigin=""></script>
@@ -116,7 +142,14 @@
   <!-- <script src="static/data/points.js"></script> -->
   <script src="https://cdn.jsdelivr.net/npm/leaflet-sidebar-v2@3.0.2/js/leaflet-sidebar.min.js" integrity="sha384-LzTQ6yhqVy/ipjMq5MMk98mo0E64Wtu9K1Jm5OeKPolnqrlv3FMdc457RoOANGMb" crossorigin=""></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/wnumb/1.1.0/wNumb.min.js" integrity="sha384-9NhfMwMkkA6dDFEyj5CxOiYaL6KqLjKINTJkR7e5SlZthrndR9oB/SJsi5PBNnjw" crossorigin=""></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/11.0.3/nouislider.min.js" integrity="sha384-sxnhs+25aQQN+rABTQEEYOIX5CW20SBJyXt9oGMT5VDacFTTWGXKotTEAe8BUiwb" crossorigin=""></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/11.0.3/nouislider.min.js" integrity="sha384-sxnhs+25aQQN+rABTQEEYOIX5CW20SBJyXt9oGMT5VDacFTTWGXKotTEAe8BUiwb" crossorigin=""></script>
+	
+	<script type="text/javascript">
+		$(function(){
+			 alert("My First Jquery Test");
+		});
+ 	</script>
+	
 	<script>
 		//Cluster filter for electrification data
 		//(c) F. Zimmermann, 2018
