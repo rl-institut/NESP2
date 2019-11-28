@@ -85,6 +85,15 @@ body {
   text-align: left;
 }
 
+.sidebar-accordion li.accordion-item {
+  background-color: #eeeff1;
+}
+
+.sidebar-accordion li.accordion-item .accordion-title {
+  padding-left: 3rem;
+  color: #464646;
+  font-size: 10pt;
+}
 
  .noUi-connect {
      background: #210B61;
