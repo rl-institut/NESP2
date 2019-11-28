@@ -75,6 +75,10 @@ body {
   color: #ffffff;
 }
 
+button {
+  outline: none;
+}
+
 .layers{
   margin-left: 15px;
   text-align: left;
@@ -85,14 +89,28 @@ body {
   text-align: left;
 }
 
+.sidebar-dropdown {
+  padding-top: 1rem;
+  margin-top: .5rem;
+  background-color: #f8f8f8;
+}
+
 .sidebar-accordion li.accordion-item {
   background-color: #eeeff1;
+}
+
+.sidebar-accordion li.accordion-item.is-active {
+  border-left: .25rem solid #1DD069;
 }
 
 .sidebar-accordion li.accordion-item .accordion-title {
   padding-left: 3rem;
   color: #464646;
   font-size: 10pt;
+}
+
+.sidebar-accordion li.accordion-item.is-active .accordion-title {
+  padding-left: 2.75rem;
 }
 
  .noUi-connect {
