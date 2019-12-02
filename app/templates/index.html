@@ -2,99 +2,164 @@
 <html>
 
 <head>
-    <meta charset=utf-8 />
-    <title>Population cluster for electrification in Nigeria</title>
-    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+	<meta charset=utf-8 />
+	<title>Population cluster for electrification in Nigeria</title>
+	<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
 
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" integrity="sha512-M2wvCLH6DSRazYeZRIm1JnYyh22purTM+FDB5CsyxtQJYeKq83arPe5wgbNmcFXGqiSH2XR8dT/fJISVA1r/zQ==" crossorigin="" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" integrity="sha384-X7L1bhgb36bF1iFvaqvhgpaGpayKM+vXNNYRlF89BFA5s3vi1qZ8EX9086RlZjy1" crossorigin="" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.3.0/dist/MarkerCluster.css" integrity="sha384-lPzjPsFQL6te2x+VxmV6q1DpRxpRk0tmnl2cpwAO5y04ESyc752tnEWPKDfl1olr" crossorigin="" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.3.0/dist/MarkerCluster.Default.css" integrity="sha384-5kMSQJ6S4Qj5i09mtMNrWpSi8iXw230pKU76xTmrpezGnNJQzj0NzXjQLLg+jE7k" crossorigin="" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/11.0.3/nouislider.min.css" integrity="sha384-FkoYQ3TJKbULb445cDwfaUqQaTntabe5j49blZqESH0tMC1UexckavWD1M68+Y9B" crossorigin="" />
-    <!-- Compressed CSS -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/maps.css') }}" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/foundation.min.css') }}" />
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" integrity="sha512-M2wvCLH6DSRazYeZRIm1JnYyh22purTM+FDB5CsyxtQJYeKq83arPe5wgbNmcFXGqiSH2XR8dT/fJISVA1r/zQ==" crossorigin="" />
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" integrity="sha384-X7L1bhgb36bF1iFvaqvhgpaGpayKM+vXNNYRlF89BFA5s3vi1qZ8EX9086RlZjy1" crossorigin="" />
+	<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.3.0/dist/MarkerCluster.css" integrity="sha384-lPzjPsFQL6te2x+VxmV6q1DpRxpRk0tmnl2cpwAO5y04ESyc752tnEWPKDfl1olr" crossorigin="" />
+	<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.3.0/dist/MarkerCluster.Default.css" integrity="sha384-5kMSQJ6S4Qj5i09mtMNrWpSi8iXw230pKU76xTmrpezGnNJQzj0NzXjQLLg+jE7k" crossorigin="" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/11.0.3/nouislider.min.css" integrity="sha384-FkoYQ3TJKbULb445cDwfaUqQaTntabe5j49blZqESH0tMC1UexckavWD1M68+Y9B" crossorigin="" />
+	<!-- Compressed CSS -->
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/maps.css') }}" />
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/foundation.min.css') }}" />
 </head>
 
 <body>
   <div id="map" class="split right"></div>
 
-  <div id="sidebar" class="split left grid-container">
+  <div id="sidebar" class="split left grid-container full">
+	<div class="grid-x sidebar-levels">
+	  <div id="national" class="cell small-6 level sidebar__btn active">
+			<button onclick="national_button_fun()">National level</button>
+	  </div>
+	  <div id="state" class="cell small-6 level sidebar__btn">
+			<button onclick="state_button_fun()">State level</button>
+	  </div>
+	  <div id="village" class="cell level sidebar__btn">
+			<button onclick="village_button_fun()">Village level</button>
+	  </div>
+	</div>
+	
+	<div class="grid-x">
+	  <div id="state_selection" class="dropdown n_hide s_show v_hide" style="display:none">
+		<select>
+		  <option value="none">Select a State ...</option>
+		  <option value="akwa">Akwa</option>
+		  <option value="borno">Borno</option>
+		  <option value="gombe">Gombe</option>
+		  <option value="yobe">Yobe</option>
+		</select>
+	  </div>
+	</div>
 
-    <div class="grid-x map-levels">
-      <div id="national" class="cell small-6 level map-levels__btn">
-        <button onclick="national_button_fun()">National level</button>
-      </div>
-      <div id="state" class="cell small-6 level map-levels__btn">
-        <button onclick="state_button_fun()">State level</button>
-      </div>
-      <div id="village" class="cell level map-levels__btn">
-        <button onclick="village_button_fun()">Village level</button>
-      </div>
-    </div>
-    
-    <div class="grid-x">
-      <div id="state_selection" class="dropdown n_hide s_show v_hide" style="display:none">
-        <select>
-          <option value="none">Select a State ...</option>
-          <option value="akwa">Akwa</option>
-          <option value="borno">Borno</option>
-          <option value="gombe">Gombe</option>
-          <option value="yobe">Yobe</option>
-        </select>
-      </div>
-    </div>
-    
-    <div class="grid-x">
-      <div id="layers" class="cell layers">
-        <p> LAYERS </p>
-      </div>
-      <div id="states" class="layer n_show s_show v_hide">
-        <p> States (Data availability)
-          <input type="checkbox" id="states_cb" onclick="states_cb_fun()">
-          <div class="substate" style="display:none"> Grid tracking
-            <input type="radio" name="state_radio">
-          </div>
-          <div class="substate" style="display:none">Remote mapping
-            <input type="radio" name="state_radio">
-          </div>
-          <div class="substate" style="display:none">Surveying
-            <input type="radio" name="state_radio">
-          </div>
-        </p>
-      </div>
-      <div id="lgas" class="layer n_show s_hide v_hide">
-        <p> LGAs 
-          <input type="checkbox" name="lgas_cb" value="lgas_check">
-        </p>
-      </div>
-      <div id="building_density" class="layer n_hide s_show v_hide" style="display:none">
-        <p> Building Density 
-          <input type="checkbox" name="building_density_cb" value="building_density_check">
-        </p>
-      </div>
-      <div id="clusters" class="layer n_show s_show v_show">
-        <p> Clusters 
-          <input type="checkbox" id="clusters_cb" onclick="clusters_cb_fun()">
-          <div class="subcluster" style="display:none">FILTERS</div>
-          <div class="subcluster" style="display:none">Area</div>
-          <div class="subcluster" style="display:none">Distance to Grid</div>
-          <button class="subcluster" style="display:none"> Download Cluster Data </button>
-        </p>
-      </div>
-      <div id="grid" class="layer n_show s_show v_show">
-        <p> Grid 
-          <input type="checkbox" name="grid_cb" value="grid_check">
-        </p>
-      </div>
-      <div id="infrastructure" class="layer n_hide s_hide v_show" style="display:none">
-        <p> Infrastructure 
-          <input type="checkbox" name="infrastructure_cb" value="infrastructure_check">
-        </p>
-      </div>
-    </div>
+	<div class="grid-x align-center sidebar-dropdown">
+		<div class="cell sidebar__btn active small-8">
+			<button data-toggle="state-dropdown">Select a state...</button>
+			<div class="dropdown-pane" id="state-dropdown" data-dropdown data-auto-focus="true">
+				text
+			</div>
+		</div>
+	</div>
+
+	<div class="grid-x sidebar-accordion">
+		<div class="cell">			
+			<ul class="accordion" data-accordion>
+				<li class="accordion-item is-active" data-accordion-item>
+					<a href="#" class="accordion-title">States</a>
+					<div class="accordion-content" data-tab-content>
+						<p>Panel 1. Lorem ipsum dolor</p>
+					</div>
+				</li>
+				<li class="accordion-item" data-accordion-item>
+					<a href="#" class="accordion-title">Building density</a>
+					<div class="accordion-content" data-tab-content>
+						<p>Panel 1. Lorem ipsum dolor</p>
+					</div>
+				</li>
+				<li class="accordion-item" data-accordion-item>
+					<a href="#" class="accordion-title">Clusters</a>
+					<div class="accordion-content" data-tab-content>
+						<p>Panel 1. Lorem ipsum dolor</p>
+					</div>
+				</li>
+				<li class="accordion-item" data-accordion-item>
+					<a href="#" class="accordion-title">Grid</a>
+					<div class="accordion-content" data-tab-content>
+						<p>Panel 1. Lorem ipsum dolor</p>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+
+	<!-- switch examples -->
+	<div class="grid-x align-center">
+		<div class="cell small-3">
+			<div class="switch">
+				<input class="switch-input" id="exampleRadioSwitch1" type="radio" checked name="testGroup">
+				<label class="switch-paddle" for="exampleRadioSwitch1">
+					<span class="show-for-sr">States</span>
+				</label>
+			</div>
+		</div>
+		<div class="cell small-3">
+			<div class="switch">
+				<input class="switch-input" id="exampleRadioSwitch2" type="radio" name="testGroup">
+				<label class="switch-paddle" for="exampleRadioSwitch2">
+					<span class="show-for-sr">Building density</span>
+				</label>
+			</div>
+		</div>
+	</div>
+	
+	<!-- 
+	<div class="grid-x">
+	  <div id="layers" class="cell layers">
+		<p> LAYERS </p>
+	  </div>
+	  <div id="states" class="layer n_show s_show v_hide">
+		<p> States (Data availability)
+		  <input type="checkbox" id="states_cb" onclick="states_cb_fun()">
+		  <div class="substate" style="display:none"> Grid tracking
+			<input type="radio" name="state_radio">
+		  </div>
+		  <div class="substate" style="display:none">Remote mapping
+			<input type="radio" name="state_radio">
+		  </div>
+		  <div class="substate" style="display:none">Surveying
+			<input type="radio" name="state_radio">
+		  </div>
+		</p>
+	  </div>
+	  <div id="lgas" class="layer n_show s_hide v_hide">
+		<p> LGAs 
+		  <input type="checkbox" name="lgas_cb" value="lgas_check">
+		</p>
+	  </div>
+	  <div id="building_density" class="layer n_hide s_show v_hide" style="display:none">
+		<p> Building Density 
+		  <input type="checkbox" name="building_density_cb" value="building_density_check">
+		</p>
+	  </div>
+	  <div id="clusters" class="layer n_show s_show v_show">
+		<p> Clusters 
+		  <input type="checkbox" id="clusters_cb" onclick="clusters_cb_fun()">
+		  <div class="subcluster" style="display:none">FILTERS</div>
+		  <div class="subcluster" style="display:none">Area</div>
+		  <div class="subcluster" style="display:none">Distance to Grid</div>
+		  <button class="subcluster" style="display:none"> Download Cluster Data </button>
+		</p>
+	  </div>
+	  <div id="grid" class="layer n_show s_show v_show">
+		<p> Grid 
+		  <input type="checkbox" name="grid_cb" value="grid_check">
+		</p>
+	  </div>
+	  <div id="infrastructure" class="layer n_hide s_hide v_show" style="display:none">
+		<p> Infrastructure 
+		  <input type="checkbox" name="infrastructure_cb" value="infrastructure_check">
+		</p>
+	  </div>
+	</div>
+	-->
+
   </div>
 
+	<script src="{{ url_for('static', filename='js/sidebar.js') }}" /></script>
+	<script src="{{ url_for('static', filename='js/jquery-3.4.1.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/foundation.min.js') }}"></script>
   <script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
   <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js" integrity="sha512-lInM/apFSqyy1o6s89K4iQUKg6ppXEgsVxT35HbzUupEVRh2Eu9Wdl4tHj7dZO0s1uvplcYGmt3498TtHq+log==" crossorigin=""></script>
   <script src="https://unpkg.com/leaflet.markercluster@1.3.0/dist/leaflet.markercluster-src.js" integrity="sha384-NAOEbWFcjnXc7U9GkULPhupHZNAbqru9dS3c+4ANYAwtFoVAWuVuMVDH0DIy4ESp" crossorigin=""></script>
@@ -111,7 +176,6 @@
   <script src="{{ url_for('static', filename='js/layers.js') }}"></script>
   <script src="{{ url_for('static', filename='js/foundation.min.js') }}"></script>
   <script src="{{ url_for('static', filename='js/map.js') }}"></script>
-
 </body>
 
 </html>
