@@ -1,3 +1,5 @@
+$(document).foundation();
+
 function national_button_fun() {
   var hidelist = document.getElementsByClassName("n_hide");
   var showlist = document.getElementsByClassName("n_show");
