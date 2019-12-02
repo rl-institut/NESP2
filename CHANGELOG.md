@@ -20,6 +20,7 @@ Here is a template for new release sections
 ## [Unreleased]
 
 ### Added
+- dropdown option selectability
 - foundation structure and styles (#10)
 - flask structure (#21)
 ### Changed

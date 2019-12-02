@@ -96,6 +96,19 @@ button {
   outline: none;
 }
 
+.dropdown-button {
+  border-radius: 4px;
+  background-color: #1DD069;
+  text-align: center;
+  color: #ffffff;
+  font-size: 10pt;
+  font-weight: bold;
+}
+
+.select-items {
+  background-color: #ff00ff;
+}
+
 .layers{
   margin-left: 15px;
   text-align: left;
