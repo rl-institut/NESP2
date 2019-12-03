@@ -119,6 +119,37 @@ button {
   text-align: left;
 }
 
+.sidebar-panel {
+  background-color: #eeeff1;
+  font: Helvetica, Arial,  sans-serif;
+  font-size: 10pt;
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+.sidebar-panel-item {
+  height: 3rem;
+  padding-top: 1rem;
+}
+
+.sidebar-panel-item-title {
+  padding-left: 2.75rem;
+  color: #464646;
+  display: inline;
+}
+
+.sidebar-panel-item.is-active {
+  border-left: .25rem solid #1DD069;
+}
+
+.sidebar-panel-item-button {
+  float: right;
+}
+
+.sidebar-panel-content {
+  background-color: #91919f;
+  display: none;
+}
+
 .sidebar-dropdown {
   padding-top: 1rem;
   margin-top: .5rem;

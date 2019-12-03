@@ -43,8 +43,8 @@ function village_button_fun() {
 }
 
 function states_cb_fun() {
-  var checkBox = document.getElementById("states_cb");
-  var text = document.getElementsByClassName("substate");
+  var checkBox = document.getElementById("statesCheckbox");
+  var text = document.getElementsByClassName("sidebar-panel-content");
   if (checkBox.checked == true){
     var i;
     for (i = 0; i < text.length; i++) {
@@ -54,6 +54,9 @@ function states_cb_fun() {
     var j;
     for (j = 0; j < text.length; j++) {
       text[j].style.display = "none";
+    }
+    if (map.hasLayer(statesLayer)){
+      map.removeLayer(statesLayer);
     }
   }
 }
@@ -71,5 +74,28 @@ function clusters_cb_fun() {
     for (j = 0; j < text.length; j++) {
       text[j].style.display = "none";
     }
+  }
+}
+
+function states_radio_fun() {
+  var radio = document.getElementsByName("statesGroup");
+  var selection = "";
+  if (map.hasLayer(statesLayer)){
+    map.removeLayer(statesLayer);
+  }
+  for (i = 0; i < radio.length; i++) {
+    if (radio[i].checked == true) {selection = (radio[i].id);}
+  }
+  if (selection == "gridtrackingCB"){
+    statesStyle = statesStyle1;
+  }
+  if (selection == "remotemappingCB"){
+    statesStyle = statesStyle2;
+  }
+  if (selection == "surveyingCB"){
+    statesStyle = statesStyle3;
+  }
+  if (map.hasLayer(statesLayer) == false){
+    map.addLayer(statesLayer);
   }
 }

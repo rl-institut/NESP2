@@ -44,10 +44,70 @@
       </div>
 	</div>
 
+    <div class="grid-x">
+      <div class="cell">
+        <div class="sidebar-panel">
+          <div class="sidebar-panel-item is-active" data-accordion-item>
+            <p href="#" class="sidebar-panel-item-title">States (availability)</p>
+            <div class="sidebar-panel-item-button">
+              <input class="switch-input" id="statesCheckbox" type="checkbox" onclick="states_cb_fun()">
+              <label class="switch-paddle" for="statesCheckbox">
+              </label>
+            </div>
+          </div>
+        </div>	
+      </div>	
+    </div>
+
+    <div class="grid-x">
+      <div class="cell">
+        <div class="sidebar-panel sidebar-panel-content">
+          <div class="sidebar-panel-item">
+            <p href="#" class="sidebar-panel-item-title">Grid Tracking</p>
+            <div class="sidebar-panel-item-button">
+              <input class="switch-input" id="gridtrackingCB" type="radio" name="statesGroup" onclick="states_radio_fun()">
+              <label class="switch-paddle" for="gridtrackingCB">
+              </label>
+            </div>
+          </div>
+        </div>	
+      </div>	
+    </div>
+
+    <div class="grid-x">
+      <div class="cell">
+        <div class="sidebar-panel sidebar-panel-content">
+          <div class="sidebar-panel-item">
+            <p href="#" class="sidebar-panel-item-title">Remote Mapping</p>
+            <div class="sidebar-panel-item-button">
+              <input class="switch-input" id="remotemappingCB" type="radio" name="statesGroup" onclick="states_radio_fun()">
+              <label class="switch-paddle" for="remotemappingCB">
+              </label>
+            </div>
+          </div>
+        </div>	
+      </div>	
+    </div>
+    <div class="grid-x">
+      <div class="cell">
+        <div class="sidebar-panel sidebar-panel-content">
+          <div class="sidebar-panel-item">
+            <p href="#" class="sidebar-panel-item-title">Surveying</p>
+            <div class="sidebar-panel-item-button">
+              <input class="switch-input" id="surveyingCB" type="radio" name="statesGroup" onclick="states_radio_fun()">
+              <label class="switch-paddle" for="surveyingCB">
+              </label>
+            </div>
+          </div>
+        </div>	
+      </div>	
+    </div>
+    <div>
+
 	<div class="grid-x sidebar-accordion">
 		<div class="cell">			
 			<ul class="accordion" data-accordion>
-				<li class="accordion-item is-active" data-accordion-item>
+				<li class="accordion-item" data-accordion-item>
 					<a href="#" class="accordion-title">States</a>
 					<div class="accordion-content" data-tab-content>
 						<p>Panel 1. Lorem ipsum dolor</p>
@@ -72,26 +132,6 @@
 					</div>
 				</li>
 			</ul>
-		</div>
-	</div>
-
-	<!-- switch examples -->
-	<div class="grid-x align-center">
-		<div class="cell small-3">
-			<div class="switch">
-				<input class="switch-input" id="exampleRadioSwitch1" type="radio" checked name="testGroup">
-				<label class="switch-paddle" for="exampleRadioSwitch1">
-					<span class="show-for-sr">States</span>
-				</label>
-			</div>
-		</div>
-		<div class="cell small-3">
-			<div class="switch">
-				<input class="switch-input" id="exampleRadioSwitch2" type="radio" name="testGroup">
-				<label class="switch-paddle" for="exampleRadioSwitch2">
-					<span class="show-for-sr">Building density</span>
-				</label>
-			</div>
 		</div>
 	</div>
 	
