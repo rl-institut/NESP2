@@ -24,6 +24,7 @@ Here is a template for new release sections
 - foundation structure and styles (#10)
 - flask structure (#21)
 ### Changed
+- level buttons indicate status (#9)
 - sidebar style (#10)
 ### Removed
 -
