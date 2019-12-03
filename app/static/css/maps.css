@@ -119,6 +119,33 @@ button {
   text-align: left;
 }
 
+.sidebar-panel {
+  background-color: #eeeff1;
+}
+
+.sidebar-panel-item {
+  background-color: #eeeff1;
+  padding-top: 1rem;
+}
+
+.sidebar-panel-item-title {
+  padding-left: 2.75rem;
+  color: #464646;
+  display: inline;
+}
+
+.sidebar-panel-item.is-active {
+  height: 3rem;
+  border-left: .25rem solid #1DD069;
+  font: Helvetica, Arial,  sans-serif;
+  font-size: 10pt;
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+.sidebar-panel-item-button {
+  float: right;
+}
+
 .sidebar-dropdown {
   padding-top: 1rem;
   margin-top: .5rem;
