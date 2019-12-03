@@ -9,6 +9,9 @@ function national_button_fun() {
   for (j = 0; j < showlist.length; j++) {
     showlist[j].style.display = "block";
   }
+  document.getElementById("national").className = "cell small-6 level sidebar__btn active";
+  document.getElementById("state").className = "cell small-6 level sidebar__btn";
+  document.getElementById("village").className = "cell level sidebar__btn";
 }
 
 function state_button_fun() {
@@ -20,6 +23,9 @@ function state_button_fun() {
   for (j = 0; j < showlist.length; j++) {
     showlist[j].style.display = "block";
   }
+  document.getElementById("national").className = "cell small-6 level sidebar__btn";
+  document.getElementById("state").className = "cell small-6 level sidebar__btn active";
+  document.getElementById("village").className = "cell level sidebar__btn";
 }
 
 function village_button_fun() {
@@ -31,6 +37,9 @@ function village_button_fun() {
   for (j = 0; j < showlist.length; j++) {
     showlist[j].style.display = "block";
   }
+  document.getElementById("national").className = "cell small-6 level sidebar__btn";
+  document.getElementById("state").className = "cell small-6 level sidebar__btn";
+  document.getElementById("village").className = "cell level sidebar__btn active";
 }
 
 function states_cb_fun() {
