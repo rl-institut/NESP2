@@ -58,7 +58,7 @@ L.control.scale({
         };
 
         //map.addLayer(vecTileLayer);
-        map.addLayer(statesLayer);
+        //map.addLayer(statesLayer);
 
         map.on("click", function() {
             vecTileLayer.clearHighlight();
