@@ -147,6 +147,7 @@ button {
 
 .sidebar-panel-content {
   background-color: #91919f;
+  display: none;
 }
 
 .sidebar-dropdown {

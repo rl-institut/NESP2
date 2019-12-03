@@ -43,8 +43,8 @@ function village_button_fun() {
 }
 
 function states_cb_fun() {
-  var checkBox = document.getElementById("states_cb");
-  var text = document.getElementsByClassName("substate");
+  var checkBox = document.getElementById("statesCheckbox");
+  var text = document.getElementsByClassName("sidebar-panel-content");
   if (checkBox.checked == true){
     var i;
     for (i = 0; i < text.length; i++) {

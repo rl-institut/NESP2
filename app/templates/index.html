@@ -50,7 +50,7 @@
           <div class="sidebar-panel-item is-active" data-accordion-item>
             <p href="#" class="sidebar-panel-item-title">States (availability)</p>
             <div class="sidebar-panel-item-button">
-              <input class="switch-input" id="statesCheckbox" type="checkbox" checked name="testGroup">
+              <input class="switch-input" id="statesCheckbox" type="checkbox" onclick="states_cb_fun()">
               <label class="switch-paddle" for="statesCheckbox">
               </label>
             </div>
@@ -61,11 +61,11 @@
 
     <div class="grid-x">
       <div class="cell">
-        <div class="sidebar-panel">
-          <div class="sidebar-panel-item sidebar-panel-content">
+        <div class="sidebar-panel sidebar-panel-content">
+          <div class="sidebar-panel-item">
             <p href="#" class="sidebar-panel-item-title">Grid Tracking</p>
             <div class="sidebar-panel-item-button">
-              <input class="switch-input" id="gridtrackingCB" type="radio" checked name="testGroup">
+              <input class="switch-input" id="gridtrackingCB" type="radio" name="statesGroup">
               <label class="switch-paddle" for="gridtrackingCB">
               </label>
             </div>
@@ -76,11 +76,11 @@
 
     <div class="grid-x">
       <div class="cell">
-        <div class="sidebar-panel">
-          <div class="sidebar-panel-item sidebar-panel-content">
+        <div class="sidebar-panel sidebar-panel-content">
+          <div class="sidebar-panel-item">
             <p href="#" class="sidebar-panel-item-title">Remote Mapping</p>
             <div class="sidebar-panel-item-button">
-              <input class="switch-input" id="remotemappingCB" type="radio" checked name="testGroup">
+              <input class="switch-input" id="remotemappingCB" type="radio" name="statesGroup">
               <label class="switch-paddle" for="remotemappingCB">
               </label>
             </div>
@@ -90,11 +90,11 @@
     </div>
     <div class="grid-x">
       <div class="cell">
-        <div class="sidebar-panel">
-          <div class="sidebar-panel-item sidebar-panel-content">
+        <div class="sidebar-panel sidebar-panel-content">
+          <div class="sidebar-panel-item">
             <p href="#" class="sidebar-panel-item-title">Surveying</p>
             <div class="sidebar-panel-item-button">
-              <input class="switch-input" id="surveyingCB" type="radio" checked name="testGroup">
+              <input class="switch-input" id="surveyingCB" type="radio" name="statesGroup">
               <label class="switch-paddle" for="surveyingCB">
               </label>
             </div>
@@ -102,7 +102,7 @@
         </div>	
       </div>	
     </div>
-
+    <div>
 
 	<div class="grid-x sidebar-accordion">
 		<div class="cell">			
