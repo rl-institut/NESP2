@@ -20,7 +20,8 @@ Here is a template for new release sections
 ## [Unreleased]
 
 ### Added
-- clusters switch
+- clusters sliders for area and distance to grid (#12)
+- clusters switch (#12)
 - radio buttons that load different styles(#15)
 - dropdown option selectability
 - foundation structure and styles (#10)

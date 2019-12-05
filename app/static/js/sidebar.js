@@ -1,5 +1,25 @@
 $(document).foundation();
 
+var buildingSlider = document.getElementById('areaSlider');
+noUiSlider.create(buildingSlider, {
+    start: [300, 1500],
+    connect: true,
+    range: {
+        'min': [0, 0],
+        'max': [3000,3000],
+    }
+});
+
+var dtgSlider = document.getElementById('dtgSlider');
+noUiSlider.create(dtgSlider, {
+    start: [300, 1500],
+    connect: true,
+    range: {
+        'min': [0, 0],
+        'max': [3000,3000],
+    }
+});
+
 function national_button_fun() {
   var hidelist = document.getElementsByClassName("n_hide");
   var showlist = document.getElementsByClassName("n_show");
