@@ -61,7 +61,7 @@
 
     <div class="grid-x">
       <div class="cell">
-        <div class="sidebar-panel sidebar-panel-content">
+        <div class="sidebar-panel sidebar-panel-content" name="statesContent">
           <div class="sidebar-panel-item">
             <p href="#" class="sidebar-panel-item-title">Grid Tracking</p>
             <div class="sidebar-panel-item-button">
@@ -76,7 +76,7 @@
 
     <div class="grid-x">
       <div class="cell">
-        <div class="sidebar-panel sidebar-panel-content">
+        <div class="sidebar-panel sidebar-panel-content" name="statesContent">
           <div class="sidebar-panel-item">
             <p href="#" class="sidebar-panel-item-title">Remote Mapping</p>
             <div class="sidebar-panel-item-button">
@@ -90,7 +90,7 @@
     </div>
     <div class="grid-x">
       <div class="cell">
-        <div class="sidebar-panel sidebar-panel-content">
+        <div class="sidebar-panel sidebar-panel-content" name="statesContent">
           <div class="sidebar-panel-item">
             <p href="#" class="sidebar-panel-item-title">Surveying</p>
             <div class="sidebar-panel-item-button">
@@ -103,6 +103,31 @@
       </div>	
     </div>
     <div>
+
+    <div class="grid-x">
+      <div class="cell">
+        <div class="sidebar-panel">
+          <div class="sidebar-panel-item" data-accordion-item>
+            <p href="#" class="sidebar-panel-item-title">Clusters</p>
+            <div class="sidebar-panel-item-button">
+              <input class="switch-input" id="clustersCheckbox" type="checkbox" onclick="clusters_cb_fun()">
+              <label class="switch-paddle" for="clustersCheckbox">
+              </label>
+            </div>
+          </div>
+        </div>	
+      </div>	
+    </div>
+
+    <div class="grid-x">
+      <div class="cell">
+        <div class="sidebar-panel sidebar-panel-content" name="clustersContent">
+          <div class="sidebar-panel-item">
+            <p href="#" class="sidebar-panel-item-title">Area</p>
+          </div>
+        </div>	
+      </div>	
+    </div>
 
 	<div class="grid-x sidebar-accordion">
 		<div class="cell">			
@@ -134,7 +159,8 @@
 			</ul>
 		</div>
 	</div>
-	
+
+
 	<!-- 
 	<div class="grid-x">
 	  <div id="layers" class="cell layers">

@@ -20,6 +20,7 @@ Here is a template for new release sections
 ## [Unreleased]
 
 ### Added
+- clusters switch
 - radio buttons that load different styles(#15)
 - dropdown option selectability
 - foundation structure and styles (#10)
