@@ -10,10 +10,10 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" integrity="sha384-X7L1bhgb36bF1iFvaqvhgpaGpayKM+vXNNYRlF89BFA5s3vi1qZ8EX9086RlZjy1" crossorigin="" />
 	<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.3.0/dist/MarkerCluster.css" integrity="sha384-lPzjPsFQL6te2x+VxmV6q1DpRxpRk0tmnl2cpwAO5y04ESyc752tnEWPKDfl1olr" crossorigin="" />
 	<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.3.0/dist/MarkerCluster.Default.css" integrity="sha384-5kMSQJ6S4Qj5i09mtMNrWpSi8iXw230pKU76xTmrpezGnNJQzj0NzXjQLLg+jE7k" crossorigin="" />
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/11.0.3/nouislider.min.css" integrity="sha384-FkoYQ3TJKbULb445cDwfaUqQaTntabe5j49blZqESH0tMC1UexckavWD1M68+Y9B" crossorigin="" />
 	<!-- Compressed CSS -->
 	<link rel="stylesheet" href="{{ url_for('static', filename='css/maps.css') }}" />
 	<link rel="stylesheet" href="{{ url_for('static', filename='css/foundation.min.css') }}" />
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/nouislider.min.css') }}" />
 </head>
 
 <body>
@@ -61,7 +61,7 @@
 
     <div class="grid-x">
       <div class="cell">
-        <div class="sidebar-panel sidebar-panel-content">
+        <div class="sidebar-panel sidebar-panel-content" name="statesContent">
           <div class="sidebar-panel-item">
             <p href="#" class="sidebar-panel-item-title">Grid Tracking</p>
             <div class="sidebar-panel-item-button">
@@ -76,7 +76,7 @@
 
     <div class="grid-x">
       <div class="cell">
-        <div class="sidebar-panel sidebar-panel-content">
+        <div class="sidebar-panel sidebar-panel-content" name="statesContent">
           <div class="sidebar-panel-item">
             <p href="#" class="sidebar-panel-item-title">Remote Mapping</p>
             <div class="sidebar-panel-item-button">
@@ -90,7 +90,7 @@
     </div>
     <div class="grid-x">
       <div class="cell">
-        <div class="sidebar-panel sidebar-panel-content">
+        <div class="sidebar-panel sidebar-panel-content" name="statesContent">
           <div class="sidebar-panel-item">
             <p href="#" class="sidebar-panel-item-title">Surveying</p>
             <div class="sidebar-panel-item-button">
@@ -103,6 +103,51 @@
       </div>	
     </div>
     <div>
+
+    <div class="grid-x">
+      <div class="cell">
+        <div class="sidebar-panel">
+          <div class="sidebar-panel-item" data-accordion-item>
+            <p href="#" class="sidebar-panel-item-title">Clusters</p>
+            <div class="sidebar-panel-item-button">
+              <input class="switch-input" id="clustersCheckbox" type="checkbox" onclick="clusters_cb_fun()">
+              <label class="switch-paddle" for="clustersCheckbox">
+              </label>
+            </div>
+          </div>
+        </div>	
+      </div>	
+    </div>
+
+    <div class="grid-x">
+      <div class="cell">
+        <div class="sidebar-panel sidebar-panel-content" name="clustersContent">
+          <div class="sidebar-panel-item">
+            <p href="#" class="sidebar-panel-item-title">Area</p>
+              <div class="filter">
+                <div class="filter__slider" id="areaSlider"></div>
+                <div class="filter__i">
+                </div>
+              </div>
+          </div>
+        </div>	
+      </div>	
+    </div>
+
+    <div class="grid-x">
+      <div class="cell">
+        <div class="sidebar-panel sidebar-panel-content" name="clustersContent">
+          <div class="sidebar-panel-item">
+            <p href="#" class="sidebar-panel-item-title">Distance to Grid</p>
+            <div class="filter">
+              <div class="filter__slider" id="dtgSlider"></div>
+            </div>
+          </div>
+        </div>	
+      </div>	
+    </div>
+
+
 
 	<div class="grid-x sidebar-accordion">
 		<div class="cell">			
@@ -134,7 +179,8 @@
 			</ul>
 		</div>
 	</div>
-	
+
+
 	<!-- 
 	<div class="grid-x">
 	  <div id="layers" class="cell layers">

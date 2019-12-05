@@ -1,5 +1,25 @@
 $(document).foundation();
 
+var buildingSlider = document.getElementById('areaSlider');
+noUiSlider.create(buildingSlider, {
+    start: [300, 1500],
+    connect: true,
+    range: {
+        'min': [0, 0],
+        'max': [3000,3000],
+    }
+});
+
+var dtgSlider = document.getElementById('dtgSlider');
+noUiSlider.create(dtgSlider, {
+    start: [300, 1500],
+    connect: true,
+    range: {
+        'min': [0, 0],
+        'max': [3000,3000],
+    }
+});
+
 function national_button_fun() {
   var hidelist = document.getElementsByClassName("n_hide");
   var showlist = document.getElementsByClassName("n_show");
@@ -44,7 +64,7 @@ function village_button_fun() {
 
 function states_cb_fun() {
   var checkBox = document.getElementById("statesCheckbox");
-  var text = document.getElementsByClassName("sidebar-panel-content");
+  var text = document.getElementsByName("statesContent");
   if (checkBox.checked == true){
     var i;
     for (i = 0; i < text.length; i++) {
@@ -57,22 +77,6 @@ function states_cb_fun() {
     }
     if (map.hasLayer(statesLayer)){
       map.removeLayer(statesLayer);
-    }
-  }
-}
-
-function clusters_cb_fun() {
-  var checkBox = document.getElementById("clusters_cb");
-  var text = document.getElementsByClassName("subcluster");
-  if (checkBox.checked == true){
-    var i;
-    for (i = 0; i < text.length; i++) {
-      text[i].style.display = "block";
-    }
-  } else {
-    var j;
-    for (j = 0; j < text.length; j++) {
-      text[j].style.display = "none";
     }
   }
 }
@@ -97,5 +101,21 @@ function states_radio_fun() {
   }
   if (map.hasLayer(statesLayer) == false){
     map.addLayer(statesLayer);
+  }
+}
+
+function clusters_cb_fun() {
+  var checkBox = document.getElementById("clustersCheckbox");
+  var text = document.getElementsByName("clustersContent");
+  if (checkBox.checked == true){
+    var i;
+    for (i = 0; i < text.length; i++) {
+      text[i].style.display = "block";
+    }
+  } else {
+    var j;
+    for (j = 0; j < text.length; j++) {
+      text[j].style.display = "none";
+    }
   }
 }

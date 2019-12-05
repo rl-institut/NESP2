@@ -92,6 +92,17 @@ body {
   color: #ffffff;
 }
 
+.filter {
+  display: inline;
+  width: 20rem;
+  float: right;
+  /*white-space: nowrap;
+  padding: 0px 0px 20px 30px; /* top, right, bottom, left*/
+}
+.filter__input{
+  width:45%;
+}
+
 button {
   outline: none;
 }
@@ -179,8 +190,10 @@ button {
 }
 
 .noUi-target {
-    margin-bottom: 75px;
-    margin-top: 50px;
+    margin-bottom: 0rem;
+    margin-top: 0rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
 }
 
 
@@ -193,30 +206,7 @@ button {
  .switch input {
     display:none;
 }
- .slider {
-     position: absolute;
-     cursor: pointer;
-     top: 0;
-     left: 0;
-     right: 0;
-     bottom: 0;
-     background-color: #ccc;
-     -webkit-transition: .4s;
-     transition: .4s;
-     border-radius: 34px;
-}
- .slider:before {
-     position: absolute;
-     content: "";
-     height: 26px;
-     width: 26px;
-     left: 4px;
-     bottom: 4px;
-     background-color: white;
-     -webkit-transition: .4s;
-     transition: .4s;
-     border-radius: 50%;
-}
+
  input:checked + .slider {
      background-color: #210B61;
 }
