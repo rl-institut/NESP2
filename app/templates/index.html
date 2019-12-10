@@ -14,6 +14,9 @@
 	<link rel="stylesheet" href="{{ url_for('static', filename='css/maps.css') }}" />
 	<link rel="stylesheet" href="{{ url_for('static', filename='css/foundation.min.css') }}" />
 	<link rel="stylesheet" href="{{ url_for('static', filename='css/nouislider.min.css') }}" />
+        <script type=text/javascript>
+           $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+        </script>
 </head>
 
 <body>
@@ -180,6 +183,28 @@
 		</div>
 	</div>
 
+    <script type=text/javascript>
+        var text = document.getElementsByName("statesContent");
+        var checkBox = document.getElementById("statesCheckbox")
+        var states_content = {{ states_content|safe }}
+
+        if (states_content == true){
+
+            checkBox.checked = true
+            var i;
+            for (i = 0; i < text.length; i++) {
+                text[i].style.display = "block";
+            }
+        }
+        else {
+
+            checkBox.checked = false
+            var j;
+            for (j = 0; j < text.length; j++) {
+                text[j].style.display = "none";
+            }
+        }
+    </script>
 
 	<!-- 
 	<div class="grid-x">
