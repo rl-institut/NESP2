@@ -67,7 +67,21 @@ function states_cb_fun() {
   var checkBox = document.getElementById("statesCheckbox");
   console.log(checkBox);
   var text = document.getElementsByName("statesContent");
-  if (checkBox.checked == false){
+  if (checkBox.checked == true){
+
+    var i;
+            for (i = 0; i < text.length; i++) {
+                text[i].style.display = "block";
+            }
+
+  }
+  else {
+
+  var j;
+            for (j = 0; j < text.length; j++) {
+                text[j].style.display = "none";
+            }
+
     if (map.hasLayer(statesLayer)){
       map.removeLayer(statesLayer);
     }
