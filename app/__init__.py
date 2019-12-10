@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, render_template
+from flask import Flask, render_template, request, jsonify, url_for, redirect
 
 
 def create_app(test_config=None):
@@ -28,9 +28,13 @@ def create_app(test_config=None):
         pass
 
     # register blueprints (like views in django)
+    @app.route('/_add_params')
+    def add_params():
+        return redirect(url_for('index', **request.args))
+
 
     @app.route('/')
     def index():
-        return render_template('index.html')
+        return render_template('index.html', **request.args)
 
     return app
