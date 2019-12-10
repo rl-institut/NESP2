@@ -78,7 +78,7 @@ function states_cb_fun() {
 //https://dev.to/gaels/an-alternative-to-handle-global-state-in-react-the-url--3753
 
 //https://stackoverflow.com/questions/13063838/add-change-parameter-of-url-and-redirect-to-the-new-url/13064060
-  $.get({url: $SCRIPT_ROOT + "/_add_params",
+  $.get({url: $SCRIPT_ROOT,
   data: {states_content: checkBox.checked},
   });
 
