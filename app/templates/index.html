@@ -14,6 +14,9 @@
 	<link rel="stylesheet" href="{{ url_for('static', filename='css/maps.css') }}" />
 	<link rel="stylesheet" href="{{ url_for('static', filename='css/foundation.min.css') }}" />
 	<link rel="stylesheet" href="{{ url_for('static', filename='css/nouislider.min.css') }}" />
+        <script type=text/javascript>
+           $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+        </script>
 </head>
 
 <body>
@@ -181,6 +184,7 @@
 	</div>
 
 
+
 	<!-- 
 	<div class="grid-x">
 	  <div id="layers" class="cell layers">
@@ -234,9 +238,7 @@
 
   </div>
 
-	<script src="{{ url_for('static', filename='js/sidebar.js') }}" /></script>
-	<script src="{{ url_for('static', filename='js/jquery-3.4.1.min.js') }}"></script>
-	<script src="{{ url_for('static', filename='js/foundation.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/jquery-3.4.1.min.js') }}"></script>
   <script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
   <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js" integrity="sha512-lInM/apFSqyy1o6s89K4iQUKg6ppXEgsVxT35HbzUupEVRh2Eu9Wdl4tHj7dZO0s1uvplcYGmt3498TtHq+log==" crossorigin=""></script>
   <script src="https://unpkg.com/leaflet.markercluster@1.3.0/dist/leaflet.markercluster-src.js" integrity="sha384-NAOEbWFcjnXc7U9GkULPhupHZNAbqru9dS3c+4ANYAwtFoVAWuVuMVDH0DIy4ESp" crossorigin=""></script>
@@ -253,6 +255,20 @@
   <script src="{{ url_for('static', filename='js/layers.js') }}"></script>
   <script src="{{ url_for('static', filename='js/foundation.min.js') }}"></script>
   <script src="{{ url_for('static', filename='js/map.js') }}"></script>
+
+  <script type=text/javascript>
+        var checkBox = document.getElementById("statesCheckbox")
+        {% if states_content is defined %}
+            var states_content = {{ states_content|safe }};
+        {% else %}
+            var states_content=false;
+        {% endif %}
+
+        if (states_content != checkBox.checked){
+            checkBox.click()
+        }
+
+    </script>
 </body>
 
 </html>

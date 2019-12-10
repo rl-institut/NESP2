@@ -1,4 +1,4 @@
-$(document).foundation();
+//$(document).foundation();
 
 var buildingSlider = document.getElementById('areaSlider');
 noUiSlider.create(buildingSlider, {
@@ -63,22 +63,40 @@ function village_button_fun() {
 }
 
 function states_cb_fun() {
+    console.log(window.location.href)
   var checkBox = document.getElementById("statesCheckbox");
+  console.log(checkBox);
   var text = document.getElementsByName("statesContent");
   if (checkBox.checked == true){
+
     var i;
-    for (i = 0; i < text.length; i++) {
-      text[i].style.display = "block";
-    }
-  } else {
-    var j;
-    for (j = 0; j < text.length; j++) {
-      text[j].style.display = "none";
-    }
+            for (i = 0; i < text.length; i++) {
+                text[i].style.display = "block";
+            }
+
+  }
+  else {
+
+  var j;
+            for (j = 0; j < text.length; j++) {
+                text[j].style.display = "none";
+            }
+
     if (map.hasLayer(statesLayer)){
       map.removeLayer(statesLayer);
     }
   }
+
+//https://stackoverflow.com/questions/31765968/toggle-url-parameter-with-button
+
+//https://dev.to/gaels/an-alternative-to-handle-global-state-in-react-the-url--3753
+
+//https://stackoverflow.com/questions/13063838/add-change-parameter-of-url-and-redirect-to-the-new-url/13064060
+  $.get({url: $SCRIPT_ROOT,
+  data: {states_content: checkBox.checked},
+  });
+
+
 }
 
 function states_radio_fun() {
@@ -119,3 +137,47 @@ function clusters_cb_fun() {
     }
   }
 }
+
+
+function addParameter(url, parameterName, parameterValue, atStart/*Add param before others*/){
+    replaceDuplicates = true;
+    if(url.indexOf('#') > 0){
+        var cl = url.indexOf('#');
+        urlhash = url.substring(url.indexOf('#'),url.length);
+    } else {
+        urlhash = '';
+        cl = url.length;
+    }
+    sourceUrl = url.substring(0,cl);
+
+    var urlParts = sourceUrl.split("?");
+    var newQueryString = "";
+
+    if (urlParts.length > 1)
+    {
+        var parameters = urlParts[1].split("&");
+        for (var i=0; (i < parameters.length); i++)
+        {
+            var parameterParts = parameters[i].split("=");
+            if (!(replaceDuplicates && parameterParts[0] == parameterName))
+            {
+                if (newQueryString == "")
+                    newQueryString = "?";
+                else
+                    newQueryString += "&";
+                newQueryString += parameterParts[0] + "=" + (parameterParts[1]?parameterParts[1]:'');
+            }
+        }
+    }
+    if (newQueryString == "")
+        newQueryString = "?";
+
+    if(atStart){
+        newQueryString = '?'+ parameterName + "=" + parameterValue + (newQueryString.length>1?'&'+newQueryString.substring(1):'');
+    } else {
+        if (newQueryString !== "" && newQueryString != '?')
+            newQueryString += "&";
+        newQueryString += parameterName + "=" + (parameterValue?parameterValue:'');
+    }
+    return urlParts[0] + newQueryString + urlhash;
+};
