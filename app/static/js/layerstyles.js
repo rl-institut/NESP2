@@ -21,3 +21,13 @@ var statesStyle3 = {
   color: "#c5c4cf",
   weight: 1
 };
+
+var gridStyle33kv = {
+  color: "#f54a2b",
+  weight: 2
+};
+
+var gridStyle11kv = {
+  color: "#f54a2b",
+  weight: 1
+};

@@ -10,7 +10,19 @@ var statesLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_
       return statesStyle
     }
   }
-})
+});
+
+var gridLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_grid-enugu/{z}/{x}/{y}.pbf", {
+  rendererFactory: L.canvas.tile,
+  vectorTileLayerStyles: {
+    elevenkv: function(prop, zoom) {
+      return gridStyle33kv
+    },
+    thirtythreekv: function(prop, zoom) {
+      return gridStyle11kv
+    },
+  }
+});
 
 let vecTileLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp/{z}/{x}/{y}.pbf", {
   rendererFactory: L.canvas.tile,
