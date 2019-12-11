@@ -29,6 +29,7 @@ Here is a template for new release sections
 - flask structure (#21)
 ### Changed
 - level buttons indicate status (#9)
+- level buttons control options (#10)
 - sidebar style (#10)
 ### Removed
 - redundant accordion menu (#10)
