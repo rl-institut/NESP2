@@ -48,7 +48,7 @@
 	</div>
 
     <div class="grid-x">
-      <div class="cell">
+      <div class="cell n_show s_show v_hide">
         <div class="sidebar-panel">
           <div class="sidebar-panel-item is-active" data-accordion-item>
             <p href="#" class="sidebar-panel-item-title">States (availability)</p>
@@ -63,7 +63,7 @@
     </div>
 
     <div class="grid-x">
-      <div class="cell">
+      <div class="cell n_show s_show v_hide">
         <div class="sidebar-panel sidebar-panel-content" name="statesContent">
           <div class="sidebar-panel-item">
             <p href="#" class="sidebar-panel-item-title">Grid Tracking</p>
@@ -78,7 +78,7 @@
     </div>
 
     <div class="grid-x">
-      <div class="cell">
+      <div class="cell n_show s_show v_hide">
         <div class="sidebar-panel sidebar-panel-content" name="statesContent">
           <div class="sidebar-panel-item">
             <p href="#" class="sidebar-panel-item-title">Remote Mapping</p>
@@ -92,7 +92,7 @@
       </div>	
     </div>
     <div class="grid-x">
-      <div class="cell">
+      <div class="cell n_show s_show v_hide">
         <div class="sidebar-panel sidebar-panel-content" name="statesContent">
           <div class="sidebar-panel-item">
             <p href="#" class="sidebar-panel-item-title">Surveying</p>
@@ -108,7 +108,37 @@
     <div>
 
     <div class="grid-x">
-      <div class="cell">
+      <div class="cell n_show s_hide v_hide">
+        <div class="sidebar-panel">
+          <div class="sidebar-panel-item is-active" data-accordion-item>
+            <p href="#" class="sidebar-panel-item-title">LGAs</p>
+            <div class="sidebar-panel-item-button">
+              <input class="switch-input" id="lgaCheckbox" type="checkbox" onclick="lga_cb_fun()">
+              <label class="switch-paddle" for="lgaCheckbox">
+              </label>
+            </div>
+          </div>
+        </div>	
+      </div>	
+    </div>
+
+    <div class="grid-x">
+      <div class="cell n_hide s_show v_hide" style="display:none">
+        <div class="sidebar-panel">
+          <div class="sidebar-panel-item is-active" data-accordion-item>
+            <p href="#" class="sidebar-panel-item-title">Building Density</p>
+            <div class="sidebar-panel-item-button">
+              <input class="switch-input" id="buildingDensityCheckbox" type="checkbox" onclick="building_density_cb_fun()">
+              <label class="switch-paddle" for="buildingDensityCheckbox">
+              </label>
+            </div>
+          </div>
+        </div>	
+      </div>	
+    </div>
+
+    <div class="grid-x">
+      <div class="cell" >
         <div class="sidebar-panel">
           <div class="sidebar-panel-item" data-accordion-item>
             <p href="#" class="sidebar-panel-item-title">Clusters</p>
@@ -165,26 +195,25 @@
       </div>	
     </div>
 
-
+    <div class="grid-x">
+      <div class="cell n_hide s_hide v_show" style="display:none">
+        <div class="sidebar-panel">
+          <div class="sidebar-panel-item is-active" data-accordion-item>
+            <p href="#" class="sidebar-panel-item-title">Infrastructure</p>
+            <div class="sidebar-panel-item-button">
+              <input class="switch-input" id="infrastructureCheckbox" type="checkbox" onclick="infrastructure_cb_fun()">
+              <label class="switch-paddle" for="infrastructureCheckbox">
+              </label>
+            </div>
+          </div>
+        </div>	
+      </div>	
+    </div>
 
 	<!-- 
 	<div class="grid-x">
 	  <div id="layers" class="cell layers">
 		<p> LAYERS </p>
-	  </div>
-	  <div id="states" class="layer n_show s_show v_hide">
-		<p> States (Data availability)
-		  <input type="checkbox" id="states_cb" onclick="states_cb_fun()">
-		  <div class="substate" style="display:none"> Grid tracking
-			<input type="radio" name="state_radio">
-		  </div>
-		  <div class="substate" style="display:none">Remote mapping
-			<input type="radio" name="state_radio">
-		  </div>
-		  <div class="substate" style="display:none">Surveying
-			<input type="radio" name="state_radio">
-		  </div>
-		</p>
 	  </div>
 	  <div id="lgas" class="layer n_show s_hide v_hide">
 		<p> LGAs 
