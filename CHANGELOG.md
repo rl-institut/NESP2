@@ -31,7 +31,7 @@ Here is a template for new release sections
 - level buttons indicate status (#9)
 - sidebar style (#10)
 ### Removed
--
+- redundant accordion menu (#10)
 
 
 ## [0.0.1] 2019-11-11
