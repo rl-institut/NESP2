@@ -138,6 +138,19 @@ function clusters_cb_fun() {
   }
 }
 
+function grid_cb_fun() {
+  var checkBox = document.getElementById("gridCheckbox");
+  if (checkBox.checked == true){
+    if (map.hasLayer(gridLayer) == false){
+      map.addLayer(gridLayer);
+    }
+  }
+  if (checkBox.checked == false){
+    if (map.hasLayer(gridLayer) == true){
+      map.removeLayer(gridLayer);
+    }
+  }
+}
 
 function addParameter(url, parameterName, parameterValue, atStart/*Add param before others*/){
     replaceDuplicates = true;
