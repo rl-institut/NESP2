@@ -1,5 +1,4 @@
-Webmap (using leaflet) for visualizing village cluster identification and prioritization for off-grid electrification in Tanzania.
-
+Webmap (using leaflet) for visualizing data for electrification planning in Nigeria
 ## Getting started
 
 After cloning this repository, checkout the `dev` branch
