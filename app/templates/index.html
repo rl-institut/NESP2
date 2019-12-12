@@ -23,6 +23,9 @@
 {% block header %}{% endblock %}
 
 {% block content %}
+<div id="map-content" class="grid-x">
+
+  <div id="sidebar" class="cell medium-10 large-3 left grid-container full">
 	<div class="grid-x sidebar-levels">
 	  <div id="national" class="cell small-6 level sidebar__btn active">
 			<button onclick="national_button_fun()">National level</button>
@@ -211,6 +214,8 @@
     </div>
 
   </div>
+
+  <div id="map" class="cell medium-10 large-9"></div>
 
   <script src="{{ url_for('static', filename='js/jquery-3.4.1.min.js') }}"></script>
   <script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
