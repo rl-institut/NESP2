@@ -19,6 +19,11 @@ header, footer {
     background-color: green;
 }
 
+
+#map-content{
+    margin-top: 5px;
+}
+
 #map{
     height: 600px
 }
