@@ -11,14 +11,6 @@ body {
      line-height: 150%;
 }
 
-header, footer {
-    display: flex;
-    justify-content: center;
-    font-size: 2rem;
-    color: white;
-    background-color: green;
-}
-
 
 #map-content{
     margin-top: 5px;
