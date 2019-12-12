@@ -11,6 +11,10 @@ body {
      line-height: 150%;
 }
 
+#map{
+    height: 600px
+}
+
 .split {
   height: 100%;
   position: fixed;

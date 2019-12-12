@@ -27,10 +27,13 @@ Here is a template for new release sections
 - dropdown option selectability
 - foundation structure and styles (#10)
 - flask structure (#21)
+- base html template (#53)
 ### Changed
 - level buttons indicate status (#9)
 - level buttons control options (#10)
 - sidebar style (#10)
+- update leaflet version (#53)
+- split page using grid-x rather than css (#53)
 ### Removed
 - redundant accordion menu (#10)
 
