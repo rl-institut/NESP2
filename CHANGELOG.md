@@ -20,6 +20,7 @@ Here is a template for new release sections
 ## [Unreleased]
 
 ### Added
+- Satellite imagery layer (#7)
 - GridLayer (#10)
 - clusters sliders for area and distance to grid (#12)
 - clusters switch (#12)
