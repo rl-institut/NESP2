@@ -15,6 +15,7 @@ map.addLayer(osm);
 
 var baseMaps = {
   "OpenStreetMap": osm,
+  "esri" : esri,
 };
 
 L.control.zoom({
@@ -123,5 +124,5 @@ L.control.scale({
             // "Priority Clusters": markers
         };
         L.control.layers(baseMaps, overlayMaps).addTo(map);
-        map.on("layeradd",function (){vecTileLayer.bringToFront();});
+        map.on("layeradd",function (){vecTileLayer.bringToFront(); esri.bringToBack(); osm.bringToBack();});
         map.fireEvent("filterchange", currentfilter);
