@@ -1,3 +1,21 @@
+var statesStyleGeojsonTransparent = {
+  color: "#ffffff",
+  weight: 0,
+  opacity: 0,
+  fill: true,
+  fillColor: "#ffffff",
+  fillOpacity: 0,
+};
+
+var statesStyleGeojsonHighlight = {
+  color: "#000000",
+  weight: 0,
+  opacity: 0,
+  fill: true,
+  fillColor: "#000000",
+  fillOpacity: 0.2,
+};
+
 var statesStyle1 = {
   fill: true,
   fillColor: "#085064",
