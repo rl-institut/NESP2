@@ -32,6 +32,9 @@ function national_button_fun() {
   document.getElementById("national").className = "cell small-6 level sidebar__btn active";
   document.getElementById("state").className = "cell small-6 level sidebar__btn";
   document.getElementById("village").className = "cell level sidebar__btn";
+
+  map.fitBounds([[6.153, 2.608],[13.892, 14.791]]);
+  nigeria_states_geojson.addTo(map);
 }
 
 function state_button_fun() {

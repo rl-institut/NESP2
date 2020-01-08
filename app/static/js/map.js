@@ -26,32 +26,7 @@ L.control.scale({
     position: "bottomright"
 }).addTo(map);
 
-
-function highlightFeature(e) {
-  highlightLayer = e.target;
-  highlightLayer.setStyle(statesStyleGeojsonHighlight);
-}
-
-function lowlightFeature(e) {
-  lowlightLayer = e.target;
-  lowlightLayer.setStyle(statesStyleGeojsonTransparent);
-}
-
-function highlight_state(feature, layer) {
-    layer.on({
-        mouseover: highlightFeature,
-        mouseout: lowlightFeature,
-    });
-}          
-
-var nigeria_states_geojson = L.geoJSON([nigeria_states_simplified], {
-  style: function (feature) {
-    return(statesStyleGeojsonTransparent);
-  },
-  onEachFeature: highlight_state,
-}).addTo(map);
-
-
+national_button_fun()
 
         vecTileLayer.highlight = null;
         vecTileLayer.hidden = null;

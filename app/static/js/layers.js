@@ -17,6 +17,39 @@ var statesLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_
   }
 });
 
+function highlightFeature(e) {
+  highlightLayer = e.target;
+  highlightLayer.setStyle(statesStyleGeojsonHighlight);
+}
+
+function lowlightFeature(e) {
+  lowlightLayer = e.target;
+  lowlightLayer.setStyle(statesStyleGeojsonTransparent);
+}
+
+function highlight_state(feature, layer) {
+  layer.on({
+    mouseover: highlightFeature,
+    mouseout: lowlightFeature,
+  });
+  layer.on('click',function() { 
+    document.getElementById("stateSelect").value = feature.properties["name"];
+  });
+}      
+
+var nigeria_states_geojson = L.geoJSON([nigeria_states_simplified], {
+  style: function (feature) {
+    return(statesStyleGeojsonTransparent);
+  },
+  onEachFeature: highlight_state,
+});
+
+nigeria_states_geojson.on("click", function (event) {
+  map.fitBounds(event.layer.getBounds());
+  map.removeLayer(nigeria_states_geojson);
+  state_button_fun();
+});
+
 var gridLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_grid-enugu/{z}/{x}/{y}.pbf", {
   rendererFactory: L.canvas.tile,
   vectorTileLayerStyles: {
