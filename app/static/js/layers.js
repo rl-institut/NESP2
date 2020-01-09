@@ -12,7 +12,18 @@ var statesLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_
   rendererFactory: L.canvas.tile,
   vectorTileLayerStyles: {
     states: function(prop, zoom) {
-      return statesStyle
+      var col = "#ffff00";
+      if (prop.availability === 7) { col = stateAvailabilityColor.green;}
+      if (prop.availability === 6 || prop.availability === 5 || prop.availability === 3 ) { col = stateAvailabilityColor.yellow;}
+      if (prop.availability === 4 || prop.availability === 2 || prop.availability === 1 ) { col = stateAvailabilityColor.orange;}
+      if (prop.availability === 0) { col = stateAvailabilityColor.red;}
+      return {
+        weight: 1,
+        color: "#000000",
+        fill: true,
+        fillColor: col,
+        fillOpacity: 0.3,
+      }
     }
   }
 });
