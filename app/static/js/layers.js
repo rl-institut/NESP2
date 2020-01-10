@@ -29,20 +29,36 @@ var statesLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_
 });
 
 function highlightFeature(e) {
+  var tooltipContent = "<b>" + e.target.feature.properties.name + "</b> Availability:<br>";
+  var avail = {
+    gridTracking: "<b>✕</b>",
+    remoteMapping: "<b>✕</b>",
+    Surveying: "<b>✕</b>",
+  }
+  if (e.target.feature.properties.availability >= 4) {avail.gridTracking = "<b>✓</b>";}
+  if (e.target.feature.properties.availability %4 >= 2) {avail.gridTracking = "<b>✓</b>";}
+  if (e.target.feature.properties.availability % 2 === 1) {avail.Surveying = "<b>✓</b>";}
+  tooltipContent = tooltipContent + "Grid Tracking: " + avail.gridTracking + "<br>";
+  tooltipContent = tooltipContent + "Remote Mapping: " + avail.remoteMapping + "<br>";
+  tooltipContent = tooltipContent + "Surveying: " + avail.Surveying + "<br>";
   highlightLayer = e.target;
   highlightLayer.setStyle(statesStyleGeojsonHighlight);
+  highlightLayer.bindTooltip(tooltipContent);
+  highlightLayer.openTooltip();
+//  alert("jjj");
 }
 
 function lowlightFeature(e) {
   lowlightLayer = e.target;
   lowlightLayer.setStyle(statesStyleGeojsonTransparent);
+  //highlightLayer.closePopup();
 }
 
 function highlight_state(feature, layer) {
   layer.on({
     mouseover: highlightFeature,
     mouseout: lowlightFeature,
-  });
+  });  
   layer.on('click',function() { 
     document.getElementById("stateSelect").value = feature.properties["name"];
   });
