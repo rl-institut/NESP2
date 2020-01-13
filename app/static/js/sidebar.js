@@ -33,7 +33,19 @@ function national_button_fun() {
   document.getElementById("state").className = "cell small-6 level sidebar__btn";
   document.getElementById("village").className = "cell level sidebar__btn";
 
+  
+  document.getElementById("statesCheckbox").checked = true;
+  states_cb_fun();
+  document.getElementById("gridtrackingCB").checked = true;
+  states_radio_fun();
+  
+  if (document.getElementById("gridCheckbox").checked == false){
+    document.getElementById("gridCheckbox").checked = true;
+    grid_cb_fun();
+  }
+
   map.fitBounds([[6.153, 2.608],[13.892, 14.791]]);
+  map.options.maxZoom = 7;
   nigeria_states_geojson.addTo(map);
 }
 
@@ -71,34 +83,31 @@ function states_cb_fun() {
   console.log(checkBox);
   var text = document.getElementsByName("statesContent");
   if (checkBox.checked == true){
-
     var i;
-            for (i = 0; i < text.length; i++) {
-                text[i].style.display = "block";
-            }
-
+    for (i = 0; i < text.length; i++) {
+      text[i].style.display = "block";
+    }
+    document.getElementById("gridtrackingCB").checked = true;
+    states_radio_fun();
   }
   else {
-
-  var j;
-            for (j = 0; j < text.length; j++) {
-                text[j].style.display = "none";
-            }
-
+    var j;
+      for (j = 0; j < text.length; j++) {
+        text[j].style.display = "none";
+      }
     if (map.hasLayer(statesLayer)){
       map.removeLayer(statesLayer);
     }
   }
 
 //https://stackoverflow.com/questions/31765968/toggle-url-parameter-with-button
-
 //https://dev.to/gaels/an-alternative-to-handle-global-state-in-react-the-url--3753
-
 //https://stackoverflow.com/questions/13063838/add-change-parameter-of-url-and-redirect-to-the-new-url/13064060
   $.get({url: $SCRIPT_ROOT,
-  data: {states_content: checkBox.checked},
+  data: {
+    states_content: checkBox.checked,
+  },
   });
-
 
 }
 
@@ -153,6 +162,13 @@ function grid_cb_fun() {
       map.removeLayer(gridLayer);
     }
   }
+
+  $.get({url: $SCRIPT_ROOT,
+  data: {
+    grid_content: gCheckBox.checked,
+  },
+  });
+
 }
 
 function addParameter(url, parameterName, parameterValue, atStart/*Add param before others*/){
