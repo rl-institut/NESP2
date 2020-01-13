@@ -254,6 +254,17 @@
             checkBox.click()
         }
 
+        var gCheckBox = document.getElementById("gridCheckbox")
+        {% if grid_content is defined %}
+            var grid_content = {{ grid_content|safe }};
+        {% else %}
+            var grid_content=false;
+        {% endif %}
+
+        if (grid_content != gCheckBox.checked){
+            gCheckBox.click()
+        }
+
     </script>
   </div>
 {% endblock %}
