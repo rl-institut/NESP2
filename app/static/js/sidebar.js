@@ -46,7 +46,6 @@ function national_button_fun() {
 
   map.fitBounds([[6.153, 2.608],[13.892, 14.791]]);
   map.options.maxZoom = 7;
-  nigeria_states_geojson.addTo(map);
 }
 
 function state_button_fun() {
@@ -88,6 +87,7 @@ function states_cb_fun() {
       text[i].style.display = "block";
     }
     document.getElementById("gridtrackingCB").checked = true;
+    nigeria_states_geojson.addTo(map);
     states_radio_fun();
   }
   else {
