@@ -31,7 +31,12 @@ def create_app(test_config=None):
 
     @app.route('/')
     def index():
-
+        defaultArgs = {
+            "states_content": 1,
+            "grid_content": 1
+        }
+        if request.args == {}:
+            request.args = defaultArgs
 
         return render_template('index.html', **request.args)
 
