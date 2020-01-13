@@ -1,6 +1,6 @@
 var options = {
   center: [9, 7],
-  zoom: 7,
+  zoom: 6,
   minZoom: 6,
   maxZoom: 15,
   zoomControl: false,

@@ -36,7 +36,7 @@ function highlightFeature(e) {
     Surveying: "<b>✕</b>",
   }
   if (e.target.feature.properties.availability >= 4) {avail.gridTracking = "<b>✓</b>";}
-  if (e.target.feature.properties.availability %4 >= 2) {avail.gridTracking = "<b>✓</b>";}
+  if (e.target.feature.properties.availability % 4 >= 2) {avail.remoteMapping = "<b>✓</b>";}
   if (e.target.feature.properties.availability % 2 === 1) {avail.Surveying = "<b>✓</b>";}
   tooltipContent = tooltipContent + "Grid Tracking: " + avail.gridTracking + "<br>";
   tooltipContent = tooltipContent + "Remote Mapping: " + avail.remoteMapping + "<br>";
