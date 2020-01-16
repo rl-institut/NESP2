@@ -1,6 +1,6 @@
 var options = {
   center: [9, 7],
-  zoom: 7,
+  zoom: 6,
   minZoom: 6,
   maxZoom: 15,
   zoomControl: false,
@@ -26,9 +26,7 @@ L.control.scale({
     position: "bottomright"
 }).addTo(map);
 
-
-
-
+//national_button_fun();
 
         vecTileLayer.highlight = null;
         vecTileLayer.hidden = null;

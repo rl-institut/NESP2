@@ -8,14 +8,82 @@ var esri = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Wor
   attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
 });
 
+var buildingDensity = L.tileLayer("https:tile.rl-institut.de/data/nesp2_building-density-heatmap/{z}/{x}/{y}.png", {
+  maxZoom: 19,
+  opacity: 0.5,
+  attribution: '☮'
+});
+
 var statesLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_states/{z}/{x}/{y}.pbf", {
   rendererFactory: L.canvas.tile,
   vectorTileLayerStyles: {
     states: function(prop, zoom) {
-      return statesStyle
+      var col = "#ffff00";
+      if (prop.availability === 7) { col = stateAvailabilityColor.green;}
+      if (prop.availability === 6 || prop.availability === 5 || prop.availability === 3 ) { col = stateAvailabilityColor.yellow;}
+      if (prop.availability === 4 || prop.availability === 2 || prop.availability === 1 ) { col = stateAvailabilityColor.orange;}
+      if (prop.availability === 0) { col = stateAvailabilityColor.red;}
+      return {
+        weight: 1,
+        color: "#000000",
+        fill: true,
+        fillColor: col,
+        fillOpacity: 0.3,
+      }
     }
   }
 });
+
+function highlightFeature(e) {
+  var tooltipContent = "<b>" + e.target.feature.properties.name + "</b> Availability:<br>";
+  var avail = {
+    gridTracking: "<b>✕</b>",
+    remoteMapping: "<b>✕</b>",
+    Surveying: "<b>✕</b>",
+  }
+  if (e.target.feature.properties.availability >= 4) {avail.gridTracking = "<b>✓</b>";}
+  if (e.target.feature.properties.availability % 4 >= 2) {avail.remoteMapping = "<b>✓</b>";}
+  if (e.target.feature.properties.availability % 2 === 1) {avail.Surveying = "<b>✓</b>";}
+  tooltipContent = tooltipContent + "Grid Tracking: " + avail.gridTracking + "<br>";
+  tooltipContent = tooltipContent + "Remote Mapping: " + avail.remoteMapping + "<br>";
+  tooltipContent = tooltipContent + "Surveying: " + avail.Surveying + "<br>";
+  highlightLayer = e.target;
+  highlightLayer.setStyle(statesStyleGeojsonHighlight);
+  highlightLayer.bindTooltip(tooltipContent);
+  highlightLayer.openTooltip();
+//  alert("jjj");
+}
+
+function lowlightFeature(e) {
+  lowlightLayer = e.target;
+  lowlightLayer.setStyle(statesStyleGeojsonTransparent);
+  //highlightLayer.closePopup();
+}
+
+function highlight_state(feature, layer) {
+  layer.on({
+    mouseover: highlightFeature,
+    mouseout: lowlightFeature,
+  });  
+  layer.on('click',function() { 
+    document.getElementById("stateSelect").value = feature.properties["name"];
+  });
+}      
+
+var nigeria_states_geojson = L.geoJSON([nigeria_states_simplified], {
+  style: function (feature) {
+    return(statesStyleGeojsonTransparent);
+  },
+  onEachFeature: highlight_state,
+});
+
+nigeria_states_geojson.on("click", function (event) {
+  map.options.maxZoom = 15;
+  map.fitBounds(event.layer.getBounds());
+  map.removeLayer(nigeria_states_geojson);
+  state_button_fun();
+});
+
 
 var gridLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_grid-enugu/{z}/{x}/{y}.pbf", {
   rendererFactory: L.canvas.tile,
@@ -24,6 +92,102 @@ var gridLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_gr
       return gridStyle33kv
     },
     thirtythreekv: function(prop, zoom) {
+      return gridStyle11kv
+    },
+  }
+});
+
+var gridLayerJigawa = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_state_grid_jigawa/{z}/{x}/{y}.pbf", {
+  rendererFactory: L.canvas.tile,
+  vectorTileLayerStyles: {
+    '11_kV_jigawa': function(prop, zoom) {
+      return gridStyle33kv
+    },
+    '33_kV_jigawa': function(prop, zoom) {
+      return gridStyle11kv
+    },
+  }
+});
+
+var gridLayerKaduna = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_state_grid_kaduna/{z}/{x}/{y}.pbf", {
+  rendererFactory: L.canvas.tile,
+  vectorTileLayerStyles: {
+    '11_kV_kaduna': function(prop, zoom) {
+      return gridStyle33kv
+    },
+    '33_kV_kaduna': function(prop, zoom) {
+      return gridStyle11kv
+    },
+  }
+});
+
+var gridLayerKatsina = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_state_grid_katsina/{z}/{x}/{y}.pbf", {
+  rendererFactory: L.canvas.tile,
+  vectorTileLayerStyles: {
+    '11_kV_katsina': function(prop, zoom) {
+      return gridStyle33kv
+    },
+    '33_kV_katsina': function(prop, zoom) {
+      return gridStyle11kv
+    },
+  }
+});
+
+var gridLayerKebbi = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_state_grid_kebbi/{z}/{x}/{y}.pbf", {
+  rendererFactory: L.canvas.tile,
+  vectorTileLayerStyles: {
+    '11_kV_kebbi': function(prop, zoom) {
+      return gridStyle33kv
+    },
+    '33_kV_kebbi': function(prop, zoom) {
+      return gridStyle11kv
+    },
+  }
+});
+
+var gridLayerNasawara = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_state_grid_nasawara/{z}/{x}/{y}.pbf", {
+  rendererFactory: L.canvas.tile,
+  vectorTileLayerStyles: {
+    '11_kV_nasawara': function(prop, zoom) {
+      return gridStyle33kv
+    },
+    '33_kV_nasawara': function(prop, zoom) {
+      return gridStyle11kv
+    },
+  }
+});
+
+var gridLayerOsun = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_state_grid_osun/{z}/{x}/{y}.pbf", {
+  rendererFactory: L.canvas.tile,
+  vectorTileLayerStyles: {
+    '11_kV_osun': function(prop, zoom) {
+      return gridStyle33kv
+    },
+    '33_kV_osun': function(prop, zoom) {
+      return gridStyle11kv
+    },
+  }
+});
+
+var gridLayerSokoto = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_state_grid_sokoto/{z}/{x}/{y}.pbf", {
+  rendererFactory: L.canvas.tile,
+  vectorTileLayerStyles: {
+    '11_kV_sokoto': function(prop, zoom) {
+      return gridStyle33kv
+    },
+    '33_kV_sokoto': function(prop, zoom) {
+      return gridStyle11kv
+    },
+  }
+});
+
+var gridLayerZamfara = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_state_grid_zamfara/{z}/{x}/{y}.pbf", {
+  rendererFactory: L.canvas.tile,
+  vectorTileLayerStyles: {
+    '11_kV_zamfara': function(prop, zoom) {
+      return gridStyle33kv
+    },
+    '33_kV_zamfara': function(prop, zoom) {
       return gridStyle11kv
     },
   }
