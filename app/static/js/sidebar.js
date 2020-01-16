@@ -168,8 +168,22 @@ function grid_cb_fun() {
     grid_content: gCheckBox.checked,
   },
   });
-
 }
+
+function building_density_cb_fun() {
+  var checkBox = document.getElementById("buildingDensityCheckbox");
+  if (checkBox.checked == true){
+    if (map.hasLayer(buildingDensity) == false){
+      map.addLayer(buildingDensity);
+    }
+  }
+  if (checkBox.checked == false){
+    if (map.hasLayer(buildingDensity) == true){
+      map.removeLayer(buildingDensity);
+    }
+  }
+}
+
 
 function addParameter(url, parameterName, parameterValue, atStart/*Add param before others*/){
     replaceDuplicates = true;
