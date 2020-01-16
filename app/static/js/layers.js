@@ -10,7 +10,7 @@ var esri = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Wor
 
 var buildingDensity = L.tileLayer("https:tile.rl-institut.de/data/nesp2_building-density-heatmap/{z}/{x}/{y}.png", {
   maxZoom: 19,
-  opacity: 0.25,
+  opacity: 0.5,
   attribution: '☮'
 });
 
@@ -84,6 +84,7 @@ nigeria_states_geojson.on("click", function (event) {
   state_button_fun();
 });
 
+
 var gridLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_grid-enugu/{z}/{x}/{y}.pbf", {
   rendererFactory: L.canvas.tile,
   vectorTileLayerStyles: {
@@ -91,6 +92,102 @@ var gridLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_gr
       return gridStyle33kv
     },
     thirtythreekv: function(prop, zoom) {
+      return gridStyle11kv
+    },
+  }
+});
+
+var gridLayerJigawa = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_state_grid_jigawa/{z}/{x}/{y}.pbf", {
+  rendererFactory: L.canvas.tile,
+  vectorTileLayerStyles: {
+    '11_kV_jigawa': function(prop, zoom) {
+      return gridStyle33kv
+    },
+    '33_kV_jigawa': function(prop, zoom) {
+      return gridStyle11kv
+    },
+  }
+});
+
+var gridLayerKaduna = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_state_grid_kaduna/{z}/{x}/{y}.pbf", {
+  rendererFactory: L.canvas.tile,
+  vectorTileLayerStyles: {
+    '11_kV_kaduna': function(prop, zoom) {
+      return gridStyle33kv
+    },
+    '33_kV_kaduna': function(prop, zoom) {
+      return gridStyle11kv
+    },
+  }
+});
+
+var gridLayerKatsina = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_state_grid_katsina/{z}/{x}/{y}.pbf", {
+  rendererFactory: L.canvas.tile,
+  vectorTileLayerStyles: {
+    '11_kV_katsina': function(prop, zoom) {
+      return gridStyle33kv
+    },
+    '33_kV_katsina': function(prop, zoom) {
+      return gridStyle11kv
+    },
+  }
+});
+
+var gridLayerKebbi = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_state_grid_kebbi/{z}/{x}/{y}.pbf", {
+  rendererFactory: L.canvas.tile,
+  vectorTileLayerStyles: {
+    '11_kV_kebbi': function(prop, zoom) {
+      return gridStyle33kv
+    },
+    '33_kV_kebbi': function(prop, zoom) {
+      return gridStyle11kv
+    },
+  }
+});
+
+var gridLayerNasawara = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_state_grid_nasawara/{z}/{x}/{y}.pbf", {
+  rendererFactory: L.canvas.tile,
+  vectorTileLayerStyles: {
+    '11_kV_nasawara': function(prop, zoom) {
+      return gridStyle33kv
+    },
+    '33_kV_nasawara': function(prop, zoom) {
+      return gridStyle11kv
+    },
+  }
+});
+
+var gridLayerOsun = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_state_grid_osun/{z}/{x}/{y}.pbf", {
+  rendererFactory: L.canvas.tile,
+  vectorTileLayerStyles: {
+    '11_kV_osun': function(prop, zoom) {
+      return gridStyle33kv
+    },
+    '33_kV_osun': function(prop, zoom) {
+      return gridStyle11kv
+    },
+  }
+});
+
+var gridLayerSokoto = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_state_grid_sokoto/{z}/{x}/{y}.pbf", {
+  rendererFactory: L.canvas.tile,
+  vectorTileLayerStyles: {
+    '11_kV_sokoto': function(prop, zoom) {
+      return gridStyle33kv
+    },
+    '33_kV_sokoto': function(prop, zoom) {
+      return gridStyle11kv
+    },
+  }
+});
+
+var gridLayerZamfara = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_state_grid_zamfara/{z}/{x}/{y}.pbf", {
+  rendererFactory: L.canvas.tile,
+  vectorTileLayerStyles: {
+    '11_kV_zamfara': function(prop, zoom) {
+      return gridStyle33kv
+    },
+    '33_kV_zamfara': function(prop, zoom) {
       return gridStyle11kv
     },
   }
