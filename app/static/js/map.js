@@ -69,7 +69,7 @@ L.control.scale({
         // const AREA = 0,POP = 1,LONG = 3,LAT = 4,INFO = 5;
         let currentfilter = {
             minarea: 0.001,
-            maxarea: 100,
+            maxarea: 10,
             minpop: 1,
             maxpop: 1000000,
         };
@@ -124,3 +124,13 @@ L.control.scale({
         L.control.layers(baseMaps, overlayMaps).addTo(map);
         map.on("layeradd",function (){vecTileLayer.bringToFront(); esri.bringToBack(); osm.bringToBack();});
         map.fireEvent("filterchange", currentfilter);
+
+
+
+        //map.addLayer(vecTileLayer);
+        map.on("click", function() {
+            vecTileLayer.clearHighlight();
+        });
+        map.on("popupclose", function() {
+            vecTileLayer.clearHighlight();
+        });

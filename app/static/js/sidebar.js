@@ -1,13 +1,19 @@
 //$(document).foundation();
 
-var buildingSlider = document.getElementById('areaSlider');
-noUiSlider.create(buildingSlider, {
-    start: [300, 1500],
+var areaSlider = document.getElementById('areaSlider');
+noUiSlider.create(areaSlider, {
+    start: [1, 5],
     connect: true,
     range: {
         'min': [0, 0],
-        'max': [3000,3000],
+        'max': [10,10],
     }
+});
+
+areaSlider.noUiSlider.on("change", function(str, h, values) {
+    currentfilter.minarea = values[0];
+    currentfilter.maxarea = values[1];
+    map.fireEvent("filterchange", currentfilter);
 });
 
 var dtgSlider = document.getElementById('dtgSlider');
@@ -142,12 +148,38 @@ function clusters_cb_fun() {
     for (i = 0; i < text.length; i++) {
       text[i].style.display = "block";
     }
+    if (map.hasLayer(vecTileLayer) == false){
+      map.addLayer(vecTileLayer);
+    }
   } else {
     var j;
     for (j = 0; j < text.length; j++) {
       text[j].style.display = "none";
     }
+    if (map.hasLayer(vecTileLayer) == true){
+      map.removeLayer(vecTileLayer);
+    }
   }
+
+  var checkBox = document.getElementById("gridCheckbox");
+  if (checkBox.checked == true){
+    if (map.hasLayer(gridLayer) == false){
+      map.addLayer(gridLayer);
+    }
+  }
+  if (checkBox.checked == false){
+    if (map.hasLayer(gridLayer) == true){
+      map.removeLayer(gridLayer);
+    }
+  }
+
+  $.get({url: $SCRIPT_ROOT,
+  data: {
+    grid_content: gCheckBox.checked,
+  },
+  });
+
+
 }
 
 function grid_cb_fun() {
