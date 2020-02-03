@@ -3,6 +3,11 @@ var osm = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
   attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 });
 
+var hot = L.tileLayer("https://tile-{s}.openstreetmap.fr/hot/{z}/{x}/{y}.png", {
+  maxZoom: 19,
+  attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+});
+
 var esri = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
   maxZoom: 19,
   attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
@@ -78,7 +83,7 @@ var nigeria_states_geojson = L.geoJSON([nigeria_states_simplified], {
 });
 
 nigeria_states_geojson.on("click", function (event) {
-  map.options.maxZoom = 15;
+  map.options.maxZoom = 19;
   map.fitBounds(event.layer.getBounds());
   map.removeLayer(nigeria_states_geojson);
   state_button_fun();
@@ -230,7 +235,7 @@ let vecTileLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp/
       smoothFactor: 5
     }
   },
-  maxZoom: 15,
+  maxZoom: 19,
   minZoom: 5,
   interactive: true,
   getFeatureId: function(f) {
