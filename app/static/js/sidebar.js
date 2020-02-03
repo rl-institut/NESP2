@@ -38,19 +38,11 @@ function national_button_fun() {
   document.getElementById("national").className = "cell small-6 level sidebar__btn active";
   document.getElementById("state").className = "cell small-6 level sidebar__btn";
   document.getElementById("village").className = "cell level sidebar__btn";
-
   
   document.getElementById("statesCheckbox").checked = true;
   states_cb_fun();
-  document.getElementById("gridtrackingCB").checked = true;
-  states_radio_fun();
   
-  if (document.getElementById("gridCheckbox").checked == false){
-    document.getElementById("gridCheckbox").checked = true;
-    grid_cb_fun();
-  }
-
-  map.fitBounds([[6.153, 2.608],[13.892, 14.791]]);
+  map.fitBounds([[4.153, 2.608],[13.892, 14.791]]);
   map.options.maxZoom = 7;
 }
 
@@ -66,6 +58,10 @@ function state_button_fun() {
   document.getElementById("national").className = "cell small-6 level sidebar__btn";
   document.getElementById("state").className = "cell small-6 level sidebar__btn active";
   document.getElementById("village").className = "cell level sidebar__btn";
+
+  document.getElementById("statesCheckbox").checked = false;
+  states_cb_fun();
+  document.getElementById("gridtrackingCB").checked = false;
 }
 
 function village_button_fun() {
@@ -86,23 +82,20 @@ function states_cb_fun() {
     console.log(window.location.href)
   var checkBox = document.getElementById("statesCheckbox");
   console.log(checkBox);
-  var text = document.getElementsByName("statesContent");
   if (checkBox.checked == true){
-    var i;
-    for (i = 0; i < text.length; i++) {
-      text[i].style.display = "block";
+    if (map.hasLayer(statesLayer) == false){
+      map.addLayer(statesLayer);
     }
-    document.getElementById("gridtrackingCB").checked = true;
-    nigeria_states_geojson.addTo(map);
-    states_radio_fun();
+    if (map.hasLayer(nigeria_states_geojson) == false){
+      map.addLayer(nigeria_states_geojson);
+    }
   }
   else {
-    var j;
-      for (j = 0; j < text.length; j++) {
-        text[j].style.display = "none";
-      }
     if (map.hasLayer(statesLayer)){
       map.removeLayer(statesLayer);
+    }
+    if (map.hasLayer(nigeria_states_geojson)){
+      map.removeLayer(nigeria_states_geojson);
     }
   }
 
@@ -115,29 +108,6 @@ function states_cb_fun() {
   },
   });
 
-}
-
-function states_radio_fun() {
-  var radio = document.getElementsByName("statesGroup");
-  var selection = "";
-  if (map.hasLayer(statesLayer)){
-    map.removeLayer(statesLayer);
-  }
-  for (i = 0; i < radio.length; i++) {
-    if (radio[i].checked == true) {selection = (radio[i].id);}
-  }
-  if (selection == "gridtrackingCB"){
-    statesStyle = statesStyle1;
-  }
-  if (selection == "remotemappingCB"){
-    statesStyle = statesStyle2;
-  }
-  if (selection == "surveyingCB"){
-    statesStyle = statesStyle3;
-  }
-  if (map.hasLayer(statesLayer) == false){
-    map.addLayer(statesLayer);
-  }
 }
 
 function clusters_cb_fun() {
