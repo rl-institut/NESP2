@@ -1,7 +1,20 @@
 import os
 
 from flask import Flask, render_template, request, jsonify, url_for, redirect
+from flask_sqlalchemy import SQLAlchemy
 
+def get_env_variable(name):
+    try:
+        return os.environ[name]
+    except KeyError:
+        message = "Expected environment variable '{}' not set.".format(name)
+        raise Exception(message)
+
+
+POSTGRES_URL = get_env_variable("POSTGRES_URL")
+POSTGRES_USER = get_env_variable("POSTGRES_USER")
+POSTGRES_PW = get_env_variable("POSTGRES_PW")
+POSTGRES_DB = get_env_variable("POSTGRES_DB")
 
 def create_app(test_config=None):
     # create and configure the app
@@ -13,6 +26,19 @@ def create_app(test_config=None):
     app.config.from_mapping(
         SECRET_KEY='dev',
     )
+
+    DB_URL = 'postgresql+psycopg2://{user}:{pw}@{url}/{db}'.format(
+        user=POSTGRES_USER,
+        pw=POSTGRES_PW,
+        url=POSTGRES_URL,
+        db=POSTGRES_DB
+    )
+
+    app.config['SQLALCHEMY_DATABASE_URI'] = DB_URL
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # silence the deprecation warning
+
+    db = SQLAlchemy(app)
+
 
     if test_config is None:
         # load the instance config, if it exists, when not testing
