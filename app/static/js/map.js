@@ -2,7 +2,7 @@ var options = {
   center: [9, 7],
   zoom: 6,
   minZoom: 6,
-  maxZoom: 15,
+  maxZoom: 19,
   zoomControl: false,
   maxBounds: [
     [2, 15],
@@ -16,6 +16,7 @@ map.addLayer(osm);
 var baseMaps = {
   "OpenStreetMap": osm,
   "esri" : esri,
+  "hot" : hot,
 };
 
 L.control.zoom({
@@ -122,7 +123,7 @@ L.control.scale({
             // "Priority Clusters": markers
         };
         L.control.layers(baseMaps, overlayMaps).addTo(map);
-        map.on("layeradd",function (){vecTileLayer.bringToFront(); esri.bringToBack(); osm.bringToBack();});
+        map.on("layeradd",function (){vecTileLayer.bringToFront(); esri.bringToBack(); hot.bringToBack(); osm.bringToBack();});
         map.fireEvent("filterchange", currentfilter);
 
 
