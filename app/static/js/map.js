@@ -11,7 +11,7 @@ var options = {
 };
 
 var map = L.map("map", options);
-map.addLayer(osm);
+map.addLayer(hot);
 
 var baseMaps = {
   "OpenStreetMap": osm,
