@@ -2,7 +2,7 @@ var options = {
   center: [9, 7],
   zoom: 6,
   minZoom: 6,
-  maxZoom: 15,
+  maxZoom: 19,
   zoomControl: false,
   maxBounds: [
     [2, 15],
@@ -16,6 +16,7 @@ map.addLayer(osm);
 var baseMaps = {
   "OpenStreetMap": osm,
   "esri" : esri,
+  "hot" : hot,
 };
 
 L.control.zoom({
@@ -69,7 +70,7 @@ L.control.scale({
         // const AREA = 0,POP = 1,LONG = 3,LAT = 4,INFO = 5;
         let currentfilter = {
             minarea: 0.001,
-            maxarea: 100,
+            maxarea: 10,
             minpop: 1,
             maxpop: 1000000,
         };
@@ -122,5 +123,15 @@ L.control.scale({
             // "Priority Clusters": markers
         };
         L.control.layers(baseMaps, overlayMaps).addTo(map);
-        map.on("layeradd",function (){vecTileLayer.bringToFront(); esri.bringToBack(); osm.bringToBack();});
+        map.on("layeradd",function (){vecTileLayer.bringToFront(); esri.bringToBack(); hot.bringToBack(); osm.bringToBack();});
         map.fireEvent("filterchange", currentfilter);
+
+
+
+        //map.addLayer(vecTileLayer);
+        map.on("click", function() {
+            vecTileLayer.clearHighlight();
+        });
+        map.on("popupclose", function() {
+            vecTileLayer.clearHighlight();
+        });
