@@ -32,21 +32,22 @@ var statesStyle1 = {
   fillOpacity: 0.5,
 };
 
-var statesStyle2 = {
+var SLstates = {
   fill: true,
-  fillColor: "#ffbb00",
-  fillOpacity: 1,
-  color: "#c5c4cf",
+  fillOpacity: 0.5,
+  color: "#111111",
+  fillColor: "#00ff00",
   weight: 1
 };
 
-var statesStyle3 = {
+var SLstateSelection = {
   fill: true,
-  fillColor: "#7c0e14",
-  fillOpacity: 1,
-  color: "#c5c4cf",
+  fillOpacity: 0.5,
+  color: "#111111",
+  fillColor: "#ff00ff",
   weight: 1
 };
+
 
 var gridStyle33kv = {
   color: "#f54a2b",

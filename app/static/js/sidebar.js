@@ -44,6 +44,9 @@ function national_button_fun() {
   
   map.fitBounds([[4.153, 2.608],[13.892, 14.791]]);
   map.options.maxZoom = 7;
+  if (map.hasLayer(selected_state_geojson) == true){
+    map.removeLayer(selected_state_geojson);
+  }
 }
 
 function state_button_fun() {
@@ -61,7 +64,9 @@ function state_button_fun() {
 
   document.getElementById("statesCheckbox").checked = false;
   states_cb_fun();
-  document.getElementById("gridtrackingCB").checked = false;
+  if (map.hasLayer(selected_state_geojson) == false){
+    map.addLayer(selected_state_geojson);
+  }
 }
 
 function village_button_fun() {

@@ -19,6 +19,8 @@ var buildingDensity = L.tileLayer("https:tile.rl-institut.de/data/nesp2_building
   attribution: '☮'
 });
 
+var selectedState = "Kebbi";
+
 var statesLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_states/{z}/{x}/{y}.pbf", {
   rendererFactory: L.canvas.tile,
   vectorTileLayerStyles: {
@@ -71,8 +73,13 @@ function highlight_state(feature, layer) {
     mouseout: lowlightFeature,
   });  
   layer.on('click',function() { 
-    document.getElementById("stateSelect").value = feature.properties["name"];
-  });
+    //alert(selectedState);
+    selectedState = feature.properties["name"];
+    update_selected_state_geojson();
+    //alert(selectedState);
+    document.getElementById("stateSelect").value = selectedState;
+  }
+);
 }      
 
 var nigeria_states_geojson = L.geoJSON([nigeria_states_simplified], {
@@ -89,6 +96,29 @@ nigeria_states_geojson.on("click", function (event) {
   state_button_fun();
 });
 
+var selected_state_geojson = L.geoJSON([nigeria_states_simplified], {
+  style: function (feature) {
+    var bob = "#00ff00";
+    if (feature.properties.name == selectedState) {bob = "#ff00ff";}
+    return {
+      fill: true,
+      fillColor: bob,
+      fillOpacity: 0.5,
+      color: "#111111",
+      weight: 1
+   };
+  },
+});
+
+function update_selected_state_geojson() {
+  selected_state_geojson = L.geoJSON([nigeria_states_simplified], {
+    style: function (feature) {
+      var bob = "#00ff00";
+      if (feature.properties.name == selectedState) {return(SLstateSelection);}
+      else {return(SLstates);};
+    },
+  });
+};
 
 var gridLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_grid-enugu/{z}/{x}/{y}.pbf", {
   rendererFactory: L.canvas.tile,
