@@ -73,14 +73,23 @@ function highlight_state(feature, layer) {
     mouseout: lowlightFeature,
   });  
   layer.on('click',function() { 
-    //alert(selectedState);
     selectedState = feature.properties["name"];
     update_selected_state_geojson();
-    //alert(selectedState);
     document.getElementById("stateSelect").value = selectedState;
   }
 );
 }      
+
+var selectedStatesLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_states/{z}/{x}/{y}.pbf", {
+  rendererFactory: L.canvas.tile,
+  vectorTileLayerStyles: {
+    states: function(prop, zoom) {
+      var col = "#ffff00";
+      if (prop.name == selectedState) { return(SLstateSelection)}
+      return (SLstates)
+    }
+  }
+});
 
 var nigeria_states_geojson = L.geoJSON([nigeria_states_simplified], {
   style: function (feature) {

@@ -33,19 +33,21 @@ var statesStyle1 = {
 };
 
 var SLstates = {
+  color: "#000000",
+  weight: 0,
+  opacity: 0,
   fill: true,
-  fillOpacity: 0.5,
-  color: "#111111",
-  fillColor: "#00ff00",
-  weight: 1
+  fillColor: "#000000",
+  fillOpacity: 0.2,
 };
 
 var SLstateSelection = {
+  color: "#ffffff",
+  weight: 0,
+  opacity: 0,
   fill: true,
-  fillOpacity: 0.5,
-  color: "#111111",
-  fillColor: "#ff00ff",
-  weight: 1
+  fillColor: "#ffffff",
+  fillOpacity: 0,
 };
 
 
