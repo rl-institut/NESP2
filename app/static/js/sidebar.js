@@ -67,6 +67,7 @@ function state_button_fun() {
   if (map.hasLayer(selectedStatesLayer) == false){
     map.addLayer(selectedStatesLayer);
   }
+  zoomToSelectedState();
 }
 
 function village_button_fun() {

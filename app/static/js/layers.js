@@ -19,7 +19,8 @@ var buildingDensity = L.tileLayer("https:tile.rl-institut.de/data/nesp2_building
   attribution: '☮'
 });
 
-var selectedState = "Kebbi";
+var statesList = ["Abia", "Adamawa", "Akwa Ibom", "Anambra", "Bauchi", "Bayelsa", "Benue", "Borno", "Cross River", "Delta", "Ebonyi", "Edo", "Ekiti", "Enugu", "Federal Capital Territory", "Gombe", "Imo", "Jigawa", "Kaduna", "Kano", "Katsina", "Kebbi", "Kogi", "Kwara", "Lagos", "Nasarawa", "Niger", "Ogun", "Ondo", "Osun", "Oyo", "Plateau", "Rivers", "Sokoto", "Taraba", "Yobe", "Zamfara"]
+var selectedState = statesList[Math.floor(Math.random()*statesList.length)];;
 
 var statesLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_states/{z}/{x}/{y}.pbf", {
   rendererFactory: L.canvas.tile,
@@ -104,6 +105,12 @@ nigeria_states_geojson.on("click", function (event) {
   map.removeLayer(nigeria_states_geojson);
   state_button_fun();
 });
+
+function zoomToSelectedState() {
+  nigeria_states_geojson.eachLayer(function(layer) {
+    if (layer.feature.properties.name == selectedState) {map.flyToBounds(layer.getBounds());}
+  });
+};
 
 var selected_state_geojson = L.geoJSON([nigeria_states_simplified], {
   style: function (feature) {
