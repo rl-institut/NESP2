@@ -161,13 +161,13 @@ function clusters_cb_fun() {
 function grid_cb_fun() {
   var checkBox = document.getElementById("gridCheckbox");
   if (checkBox.checked == true){
-    if (map.hasLayer(gridLayer) == false){
-      map.addLayer(gridLayer);
+    if (map.hasLayer(selected_grid) == false){
+      map.addLayer(selected_grid);
     }
   }
   if (checkBox.checked == false){
-    if (map.hasLayer(gridLayer) == true){
-      map.removeLayer(gridLayer);
+    if (map.hasLayer(selected_grid) == true){
+      map.removeLayer(selected_grid);
     }
   }
 
