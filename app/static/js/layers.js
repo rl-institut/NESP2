@@ -19,49 +19,6 @@ var buildingDensity = L.tileLayer("https:tile.rl-institut.de/data/nesp2_building
   attribution: '☮'
 });
 
-var statesList = ["Abia", "Adamawa", "Akwa Ibom", "Anambra", "Bauchi", "Bayelsa", "Benue", "Borno", "Cross River", "Delta", "Ebonyi", "Edo", "Ekiti", "Enugu", "Federal Capital Territory", "Gombe", "Imo", "Jigawa", "Kaduna", "Kano", "Katsina", "Kebbi", "Kogi", "Kwara", "Lagos", "Nasarawa", "Niger", "Ogun", "Ondo", "Osun", "Oyo", "Plateau", "Rivers", "Sokoto", "Taraba", "Yobe", "Zamfara"];
-var selectedState = statesList[Math.floor(Math.random()*statesList.length)];
-var thirtythreeKV = "33_kV_" + selectedState.toLowerCase();
-var gridLayers = {
-  "Abia": "",
-  "Adamawa": "",
-  "Akwa Ibom": "",
-  "Anambra": "",
-  "Bauchi": "",
-  "Bayelsa": "",
-  "Benue": "",
-  "Borno": "",
-  "Cross River": "",
-  "Delta": "",
-  "Ebonyi": "",
-  "Edo": "",
-  "Ekiti": "",
-  "Enugu": "nesp2_state_grid_enugu",
-  "Federal Capital Territory": "",
-  "Gombe": "",
-  "Imo": "",
-  "Jigawa": "nesp2_state_grid_jigawa",
-  "Kaduna": "nesp2_state_grid_kaduna",
-  "Kano": "",
-  "Katsina": "nesp2_state_grid_katsina",
-  "Kebbi": "nesp2_state_grid_kebbi",
-  "Kogi": "",
-  "Kwara": "",
-  "Lagos": "",
-  "Nasarawa": "nesp2_state_grid_nasawara",
-  "Niger": "",
-  "Ogun": "",
-  "Ondo": "",
-  "Osun": "nesp2_state_grid_osun",
-  "Oyo": "",
-  "Plateau": "",
-  "Rivers": "",
-  "Sokoto": "nesp2_state_grid_sokoto",
-  "Taraba": "",
-  "Yobe": "",
-  "Zamfara": "nesp2_state_grid_zamfara",
-};
-
 var statesLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_states/{z}/{x}/{y}.pbf", {
   rendererFactory: L.canvas.tile,
   vectorTileLayerStyles: {
@@ -116,7 +73,7 @@ function highlight_state(feature, layer) {
   layer.on('click',function() { 
     selectedState = feature.properties["name"];
     update_selected_state_geojson();
-    update_selected_grid();
+    redefine_grid_layer();
     document.getElementById("stateSelect").value = selectedState;
   }
 );
@@ -177,7 +134,10 @@ function update_selected_state_geojson() {
   });
 };
 
-var selected_grid = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/" + gridLayers[selectedState] + "/{z}/{x}/{y}.pbf", {
+
+// Definitions and functions for the grid_layer
+
+var grid_layer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/" + gridLayers[selectedState] + "/{z}/{x}/{y}.pbf", {
   rendererFactory: L.canvas.tile,
   vectorTileLayerStyles: {
     '11_kV': function(prop, zoom) {
@@ -189,11 +149,8 @@ var selected_grid = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/" + 
   }
 });
 
-
-//var thirtythreeKV = "33_kV_" + selectedState.toLowerCase();
-function update_selected_grid() {
-
-  selected_grid = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/" + gridLayers[selectedState] + "/{z}/{x}/{y}.pbf", {
+function redefine_grid_layer() {
+  grid_layer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/" + gridLayers[selectedState] + "/{z}/{x}/{y}.pbf", {
     rendererFactory: L.canvas.tile,
     vectorTileLayerStyles: {
       '11_kV': function(prop, zoom) {
@@ -205,6 +162,26 @@ function update_selected_grid() {
     }
   });
 };
+
+function remove_grid_layer() {
+  if (map.hasLayer(grid_layer) == true){
+    map.removeLayer(grid_layer);
+  }
+};
+
+function add_grid_layer() {
+  if (map.hasLayer(grid_layer) == false){
+    map.addLayer(grid_layer);
+  }
+};
+
+function update_grid_layer(){
+  map.removeLayer(grid_layer);
+  redefine_grid_layer();
+  map.addLayer(grid_layer);
+};
+
+// Definitions and functions for the clusters_layer
 
 let vecTileLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp/{z}/{x}/{y}.pbf", {
   rendererFactory: L.canvas.tile,
