@@ -49,20 +49,25 @@ function highlightFeature(e) {
   if (e.target.feature.properties.availability >= 4) {avail.gridTracking = "<b>✓</b>";}
   if (e.target.feature.properties.availability % 4 >= 2) {avail.remoteMapping = "<b>✓</b>";}
   if (e.target.feature.properties.availability % 2 === 1) {avail.Surveying = "<b>✓</b>";}
-  tooltipContent = tooltipContent + "Grid Tracking: " + avail.gridTracking + "<br>";
-  tooltipContent = tooltipContent + "Remote Mapping: " + avail.remoteMapping + "<br>";
-  tooltipContent = tooltipContent + "Surveying: " + avail.Surveying + "<br>";
   highlightLayer = e.target;
   highlightLayer.setStyle(statesStyleGeojsonHighlight);
-  highlightLayer.bindTooltip(tooltipContent);
-  highlightLayer.openTooltip();
-//  alert("jjj");
+  if (map.hasLayer(info)){info.remove();};
+  info.update = function (props) {
+    this._div.innerHTML = '<h4 class="selection_detail_header">'+e.target.feature.properties.name+'</h4>' +
+                          '<table class="selection_detail">' +
+                          '<tr><td align="right"><b>Grid Tracking</b>:</td><td>' +avail.gridTracking+ '</td></tr>' +
+                          '<tr><td align="right"><b>Remote Mapping</b>:</td><td>'+avail.remoteMapping+'</td></tr>' +
+                          '<tr><td align="right"><b>Surveying</b>:</td><td>'+avail.Surveying+'</td></tr>' +
+                          '</table>';
+    this._div.innerHTML;
+  };
+  info.addTo(map);
 }
 
 function lowlightFeature(e) {
   lowlightLayer = e.target;
   lowlightLayer.setStyle(statesStyleGeojsonTransparent);
-  //highlightLayer.closePopup();
+  info.remove();
 }
 
 function highlight_state(feature, layer) {
@@ -71,9 +76,24 @@ function highlight_state(feature, layer) {
     mouseout: lowlightFeature,
   });  
   layer.on('click',function() { 
-    document.getElementById("stateSelect").value = feature.properties["name"];
-  });
+    selectedState = feature.properties["name"];
+    update_selected_state_geojson();
+    redefine_grid_layer();
+    document.getElementById("stateSelect").value = selectedState;
+  }
+);
 }      
+
+var selectedStatesLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_states/{z}/{x}/{y}.pbf", {
+  rendererFactory: L.canvas.tile,
+  vectorTileLayerStyles: {
+    states: function(prop, zoom) {
+      var col = "#ffff00";
+      if (prop.name == selectedState) { return(SLstateSelection)}
+      return (SLstates)
+    }
+  }
+});
 
 var nigeria_states_geojson = L.geoJSON([nigeria_states_simplified], {
   style: function (feature) {
@@ -86,117 +106,88 @@ nigeria_states_geojson.on("click", function (event) {
   map.options.maxZoom = 19;
   map.flyToBounds(event.layer.getBounds());
   map.removeLayer(nigeria_states_geojson);
+  info.remove();
   state_button_fun();
 });
 
+function zoomToSelectedState() {
+  nigeria_states_geojson.eachLayer(function(layer) {
+    if (layer.feature.properties.name == selectedState) {map.flyToBounds(layer.getBounds());}
+  });
+};
 
-var gridLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_grid-enugu/{z}/{x}/{y}.pbf", {
+var selected_state_geojson = L.geoJSON([nigeria_states_simplified], {
+  style: function (feature) {
+    var bob = "#00ff00";
+    if (feature.properties.name == selectedState) {bob = "#ff00ff";}
+    return {
+      fill: true,
+      fillColor: bob,
+      fillOpacity: 0.5,
+      color: "#111111",
+      weight: 1
+   };
+  },
+});
+
+function update_selected_state_geojson() {
+  selected_state_geojson = L.geoJSON([nigeria_states_simplified], {
+    style: function (feature) {
+      var bob = "#00ff00";
+      if (feature.properties.name == selectedState) {return(SLstateSelection);}
+      else {return(SLstates);};
+    },
+  });
+};
+
+
+// Definitions and functions for the grid_layer
+
+var grid_layer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/" + gridLayers[selectedState] + "/{z}/{x}/{y}.pbf", {
   rendererFactory: L.canvas.tile,
   vectorTileLayerStyles: {
-    elevenkv: function(prop, zoom) {
-      return gridStyle33kv
-    },
-    thirtythreekv: function(prop, zoom) {
+    '11_kV': function(prop, zoom) {
       return gridStyle11kv
+    },
+    '33_kV': function(prop, zoom) {
+      return gridStyle33kv
     },
   }
 });
 
-var gridLayerJigawa = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_state_grid_jigawa/{z}/{x}/{y}.pbf", {
-  rendererFactory: L.canvas.tile,
-  vectorTileLayerStyles: {
-    '11_kV_jigawa': function(prop, zoom) {
-      return gridStyle33kv
-    },
-    '33_kV_jigawa': function(prop, zoom) {
-      return gridStyle11kv
-    },
-  }
-});
+function redefine_grid_layer() {
+  grid_layer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/" + gridLayers[selectedState] + "/{z}/{x}/{y}.pbf", {
+    rendererFactory: L.canvas.tile,
+    vectorTileLayerStyles: {
+      '11_kV': function(prop, zoom) {
+        return gridStyle11kv
+      },
+      '33_kV': function(prop, zoom) {
+        return gridStyle33kv
+      },
+    }
+  });
+};
 
-var gridLayerKaduna = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_state_grid_kaduna/{z}/{x}/{y}.pbf", {
-  rendererFactory: L.canvas.tile,
-  vectorTileLayerStyles: {
-    '11_kV_kaduna': function(prop, zoom) {
-      return gridStyle33kv
-    },
-    '33_kV_kaduna': function(prop, zoom) {
-      return gridStyle11kv
-    },
+function remove_grid_layer() {
+  if (map.hasLayer(grid_layer) == true){
+    map.removeLayer(grid_layer);
   }
-});
+};
 
-var gridLayerKatsina = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_state_grid_katsina/{z}/{x}/{y}.pbf", {
-  rendererFactory: L.canvas.tile,
-  vectorTileLayerStyles: {
-    '11_kV_katsina': function(prop, zoom) {
-      return gridStyle33kv
-    },
-    '33_kV_katsina': function(prop, zoom) {
-      return gridStyle11kv
-    },
+function add_grid_layer() {
+  if (map.hasLayer(grid_layer) == false){
+    map.addLayer(grid_layer);
   }
-});
+};
 
-var gridLayerKebbi = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_state_grid_kebbi/{z}/{x}/{y}.pbf", {
-  rendererFactory: L.canvas.tile,
-  vectorTileLayerStyles: {
-    '11_kV_kebbi': function(prop, zoom) {
-      return gridStyle33kv
-    },
-    '33_kV_kebbi': function(prop, zoom) {
-      return gridStyle11kv
-    },
-  }
-});
+function update_grid_layer(){
+  map.removeLayer(grid_layer);
+  redefine_grid_layer();
+  map.addLayer(grid_layer);
+};
 
-var gridLayerNasawara = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_state_grid_nasawara/{z}/{x}/{y}.pbf", {
-  rendererFactory: L.canvas.tile,
-  vectorTileLayerStyles: {
-    '11_kV_nasawara': function(prop, zoom) {
-      return gridStyle33kv
-    },
-    '33_kV_nasawara': function(prop, zoom) {
-      return gridStyle11kv
-    },
-  }
-});
-
-var gridLayerOsun = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_state_grid_osun/{z}/{x}/{y}.pbf", {
-  rendererFactory: L.canvas.tile,
-  vectorTileLayerStyles: {
-    '11_kV_osun': function(prop, zoom) {
-      return gridStyle33kv
-    },
-    '33_kV_osun': function(prop, zoom) {
-      return gridStyle11kv
-    },
-  }
-});
-
-var gridLayerSokoto = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_state_grid_sokoto/{z}/{x}/{y}.pbf", {
-  rendererFactory: L.canvas.tile,
-  vectorTileLayerStyles: {
-    '11_kV_sokoto': function(prop, zoom) {
-      return gridStyle33kv
-    },
-    '33_kV_sokoto': function(prop, zoom) {
-      return gridStyle11kv
-    },
-  }
-});
-
-var gridLayerZamfara = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_state_grid_zamfara/{z}/{x}/{y}.pbf", {
-  rendererFactory: L.canvas.tile,
-  vectorTileLayerStyles: {
-    '11_kV_zamfara': function(prop, zoom) {
-      return gridStyle33kv
-    },
-    '33_kV_zamfara': function(prop, zoom) {
-      return gridStyle11kv
-    },
-  }
-});
+// Definitions and functions for the clusters_layer
 
 let vecTileLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp/{z}/{x}/{y}.pbf", {
   rendererFactory: L.canvas.tile,

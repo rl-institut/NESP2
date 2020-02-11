@@ -8,10 +8,10 @@ var statesStyleGeojsonTransparent = {
 };
 
 var stateAvailabilityColor = {
-  green: "#00ff00",
-  yellow: "#ffff00",
-  orange: "#ff8800",
-  red: "#ff0000",
+  green: "#80ff80",
+  yellow: "#ffff80",
+  orange: "#ffc380",
+  red: "#ff8080",
 }
 
 var statesStyleGeojsonHighlight = {
@@ -32,21 +32,24 @@ var statesStyle1 = {
   fillOpacity: 0.5,
 };
 
-var statesStyle2 = {
+var SLstates = {
+  color: "#000000",
+  weight: 0,
+  opacity: 0,
   fill: true,
-  fillColor: "#ffbb00",
-  fillOpacity: 1,
-  color: "#c5c4cf",
-  weight: 1
+  fillColor: "#000000",
+  fillOpacity: 0.2,
 };
 
-var statesStyle3 = {
+var SLstateSelection = {
+  color: "#ffffff",
+  weight: 0,
+  opacity: 0,
   fill: true,
-  fillColor: "#7c0e14",
-  fillOpacity: 1,
-  color: "#c5c4cf",
-  weight: 1
+  fillColor: "#ffffff",
+  fillOpacity: 0,
 };
+
 
 var gridStyle33kv = {
   color: "#f54a2b",

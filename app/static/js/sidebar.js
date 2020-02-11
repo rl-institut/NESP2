@@ -1,4 +1,45 @@
-//$(document).foundation();
+var statesList = ["Abia", "Adamawa", "Akwa Ibom", "Anambra", "Bauchi", "Bayelsa", "Benue", "Borno", "Cross River", "Delta", "Ebonyi", "Edo", "Ekiti", "Enugu", "Federal Capital Territory", "Gombe", "Imo", "Jigawa", "Kaduna", "Kano", "Katsina", "Kebbi", "Kogi", "Kwara", "Lagos", "Nasarawa", "Niger", "Ogun", "Ondo", "Osun", "Oyo", "Plateau", "Rivers", "Sokoto", "Taraba", "Yobe", "Zamfara"];
+var selectedState = statesList[Math.floor(Math.random()*statesList.length)];
+var thirtythreeKV = "33_kV_" + selectedState.toLowerCase();
+var gridLayers = {
+  "Abia": "",
+  "Adamawa": "",
+  "Akwa Ibom": "",
+  "Anambra": "",
+  "Bauchi": "",
+  "Bayelsa": "",
+  "Benue": "",
+  "Borno": "",
+  "Cross River": "",
+  "Delta": "",
+  "Ebonyi": "",
+  "Edo": "",
+  "Ekiti": "",
+  "Enugu": "nesp2_state_grid_enugu",
+  "Federal Capital Territory": "",
+  "Gombe": "",
+  "Imo": "",
+  "Jigawa": "nesp2_state_grid_jigawa",
+  "Kaduna": "nesp2_state_grid_kaduna",
+  "Kano": "nesp2_state_grid_kano",
+  "Katsina": "nesp2_state_grid_katsina",
+  "Kebbi": "nesp2_state_grid_kebbi",
+  "Kogi": "",
+  "Kwara": "",
+  "Lagos": "",
+  "Nasarawa": "nesp2_state_grid_nasawara",
+  "Niger": "",
+  "Ogun": "",
+  "Ondo": "",
+  "Osun": "nesp2_state_grid_osun",
+  "Oyo": "",
+  "Plateau": "",
+  "Rivers": "",
+  "Sokoto": "nesp2_state_grid_sokoto",
+  "Taraba": "",
+  "Yobe": "",
+  "Zamfara": "nesp2_state_grid_zamfara",
+};
 
 var areaSlider = document.getElementById('areaSlider');
 noUiSlider.create(areaSlider, {
@@ -44,6 +85,9 @@ function national_button_fun() {
   
   map.fitBounds([[4.153, 2.608],[13.892, 14.791]]);
   map.options.maxZoom = 7;
+  if (map.hasLayer(selectedStatesLayer) == true){
+    map.removeLayer(selectedStatesLayer);
+  }
 }
 
 function state_button_fun() {
@@ -61,7 +105,10 @@ function state_button_fun() {
 
   document.getElementById("statesCheckbox").checked = false;
   states_cb_fun();
-  document.getElementById("gridtrackingCB").checked = false;
+  if (map.hasLayer(selectedStatesLayer) == false){
+    map.addLayer(selectedStatesLayer);
+  }
+  zoomToSelectedState();
 }
 
 function village_button_fun() {
@@ -133,14 +180,10 @@ function clusters_cb_fun() {
 
   var checkBox = document.getElementById("gridCheckbox");
   if (checkBox.checked == true){
-    if (map.hasLayer(gridLayer) == false){
-      map.addLayer(gridLayer);
-    }
+    remove_grid_layer();
   }
   if (checkBox.checked == false){
-    if (map.hasLayer(gridLayer) == true){
-      map.removeLayer(gridLayer);
-    }
+    add_grid_layer();
   }
 
   $.get({url: $SCRIPT_ROOT,
@@ -148,21 +191,15 @@ function clusters_cb_fun() {
     grid_content: gCheckBox.checked,
   },
   });
-
-
 }
 
 function grid_cb_fun() {
   var checkBox = document.getElementById("gridCheckbox");
   if (checkBox.checked == true){
-    if (map.hasLayer(gridLayer) == false){
-      map.addLayer(gridLayer);
-    }
+    add_grid_layer();
   }
   if (checkBox.checked == false){
-    if (map.hasLayer(gridLayer) == true){
-      map.removeLayer(gridLayer);
-    }
+    remove_grid_layer();
   }
 
   $.get({url: $SCRIPT_ROOT,
@@ -228,4 +265,15 @@ function addParameter(url, parameterName, parameterValue, atStart/*Add param bef
         newQueryString += parameterName + "=" + (parameterValue?parameterValue:'');
     }
     return urlParts[0] + newQueryString + urlhash;
+};
+
+function state_dropdown_fun(){
+  dd_selection = document.getElementById("stateSelect");
+  change_state_fun(state);
+};
+
+function change_state_fun(state){
+  selectedState = dd_selection.value;
+  update_grid_layer();
+  zoomToSelectedState();
 };
