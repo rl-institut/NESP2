@@ -30,6 +30,8 @@ Here is a template for new release sections
 - flask structure (#21)
 - base html template (#53)
 ### Changed
+- reworked state view (#52)
+- availability info moved
 - level buttons indicate status (#9)
 - level buttons control options (#10)
 - sidebar style (#10)
