@@ -8,10 +8,10 @@ var statesStyleGeojsonTransparent = {
 };
 
 var stateAvailabilityColor = {
-  green: "#00ff00",
-  yellow: "#ffff00",
-  orange: "#ff8800",
-  red: "#ff0000",
+  green: "#80ff80",
+  yellow: "#ffff80",
+  orange: "#ffc380",
+  red: "#ff8080",
 }
 
 var statesStyleGeojsonHighlight = {
