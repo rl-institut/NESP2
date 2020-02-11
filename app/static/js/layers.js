@@ -49,20 +49,25 @@ function highlightFeature(e) {
   if (e.target.feature.properties.availability >= 4) {avail.gridTracking = "<b>✓</b>";}
   if (e.target.feature.properties.availability % 4 >= 2) {avail.remoteMapping = "<b>✓</b>";}
   if (e.target.feature.properties.availability % 2 === 1) {avail.Surveying = "<b>✓</b>";}
-  tooltipContent = tooltipContent + "Grid Tracking: " + avail.gridTracking + "<br>";
-  tooltipContent = tooltipContent + "Remote Mapping: " + avail.remoteMapping + "<br>";
-  tooltipContent = tooltipContent + "Surveying: " + avail.Surveying + "<br>";
   highlightLayer = e.target;
   highlightLayer.setStyle(statesStyleGeojsonHighlight);
-  highlightLayer.bindTooltip(tooltipContent);
-  highlightLayer.openTooltip();
-//  alert("jjj");
+  if (map.hasLayer(info)){info.remove();};
+  info.update = function (props) {
+    this._div.innerHTML = '<h4 class="selection_detail_header">'+e.target.feature.properties.name+'</h4>' +
+                          '<table class="selection_detail">' +
+                          '<tr><td align="right"><b>Grid Tracking</b>:</td><td>' +avail.gridTracking+ '</td></tr>' +
+                          '<tr><td align="right"><b>Remote Mapping</b>:</td><td>'+avail.remoteMapping+'</td></tr>' +
+                          '<tr><td align="right"><b>Surveying</b>:</td><td>'+avail.Surveying+'</td></tr>' +
+                          '</table>';
+    this._div.innerHTML;
+  };
+  info.addTo(map);
 }
 
 function lowlightFeature(e) {
   lowlightLayer = e.target;
   lowlightLayer.setStyle(statesStyleGeojsonTransparent);
-  //highlightLayer.closePopup();
+  info.remove();
 }
 
 function highlight_state(feature, layer) {
@@ -101,6 +106,7 @@ nigeria_states_geojson.on("click", function (event) {
   map.options.maxZoom = 19;
   map.flyToBounds(event.layer.getBounds());
   map.removeLayer(nigeria_states_geojson);
+  info.remove();
   state_button_fun();
 });
 
