@@ -21,7 +21,7 @@ var gridLayers = {
   "Imo": "",
   "Jigawa": "nesp2_state_grid_jigawa",
   "Kaduna": "nesp2_state_grid_kaduna",
-  "Kano": "",
+  "Kano": "nesp2_state_grid_kano",
   "Katsina": "nesp2_state_grid_katsina",
   "Kebbi": "nesp2_state_grid_kebbi",
   "Kogi": "",
