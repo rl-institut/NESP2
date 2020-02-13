@@ -77,14 +77,14 @@ function highlight_state(feature, layer) {
   });  
   layer.on('click',function() { 
     selectedState = feature.properties["name"];
-    update_selected_state_geojson();
+    remove_selected_state_geojson();
     redefine_grid_layer();
     document.getElementById("stateSelect").value = selectedState;
   }
 );
 }      
 
-var selectedStatesLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_states/{z}/{x}/{y}.pbf", {
+var selected_state_pbf = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_states/{z}/{x}/{y}.pbf", {
   rendererFactory: L.canvas.tile,
   vectorTileLayerStyles: {
     states: function(prop, zoom) {
@@ -94,6 +94,37 @@ var selectedStatesLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/dat
     }
   }
 });
+
+function remove_selected_state_pbf() {
+  if (map.hasLayer(selected_state_pbf) == true){
+    map.removeLayer(selected_state_pbf);
+  }
+};
+
+function add_selected_state_pbf() {
+  if (map.hasLayer(selected_state_pbf) == false){
+    map.addLayer(selected_state_pbf);
+  }
+};
+
+function redefine_selected_state_pbf() {
+  selected_state_pbf = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_states/{z}/{x}/{y}.pbf", {
+    rendererFactory: L.canvas.tile,
+    vectorTileLayerStyles: {
+      states: function(prop, zoom) {
+        var col = "#ffff00";
+        if (prop.name == selectedState) { return(SLstateSelection)}
+        return (SLstates)
+      }
+    }
+  });
+};
+
+function update_selected_state_pbf(){
+  remove_selected_state_pbf;
+  redefine_selected_state_pbf();
+  add_selected_state_pbf();
+};
 
 var nigeria_states_geojson = L.geoJSON([nigeria_states_simplified], {
   style: function (feature) {
@@ -130,7 +161,19 @@ var selected_state_geojson = L.geoJSON([nigeria_states_simplified], {
   },
 });
 
-function update_selected_state_geojson() {
+function remove_selected_state_geojson() {
+  if (map.hasLayer(selected_state_geojson) == true){
+    map.removeLayer(selected_state_geojson);
+  }
+};
+
+function add_selected_state_geojson() {
+  if (map.hasLayer(selected_state_geojson) == false){
+    map.addLayer(selected_state_geojson);
+  }
+};
+
+function redefine_selected_state_geojson() {
   selected_state_geojson = L.geoJSON([nigeria_states_simplified], {
     style: function (feature) {
       var bob = "#00ff00";
@@ -140,6 +183,11 @@ function update_selected_state_geojson() {
   });
 };
 
+function update_selected_state_geojson(){
+  remove_selected_state_geojson();
+  redefine_selected_state_geojson();
+  map.addLayer(selected_state_geojson);
+};
 
 // Definitions and functions for the grid_layer
 
@@ -182,9 +230,9 @@ function add_grid_layer() {
 };
 
 function update_grid_layer(){
-  map.removeLayer(grid_layer);
+  remove_grid_layer();
   redefine_grid_layer();
-  map.addLayer(grid_layer);
+  grid_cb_fun();
 };
 
 // Definitions and functions for the clusters_layer
@@ -249,8 +297,8 @@ let vecTileLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp/
     var ID = properties.FID;
     var popup='\
       <table>\
-        <tr><td align="right"><b>Admin1</b>:</td><td>'+properties.admin1+'</td></tr>\
-        <tr><td align="right"><b>Admin2</b>:</td><td>'+properties.admin2+'</td></tr>\
+        <tr><td align="right"><b>State</b>:</td><td>'+properties.admin1+'</td></tr>\
+        <tr><td align="right"><b>LGA</b>:</td><td>'+properties.admin2+'</td></tr>\
         <tr><td align="right"><b>Area</b>:</td><td>'+parseFloat(properties.area_km2).toFixed(2)+' km2</td></tr>\
         <tr><td align="right"><b>Population</b>:</td><td>'+parseFloat(properties.pop_hrsl).toFixed(0)+'</td></tr>\
       </table>';
