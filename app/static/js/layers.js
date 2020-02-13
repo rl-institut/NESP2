@@ -84,10 +84,10 @@ function highlight_state(feature, layer) {
 );
 }      
 
-var selected_state_pbf = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_states/{z}/{x}/{y}.pbf", {
+var selected_state_pbf = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_states_hr/{z}/{x}/{y}.pbf", {
   rendererFactory: L.canvas.tile,
   vectorTileLayerStyles: {
-    states: function(prop, zoom) {
+    states_hr: function(prop, zoom) {
       var col = "#ffff00";
       if (prop.name == selectedState) { return(SLstateSelection)}
       return (SLstates)
