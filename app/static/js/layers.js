@@ -332,3 +332,21 @@ let vecTileLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp/
     L.DomEvent.stop(e);
   }
 });
+
+
+let ogclustersTileLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_offgrid_clusters/{z}/{x}/{y}.pbf", {
+  rendererFactory: L.canvas.tile,
+  vectorTileLayerStyles: {
+    OGClusters: function(prop, zoom) {
+      return {
+          fill: true,
+          fillColor: "#0000ff",
+          fillOpacity: 0.2,
+          color: "blue",
+          weight: 1
+      };
+    },
+  },
+  maxZoom: 19,
+  minZoom: 5,
+});
