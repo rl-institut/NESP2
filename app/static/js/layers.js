@@ -126,6 +126,15 @@ function update_selected_state_pbf(){
   add_selected_state_pbf();
 };
 
+var lgas_pbf = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_lgas_hr/{z}/{x}/{y}.pbf", {
+  rendererFactory: L.canvas.tile,
+  vectorTileLayerStyles: {
+    lgas_hr: function(prop, zoom) {
+      return(NLlga)
+    }
+  }
+});
+
 var nigeria_states_geojson = L.geoJSON([nigeria_states_simplified], {
   style: function (feature) {
     return(statesStyleGeojsonTransparent);
