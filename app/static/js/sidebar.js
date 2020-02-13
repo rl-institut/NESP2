@@ -82,12 +82,11 @@ function national_button_fun() {
   
   document.getElementById("statesCheckbox").checked = true;
   states_cb_fun();
-  
+  map.options.minZoom = 6;
+  map.options.maxZoom = 7;  
   map.fitBounds([[4.153, 2.608],[13.892, 14.791]]);
-  map.options.maxZoom = 7;
-  if (map.hasLayer(selectedStatesLayer) == true){
-    map.removeLayer(selectedStatesLayer);
-  }
+  remove_selected_state_pbf();
+  remove_grid_layer();
 }
 
 function state_button_fun() {
@@ -105,9 +104,10 @@ function state_button_fun() {
 
   document.getElementById("statesCheckbox").checked = false;
   states_cb_fun();
-  if (map.hasLayer(selectedStatesLayer) == false){
-    map.addLayer(selectedStatesLayer);
-  }
+  add_selected_state_pbf();
+  update_grid_layer();
+  map.options.minZoom = 8;
+  map.options.maxZoom = 19;
   zoomToSelectedState();
 }
 
@@ -178,13 +178,13 @@ function clusters_cb_fun() {
     }
   }
 
-  var checkBox = document.getElementById("gridCheckbox");
-  if (checkBox.checked == true){
-    remove_grid_layer();
-  }
-  if (checkBox.checked == false){
-    add_grid_layer();
-  }
+//  var checkBox = document.getElementById("gridCheckbox");
+//  if (checkBox.checked == true){
+//    remove_grid_layer();
+//  }
+//  if (checkBox.checked == false){
+//    add_grid_layer();
+//  }
 
   $.get({url: $SCRIPT_ROOT,
   data: {
@@ -268,12 +268,16 @@ function addParameter(url, parameterName, parameterValue, atStart/*Add param bef
 };
 
 function state_dropdown_fun(){
+  remove_selected_state_geojson();
+  remove_selected_state_pbf();
+  remove_grid_layer();
   dd_selection = document.getElementById("stateSelect");
   change_state_fun(state);
 };
 
 function change_state_fun(state){
   selectedState = dd_selection.value;
+  update_selected_state_pbf();
   update_grid_layer();
   zoomToSelectedState();
 };
