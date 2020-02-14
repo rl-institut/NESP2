@@ -266,6 +266,20 @@ function building_density_cb_fun() {
   }
 }
 
+function lga_cb_fun(){
+  var checkBox = document.getElementById("lgaCheckbox");
+  if (checkBox.checked == true){
+    if (map.hasLayer(lgas_pbf) == false){
+      map.addLayer(lgas_pbf);
+    }
+  }
+  if (checkBox.checked == false){
+    if (map.hasLayer(lgas_pbf) == true){
+      map.removeLayer(lgas_pbf);
+    }
+  }
+}
+
 function addParameter(url, parameterName, parameterValue, atStart/*Add param before others*/){
     replaceDuplicates = true;
     if(url.indexOf('#') > 0){
