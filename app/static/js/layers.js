@@ -84,10 +84,10 @@ function highlight_state(feature, layer) {
 );
 }      
 
-var selected_state_pbf = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_states/{z}/{x}/{y}.pbf", {
+var selected_state_pbf = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_states_hr/{z}/{x}/{y}.pbf", {
   rendererFactory: L.canvas.tile,
   vectorTileLayerStyles: {
-    states: function(prop, zoom) {
+    states_hr: function(prop, zoom) {
       var col = "#ffff00";
       if (prop.name == selectedState) { return(SLstateSelection)}
       return (SLstates)
@@ -124,6 +124,46 @@ function update_selected_state_pbf(){
   remove_selected_state_pbf;
   redefine_selected_state_pbf();
   add_selected_state_pbf();
+};
+
+var lgas_pbf = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_lgas_hr/{z}/{x}/{y}.pbf", {
+  rendererFactory: L.canvas.tile,
+  vectorTileLayerStyles: {
+    lgas_hr: function(prop, zoom) {
+      if (prop.name == selectedLGA) { return(NLlgaSelection)}
+      return (NLlga)
+    }
+  }
+});
+
+function remove_lgas_pbf() {
+  if (map.hasLayer(lgas_pbf) == true){
+    map.removeLayer(lgas_pbf);
+  }
+};
+
+function add_lgas_pbf() {
+  if (map.hasLayer(lgas_pbf) == false){
+    map.addLayer(lgas_pbf);
+  }
+};
+
+function redefine_lgas_pbf() {
+  lgas_pbf = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_lgas_hr/{z}/{x}/{y}.pbf", {
+    rendererFactory: L.canvas.tile,
+    vectorTileLayerStyles: {
+      states: function(prop, zoom) {
+        if (prop.name == selectedLGA) { return(NLlgaSelection)}
+        return (NLlga)
+      }
+    }
+  });
+};
+
+function update_lgas_pbf(){
+  remove_lgas_pbf;
+  redefine_lgas_pbf();
+  add_lgas_pbf();
 };
 
 var nigeria_states_geojson = L.geoJSON([nigeria_states_simplified], {
@@ -312,6 +352,72 @@ let vecTileLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp/
   } else {
     var type = "r";
     var ID = "r" + properties.OBJECTID;
+  }
+  if (type != "r") {
+    L.popup()
+    .setContent(popup)
+    .setLatLng(e.latlng)
+    .openOn(map);
+    this.highlight = ID;
+    let style = {
+      fillColor: "#0000FF",
+      fillOpacity: 0.5,
+      stroke: true,
+      fill: true,
+      color: "#0000FF",
+      opacity: 0.5,
+      weight: 2
+    };
+    this.setFeatureStyle(ID, style);
+    L.DomEvent.stop(e);
+  }
+});
+
+
+let ogclustersTileLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_offgrid_clusters/{z}/{x}/{y}.pbf", {
+  rendererFactory: L.canvas.tile,
+  vectorTileLayerStyles: {
+    OGClusters: function(prop, zoom) {
+      return {
+          fill: true,
+          fillColor: "#0000ff",
+          fillOpacity: 0.2,
+          color: "blue",
+          weight: 1
+      };
+    },
+  },
+  maxZoom: 19,
+  minZoom: 5,
+  interactive: true,
+  getFeatureId: function(f) {
+    if (f.properties.FID !== undefined) {
+      return f.properties.FID;
+    }
+    if (f.properties.osm_id !== undefined) {
+      return "g" + f.properties.osm_id;
+    }
+    return "r" + f.properties.OBJECTID;
+  }
+})
+.on("click", function(e) {
+  console.log('click')
+  this.clearHighlight();
+  let properties = e.layer.properties;
+  console.log(properties)
+  //alert(parseFloat(properties.area_km2).toFixed(2));
+  if (true) {
+    var type = "c";
+    var ID = properties.FID;
+    var popup='\
+      <table>\
+        <tr><td align="right"><b>Area</b>:</td><td>'+parseFloat(properties.area_km2).toFixed(2)+' km2</td></tr>\
+        <tr><td align="right"><b>Building Count</b>:</td><td>'+parseFloat(properties.building_count).toFixed(0)+'</td></tr>\
+        <tr><td align="right"><b>Building Area in km²</b>:</td><td>'+parseFloat(properties.building_area_km2).toFixed(0)+'</td></tr>\
+        <tr><td align="right"><b>Buildings per km²</b>:</td><td>'+parseFloat(properties.building_count_density_perkm2).toFixed(0)+'</td></tr>\
+        <tr><td align="right"><b>Percentage Building Area</b>:</td><td>'+parseFloat(properties.percentage_building_area).toFixed(0)+'</td></tr>\
+        <tr><td align="right"><b>Distance to Grid in km</b>:</td><td>'+parseFloat(properties.grid_dist_km).toFixed(0)+'</td></tr>\
+      </table>';
   }
   if (type != "r") {
     L.popup()

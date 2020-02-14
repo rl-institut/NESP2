@@ -1,5 +1,6 @@
 var statesList = ["Abia", "Adamawa", "Akwa Ibom", "Anambra", "Bauchi", "Bayelsa", "Benue", "Borno", "Cross River", "Delta", "Ebonyi", "Edo", "Ekiti", "Enugu", "Federal Capital Territory", "Gombe", "Imo", "Jigawa", "Kaduna", "Kano", "Katsina", "Kebbi", "Kogi", "Kwara", "Lagos", "Nasarawa", "Niger", "Ogun", "Ondo", "Osun", "Oyo", "Plateau", "Rivers", "Sokoto", "Taraba", "Yobe", "Zamfara"];
 var selectedState = statesList[Math.floor(Math.random()*statesList.length)];
+var selectedLGA = "";
 var thirtythreeKV = "33_kV_" + selectedState.toLowerCase();
 var gridLayers = {
   "Abia": "",
@@ -66,6 +67,34 @@ noUiSlider.create(dtgSlider, {
         'max': [3000,3000],
     }
 });
+
+
+var ogAreaSlider = document.getElementById('ogAreaSlider');
+noUiSlider.create(ogAreaSlider, {
+    start: [1, 5],
+    connect: true,
+    range: {
+        'min': [0, 0],
+        'max': [10,10],
+    }
+});
+
+ogAreaSlider.noUiSlider.on("change", function(str, h, values) {
+    currentfilter.minarea = values[0];
+    currentfilter.maxarea = values[1];
+    map.fireEvent("filterchange", currentfilter);
+});
+
+var ogPopulationSlider = document.getElementById('ogPopulationSlider');
+noUiSlider.create(ogPopulationSlider, {
+    start: [300, 1500],
+    connect: true,
+    range: {
+        'min': [0, 0],
+        'max': [3000,3000],
+    }
+});
+
 
 function national_button_fun() {
   var hidelist = document.getElementsByClassName("n_hide");
@@ -178,19 +207,33 @@ function clusters_cb_fun() {
     }
   }
 
-//  var checkBox = document.getElementById("gridCheckbox");
-//  if (checkBox.checked == true){
-//    remove_grid_layer();
-//  }
-//  if (checkBox.checked == false){
-//    add_grid_layer();
-//  }
-
   $.get({url: $SCRIPT_ROOT,
   data: {
     grid_content: gCheckBox.checked,
   },
   });
+}
+
+function og_clusters_cb_fun() {
+  var checkBox = document.getElementById("ogClustersCheckbox");
+  var text = document.getElementsByName("ogClustersContent");
+  if (checkBox.checked == true){
+    var i;
+    for (i = 0; i < text.length; i++) {
+      text[i].style.display = "block";
+    }
+    if (map.hasLayer(ogclustersTileLayer) == false){
+      map.addLayer(ogclustersTileLayer);
+    }
+  } else {
+    var j;
+    for (j = 0; j < text.length; j++) {
+      text[j].style.display = "none";
+    }
+    if (map.hasLayer(ogclustersTileLayer) == true){
+      map.removeLayer(ogclustersTileLayer);
+    }
+  }
 }
 
 function grid_cb_fun() {
@@ -222,7 +265,6 @@ function building_density_cb_fun() {
     }
   }
 }
-
 
 function addParameter(url, parameterName, parameterValue, atStart/*Add param before others*/){
     replaceDuplicates = true;

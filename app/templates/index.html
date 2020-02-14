@@ -113,7 +113,7 @@
     </div>
 
     <div class="grid-x">
-      <div class="cell n_hide s_show v_hide" style="display:none">
+      <div class="cell n_show s_show v_hide">
         <div class="sidebar-panel">
           <div class="sidebar-panel-item is-active" data-accordion-item>
             <p href="#" class="sidebar-panel-item-title">Building Density</p>
@@ -128,7 +128,7 @@
     </div>
 
     <div class="grid-x">
-      <div class="cell" >
+      <div class="cell n_hide s_show v_hide" style="display:none">
         <div class="sidebar-panel">
           <div class="sidebar-panel-item" data-accordion-item>
             <p href="#" class="sidebar-panel-item-title">Clusters</p>
@@ -143,7 +143,7 @@
     </div>
 
     <div class="grid-x">
-      <div class="cell">
+      <div class="cell n_hide s_show v_hide">
         <div class="sidebar-panel sidebar-panel-content" name="clustersContent">
           <div class="sidebar-panel-item">
             <p href="#" class="sidebar-panel-item-title">Area</p>
@@ -158,12 +158,55 @@
     </div>
 
     <div class="grid-x">
-      <div class="cell">
+      <div class="cell n_hide s_show v_hide">
         <div class="sidebar-panel sidebar-panel-content" name="clustersContent">
           <div class="sidebar-panel-item">
-            <p href="#" class="sidebar-panel-item-title">Distance to Grid</p>
+            <p href="#" class="sidebar-panel-item-title">Population</p>
             <div class="filter">
               <div class="filter__slider" id="dtgSlider"></div>
+            </div>
+          </div>
+        </div>	
+      </div>	
+    </div>
+
+    <div class="grid-x">
+      <div class="cell n_hide s_show v_hide" style="display:none">
+        <div class="sidebar-panel">
+          <div class="sidebar-panel-item" data-accordion-item>
+            <p href="#" class="sidebar-panel-item-title">Off Grid Clusters</p>
+            <div class="sidebar-panel-item-button">
+              <input class="switch-input" id="ogClustersCheckbox" type="checkbox" onclick="og_clusters_cb_fun()">
+              <label class="switch-paddle" for="ogClustersCheckbox">
+              </label>
+            </div>
+          </div>
+        </div>	
+      </div>	
+    </div>
+
+    <div class="grid-x">
+      <div class="cell">
+        <div class="sidebar-panel sidebar-panel-content" name="ogClustersContent">
+          <div class="sidebar-panel-item">
+            <p href="#" class="sidebar-panel-item-title">Area</p>
+              <div class="filter">
+                <div class="filter__slider" id="ogAreaSlider"></div>
+                <div class="filter__i">
+                </div>
+              </div>
+          </div>
+        </div>	
+      </div>	
+    </div>
+
+    <div class="grid-x">
+      <div class="cell">
+        <div class="sidebar-panel sidebar-panel-content" name="ogClustersContent">
+          <div class="sidebar-panel-item">
+            <p href="#" class="sidebar-panel-item-title">Population</p>
+            <div class="filter">
+              <div class="filter__slider" id="ogPopulationSlider"></div>
             </div>
           </div>
         </div>	
