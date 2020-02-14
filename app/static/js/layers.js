@@ -389,4 +389,52 @@ let ogclustersTileLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/dat
   },
   maxZoom: 19,
   minZoom: 5,
+  interactive: true,
+  getFeatureId: function(f) {
+    if (f.properties.FID !== undefined) {
+      return f.properties.FID;
+    }
+    if (f.properties.osm_id !== undefined) {
+      return "g" + f.properties.osm_id;
+    }
+    return "r" + f.properties.OBJECTID;
+  }
+})
+.on("click", function(e) {
+  console.log('click')
+  this.clearHighlight();
+  let properties = e.layer.properties;
+  console.log(properties)
+  //alert(parseFloat(properties.area_km2).toFixed(2));
+  if (true) {
+    var type = "c";
+    var ID = properties.FID;
+    var popup='\
+      <table>\
+        <tr><td align="right"><b>Area</b>:</td><td>'+parseFloat(properties.area_km2).toFixed(2)+' km2</td></tr>\
+        <tr><td align="right"><b>Building Count</b>:</td><td>'+parseFloat(properties.building_count).toFixed(0)+'</td></tr>\
+        <tr><td align="right"><b>Building Area in km²</b>:</td><td>'+parseFloat(properties.building_area_km2).toFixed(0)+'</td></tr>\
+        <tr><td align="right"><b>Buildings per km²</b>:</td><td>'+parseFloat(properties.building_count_density_perkm2).toFixed(0)+'</td></tr>\
+        <tr><td align="right"><b>Percentage Building Area</b>:</td><td>'+parseFloat(properties.percentage_building_area).toFixed(0)+'</td></tr>\
+        <tr><td align="right"><b>Distance to Grid in km</b>:</td><td>'+parseFloat(properties.grid_dist_km).toFixed(0)+'</td></tr>\
+      </table>';
+  }
+  if (type != "r") {
+    L.popup()
+    .setContent(popup)
+    .setLatLng(e.latlng)
+    .openOn(map);
+    this.highlight = ID;
+    let style = {
+      fillColor: "#0000FF",
+      fillOpacity: 0.5,
+      stroke: true,
+      fill: true,
+      color: "#0000FF",
+      opacity: 0.5,
+      weight: 2
+    };
+    this.setFeatureStyle(ID, style);
+    L.DomEvent.stop(e);
+  }
 });
