@@ -371,6 +371,8 @@ let vecTileLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp/
     this.setFeatureStyle(ID, style);
     L.DomEvent.stop(e);
   }
+  village_button_fun();
+  map.flyTo([e.latlng.lat, e.latlng.lng], 14);
 });
 
 
@@ -405,6 +407,8 @@ let ogclustersTileLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/dat
   this.clearHighlight();
   let properties = e.layer.properties;
   console.log(properties)
+  var layer = e.target;
+
   //alert(parseFloat(properties.area_km2).toFixed(2));
   if (true) {
     var type = "c";
@@ -437,4 +441,11 @@ let ogclustersTileLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/dat
     this.setFeatureStyle(ID, style);
     L.DomEvent.stop(e);
   }
+})
+
+ogclustersTileLayer.on("click", function (event) {
+  map.options.maxZoom = 19;
+  village_button_fun();
+  map.flyTo([event.latlng.lat, event.latlng.lng], 14);
 });
+
