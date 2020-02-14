@@ -2,3 +2,6 @@ flask
 flask-sqlalchemy
 psycopg2
 geoalchemy2
+geojson
+pandas
+shapely
