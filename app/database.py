@@ -1,9 +1,10 @@
 import os
+import pandas as pd
+import geojson
+from geojson import Feature, FeatureCollection
+from shapely.geometry import Polygon, mapping, MultiPolygon
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
-from sqlalchemy.sql import func
-from sqlalchemy import Table, MetaData
-from sqlalchemy.ext.declarative import declarative_base
 
 
 def get_env_variable(name):
@@ -53,3 +54,33 @@ def select_materialized_view(engine, view_name, schema=None, limit=None):
         rs = con.execute('SELECT * FROM {}{};'.format(view_name, limit))
         data = rs.fetchall()
     return data
+
+
+def select_geom_materialized_view(engine, view_name, schema=None, limit=None):
+    """Gather all polygons in one geojson object
+
+    :param engine: reference to the database
+    :param view_name: name of the materialized view
+    :param schema: name of the schema
+    :param limit: max number of instances to query
+    :return: a geosjon object
+    """
+    if schema is not None:
+        view_name = "{}.{}".format(schema, view_name)
+    if limit is None:
+        limit = ""
+    else:
+        limit = " LIMIT {}".format(limit)
+    with engine.connect() as con:
+        rs = con.execute('SELECT ST_AsGeoJSON(geom) FROM {}{};'.format(view_name, limit))
+        data = rs.fetchall()
+
+    # collect each geojson (of type Polygon)
+    polygons = []
+    for el in data:
+        gm = geojson.loads(el[0])["coordinates"]
+        polygons.append(Polygon([(coor[0], coor[1]) for coor in gm[0]]))
+
+    # reform a geojson with a MultiPolygon
+    geom = mapping(MultiPolygon(polygons))
+    return geom
