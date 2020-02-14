@@ -84,3 +84,52 @@ def select_geom_materialized_view(engine, view_name, schema=None, limit=None):
     # reform a geojson with a MultiPolygon
     geom = mapping(MultiPolygon(polygons))
     return geom
+
+
+def create_geojson_from_views(
+        engine,
+        schema="se4all",
+        view="cluster_offgrid_ng",
+        attr_table_file="attributetable.csv",
+        ofname=None,
+        limit=None
+):
+    """Gather the geometries from all the instances of a view
+
+    :param engine:
+    :param schema:
+    :param view:
+    :param attr_table_file:
+    :param ofname: file to save the geojson
+    :param limit: max number of geom instances to query per instance of view
+    :return: geojson if ofname is None and None otherwise (but save the file)
+    """
+    df = pd.read_csv(attr_table_file).astype('str')
+    features = []
+
+    for i in range(len(df.index)):
+        # this table does not exists
+        if i not in (26,):
+            geom = select_geom_materialized_view(engine, "{}{:03d}_mv".format(view, i+1),
+                                                 schema=schema, limit=limit)
+            props = df.iloc[i].to_dict()
+            feature = Feature(
+                geometry=geom,
+                property=props
+            )
+            features.append(feature)
+
+    fc = FeatureCollection(
+        name="nigeria_osm_states_simplified_availability",
+        crs={"type": "name", "properties": {"name": "urn:ogc:def:crs:OGC:1.3:CRS84"}},
+        features=features
+    )
+    if ofname is not None:
+        with open(ofname, 'w') as outfile:
+            geojson.dump(fc, outfile)
+    else:
+        return fc
+
+
+if __name__=="__main__":
+    create_geojson_from_views(engine, ofname="nigeria_osm_states_full.geojson", limit=1)
