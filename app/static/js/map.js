@@ -14,9 +14,10 @@ var map = L.map("map", options);
 map.addLayer(hot);
 
 var baseMaps = {
-  "OpenStreetMap": osm,
-  "esri" : esri,
   "hot" : hot,
+  "esri" : esri,
+  "OpenStreetMap": osm,
+  "mapbox": mapbox,
 };
 
 L.control.zoom({
@@ -180,7 +181,7 @@ var info = L.control({position: 'bottomleft'});
             // "Priority Clusters": markers
         };
         L.control.layers(baseMaps, overlayMaps).addTo(map);
-        map.on("layeradd",function (){vecTileLayer.bringToFront(); esri.bringToBack(); hot.bringToBack(); osm.bringToBack();});
+        map.on("layeradd",function (){vecTileLayer.bringToFront(); esri.bringToBack(); hot.bringToBack(); osm.bringToBack(); mapbox.bringToBack();});
         map.fireEvent("filterchange", currentfilter);
 
 
