@@ -18,11 +18,37 @@ var mapbox = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/streets-v11/ti
   attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 });
 
-var buildingDensity = L.tileLayer("https:tile.rl-institut.de/data/nesp2_building-density-heatmap/{z}/{x}/{y}.png", {
+var national_background = L.tileLayer("https://tile.rl-institut.de/data/nesp2_national_background/{z}/{x}/{y}.png", {
   maxZoom: 19,
-  opacity: 0.5,
   attribution: '☮'
 });
+
+var national_heatmap = L.tileLayer("https://tile.rl-institut.de/data/nesp2_national_heatmap/{z}/{x}/{y}.png", {
+  maxZoom: 19,
+  attribution: ''
+});
+
+var national_grid = L.tileLayer("https://tile.rl-institut.de/data/nesp2_national_grid/{z}/{x}/{y}.png", {
+  maxZoom: 19,
+  attribution: ''
+});
+
+var welcome_view = L.tileLayer("https://tile.rl-institut.de/data/nesp2_national_welcome-view/{z}/{x}/{y}.png", {
+  maxZoom: 19,
+  attribution: ''
+});
+
+function remove_layer(layer){
+  if (map.hasLayer(layer) == true){
+    map.removeLayer(layer);
+  }
+};
+
+function add_layer(layer) {
+  if (map.hasLayer(layer) == false){
+    map.addLayer(layer);
+  }
+};
 
 var statesLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_states/{z}/{x}/{y}.pbf", {
   rendererFactory: L.canvas.tile,
@@ -36,9 +62,10 @@ var statesLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_
       return {
         weight: 1,
         color: "#000000",
+        opacity: 0,
         fill: true,
         fillColor: col,
-        fillOpacity: 0.3,
+        fillOpacity: 0,
       }
     }
   }
