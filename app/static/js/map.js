@@ -11,13 +11,14 @@ var options = {
 };
 
 var map = L.map("map", options);
-map.addLayer(hot);
+map.addLayer(national_background);
 
 var baseMaps = {
   "hot" : hot,
   "esri" : esri,
   "OpenStreetMap": osm,
   "mapbox": mapbox,
+  "national_background": national_background,
 };
 
 L.control.zoom({
@@ -181,7 +182,7 @@ var info = L.control({position: 'bottomleft'});
             // "Priority Clusters": markers
         };
         L.control.layers(baseMaps, overlayMaps).addTo(map);
-        map.on("layeradd",function (){vecTileLayer.bringToFront(); esri.bringToBack(); hot.bringToBack(); osm.bringToBack(); mapbox.bringToBack();});
+        map.on("layeradd",function (){vecTileLayer.bringToFront(); national_background.bringToBack(); esri.bringToBack(); hot.bringToBack(); osm.bringToBack(); mapbox.bringToBack();});
         map.fireEvent("filterchange", currentfilter);
 
 
