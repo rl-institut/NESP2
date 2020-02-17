@@ -184,6 +184,27 @@ function states_cb_fun() {
 
 }
 
+function heatmap_cb_fun() {
+  var checkBox = document.getElementById("heatmapCheckbox");
+  if (checkBox.checked == true){
+    add_layer(national_heatmap);
+  }
+  if (checkBox.checked == false){
+    remove_layer(national_heatmap);
+    national_heatmap.bringToFront();
+  }
+}
+
+function national_grid_cb_fun() {
+  var checkBox = document.getElementById("nationalGridCheckbox");
+  if (checkBox.checked == true){
+    add_layer(national_grid);
+  }
+  if (checkBox.checked == false){
+    remove_layer(national_grid);
+  }
+}
+
 function clusters_cb_fun() {
   var checkBox = document.getElementById("clustersCheckbox");
   var text = document.getElementsByName("clustersContent");

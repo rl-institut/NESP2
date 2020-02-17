@@ -40,7 +40,7 @@
 	</div>
 	
 	<div class="grid-x align-center sidebar-dropdown">
-      <div class="cell sidebar__btn active small-8 n_hide s_show v_hide" style="display:none" data-toggle="state-dropdown">
+      <div class="cell sidebar__btn active small-8 n_show s_show v_hide" data-toggle="state-dropdown">
 		<select id="stateSelect" class="dropdown-button" onchange="state_dropdown_fun();">
             <option value="Abia">Abia</option>
             <option value="Adamawa">Adamawa</option>
@@ -84,13 +84,43 @@
 	</div>
 
     <div class="grid-x">
-      <div class="cell n_show s_hide v_hide">
+      <div class="cell n_hide s_hide v_hide" style="display:none">
         <div class="sidebar-panel">
           <div class="sidebar-panel-item is-active" data-accordion-item>
             <p href="#" class="sidebar-panel-item-title">States (availability)</p>
             <div class="sidebar-panel-item-button">
               <input class="switch-input" id="statesCheckbox" type="checkbox" onclick="states_cb_fun()">
               <label class="switch-paddle" for="statesCheckbox">
+              </label>
+            </div>
+          </div>
+        </div>	
+      </div>	
+    </div>
+
+    <div class="grid-x">
+      <div class="cell n_show s_hide v_hide">
+        <div class="sidebar-panel">
+          <div class="sidebar-panel-item is-active" data-accordion-item>
+            <p href="#" class="sidebar-panel-item-title">Populated Areas</p>
+            <div class="sidebar-panel-item-button">
+              <input class="switch-input" id="heatmapCheckbox" type="checkbox" onclick="heatmap_cb_fun()">
+              <label class="switch-paddle" for="heatmapCheckbox">
+              </label>
+            </div>
+          </div>
+        </div>	
+      </div>	
+    </div>
+
+    <div class="grid-x">
+      <div class="cell n_show s_hide v_hide">
+        <div class="sidebar-panel">
+          <div class="sidebar-panel-item is-active" data-accordion-item>
+            <p href="#" class="sidebar-panel-item-title">Medium Voltage Grid</p>
+            <div class="sidebar-panel-item-button">
+              <input class="switch-input" id="nationalGridCheckbox" type="checkbox" onclick="national_grid_cb_fun()">
+              <label class="switch-paddle" for="nationalGridCheckbox">
               </label>
             </div>
           </div>
