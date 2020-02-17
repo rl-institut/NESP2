@@ -14,9 +14,10 @@ var map = L.map("map", options);
 map.addLayer(hot);
 
 var baseMaps = {
-  "OpenStreetMap": osm,
-  "esri" : esri,
   "hot" : hot,
+  "esri" : esri,
+  "OpenStreetMap": osm,
+  "mapbox": mapbox,
 };
 
 L.control.zoom({
@@ -26,6 +27,25 @@ L.control.zoom({
 L.control.scale({
     position: "bottomright"
 }).addTo(map);
+
+var info = L.control({position: 'bottomleft'});
+
+            info.onAdd = function (map) {
+                this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+                this.update();
+                L.DomEvent.disableClickPropagation(this._div);
+                return this._div;
+            };
+
+            info.update = function (props) {
+                this._div.innerHTML = '<h4 class="selection_detail_header">State Availability</h4>' +
+                                      '<table class="selection_detail">' +
+                                      '<tr><td align="right"><b>Grid Tracking</b>:</td><td>' + "aaa" + '</td></tr>' +
+                                      '<tr><td align="right"><b>Remote Mapping</b>:</td><td>'+"bbb"+'</td></tr>' +
+                                      '<tr><td align="right"><b>Surveying</b>:</td><td>'+"ccc"+'</td></tr>' +
+                                      '</table>';
+                this._div.innerHTML
+            };
 
 //national_button_fun();
 
@@ -65,6 +85,44 @@ L.control.scale({
         });
         map.on("popupclose", function() {
             vecTileLayer.clearHighlight();
+        });
+
+        ogclustersTileLayer.highlight = null;
+        ogclustersTileLayer.hidden = null;
+        ogclustersTileLayer.hiddenstyle = {
+            fillColor: "lightgray",
+            fillOpacity: 0.3,
+            opacity: 0,
+            fill: true,
+            color: "lightgray"
+        };
+        ogclustersTileLayer.clearHidden = function() {
+            if (this.hiddenIDs) {
+                for (let i = 0, len = this.hiddenIDs.length; i < len; i++) {
+                    let id = this.hiddenIDs[i];
+                    this.resetFeatureStyle(id);
+                }
+            }
+        };
+        ogclustersTileLayer.clearHighlight = function() {
+            if (this.highlight) {
+                if (this.hiddenIDs && this.hiddenIDs.indexOf(this.highlight) > -1){
+                    this.setFeatureStyle(this.highlight, this.hiddenstyle);
+                } else {
+                    this.resetFeatureStyle(this.highlight);
+                }
+            }
+            this.highlight = null;
+        };
+
+        //map.addLayer(ogclustersTileLayer);
+        //map.addLayer(statesLayer);
+
+        map.on("click", function() {
+            ogclustersTileLayer.clearHighlight();
+        });
+        map.on("popupclose", function() {
+            ogclustersTileLayer.clearHighlight();
         });
 
         // const AREA = 0,POP = 1,LONG = 3,LAT = 4,INFO = 5;
@@ -123,7 +181,7 @@ L.control.scale({
             // "Priority Clusters": markers
         };
         L.control.layers(baseMaps, overlayMaps).addTo(map);
-        map.on("layeradd",function (){vecTileLayer.bringToFront(); esri.bringToBack(); hot.bringToBack(); osm.bringToBack();});
+        map.on("layeradd",function (){vecTileLayer.bringToFront(); esri.bringToBack(); hot.bringToBack(); osm.bringToBack(); mapbox.bringToBack();});
         map.fireEvent("filterchange", currentfilter);
 
 

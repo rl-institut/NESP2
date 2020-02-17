@@ -1,4 +1,46 @@
-//$(document).foundation();
+var statesList = ["Abia", "Adamawa", "Akwa Ibom", "Anambra", "Bauchi", "Bayelsa", "Benue", "Borno", "Cross River", "Delta", "Ebonyi", "Edo", "Ekiti", "Enugu", "Federal Capital Territory", "Gombe", "Imo", "Jigawa", "Kaduna", "Kano", "Katsina", "Kebbi", "Kogi", "Kwara", "Lagos", "Nasarawa", "Niger", "Ogun", "Ondo", "Osun", "Oyo", "Plateau", "Rivers", "Sokoto", "Taraba", "Yobe", "Zamfara"];
+var selectedState = statesList[Math.floor(Math.random()*statesList.length)];
+var selectedLGA = "";
+var thirtythreeKV = "33_kV_" + selectedState.toLowerCase();
+var gridLayers = {
+  "Abia": "",
+  "Adamawa": "",
+  "Akwa Ibom": "",
+  "Anambra": "",
+  "Bauchi": "",
+  "Bayelsa": "",
+  "Benue": "",
+  "Borno": "",
+  "Cross River": "",
+  "Delta": "",
+  "Ebonyi": "",
+  "Edo": "",
+  "Ekiti": "",
+  "Enugu": "nesp2_state_grid_enugu",
+  "Federal Capital Territory": "",
+  "Gombe": "",
+  "Imo": "",
+  "Jigawa": "nesp2_state_grid_jigawa",
+  "Kaduna": "nesp2_state_grid_kaduna",
+  "Kano": "nesp2_state_grid_kano",
+  "Katsina": "nesp2_state_grid_katsina",
+  "Kebbi": "nesp2_state_grid_kebbi",
+  "Kogi": "",
+  "Kwara": "",
+  "Lagos": "",
+  "Nasarawa": "nesp2_state_grid_nasawara",
+  "Niger": "",
+  "Ogun": "",
+  "Ondo": "",
+  "Osun": "nesp2_state_grid_osun",
+  "Oyo": "",
+  "Plateau": "",
+  "Rivers": "",
+  "Sokoto": "nesp2_state_grid_sokoto",
+  "Taraba": "",
+  "Yobe": "",
+  "Zamfara": "nesp2_state_grid_zamfara",
+};
 
 var areaSlider = document.getElementById('areaSlider');
 noUiSlider.create(areaSlider, {
@@ -26,6 +68,34 @@ noUiSlider.create(dtgSlider, {
     }
 });
 
+
+var ogAreaSlider = document.getElementById('ogAreaSlider');
+noUiSlider.create(ogAreaSlider, {
+    start: [1, 5],
+    connect: true,
+    range: {
+        'min': [0, 0],
+        'max': [10,10],
+    }
+});
+
+ogAreaSlider.noUiSlider.on("change", function(str, h, values) {
+    currentfilter.minarea = values[0];
+    currentfilter.maxarea = values[1];
+    map.fireEvent("filterchange", currentfilter);
+});
+
+var ogPopulationSlider = document.getElementById('ogPopulationSlider');
+noUiSlider.create(ogPopulationSlider, {
+    start: [300, 1500],
+    connect: true,
+    range: {
+        'min': [0, 0],
+        'max': [3000,3000],
+    }
+});
+
+
 function national_button_fun() {
   var hidelist = document.getElementsByClassName("n_hide");
   var showlist = document.getElementsByClassName("n_show");
@@ -41,9 +111,11 @@ function national_button_fun() {
   
   document.getElementById("statesCheckbox").checked = true;
   states_cb_fun();
-  
+  map.options.minZoom = 6;
+  map.options.maxZoom = 7;  
   map.fitBounds([[4.153, 2.608],[13.892, 14.791]]);
-  map.options.maxZoom = 7;
+  remove_selected_state_pbf();
+  remove_grid_layer();
 }
 
 function state_button_fun() {
@@ -61,7 +133,11 @@ function state_button_fun() {
 
   document.getElementById("statesCheckbox").checked = false;
   states_cb_fun();
-  document.getElementById("gridtrackingCB").checked = false;
+  add_selected_state_pbf();
+  update_grid_layer();
+  map.options.minZoom = 8;
+  map.options.maxZoom = 19;
+  zoomToSelectedState();
 }
 
 function village_button_fun() {
@@ -79,9 +155,7 @@ function village_button_fun() {
 }
 
 function states_cb_fun() {
-    console.log(window.location.href)
   var checkBox = document.getElementById("statesCheckbox");
-  console.log(checkBox);
   if (checkBox.checked == true){
     if (map.hasLayer(statesLayer) == false){
       map.addLayer(statesLayer);
@@ -131,38 +205,42 @@ function clusters_cb_fun() {
     }
   }
 
-  var checkBox = document.getElementById("gridCheckbox");
-  if (checkBox.checked == true){
-    if (map.hasLayer(gridLayer) == false){
-      map.addLayer(gridLayer);
-    }
-  }
-  if (checkBox.checked == false){
-    if (map.hasLayer(gridLayer) == true){
-      map.removeLayer(gridLayer);
-    }
-  }
-
   $.get({url: $SCRIPT_ROOT,
   data: {
     grid_content: gCheckBox.checked,
   },
   });
+}
 
-
+function og_clusters_cb_fun() {
+  var checkBox = document.getElementById("ogClustersCheckbox");
+  var text = document.getElementsByName("ogClustersContent");
+  if (checkBox.checked == true){
+    var i;
+    for (i = 0; i < text.length; i++) {
+      text[i].style.display = "block";
+    }
+    if (map.hasLayer(ogclustersTileLayer) == false){
+      map.addLayer(ogclustersTileLayer);
+    }
+  } else {
+    var j;
+    for (j = 0; j < text.length; j++) {
+      text[j].style.display = "none";
+    }
+    if (map.hasLayer(ogclustersTileLayer) == true){
+      map.removeLayer(ogclustersTileLayer);
+    }
+  }
 }
 
 function grid_cb_fun() {
   var checkBox = document.getElementById("gridCheckbox");
   if (checkBox.checked == true){
-    if (map.hasLayer(gridLayer) == false){
-      map.addLayer(gridLayer);
-    }
+    add_grid_layer();
   }
   if (checkBox.checked == false){
-    if (map.hasLayer(gridLayer) == true){
-      map.removeLayer(gridLayer);
-    }
+    remove_grid_layer();
   }
 
   $.get({url: $SCRIPT_ROOT,
@@ -186,6 +264,19 @@ function building_density_cb_fun() {
   }
 }
 
+function lga_cb_fun(){
+  var checkBox = document.getElementById("lgaCheckbox");
+  if (checkBox.checked == true){
+    if (map.hasLayer(lgas_pbf) == false){
+      map.addLayer(lgas_pbf);
+    }
+  }
+  if (checkBox.checked == false){
+    if (map.hasLayer(lgas_pbf) == true){
+      map.removeLayer(lgas_pbf);
+    }
+  }
+}
 
 function addParameter(url, parameterName, parameterValue, atStart/*Add param before others*/){
     replaceDuplicates = true;
@@ -228,4 +319,19 @@ function addParameter(url, parameterName, parameterValue, atStart/*Add param bef
         newQueryString += parameterName + "=" + (parameterValue?parameterValue:'');
     }
     return urlParts[0] + newQueryString + urlhash;
+};
+
+function state_dropdown_fun(){
+  remove_selected_state_geojson();
+  remove_selected_state_pbf();
+  remove_grid_layer();
+  dd_selection = document.getElementById("stateSelect");
+  change_state_fun(state);
+};
+
+function change_state_fun(state){
+  selectedState = dd_selection.value;
+  update_selected_state_pbf();
+  update_grid_layer();
+  zoomToSelectedState();
 };

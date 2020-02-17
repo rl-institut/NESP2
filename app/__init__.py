@@ -36,7 +36,7 @@ def create_app(test_config=None):
     def index():
         defaultArgs = {
             "states_content": 1,
-            "grid_content": 1
+            "grid_content": 0
         }
         if request.args == {}:
             request.args = defaultArgs
