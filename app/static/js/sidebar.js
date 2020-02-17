@@ -155,9 +155,7 @@ function village_button_fun() {
 }
 
 function states_cb_fun() {
-    console.log(window.location.href)
   var checkBox = document.getElementById("statesCheckbox");
-  console.log(checkBox);
   if (checkBox.checked == true){
     if (map.hasLayer(statesLayer) == false){
       map.addLayer(statesLayer);

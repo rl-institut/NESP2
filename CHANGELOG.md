@@ -29,6 +29,7 @@ Here is a template for new release sections
 - foundation structure and styles (#10)
 - flask structure (#21)
 - base html template (#53)
+- link `style.css` for integration into website (#73)
 ### Changed
 - reworked state view (#52)
 - availability info moved
