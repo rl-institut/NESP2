@@ -31,6 +31,7 @@ Here is a template for new release sections
 - base html template (#53)
 - link `style.css` for integration into website (#76)
 ### Changed
+- Menu item naming (#77)
 - reworked state view (#52)
 - availability info moved
 - level buttons indicate status (#9)
