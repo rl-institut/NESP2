@@ -1,3 +1,59 @@
+/* custom CSS */
+.map-legend {
+  padding: 1rem 1rem;
+}
+
+.map-legend--highlight {
+  font-weight: 700;
+  font-style: italic;
+}
+
+.map-legend__text {
+  position: relative;
+}
+
+.legend-color {
+  height: .5rem;
+  width: 3rem;
+  border-radius: 100px;
+  position: absolute;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  right: 1rem;
+}
+
+.legend-color--green {
+ background-color: #8DE6B4; 
+}
+
+.legend-color--gray {
+  background-color: #C5C4CF; 
+ }
+
+.sidebar-panel {
+  padding-right: 1.5rem;
+}
+
+#stateSelect.dropdown-button {
+  color: #fff;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' width='32' height='24' viewBox='0 0 32 24'><polygon points='0,0 32,0 16,24' style='fill: rgb%28255, 255, 255%29'></polygon></svg>");
+}
+
+#stateSelect.dropdown-button:focus{
+  color: #464646;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' width='32' height='24' viewBox='0 0 32 24'><polygon points='0,0 32,0 16,24' style='fill: rgb%28138, 138, 138%29'></polygon></svg>");
+}
+
+.sidebar-panel-item-icon {
+  width: 2rem;
+  float: right;
+}
+
+.sidebar-panel-item-icon img {
+  width: 1rem;
+}
+
 body {
      padding: 0;
      margin: 0;
@@ -18,6 +74,11 @@ body {
 
 #map{
     height: 800px
+}
+
+.map-legend {
+    background-color: white;
+    border-radius: 1rem;
 }
 
 .split {
