@@ -1,17 +1,19 @@
 var options = {
   center: [9, 7],
-  zoom: 6,
+  zoomSnap: 0.5,
+  zoom: 6.6,
   minZoom: 6,
   maxZoom: 19,
   zoomControl: false,
   maxBounds: [
-    [2, 15],
-    [14, 0]
+    [2, 17], // S, E
+    [15, 0]  // N, W
   ]
 };
 
 var map = L.map("map", options);
 map.addLayer(national_background);
+map.addLayer(hot);
 
 var baseMaps = {
   "hot" : hot,
@@ -19,6 +21,21 @@ var baseMaps = {
   "OpenStreetMap": osm,
   "mapbox": mapbox,
   "national_background": national_background,
+};
+
+function remove_basemaps() {
+  remove_layer(hot);
+  remove_layer(esri);
+  remove_layer(osm);
+  remove_layer(mapbox);
+  remove_layer(national_background);
+};
+
+function remove_basemaps_except_hot() {
+  remove_layer(esri);
+  remove_layer(osm);
+  remove_layer(mapbox);
+  remove_layer(national_background);
 };
 
 L.control.zoom({
@@ -47,8 +64,6 @@ var info = L.control({position: 'bottomleft'});
                                       '</table>';
                 this._div.innerHTML
             };
-
-//national_button_fun();
 
         vecTileLayer.highlight = null;
         vecTileLayer.hidden = null;
@@ -116,9 +131,6 @@ var info = L.control({position: 'bottomleft'});
             this.highlight = null;
         };
 
-        //map.addLayer(ogclustersTileLayer);
-        //map.addLayer(statesLayer);
-
         map.on("click", function() {
             ogclustersTileLayer.clearHighlight();
         });
@@ -182,12 +194,19 @@ var info = L.control({position: 'bottomleft'});
             // "Priority Clusters": markers
         };
         L.control.layers(baseMaps, overlayMaps).addTo(map);
-        map.on("layeradd",function (){vecTileLayer.bringToFront(); national_background.bringToBack(); esri.bringToBack(); hot.bringToBack(); osm.bringToBack(); mapbox.bringToBack();});
+        map.on("layeradd",function (){
+          vecTileLayer.bringToFront(); 
+          national_heatmap.bringToFront();
+          national_grid.bringToFront();
+          national_background.bringToBack(); 
+          esri.bringToBack(); 
+          hot.bringToBack(); 
+          osm.bringToBack(); 
+          mapbox.bringToBack();});
         map.fireEvent("filterchange", currentfilter);
 
+        national_button_fun();
 
-
-        //map.addLayer(vecTileLayer);
         map.on("click", function() {
             vecTileLayer.clearHighlight();
         });

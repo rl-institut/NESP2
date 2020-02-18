@@ -1,3 +1,4 @@
+var level = "national";
 var statesList = ["Abia", "Adamawa", "Akwa Ibom", "Anambra", "Bauchi", "Bayelsa", "Benue", "Borno", "Cross River", "Delta", "Ebonyi", "Edo", "Ekiti", "Enugu", "Federal Capital Territory", "Gombe", "Imo", "Jigawa", "Kaduna", "Kano", "Katsina", "Kebbi", "Kogi", "Kwara", "Lagos", "Nasarawa", "Niger", "Ogun", "Ondo", "Osun", "Oyo", "Plateau", "Rivers", "Sokoto", "Taraba", "Yobe", "Zamfara"];
 var selectedState = statesList[Math.floor(Math.random()*statesList.length)];
 var selectedLGA = "";
@@ -96,7 +97,7 @@ noUiSlider.create(ogPopulationSlider, {
 });
 
 
-function national_button_fun() {
+function adapt_sidebar_to_national_level() {
   var hidelist = document.getElementsByClassName("n_hide");
   var showlist = document.getElementsByClassName("n_show");
   for (i = 0; i < hidelist.length; i++) {
@@ -108,17 +109,32 @@ function national_button_fun() {
   document.getElementById("national").className = "cell small-6 level sidebar__btn active";
   document.getElementById("state").className = "cell small-6 level sidebar__btn";
   document.getElementById("village").className = "cell level sidebar__btn";
-  
+};
+
+function adapt_view_to_national_level() {
   document.getElementById("statesCheckbox").checked = true;
   states_cb_fun();
-  map.options.minZoom = 6;
+  national_grid_cb_fun();
+  heatmap_cb_fun();
+  map.options.minZoom = 6.6;
   map.options.maxZoom = 7;  
-  map.fitBounds([[4.153, 2.608],[13.892, 14.791]]);
+  map.fitBounds([[2, 0],[15, 17]]); // [[S, W]],[[N, E]]
+  remove_basemaps();
+  map.addLayer(hot);
+  map.addLayer(national_background);
+  remove_layer(ogclustersTileLayer);
   remove_selected_state_pbf();
   remove_grid_layer();
+};
+
+function national_button_fun() {
+  document.getElementById("heatmapCheckbox").checked = true;
+  document.getElementById("nationalGridCheckbox").checked = true;
+  adapt_sidebar_to_national_level();
+  adapt_view_to_national_level();
 }
 
-function state_button_fun() {
+function adapt_sidebar_to_state_level(){
   var hidelist = document.getElementsByClassName("s_hide");
   var showlist = document.getElementsByClassName("s_show");
   for (i = 0; i < hidelist.length; i++) {
@@ -130,15 +146,29 @@ function state_button_fun() {
   document.getElementById("national").className = "cell small-6 level sidebar__btn";
   document.getElementById("state").className = "cell small-6 level sidebar__btn active";
   document.getElementById("village").className = "cell level sidebar__btn";
+};
 
-  document.getElementById("statesCheckbox").checked = false;
+function adapt_view_to_state_level() {
   states_cb_fun();
+  og_clusters_cb_fun();
   add_selected_state_pbf();
   update_grid_layer();
   map.options.minZoom = 8;
   map.options.maxZoom = 19;
   zoomToSelectedState();
-}
+  remove_layer(national_heatmap);
+  remove_layer(national_grid);
+  map.addLayer(hot);
+  remove_basemaps_except_hot();
+};
+
+function state_button_fun() {
+  document.getElementById("statesCheckbox").checked = false;
+  document.getElementById("gridCheckbox").checked = true;
+  document.getElementById("ogClustersCheckbox").checked = true;
+  adapt_sidebar_to_state_level();
+  adapt_view_to_state_level();
+};
 
 function village_button_fun() {
   var hidelist = document.getElementsByClassName("v_hide");
@@ -348,6 +378,10 @@ function state_dropdown_fun(){
   remove_grid_layer();
   dd_selection = document.getElementById("stateSelect");
   change_state_fun(state);
+  if (level != "state"){
+    level = state;
+    state_button_fun();
+  }
 };
 
 function change_state_fun(state){
