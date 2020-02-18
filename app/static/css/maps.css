@@ -1,3 +1,36 @@
+/* custom CSS */
+.map-legend {
+  padding: 1rem 1rem;
+}
+
+.map-legend--highlight {
+  font-weight: 700;
+  font-style: italic;
+}
+
+.map-legend__text {
+  position: relative;
+}
+
+.legend-color {
+  height: .5rem;
+  width: 3rem;
+  border-radius: 100px;
+  position: absolute;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  right: 1rem;
+}
+
+.legend-color--green {
+ background-color: #8DE6B4; 
+}
+
+.legend-color--gray {
+  background-color: #C5C4CF; 
+ }
+
 body {
      padding: 0;
      margin: 0;
@@ -22,7 +55,7 @@ body {
 
 .map-legend {
     background-color: white;
-    border-radius: 5px
+    border-radius: 1rem;
 }
 
 .split {

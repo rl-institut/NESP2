@@ -23,7 +23,7 @@ info.onAdd = function (map) {
 };
 
 info.update = function (props) {
-    this._div.innerHTML = '<p><span>green</span> Datasets available </p><p> <span>grey</span> Datasets <b>not yet</b> available</p>'
+    this._div.innerHTML = '<div class="grid-x"><div class="small-3 map-legend__text"><div class="legend-color legend-color--green"></div></div><div class="small-9">Datasets available</div><div class="small-3 map-legend__text"><div class="legend-color legend-color--gray"></div></div><div class="small-9">Datasets <span class="map-legend--highlight">not yet</span> available</div></div>'
 };
 
 info.addTo(map);
