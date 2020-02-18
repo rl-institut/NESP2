@@ -20,6 +20,11 @@ body {
     height: 800px
 }
 
+.map-legend {
+    background-color: white;
+    border-radius: 5px
+}
+
 .split {
   height: 100%;
   position: fixed;
