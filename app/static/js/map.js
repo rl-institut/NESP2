@@ -13,6 +13,22 @@ var options = {
 var map = L.map("map", options);
 map.addLayer(national_background);
 
+var info = L.control({position: 'bottomright'});
+
+info.onAdd = function (map) {
+    this._div = L.DomUtil.create('div', 'map-legend'); // create a div with a class "map-legend"
+    this.update();
+
+    return this._div;
+};
+
+info.update = function (props) {
+    this._div.innerHTML = '<p><span>green</span> Datasets available </p><p> <span>grey</span> Datasets <b>not yet</b> available</p>'
+};
+
+info.addTo(map);
+
+
 var baseMaps = {
   "hot" : hot,
   "esri" : esri,
