@@ -30,15 +30,19 @@ Here is a template for new release sections
 - flask structure (#21)
 - base html template (#53)
 - link `style.css` for integration into website (#76)
+- filter icon for filter (#82)
+
 ### Changed
-- Menu item naming (#77)
-- reworked state view (#52)
 - availability info moved
 - level buttons indicate status (#9)
 - level buttons control options (#10)
 - sidebar style (#10)
+- reworked state view (#52)
 - update leaflet version (#53)
 - split page using grid-x rather than css (#53)
+- Menu item naming (#77)
+- layout of side panel (#82) 
+
 ### Removed
 - redundant accordion menu (#10)
 
