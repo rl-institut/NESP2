@@ -1,12 +1,13 @@
 var options = {
   center: [9, 7],
-  zoom: 6,
+  zoomSnap: 0.5,
+  zoom: 6.5,
   minZoom: 6,
   maxZoom: 19,
   zoomControl: false,
   maxBounds: [
-    [2, 15],
-    [14, 0]
+    [2, 17],
+    [15, 0]
   ]
 };
 
