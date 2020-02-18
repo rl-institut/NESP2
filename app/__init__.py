@@ -40,4 +40,11 @@ def create_app(test_config=None):
 
         return render_template('index.html', **request.args)
 
+    @app.route('/csv-export')
+    def download_csv():
+
+        print(request.args)
+        # TODO: perform a db search
+        return render_template('index.html', **request.args)
+
     return app
