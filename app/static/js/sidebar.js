@@ -249,6 +249,7 @@ function states_cb_fun() {
 */
 }
 
+// Triggered by the checkbox Populated Areas
 function heatmap_cb_fun() {
   var checkBox = document.getElementById("heatmapCheckbox");
   if (checkBox.checked == true){
@@ -424,10 +425,9 @@ function state_dropdown_fun(){
   remove_grid_layer();
   dd_selection = document.getElementById("stateSelect");
   change_state_fun(state);
-  if (level != "state"){
-    level = state;
-    state_button_fun();
-  }
+
+  level = state;
+  state_button_fun();
 };
 
 function change_state_fun(state){
