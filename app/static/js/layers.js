@@ -178,7 +178,12 @@ function highlightStateBorders(e) {
   if (e.target.feature.properties.availability % 4 >= 2) {avail.remoteMapping = "<b>✓</b>";}
   if (e.target.feature.properties.availability % 2 === 1) {avail.Surveying = "<b>✓</b>";}
   highlightLayer = e.target;
-  highlightLayer.setStyle(statesStyleGeojsonHighlight);
+  if (highlightLayer.feature.properties.name != selectedState){
+    highlightLayer.setStyle(statesStyleGeojsonHighlight);
+  }
+  else{
+    highlightLayer.setStyle(statesStyleGeojsonTransparent);
+  }
   if (map.hasLayer(info)){info.remove();};
   info.update = function (props) {
     this._div.innerHTML = '<h4 class="selection_detail_header">'+e.target.feature.properties.name+'</h4>' +
@@ -212,7 +217,7 @@ function highlight_state(feature, layer) {
 }
 
 // Geojson layer formed from local json file. Used for hovering styles and clicking. Columns: id, name, source, type, wikidata, wikipedia, availability (int)
-var nigeria_states_geojson = L.geoJSON([nigeria_states_simplified], {
+var nigeria_states_geojson = L.geoJSON(nigeria_states_simplified, {
   style: function (feature) {
     return(statesStyleGeojsonTransparent);
   },
