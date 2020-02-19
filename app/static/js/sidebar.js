@@ -423,16 +423,10 @@ function addParameter(url, parameterName, parameterValue, atStart/*Add param bef
 function state_dropdown_fun(){
   remove_selected_state_pbf();
   remove_grid_layer();
-  dd_selection = document.getElementById("stateSelect");
-  change_state_fun(state);
+  //update the selected state
+  selectedState = document.getElementById("stateSelect").value;
 
-  level = state;
+  update_selected_state_pbf()
+  //Trigger the switch to state level
   state_button_fun();
-};
-
-function change_state_fun(state){
-  selectedState = dd_selection.value;
-  update_selected_state_pbf();
-  update_grid_layer();
-  zoomToSelectedState();
 };
