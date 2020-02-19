@@ -135,40 +135,65 @@ function adapt_sidebar_to_selection_level(selectionLevel) {
 };
 
 function adapt_view_to_national_level() {
-  document.getElementById("statesCheckbox").checked = true;
-  // reset the selected state to None
-
-  resetStateDropdown()
-  states_cb_fun();
-  national_grid_cb_fun();
-  heatmap_cb_fun();
   map.options.minZoom = 6.6;
   map.options.maxZoom = 9;
   map.fitBounds([[2, 0],[15, 17]]); // [[S, W]],[[N, E]]
+
+  // load the states boundaries
+  document.getElementById("statesCheckbox").checked = true;
+  states_cb_fun();
+  // load the populated areas
+  document.getElementById("heatmapCheckbox").checked = true;
+  heatmap_cb_fun();
+  // load the medium voltage grid
+  document.getElementById("nationalGridCheckbox").checked = true;
+  national_grid_cb_fun();
+
+  // reset the selected state to None
+  resetStateSelect()
+  remove_selected_state_pbf();
 
   remove_basemaps();
 
   map.addLayer(osm_gray);
   map.addLayer(national_background);
 
+  // Remotely mapped villages layer
   remove_layer(ogclustersTileLayer);
-  remove_selected_state_pbf();
+
+  // Linked to the checkbox Grid
   remove_grid_layer();
 };
 
 function adapt_view_to_state_level() {
   console.log("adapt_view_to_state_level");
-  states_cb_fun();
-  og_clusters_cb_fun();
-  add_selected_state_pbf();
-  update_grid_layer();
+
   map.options.minZoom = 8;
   map.options.maxZoom = 19;
-  zoomToSelectedState();
+
+  // load the states boundaries
+  document.getElementById("statesCheckbox").checked = true;
+  states_cb_fun();
+  document.getElementById("gridCheckbox").checked = true;
+  // Load the remotely mapped villages clusters
+  document.getElementById("ogClustersCheckbox").checked = true;
+  og_clusters_cb_fun();
+
+  add_selected_state_pbf();
+  update_grid_layer();
+
+  // remove the populated areas and the medium voltage grid layers
   remove_layer(national_heatmap);
   remove_layer(national_grid);
-  map.addLayer(osm_gray);
+
   remove_basemaps_except_osm_gray();
+
+  add_layer(osm_gray);
+
+  zoomToSelectedState();
+
+
+
 };
 
 /*
