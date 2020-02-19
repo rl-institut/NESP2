@@ -80,50 +80,6 @@ var statesLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_
   }
 });
 
-function highlightFeature(e) {
-  var tooltipContent = "<b>" + e.target.feature.properties.name + "</b> Availability:<br>";
-  var avail = {
-    gridTracking: "<b>✕</b>",
-    remoteMapping: "<b>✕</b>",
-    Surveying: "<b>✕</b>",
-  }
-  if (e.target.feature.properties.availability >= 4) {avail.gridTracking = "<b>✓</b>";}
-  if (e.target.feature.properties.availability % 4 >= 2) {avail.remoteMapping = "<b>✓</b>";}
-  if (e.target.feature.properties.availability % 2 === 1) {avail.Surveying = "<b>✓</b>";}
-  highlightLayer = e.target;
-  highlightLayer.setStyle(statesStyleGeojsonHighlight);
-  if (map.hasLayer(info)){info.remove();};
-  info.update = function (props) {
-    this._div.innerHTML = '<h4 class="selection_detail_header">'+e.target.feature.properties.name+'</h4>' +
-                          '<table class="selection_detail">' +
-                          '<tr><td align="right"><b>Grid Tracking</b>:</td><td>' +avail.gridTracking+ '</td></tr>' +
-                          '<tr><td align="right"><b>Remote Mapping</b>:</td><td>'+avail.remoteMapping+'</td></tr>' +
-                          '<tr><td align="right"><b>Surveying</b>:</td><td>'+avail.Surveying+'</td></tr>' +
-                          '</table>';
-    this._div.innerHTML;
-  };
-  info.addTo(map);
-}
-
-function lowlightFeature(e) {
-  lowlightLayer = e.target;
-  lowlightLayer.setStyle(statesStyleGeojsonTransparent);
-  info.remove();
-}
-
-function highlight_state(feature, layer) {
-  layer.on({
-    mouseover: highlightFeature,
-    mouseout: lowlightFeature,
-  });  
-  layer.on('click',function() { 
-    selectedState = feature.properties["name"];
-    redefine_grid_layer();
-    document.getElementById("stateSelect").value = selectedState;
-  }
-);
-}      
-
 // Vector-tiles layer that has higher resolution shapes and columns in its attribute table: id, name, source, type, wikidata, wikipedia, availability (int)
 var selected_state_pbf = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_states_hr/{z}/{x}/{y}.pbf", {
   rendererFactory: L.canvas.tile,
@@ -207,6 +163,53 @@ function update_lgas_pbf(){
   redefine_lgas_pbf();
   add_lgas_pbf();
 };
+
+
+// State borders and state hover functions
+
+function highlightFeature(e) {
+  var tooltipContent = "<b>" + e.target.feature.properties.name + "</b> Availability:<br>";
+  var avail = {
+    gridTracking: "<b>✕</b>",
+    remoteMapping: "<b>✕</b>",
+    Surveying: "<b>✕</b>",
+  }
+  if (e.target.feature.properties.availability >= 4) {avail.gridTracking = "<b>✓</b>";}
+  if (e.target.feature.properties.availability % 4 >= 2) {avail.remoteMapping = "<b>✓</b>";}
+  if (e.target.feature.properties.availability % 2 === 1) {avail.Surveying = "<b>✓</b>";}
+  highlightLayer = e.target;
+  highlightLayer.setStyle(statesStyleGeojsonHighlight);
+  if (map.hasLayer(info)){info.remove();};
+  info.update = function (props) {
+    this._div.innerHTML = '<h4 class="selection_detail_header">'+e.target.feature.properties.name+'</h4>' +
+                          '<table class="selection_detail">' +
+                          '<tr><td align="right"><b>Grid Tracking</b>:</td><td>' +avail.gridTracking+ '</td></tr>' +
+                          '<tr><td align="right"><b>Remote Mapping</b>:</td><td>'+avail.remoteMapping+'</td></tr>' +
+                          '<tr><td align="right"><b>Surveying</b>:</td><td>'+avail.Surveying+'</td></tr>' +
+                          '</table>';
+    this._div.innerHTML;
+  };
+  info.addTo(map);
+}
+
+function lowlightFeature(e) {
+  lowlightLayer = e.target;
+  lowlightLayer.setStyle(statesStyleGeojsonTransparent);
+  info.remove();
+}
+
+function highlight_state(feature, layer) {
+  layer.on({
+    mouseover: highlightFeature,
+    mouseout: lowlightFeature,
+  });
+  layer.on('click',function() {
+    selectedState = feature.properties["name"];
+    redefine_grid_layer();
+    document.getElementById("stateSelect").value = selectedState;
+  }
+);
+}
 
 // Geojson layer formed from local json file. Used for hovering styles and clicking. Columns: id, name, source, type, wikidata, wikipedia, availability (int)
 var nigeria_states_geojson = L.geoJSON([nigeria_states_simplified], {
