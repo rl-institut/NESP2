@@ -167,7 +167,7 @@ function update_lgas_pbf(){
 
 // State borders and state hover functions
 
-function highlightFeature(e) {
+function highlightStateBorders(e) {
   var tooltipContent = "<b>" + e.target.feature.properties.name + "</b> Availability:<br>";
   var avail = {
     gridTracking: "<b>✕</b>",
@@ -192,7 +192,7 @@ function highlightFeature(e) {
   info.addTo(map);
 }
 
-function lowlightFeature(e) {
+function lowlightStateBorders(e) {
   lowlightLayer = e.target;
   lowlightLayer.setStyle(statesStyleGeojsonTransparent);
   info.remove();
@@ -200,8 +200,8 @@ function lowlightFeature(e) {
 
 function highlight_state(feature, layer) {
   layer.on({
-    mouseover: highlightFeature,
-    mouseout: lowlightFeature,
+    mouseover: highlightStateBorders,
+    mouseout:  lowlightStateBorders,
   });
   layer.on('click',function() {
     selectedState = feature.properties["name"];
