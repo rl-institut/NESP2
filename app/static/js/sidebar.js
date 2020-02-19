@@ -126,7 +126,7 @@ function adapt_view_to_national_level() {
   map.options.maxZoom = 9;
   map.fitBounds([[2, 0],[15, 17]]); // [[S, W]],[[N, E]]
   remove_basemaps();
-  map.addLayer(hot);
+  map.addLayer(osm_gray);
   map.addLayer(national_background);
   remove_layer(ogclustersTileLayer);
   remove_selected_state_pbf();
@@ -164,8 +164,8 @@ function adapt_view_to_state_level() {
   zoomToSelectedState();
   remove_layer(national_heatmap);
   remove_layer(national_grid);
-  map.addLayer(hot);
-  remove_basemaps_except_hot();
+  map.addLayer(osm_gray);
+  remove_basemaps_except_osm_gray();
 };
 
 function state_button_fun() {

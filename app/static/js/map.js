@@ -13,7 +13,7 @@ var options = {
 
 var map = L.map("map", options);
 map.addLayer(national_background);
-map.addLayer(hot);
+map.addLayer(osm_gray);
 
 var info = L.control({position: 'bottomright'});
 
@@ -35,7 +35,7 @@ var baseMaps = {
   "hot" : hot,
   "esri" : esri,
   "OpenStreetMap": osm,
-  "mapbox": mapbox,
+  "osm_gray": osm_gray,
   "national_background": national_background,
 };
 
@@ -43,14 +43,14 @@ function remove_basemaps() {
   remove_layer(hot);
   remove_layer(esri);
   remove_layer(osm);
-  remove_layer(mapbox);
+  remove_layer(osm_gray);
   remove_layer(national_background);
 };
 
-function remove_basemaps_except_hot() {
+function remove_basemaps_except_osm_gray() {
   remove_layer(esri);
   remove_layer(osm);
-  remove_layer(mapbox);
+  remove_layer(hot);
   remove_layer(national_background);
 };
 
@@ -218,7 +218,7 @@ var info = L.control({position: 'bottomleft'});
           esri.bringToBack(); 
           hot.bringToBack(); 
           osm.bringToBack(); 
-          mapbox.bringToBack();});
+          osm_gray.bringToBack();});
         map.fireEvent("filterchange", currentfilter);
 
         national_button_fun();
