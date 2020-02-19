@@ -114,18 +114,24 @@ noUiSlider.create(ogPopulationSlider, {
 });
 
 
-function adapt_sidebar_to_national_level() {
-  var hidelist = document.getElementsByClassName("n_hide");
-  var showlist = document.getElementsByClassName("n_show");
+function adapt_sidebar_to_selection_level(selectionLevel) {
+
+  var level_id =  selectionLevel.charAt(0)
+  // hide and show elements according to their classes
+  var hidelist = document.getElementsByClassName(level_id + "_hide");
+  var showlist = document.getElementsByClassName(level_id + "_show");
   for (i = 0; i < hidelist.length; i++) {
     hidelist[i].style.display = "none";
   }
   for (j = 0; j < showlist.length; j++) {
     showlist[j].style.display = "block";
   }
-  document.getElementById("national").className = "cell small-6 level sidebar__btn active";
+
+  document.getElementById("national").className = "cell small-6 level sidebar__btn";
   document.getElementById("state").className = "cell small-6 level sidebar__btn";
-  document.getElementById("village").className = "cell level sidebar__btn";
+  document.getElementById("village").className = "cell small-6 level sidebar__btn";
+
+  document.getElementById(selectionLevel).className = "cell small-6 level sidebar__btn active";
 };
 
 function adapt_view_to_national_level() {
@@ -139,36 +145,19 @@ function adapt_view_to_national_level() {
   map.options.minZoom = 6.6;
   map.options.maxZoom = 9;
   map.fitBounds([[2, 0],[15, 17]]); // [[S, W]],[[N, E]]
+
   remove_basemaps();
+
   map.addLayer(osm_gray);
   map.addLayer(national_background);
+
   remove_layer(ogclustersTileLayer);
   remove_selected_state_pbf();
   remove_grid_layer();
 };
 
-function national_button_fun() {
-  document.getElementById("heatmapCheckbox").checked = true;
-  document.getElementById("nationalGridCheckbox").checked = true;
-  adapt_sidebar_to_national_level();
-  adapt_view_to_national_level();
-}
-
-function adapt_sidebar_to_state_level(){
-  var hidelist = document.getElementsByClassName("s_hide");
-  var showlist = document.getElementsByClassName("s_show");
-  for (i = 0; i < hidelist.length; i++) {
-    hidelist[i].style.display = "none";
-  }
-  for (j = 0; j < showlist.length; j++) {
-    showlist[j].style.display = "block";
-  }
-  document.getElementById("national").className = "cell small-6 level sidebar__btn";
-  document.getElementById("state").className = "cell small-6 level sidebar__btn active";
-  document.getElementById("village").className = "cell level sidebar__btn";
-};
-
 function adapt_view_to_state_level() {
+  console.log("adapt_view_to_state_level");
   states_cb_fun();
   og_clusters_cb_fun();
   add_selected_state_pbf();
@@ -182,27 +171,31 @@ function adapt_view_to_state_level() {
   remove_basemaps_except_osm_gray();
 };
 
+/*
+* triggered by the click on the level buttons
+*/
+
+function national_button_fun() {
+  level="national";
+  document.getElementById("heatmapCheckbox").checked = true;
+  document.getElementById("nationalGridCheckbox").checked = true;
+  adapt_sidebar_to_selection_level(level);
+  adapt_view_to_national_level()
+}
+
 function state_button_fun() {
+  level="state";
   document.getElementById("statesCheckbox").checked = false;
   document.getElementById("gridCheckbox").checked = true;
   document.getElementById("ogClustersCheckbox").checked = true;
-  adapt_sidebar_to_state_level();
+  adapt_sidebar_to_selection_level(level);
   adapt_view_to_state_level();
 };
 
 function village_button_fun() {
-  var hidelist = document.getElementsByClassName("v_hide");
-  var showlist = document.getElementsByClassName("v_show");
-  for (i = 0; i < hidelist.length; i++) {
-    hidelist[i].style.display = "none";
-  }
-  for (j = 0; j < showlist.length; j++) {
-    showlist[j].style.display = "block";
-  }
-  document.getElementById("national").className = "cell small-6 level sidebar__btn";
-  document.getElementById("state").className = "cell small-6 level sidebar__btn";
-  document.getElementById("village").className = "cell level sidebar__btn active";
-}
+  level="village";
+  adapt_sidebar_to_selection_level(level);
+};
 
 function states_cb_fun() {
   var checkBox = document.getElementById("statesCheckbox");
