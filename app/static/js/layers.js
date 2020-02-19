@@ -1,38 +1,46 @@
+// Basic png-tile layer taken from OpenStreetMap
 var osm = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
   maxZoom: 19,
   attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 });
 
+// Basic png-tile layer taken from the Humanitarian OpenStreetMap Team
 var hot = L.tileLayer("https://tile-{s}.openstreetmap.fr/hot/{z}/{x}/{y}.png", {
   maxZoom: 19,
   attribution: '&copy; Tiles style by Humanitarian OpenStreetMap Team hosted by OpenStreetMap France.'
 });
 
+// Basic png-tile layer taken from esri
 var esri = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
   maxZoom: 19,
   attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
 });
 
+// Basic png-tile taken from mapbox
 var mapbox = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token=pk.eyJ1Ijoid2FtLXJsaSIsImEiOiJjanlpbTdsdXgwMHljM2JueGNrODZtbjB5In0.A7X6_rpw7hRehkulqMjpXw", {
   maxZoom: 19,
   attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 });
 
+// Basic png-tile layer for background taken from rl-institute tile server serves zoom levels 5-9
 var national_background = L.tileLayer("https://tile.rl-institut.de/data/nesp2_national_background/{z}/{x}/{y}.png", {
   maxZoom: 19,
   attribution: '☮'
 });
 
+// Basic png-tile layer for overlays taken from rl-institute tile server serves zoom levels 5-9
 var national_heatmap = L.tileLayer("https://tile.rl-institut.de/data/nesp2_national_heatmap/{z}/{x}/{y}.png", {
   maxZoom: 19,
   attribution: ''
 });
 
+// Basic png-tile layer for overlays taken from rl-institute tile server serves zoom levels 5-9
 var national_grid = L.tileLayer("https://tile.rl-institut.de/data/nesp2_national_grid/{z}/{x}/{y}.png", {
   maxZoom: 19,
   attribution: ''
 });
 
+// Basic png-tile layer combines national grid, heatmap and background. Redundant. Serves Levels 5-9
 var welcome_view = L.tileLayer("https://tile.rl-institut.de/data/nesp2_national_welcome-view/{z}/{x}/{y}.png", {
   maxZoom: 19,
   attribution: ''
@@ -50,6 +58,7 @@ function add_layer(layer) {
   }
 };
 
+// Vector-tiles layer that has layer shapes and columns in its attribute table: id, name, source, type, wikidata, wikipedia, availability (int)
 var statesLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_states/{z}/{x}/{y}.pbf", {
   rendererFactory: L.canvas.tile,
   vectorTileLayerStyles: {
@@ -109,13 +118,13 @@ function highlight_state(feature, layer) {
   });  
   layer.on('click',function() { 
     selectedState = feature.properties["name"];
-    remove_selected_state_geojson();
     redefine_grid_layer();
     document.getElementById("stateSelect").value = selectedState;
   }
 );
 }      
 
+// Vector-tiles layer that has higher resolution shapes and columns in its attribute table: id, name, source, type, wikidata, wikipedia, availability (int)
 var selected_state_pbf = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_states_hr/{z}/{x}/{y}.pbf", {
   rendererFactory: L.canvas.tile,
   vectorTileLayerStyles: {
@@ -158,6 +167,7 @@ function update_selected_state_pbf(){
   add_selected_state_pbf();
 };
 
+// Vector-tiles layer that has LGA shapes in high resolution and columns in its attribute table: id, name, source, type, wikidata, wikipedia
 var lgas_pbf = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_lgas_hr/{z}/{x}/{y}.pbf", {
   rendererFactory: L.canvas.tile,
   vectorTileLayerStyles: {
@@ -198,6 +208,7 @@ function update_lgas_pbf(){
   add_lgas_pbf();
 };
 
+// Geojson layer formed from local json file. Used for hovering styles and clicking. Columns: id, name, source, type, wikidata, wikipedia, availability (int)
 var nigeria_states_geojson = L.geoJSON([nigeria_states_simplified], {
   style: function (feature) {
     return(statesStyleGeojsonTransparent);
@@ -219,50 +230,9 @@ function zoomToSelectedState() {
   });
 };
 
-var selected_state_geojson = L.geoJSON([nigeria_states_simplified], {
-  style: function (feature) {
-    var bob = "#00ff00";
-    if (feature.properties.name == selectedState) {bob = "#ff00ff";}
-    return {
-      fill: true,
-      fillColor: bob,
-      fillOpacity: 0.5,
-      color: "#111111",
-      weight: 1
-   };
-  },
-});
-
-function remove_selected_state_geojson() {
-  if (map.hasLayer(selected_state_geojson) == true){
-    map.removeLayer(selected_state_geojson);
-  }
-};
-
-function add_selected_state_geojson() {
-  if (map.hasLayer(selected_state_geojson) == false){
-    map.addLayer(selected_state_geojson);
-  }
-};
-
-function redefine_selected_state_geojson() {
-  selected_state_geojson = L.geoJSON([nigeria_states_simplified], {
-    style: function (feature) {
-      var bob = "#00ff00";
-      if (feature.properties.name == selectedState) {return(SLstateSelection);}
-      else {return(SLstates);};
-    },
-  });
-};
-
-function update_selected_state_geojson(){
-  remove_selected_state_geojson();
-  redefine_selected_state_geojson();
-  map.addLayer(selected_state_geojson);
-};
-
 // Definitions and functions for the grid_layer
 
+// Vector tiles layer that is adapted (URL) depending on the chosen state. Contains layers '11kV' and '33kV' Columns: several, but of no interest to the map
 var grid_layer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/" + gridLayers[selectedState] + "/{z}/{x}/{y}.pbf", {
   rendererFactory: L.canvas.tile,
   vectorTileLayerStyles: {
@@ -308,7 +278,7 @@ function update_grid_layer(){
 };
 
 // Definitions and functions for the clusters_layer
-
+// Vector tiles layer with clusters (populated areas). Contains layers 'regions' and 'kedco_lines'. regions-columns: admin1, admin2, area_km2, pop_hrsl
 let vecTileLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp/{z}/{x}/{y}.pbf", {
   rendererFactory: L.canvas.tile,
   vectorTileLayerStyles: {
@@ -407,7 +377,7 @@ let vecTileLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp/
   map.flyTo([e.latlng.lat, e.latlng.lng], 14);
 });
 
-
+// Vector tiles layer with off-grid-clusters (remotely mapped villages). Contains layer 'OGClusters'. columns: cluster_offgrid_id, area_km2, building_count, large_building_count, percentage_large_building, building_area_km2, building_count_density_perkm2, percentage_building_area, grid_dist_km
 let ogclustersTileLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_offgrid_clusters/{z}/{x}/{y}.pbf", {
   rendererFactory: L.canvas.tile,
   vectorTileLayerStyles: {
