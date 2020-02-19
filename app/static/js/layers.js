@@ -220,9 +220,7 @@ var nigeria_states_geojson = L.geoJSON([nigeria_states_simplified], {
 });
 
 nigeria_states_geojson.on("click", function (event) {
-  map.options.maxZoom = 19;
   map.flyToBounds(event.layer.getBounds());
-  map.removeLayer(nigeria_states_geojson);
   info.remove();
   state_button_fun();
 });
