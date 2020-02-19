@@ -386,7 +386,6 @@ function addParameter(url, parameterName, parameterValue, atStart/*Add param bef
 };
 
 function state_dropdown_fun(){
-  remove_selected_state_geojson();
   remove_selected_state_pbf();
   remove_grid_layer();
   dd_selection = document.getElementById("stateSelect");
