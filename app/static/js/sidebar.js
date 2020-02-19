@@ -1,6 +1,6 @@
 var level = "national";
 var statesList = ["Abia", "Adamawa", "Akwa Ibom", "Anambra", "Bauchi", "Bayelsa", "Benue", "Borno", "Cross River", "Delta", "Ebonyi", "Edo", "Ekiti", "Enugu", "Federal Capital Territory", "Gombe", "Imo", "Jigawa", "Kaduna", "Kano", "Katsina", "Kebbi", "Kogi", "Kwara", "Lagos", "Nasarawa", "Niger", "Ogun", "Ondo", "Osun", "Oyo", "Plateau", "Rivers", "Sokoto", "Taraba", "Yobe", "Zamfara"];
-var selectedState = statesList[Math.floor(Math.random()*statesList.length)];
+var selectedState = "init";
 var selectedLGA = "";
 var thirtythreeKV = "33_kV_" + selectedState.toLowerCase();
 var gridLayers = {
@@ -42,6 +42,17 @@ var gridLayers = {
   "Yobe": "",
   "Zamfara": "nesp2_state_grid_zamfara",
 };
+
+
+
+
+function resetStateSelect(){
+    selectedState = "init"
+    var s = document.getElementById('stateSelect')
+    console.log(s.options)
+    s.options[0].selected = true;
+}
+
 
 var sliderOptions = {
     connect: true,
@@ -119,6 +130,9 @@ function adapt_sidebar_to_national_level() {
 
 function adapt_view_to_national_level() {
   document.getElementById("statesCheckbox").checked = true;
+  // reset the selected state to None
+
+  resetStateDropdown()
   states_cb_fun();
   national_grid_cb_fun();
   heatmap_cb_fun();
