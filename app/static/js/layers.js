@@ -16,10 +16,10 @@ var esri = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Wor
   attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
 });
 
-// Basic png-tile taken from mapbox
-var mapbox = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token=pk.eyJ1Ijoid2FtLXJsaSIsImEiOiJjanlpbTdsdXgwMHljM2JueGNrODZtbjB5In0.A7X6_rpw7hRehkulqMjpXw", {
+// Basic png-tile taken from wmflabs
+var osm_gray = L.tileLayer("https://tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png", {
   maxZoom: 19,
-  attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+  attribution: '&copy; Tiles style from OpenStreetMap, hosted by wmflabs. <a href="https://wmflabs.org"></a>'
 });
 
 // Basic png-tile layer for background taken from rl-institute tile server serves zoom levels 5-9
