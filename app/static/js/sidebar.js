@@ -202,17 +202,12 @@ function adapt_view_to_state_level() {
 
 function national_button_fun() {
   level="national";
-  document.getElementById("heatmapCheckbox").checked = true;
-  document.getElementById("nationalGridCheckbox").checked = true;
   adapt_sidebar_to_selection_level(level);
   adapt_view_to_national_level()
 }
 
 function state_button_fun() {
   level="state";
-  document.getElementById("statesCheckbox").checked = false;
-  document.getElementById("gridCheckbox").checked = true;
-  document.getElementById("ogClustersCheckbox").checked = true;
   adapt_sidebar_to_selection_level(level);
   adapt_view_to_state_level();
 };
@@ -222,9 +217,10 @@ function village_button_fun() {
   adapt_sidebar_to_selection_level(level);
 };
 
+// Triggered by the selection of a state with the combobox/dropdown menu
 function states_cb_fun() {
-  var checkBox = document.getElementById("statesCheckbox");
-  if (checkBox.checked == true){
+  var sCheckBox = document.getElementById("statesCheckbox")
+  if (sCheckBox.checked == true){
     if (map.hasLayer(statesLayer) == false){
       map.addLayer(statesLayer);
     }
@@ -244,12 +240,13 @@ function states_cb_fun() {
 //https://stackoverflow.com/questions/31765968/toggle-url-parameter-with-button
 //https://dev.to/gaels/an-alternative-to-handle-global-state-in-react-the-url--3753
 //https://stackoverflow.com/questions/13063838/add-change-parameter-of-url-and-redirect-to-the-new-url/13064060
-  $.get({url: $SCRIPT_ROOT,
+ /*$.get({url: $SCRIPT_ROOT,
   data: {
-    states_content: checkBox.checked,
+        grid_content: gCheckBox.checked,
+        states_content: sCheckBox.checked,
   },
   });
-
+*/
 }
 
 function heatmap_cb_fun() {
