@@ -260,6 +260,7 @@ function heatmap_cb_fun() {
   }
 }
 
+// Triggered by the checkbox Medium Voltage Grid
 function national_grid_cb_fun() {
   var checkBox = document.getElementById("nationalGridCheckbox");
   if (checkBox.checked == true){
@@ -294,9 +295,11 @@ function clusters_cb_fun() {
   $.get({url: $SCRIPT_ROOT,
   data: {
     grid_content: gCheckBox.checked,
+    states_content: stateCheckBox.checked
   },
   });
 }
+
 
 function og_clusters_cb_fun() {
   var checkBox = document.getElementById("ogClustersCheckbox");
@@ -320,6 +323,7 @@ function og_clusters_cb_fun() {
   }
 }
 
+// Triggered by the checkbox Grid
 function grid_cb_fun() {
   var checkBox = document.getElementById("gridCheckbox");
   if (checkBox.checked == true){
@@ -332,6 +336,7 @@ function grid_cb_fun() {
   $.get({url: $SCRIPT_ROOT,
   data: {
     grid_content: gCheckBox.checked,
+    states_content: stateCheckBox.checked
   },
   });
 }
