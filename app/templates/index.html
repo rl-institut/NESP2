@@ -37,6 +37,10 @@
 	  <div id="village" class="cell level sidebar__btn">
 			<button onclick="village_button_fun()">Village level</button>
 	  </div>
+      <div id="village" class="cell level sidebar__btn">
+        <button onclick="download_clusters_fun()">Download selected clusters</button>
+        <a style="display: none" id="export_csv" href="#"></a>
+      </div>
 	</div>
 	
 	<div class="grid-x align-center sidebar-dropdown">
@@ -246,6 +250,7 @@
         </div>	
       </div>	
     </div>
+
 
     <div class="grid-x">
       <div class="cell n_hide s_show v_show" style="display:none">

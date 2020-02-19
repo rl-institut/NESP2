@@ -43,56 +43,62 @@ var gridLayers = {
   "Zamfara": "nesp2_state_grid_zamfara",
 };
 
-var areaSlider = document.getElementById('areaSlider');
-noUiSlider.create(areaSlider, {
-    start: [1, 5],
+var sliderOptions = {
     connect: true,
-    range: {
-        'min': [0, 0],
-        'max': [10,10],
-    }
-});
+    tooltips: true,
+    format: wNumb({
+        decimals: 2
+    }),
+};
 
-areaSlider.noUiSlider.on("change", function(str, h, values) {
+function changeAreaSlider(str, h, values) {
     currentfilter.minarea = values[0];
     currentfilter.maxarea = values[1];
     map.fireEvent("filterchange", currentfilter);
+};
+
+var areaSlider = document.getElementById('areaSlider');
+noUiSlider.create(areaSlider, {
+    ...sliderOptions,
+    start: [1, 5],
+    range: {
+        'min': 0,
+        'max': 10,
+    },
 });
+
+areaSlider.noUiSlider.on("change", changeAreaSlider);
 
 var dtgSlider = document.getElementById('dtgSlider');
 noUiSlider.create(dtgSlider, {
+    ...sliderOptions,
     start: [300, 1500],
-    connect: true,
     range: {
-        'min': [0, 0],
-        'max': [3000,3000],
+        'min': 0,
+        'max': 3000,
     }
 });
 
 
 var ogAreaSlider = document.getElementById('ogAreaSlider');
 noUiSlider.create(ogAreaSlider, {
+    ...sliderOptions,
     start: [1, 5],
-    connect: true,
     range: {
-        'min': [0, 0],
-        'max': [10,10],
+        'min': 0,
+        'max': 10,
     }
 });
 
-ogAreaSlider.noUiSlider.on("change", function(str, h, values) {
-    currentfilter.minarea = values[0];
-    currentfilter.maxarea = values[1];
-    map.fireEvent("filterchange", currentfilter);
-});
+ogAreaSlider.noUiSlider.on("change", changeAreaSlider);
 
 var ogPopulationSlider = document.getElementById('ogPopulationSlider');
 noUiSlider.create(ogPopulationSlider, {
     start: [300, 1500],
-    connect: true,
+    ...sliderOptions,
     range: {
-        'min': [0, 0],
-        'max': [3000,3000],
+        'min': 0,
+        'max': 3000,
     }
 });
 
@@ -314,6 +320,13 @@ function building_density_cb_fun() {
     }
   }
 }
+
+function download_clusters_fun() {
+    var export_csv_link = document.getElementById("export_csv")
+    export_csv_link.href="/csv-export?min_area=" + currentfilter.minarea + ";max_area=" + currentfilter.maxarea
+    export_csv_link.click()
+}
+
 
 function lga_cb_fun(){
   var checkBox = document.getElementById("lgaCheckbox");
