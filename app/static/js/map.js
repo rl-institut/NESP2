@@ -119,40 +119,6 @@ var info = L.control({position: 'bottomleft'});
             vecTileLayer.clearHighlight();
         });
 
-        ogclustersTileLayer.highlight = null;
-        ogclustersTileLayer.hidden = null;
-        ogclustersTileLayer.hiddenstyle = {
-            fillColor: "lightgray",
-            fillOpacity: 0.3,
-            opacity: 0,
-            fill: true,
-            color: "lightgray"
-        };
-        ogclustersTileLayer.clearHidden = function() {
-            if (this.hiddenIDs) {
-                for (let i = 0, len = this.hiddenIDs.length; i < len; i++) {
-                    let id = this.hiddenIDs[i];
-                    this.resetFeatureStyle(id);
-                }
-            }
-        };
-        ogclustersTileLayer.clearHighlight = function() {
-            if (this.highlight) {
-                if (this.hiddenIDs && this.hiddenIDs.indexOf(this.highlight) > -1){
-                    this.setFeatureStyle(this.highlight, this.hiddenstyle);
-                } else {
-                    this.resetFeatureStyle(this.highlight);
-                }
-            }
-            this.highlight = null;
-        };
-
-        map.on("click", function() {
-            ogclustersTileLayer.clearHighlight();
-        });
-        map.on("popupclose", function() {
-            ogclustersTileLayer.clearHighlight();
-        });
 
         // const AREA = 0,POP = 1,LONG = 3,LAT = 4,INFO = 5;
         currentfilter = {
