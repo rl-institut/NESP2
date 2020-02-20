@@ -151,7 +151,7 @@ function adapt_view_to_national_level() {
 
   // reset the selected state to None
   resetStateSelect()
-  remove_selected_state_pbf();
+  remove_layer(selected_state_pbf);
 
   remove_basemaps();
 
@@ -162,7 +162,7 @@ function adapt_view_to_national_level() {
   remove_layer(ogclustersTileLayer);
 
   // Linked to the checkbox Grid
-  remove_grid_layer();
+  remove_layer(grid_layer);
 };
 
 function adapt_view_to_state_level() {
@@ -179,7 +179,7 @@ function adapt_view_to_state_level() {
   document.getElementById("ogClustersCheckbox").checked = true;
   og_clusters_cb_fun();
 
-  add_selected_state_pbf();
+  add_layer(selected_state_pbf);
   update_grid_layer();
 
   // remove the populated areas and the medium voltage grid layers
@@ -328,10 +328,10 @@ function og_clusters_cb_fun() {
 function grid_cb_fun() {
   var checkBox = document.getElementById("gridCheckbox");
   if (checkBox.checked == true){
-    add_grid_layer();
+    add_layer(grid_layer);
   }
   if (checkBox.checked == false){
-    remove_grid_layer();
+    remove_layer(grid_layer);
   }
 
   $.get({url: $SCRIPT_ROOT,
@@ -421,8 +421,8 @@ function addParameter(url, parameterName, parameterValue, atStart/*Add param bef
 };
 
 function state_dropdown_fun(){
-  remove_selected_state_pbf();
   remove_grid_layer();
+  remove_layer(selected_state_pbf);
   //update the selected state
   selectedState = document.getElementById("stateSelect").value;
 

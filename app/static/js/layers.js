@@ -92,17 +92,6 @@ var selected_state_pbf = L.vectorGrid.protobuf("https://tile.rl-institut.de/data
   }
 });
 
-function remove_selected_state_pbf() {
-  if (map.hasLayer(selected_state_pbf) == true){
-    map.removeLayer(selected_state_pbf);
-  }
-};
-
-function add_selected_state_pbf() {
-  if (map.hasLayer(selected_state_pbf) == false){
-    map.addLayer(selected_state_pbf);
-  }
-};
 
 function redefine_selected_state_pbf() {
   selected_state_pbf = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_states/{z}/{x}/{y}.pbf", {
@@ -120,7 +109,7 @@ function redefine_selected_state_pbf() {
 function update_selected_state_pbf(){
   remove_selected_state_pbf;
   redefine_selected_state_pbf();
-  add_selected_state_pbf();
+  add_layer(selected_state_pbf);
 };
 
 // Vector-tiles layer that has LGA shapes in high resolution and columns in its attribute table: id, name, source, type, wikidata, wikipedia
@@ -251,6 +240,7 @@ var grid_layer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/" + gri
   }
 });
 
+// This function does ...
 function redefine_grid_layer() {
   grid_layer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/" + gridLayers[selectedState] + "/{z}/{x}/{y}.pbf", {
     rendererFactory: L.canvas.tile,
@@ -265,20 +255,9 @@ function redefine_grid_layer() {
   });
 };
 
-function remove_grid_layer() {
-  if (map.hasLayer(grid_layer) == true){
-    map.removeLayer(grid_layer);
-  }
-};
-
-function add_grid_layer() {
-  if (map.hasLayer(grid_layer) == false){
-    map.addLayer(grid_layer);
-  }
-};
-
+// This function does ...
 function update_grid_layer(){
-  remove_grid_layer();
+  remove_layer(grid_layer);
   redefine_grid_layer();
   grid_cb_fun();
 };
