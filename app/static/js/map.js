@@ -187,10 +187,3 @@ var info = L.control({position: 'bottomleft'});
         }).addTo(map);
 
         national_button_fun();
-
-        map.on("click", function() {
-            vecTileLayer.clearHighlight();
-        });
-        map.on("popupclose", function() {
-            vecTileLayer.clearHighlight();
-        });
