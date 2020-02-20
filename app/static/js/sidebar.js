@@ -238,6 +238,16 @@ function states_cb_fun() {
 */
 }
 
+// Triggered by user interaction of the stateSelect dropdown menu
+function state_dropdown_fun(){
+  //update the selected state
+  selectedState = document.getElementById("stateSelect").value;
+  //Trigger the switch to state level
+  state_button_fun();
+};
+
+
+
 // Triggered by the checkbox Populated Areas
 function heatmap_cb_fun() {
   var checkBox = document.getElementById("heatmapCheckbox");
@@ -394,11 +404,3 @@ function addParameter(url, parameterName, parameterValue, atStart/*Add param bef
     return urlParts[0] + newQueryString + urlhash;
 };
 
-function state_dropdown_fun(){
-
-  //update the selected state
-  selectedState = document.getElementById("stateSelect").value;
-
-  //Trigger the switch to state level
-  state_button_fun();
-};
