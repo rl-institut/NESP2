@@ -235,6 +235,7 @@ function adapt_sidebar_to_selection_level(selectionLevel) {
 function adapt_view_to_national_level() {
   map.options.minZoom = 6.6;
   map.options.maxZoom = 9;
+  map.options.zoomSnap = 0.5;
   map.fitBounds([[2, 0],[15, 17]]); // [[S, W]],[[N, E]]
 
   // load the states boundaries
@@ -288,11 +289,17 @@ function adapt_view_to_state_level() {
   // remove the populated areas and the medium voltage grid layers
   remove_layer(national_heatmap);
   remove_layer(national_grid);
+  remove_layer(hot);
 
   remove_basemaps_except_osm_gray();
 
   zoomToSelectedState();
 };
+
+function adapt_view_to_village_level() {
+  remove_layer(osm_gray);
+  add_layer(hot);
+}
 
 /*
 * triggered by the click on the level buttons
@@ -314,6 +321,7 @@ function state_button_fun() {
 function village_button_fun() {
   level="village";
   adapt_sidebar_to_selection_level(level);
+  adapt_view_to_village_level();
 };
 
 // Triggered by the selection of a state with the combobox/dropdown menu
