@@ -107,7 +107,7 @@ function redefine_selected_state_pbf() {
 };
 
 function update_selected_state_pbf(){
-  remove_selected_state_pbf;
+  remove_layer(selected_state_pbf);
   redefine_selected_state_pbf();
   add_layer(selected_state_pbf);
 };
