@@ -273,13 +273,7 @@ let vecTileLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2
       } else {
         color = "lightgrey";
       }
-      return {
-          fill: true,
-          fillColor: color,
-          fillOpacity: 0.2,
-          color: "red",
-          weight: 1
-      };
+      return(clustersStyle);
     },
   },
   maxZoom: 19,
@@ -327,15 +321,7 @@ let vecTileLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2
     .setLatLng(e.latlng)
     .openOn(map);
     this.highlight = ID;
-    let style = {
-      fillColor: "#0000FF",
-      fillOpacity: 0.5,
-      stroke: true,
-      fill: true,
-      color: "#0000FF",
-      opacity: 0.5,
-      weight: 2
-    };
+    let style = clusterSelectionStyle;
     this.setFeatureStyle(ID, style);
     L.DomEvent.stop(e);
   }
@@ -349,13 +335,7 @@ var ogclustersTileLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/dat
   rendererFactory: L.canvas.tile,
   vectorTileLayerStyles: {
     OGClusters: function(prop, zoom) {
-      return {
-          fill: true,
-          fillColor: "#0000ff",
-          fillOpacity: 0.2,
-          color: "blue",
-          weight: 1
-      };
+      return(ogClustersStyle);
     },
   },
   maxZoom: 19,
@@ -400,15 +380,7 @@ ogclustersTileLayer.on("click", function(e) {
     .setLatLng(e.latlng)
     .openOn(map);
     this.highlight = ID;
-    let style = {
-      fillColor: "#0000FF",
-      fillOpacity: 0.5,
-      stroke: true,
-      fill: true,
-      color: "#0000FF",
-      opacity: 0.5,
-      weight: 2
-    };
+    let style = ogClustersStyle;
     this.setFeatureStyle(ID, style);
     L.DomEvent.stop(e);
   }
@@ -427,13 +399,7 @@ ogclustersTileLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/" 
   rendererFactory: L.canvas.tile,
   vectorTileLayerStyles: {
     OGClusters: function(prop, zoom) {
-      return {
-          fill: true,
-          fillColor: "#0000ff",
-          fillOpacity: 0.2,
-          color: "blue",
-          weight: 1
-      };
+      return(ogClustersStyle);
     },
   },
   maxZoom: 19,

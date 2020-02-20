@@ -12,7 +12,7 @@ var stateAvailabilityColor = {
   yellow: "#ffff80",
   orange: "#ffc380",
   red: "#ff8080",
-}
+};
 
 var statesStyleGeojsonHighlight = {
   color: "#000000",
@@ -33,9 +33,9 @@ var statesStyle1 = {
 };
 
 var SLstates = {
-  color: "#000000",
-  weight: 0,
-  opacity: 0,
+  color: "#1dd069",
+  weight: 5,
+  opacity: 0.2,
   fill: true,
   fillColor: "#000000",
   fillOpacity: 0.2,
@@ -74,6 +74,36 @@ var gridStyle33kv = {
 };
 
 var gridStyle11kv = {
-  color: "#ffbb00",
+  color: "#7c0e14",
   weight: 1
+};
+
+var clustersStyle = {
+  fillColor: "#ffcc15",
+  fillOpacity: 0.5,
+  stroke: true,
+  fill: true,
+  color: "#ffcc15",
+  opacity: 1,
+  weight: 2,
+};
+
+var clusterSelectionStyle = {
+  fillColor: "#0000FF",
+  fillOpacity: 0.5,
+  stroke: true,
+  fill: true,
+  color: "#0000FF",
+  opacity: 0.5,
+  weight: 2,
+};
+
+var ogClustersStyle = {
+  fillColor: "#1dd069",
+  fillOpacity: 0,
+  stroke: true,
+  fill: true,
+  color: "#1dd069",
+  opacity: 1,
+  weight: 2,
 };
