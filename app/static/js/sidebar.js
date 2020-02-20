@@ -169,6 +169,7 @@ function adapt_view_to_state_level() {
 
   map.options.minZoom = 8;
   map.options.maxZoom = 19;
+  map.options.zoomSnap = 1,
 
 
   // load the states boundaries
