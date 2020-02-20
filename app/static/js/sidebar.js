@@ -221,7 +221,7 @@ function adapt_view_to_state_level() {
 
   update_selected_state_pbf()
   update_grid_layer();
-
+  update_ogclustersTileLayer();
   add_layer(osm_gray);
 
   // remove the populated areas and the medium voltage grid layers
