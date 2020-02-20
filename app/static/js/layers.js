@@ -297,7 +297,7 @@ let vecTileLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2
 })
 .on("click", function(e) {
   console.log('click')
-  this.clearHighlight();
+  //this.clearHighlight();
   let properties = e.layer.properties;
   console.log(properties)
   if (properties.cluster_all_id !== undefined) {
@@ -340,7 +340,7 @@ let vecTileLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2
     L.DomEvent.stop(e);
   }
   village_button_fun();
-  map.flyTo([e.latlng.lat, e.latlng.lng], 14);
+  map.flyToBounds([[e.layer.properties.bb_south,e.layer.properties.bb_west],[e.layer.properties.bb_north,e.layer.properties.bb_east]])
 });
 
 
@@ -375,7 +375,7 @@ var ogclustersTileLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/dat
 
 ogclustersTileLayer.on("click", function(e) {
   console.log('click')
-  this.clearHighlight();
+  //this.clearHighlight();
   let properties = e.layer.properties;
   console.log(properties)
   var layer = e.target;
@@ -449,6 +449,11 @@ ogclustersTileLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/" 
     }
     return "r" + f.properties.OBJECTID;
   }
+});
+ogclustersTileLayer.on("click", function (event) {
+  map.options.maxZoom = 19;
+  village_button_fun();
+  map.flyToBounds([[event.layer.properties.bb_south,event.layer.properties.bb_west],[event.layer.properties.bb_north,event.layer.properties.bb_east]]);
 });
 };
 
