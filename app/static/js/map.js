@@ -58,10 +58,6 @@ L.control.zoom({
     position: "topright"
 }).addTo(map);
 
-L.control.scale({
-    position: "bottomright"
-}).addTo(map);
-
 var info = L.control({position: 'bottomleft'});
 
             info.onAdd = function (map) {
@@ -185,6 +181,10 @@ var info = L.control({position: 'bottomleft'});
           osm.bringToBack(); 
           osm_gray.bringToBack();});
         map.fireEvent("filterchange", currentfilter);
+
+        L.control.scale({
+            position: "topright"
+        }).addTo(map);
 
         national_button_fun();
 

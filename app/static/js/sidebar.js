@@ -251,6 +251,8 @@ function adapt_view_to_national_level() {
   map.options.zoomSnap = 0.5;
   map.fitBounds([[2, 0],[15, 17]]); // [[S, W]],[[N, E]]
 
+  legend.addTo(map);
+
   // load the states boundaries
   document.getElementById("statesCheckbox").checked = true;
   states_cb_fun();
@@ -284,6 +286,7 @@ function adapt_view_to_state_level() {
   map.options.maxZoom = 19;
   map.options.zoomSnap = 1,
 
+  legend.remove();
 
   // load the states boundaries
   document.getElementById("statesCheckbox").checked = true;
