@@ -264,11 +264,11 @@ function update_grid_layer(){
 
 // Definitions and functions for the clusters_layer
 // Vector tiles layer with clusters (populated areas). Contains layers 'regions' and 'kedco_lines'. regions-columns: admin1, admin2, area_km2, pop_hrsl
-let vecTileLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp/{z}/{x}/{y}.pbf", {
+let vecTileLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_state_clusters_kano/{z}/{x}/{y}.pbf", {
   rendererFactory: L.canvas.tile,
   vectorTileLayerStyles: {
-    ng_cluster_attr: function(prop, zoom) {
-      if (prop.FID > 0) {
+    regions: function(prop, zoom) {
+      if (prop.cluster_all_id > 0) {
         color = "red";
       } else {
         color = "lightgrey";
@@ -281,32 +281,13 @@ let vecTileLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp/
           weight: 1
       };
     },
-    regions: function(prop, zoom) {
-      if (zoom > 7) {
-        return {
-          stroke: false
-        };
-      } else {
-        return {
-          color: "LightGreen",
-          weight: 5,
-          opacity: 0.3
-        };
-      }
-    },
-    kedco_lines: {
-      color: "#ff7800",
-      weight: 2,
-      opacity: 0.85,
-      smoothFactor: 5
-    }
   },
   maxZoom: 19,
   minZoom: 5,
   interactive: true,
   getFeatureId: function(f) {
-    if (f.properties.FID !== undefined) {
-      return f.properties.FID;
+    if (f.properties.cluster_all_id !== undefined) {
+      return f.properties.cluster_all_id;
     }
     if (f.properties.osm_id !== undefined) {
       return "g" + f.properties.osm_id;
@@ -319,9 +300,9 @@ let vecTileLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp/
   this.clearHighlight();
   let properties = e.layer.properties;
   console.log(properties)
-  if (properties.FID !== undefined) {
+  if (properties.cluster_all_id !== undefined) {
     var type = "c";
-    var ID = properties.FID;
+    var ID = properties.cluster_all_id;
     var popup='\
       <table>\
         <tr><td align="right"><b>State</b>:</td><td>'+properties.admin1+'</td></tr>\

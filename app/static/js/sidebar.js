@@ -3,6 +3,16 @@ var statesList = ["Abia", "Adamawa", "Akwa Ibom", "Anambra", "Bauchi", "Bayelsa"
 var selectedState = "init";
 var selectedLGA = "";
 var thirtythreeKV = "33_kV_" + selectedState.toLowerCase();
+var currentfilter = {
+    minarea: 0.1,
+    maxarea: 10,
+    mindtg: 0,
+    maxdtg: 100,
+    ogminarea: 0.1,
+    ogmaxarea: 10,
+    ogmindtg: 0,
+    ogmaxdtg: 100,
+};
 var gridLayers = {
   "Abia": "",
   "Adamawa": "",
@@ -143,7 +153,6 @@ function changeAreaSlider(str, h, values) {
     currentfilter.maxarea = values[1];
     map.fireEvent("filterchange", currentfilter);
 };
-
 var areaSlider = document.getElementById('areaSlider');
 noUiSlider.create(areaSlider, {
     ...sliderOptions,
@@ -153,20 +162,29 @@ noUiSlider.create(areaSlider, {
         'max': 10,
     },
 });
-
 areaSlider.noUiSlider.on("change", changeAreaSlider);
 
+function changedtgSlider(str, h, values) {
+    currentfilter.mindtg = values[0];
+    currentfilter.maxdtg = values[1];
+    map.fireEvent("filterchange", currentfilter);
+};
 var dtgSlider = document.getElementById('dtgSlider');
 noUiSlider.create(dtgSlider, {
     ...sliderOptions,
-    start: [300, 1500],
+    start: [0, 100],
     range: {
         'min': 0,
-        'max': 3000,
+        'max': 100,
     }
 });
+dtgSlider.noUiSlider.on("change", changedtgSlider);
 
-
+function changeogAreaSlider(str, h, values) {
+    currentfilter.minarea = values[0];
+    currentfilter.maxarea = values[1];
+    map.fireEvent("filterchange", currentfilter);
+};
 var ogAreaSlider = document.getElementById('ogAreaSlider');
 noUiSlider.create(ogAreaSlider, {
     ...sliderOptions,
@@ -176,9 +194,13 @@ noUiSlider.create(ogAreaSlider, {
         'max': 10,
     }
 });
+ogAreaSlider.noUiSlider.on("change", changeogAreaSlider);
 
-ogAreaSlider.noUiSlider.on("change", changeAreaSlider);
-
+function changeogDistanceSlider(str, h, values) {
+    currentfilter.minarea = values[0];
+    currentfilter.maxarea = values[1];
+    map.fireEvent("filterchange", currentfilter);
+};
 var ogDistanceSlider = document.getElementById('ogDistanceSlider');
 noUiSlider.create(ogDistanceSlider, {
     start: [5, 1000],
@@ -188,7 +210,7 @@ noUiSlider.create(ogDistanceSlider, {
         'max': 1000,
     }
 });
-
+ogDistanceSlider.noUiSlider.on("change", changeogDistanceSlider);
 
 function adapt_sidebar_to_selection_level(selectionLevel) {
 
@@ -286,6 +308,7 @@ function state_button_fun() {
   level="state";
   adapt_sidebar_to_selection_level(level);
   adapt_view_to_state_level();
+  remove_layer(nigeria_states_geojson)
 };
 
 function village_button_fun() {
@@ -361,7 +384,8 @@ function clusters_cb_fun() {
     for (i = 0; i < text.length; i++) {
       text[i].style.display = "block";
     }
-    add_layer(vecTileLayer)
+    add_layer(vecTileLayer);
+    map.fireEvent("filterchange", currentfilter);
   } else {
     var j;
     for (j = 0; j < text.length; j++) {
