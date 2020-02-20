@@ -361,7 +361,7 @@ let vecTileLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp/
 });
 
 // Vector tiles layer with off-grid-clusters (remotely mapped villages). Contains layer 'OGClusters'. columns: cluster_offgrid_id, area_km2, building_count, large_building_count, percentage_large_building, building_area_km2, building_count_density_perkm2, percentage_building_area, grid_dist_km
-let ogclustersTileLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_offgrid_clusters/{z}/{x}/{y}.pbf", {
+let ogclustersTileLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_state_offgrid_clusters_kano/{z}/{x}/{y}.pbf", {
   rendererFactory: L.canvas.tile,
   vectorTileLayerStyles: {
     OGClusters: function(prop, zoom) {
@@ -375,6 +375,7 @@ let ogclustersTileLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/dat
     },
   },
   maxZoom: 19,
+  maxNativeZoom: 17,
   minZoom: 5,
   interactive: true,
   getFeatureId: function(f) {
@@ -431,6 +432,6 @@ let ogclustersTileLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/dat
 ogclustersTileLayer.on("click", function (event) {
   map.options.maxZoom = 19;
   village_button_fun();
-  map.flyTo([event.latlng.lat, event.latlng.lng], 14);
+  map.flyToBounds([[event.layer.properties.bb_south,event.layer.properties.bb_west],[event.layer.properties.bb_north,event.layer.properties.bb_east]]);
 });
 
