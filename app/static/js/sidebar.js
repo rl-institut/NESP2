@@ -1,6 +1,6 @@
 var level = "national";
 var statesList = ["Abia", "Adamawa", "Akwa Ibom", "Anambra", "Bauchi", "Bayelsa", "Benue", "Borno", "Cross River", "Delta", "Ebonyi", "Edo", "Ekiti", "Enugu", "Federal Capital Territory", "Gombe", "Imo", "Jigawa", "Kaduna", "Kano", "Katsina", "Kebbi", "Kogi", "Kwara", "Lagos", "Nasarawa", "Niger", "Ogun", "Ondo", "Osun", "Oyo", "Plateau", "Rivers", "Sokoto", "Taraba", "Yobe", "Zamfara"];
-var selectedState = statesList[Math.floor(Math.random()*statesList.length)];
+var selectedState = "init";
 var selectedLGA = "";
 var thirtythreeKV = "33_kV_" + selectedState.toLowerCase();
 var gridLayers = {
@@ -42,6 +42,17 @@ var gridLayers = {
   "Yobe": "",
   "Zamfara": "nesp2_state_grid_zamfara",
 };
+
+
+
+
+function resetStateSelect(){
+    selectedState = "init"
+    var s = document.getElementById('stateSelect')
+    console.log(s.options)
+    s.options[0].selected = true;
+}
+
 
 var sliderOptions = {
     connect: true,
@@ -103,96 +114,113 @@ noUiSlider.create(ogPopulationSlider, {
 });
 
 
-function adapt_sidebar_to_national_level() {
-  var hidelist = document.getElementsByClassName("n_hide");
-  var showlist = document.getElementsByClassName("n_show");
+function adapt_sidebar_to_selection_level(selectionLevel) {
+
+  var level_id =  selectionLevel.charAt(0)
+  // hide and show elements according to their classes
+  var hidelist = document.getElementsByClassName(level_id + "_hide");
+  var showlist = document.getElementsByClassName(level_id + "_show");
   for (i = 0; i < hidelist.length; i++) {
     hidelist[i].style.display = "none";
   }
   for (j = 0; j < showlist.length; j++) {
     showlist[j].style.display = "block";
   }
-  document.getElementById("national").className = "cell small-6 level sidebar__btn active";
+
+  document.getElementById("national").className = "cell small-6 level sidebar__btn";
   document.getElementById("state").className = "cell small-6 level sidebar__btn";
-  document.getElementById("village").className = "cell level sidebar__btn";
+  document.getElementById("village").className = "cell small-6 level sidebar__btn";
+
+  document.getElementById(selectionLevel).className = "cell small-6 level sidebar__btn active";
 };
 
 function adapt_view_to_national_level() {
-  document.getElementById("statesCheckbox").checked = true;
-  states_cb_fun();
-  national_grid_cb_fun();
-  heatmap_cb_fun();
   map.options.minZoom = 6.6;
   map.options.maxZoom = 9;
   map.fitBounds([[2, 0],[15, 17]]); // [[S, W]],[[N, E]]
+
+  // load the states boundaries
+  document.getElementById("statesCheckbox").checked = true;
+  states_cb_fun();
+  // load the populated areas
+  document.getElementById("heatmapCheckbox").checked = true;
+  heatmap_cb_fun();
+  // load the medium voltage grid
+  document.getElementById("nationalGridCheckbox").checked = true;
+  national_grid_cb_fun();
+
+  // reset the selected state to None
+  resetStateSelect()
+  remove_layer(selected_state_pbf);
+
   remove_basemaps();
+
   map.addLayer(osm_gray);
   map.addLayer(national_background);
+
+  // Remotely mapped villages layer
   remove_layer(ogclustersTileLayer);
-  remove_selected_state_pbf();
-  remove_grid_layer();
-};
 
-function national_button_fun() {
-  document.getElementById("heatmapCheckbox").checked = true;
-  document.getElementById("nationalGridCheckbox").checked = true;
-  adapt_sidebar_to_national_level();
-  adapt_view_to_national_level();
-}
-
-function adapt_sidebar_to_state_level(){
-  var hidelist = document.getElementsByClassName("s_hide");
-  var showlist = document.getElementsByClassName("s_show");
-  for (i = 0; i < hidelist.length; i++) {
-    hidelist[i].style.display = "none";
-  }
-  for (j = 0; j < showlist.length; j++) {
-    showlist[j].style.display = "block";
-  }
-  document.getElementById("national").className = "cell small-6 level sidebar__btn";
-  document.getElementById("state").className = "cell small-6 level sidebar__btn active";
-  document.getElementById("village").className = "cell level sidebar__btn";
+  // Linked to the checkbox Grid
+  remove_layer(grid_layer);
 };
 
 function adapt_view_to_state_level() {
-  states_cb_fun();
-  og_clusters_cb_fun();
-  add_selected_state_pbf();
-  update_grid_layer();
+  console.log("adapt_view_to_state_level");
+
   map.options.minZoom = 8;
   map.options.maxZoom = 19;
-  zoomToSelectedState();
+
+  // load the states boundaries
+  document.getElementById("statesCheckbox").checked = true;
+  states_cb_fun();
+  document.getElementById("gridCheckbox").checked = true;
+  // Load the remotely mapped villages clusters
+  document.getElementById("ogClustersCheckbox").checked = true;
+  og_clusters_cb_fun();
+
+  add_layer(selected_state_pbf);
+  update_grid_layer();
+
+  // remove the populated areas and the medium voltage grid layers
   remove_layer(national_heatmap);
   remove_layer(national_grid);
-  map.addLayer(osm_gray);
+
   remove_basemaps_except_osm_gray();
+
+  add_layer(osm_gray);
+
+  zoomToSelectedState();
+
+
+
 };
 
+/*
+* triggered by the click on the level buttons
+*/
+
+function national_button_fun() {
+  level="national";
+  adapt_sidebar_to_selection_level(level);
+  adapt_view_to_national_level()
+}
+
 function state_button_fun() {
-  document.getElementById("statesCheckbox").checked = false;
-  document.getElementById("gridCheckbox").checked = true;
-  document.getElementById("ogClustersCheckbox").checked = true;
-  adapt_sidebar_to_state_level();
+  level="state";
+  adapt_sidebar_to_selection_level(level);
   adapt_view_to_state_level();
 };
 
 function village_button_fun() {
-  var hidelist = document.getElementsByClassName("v_hide");
-  var showlist = document.getElementsByClassName("v_show");
-  for (i = 0; i < hidelist.length; i++) {
-    hidelist[i].style.display = "none";
-  }
-  for (j = 0; j < showlist.length; j++) {
-    showlist[j].style.display = "block";
-  }
-  document.getElementById("national").className = "cell small-6 level sidebar__btn";
-  document.getElementById("state").className = "cell small-6 level sidebar__btn";
-  document.getElementById("village").className = "cell level sidebar__btn active";
-}
+  level="village";
+  adapt_sidebar_to_selection_level(level);
+};
 
+// Triggered by the selection of a state with the combobox/dropdown menu
 function states_cb_fun() {
-  var checkBox = document.getElementById("statesCheckbox");
-  if (checkBox.checked == true){
+  var sCheckBox = document.getElementById("statesCheckbox")
+  if (sCheckBox.checked == true){
     if (map.hasLayer(statesLayer) == false){
       map.addLayer(statesLayer);
     }
@@ -212,14 +240,16 @@ function states_cb_fun() {
 //https://stackoverflow.com/questions/31765968/toggle-url-parameter-with-button
 //https://dev.to/gaels/an-alternative-to-handle-global-state-in-react-the-url--3753
 //https://stackoverflow.com/questions/13063838/add-change-parameter-of-url-and-redirect-to-the-new-url/13064060
-  $.get({url: $SCRIPT_ROOT,
+ /*$.get({url: $SCRIPT_ROOT,
   data: {
-    states_content: checkBox.checked,
+        grid_content: gCheckBox.checked,
+        states_content: sCheckBox.checked,
   },
   });
-
+*/
 }
 
+// Triggered by the checkbox Populated Areas
 function heatmap_cb_fun() {
   var checkBox = document.getElementById("heatmapCheckbox");
   if (checkBox.checked == true){
@@ -231,6 +261,7 @@ function heatmap_cb_fun() {
   }
 }
 
+// Triggered by the checkbox Medium Voltage Grid
 function national_grid_cb_fun() {
   var checkBox = document.getElementById("nationalGridCheckbox");
   if (checkBox.checked == true){
@@ -265,9 +296,11 @@ function clusters_cb_fun() {
   $.get({url: $SCRIPT_ROOT,
   data: {
     grid_content: gCheckBox.checked,
+    states_content: stateCheckBox.checked
   },
   });
 }
+
 
 function og_clusters_cb_fun() {
   var checkBox = document.getElementById("ogClustersCheckbox");
@@ -291,18 +324,20 @@ function og_clusters_cb_fun() {
   }
 }
 
+// Triggered by the checkbox Grid
 function grid_cb_fun() {
   var checkBox = document.getElementById("gridCheckbox");
   if (checkBox.checked == true){
-    add_grid_layer();
+    add_layer(grid_layer);
   }
   if (checkBox.checked == false){
-    remove_grid_layer();
+    remove_layer(grid_layer);
   }
 
   $.get({url: $SCRIPT_ROOT,
   data: {
     grid_content: gCheckBox.checked,
+    states_content: stateCheckBox.checked
   },
   });
 }
@@ -386,19 +421,12 @@ function addParameter(url, parameterName, parameterValue, atStart/*Add param bef
 };
 
 function state_dropdown_fun(){
-  remove_selected_state_pbf();
   remove_grid_layer();
-  dd_selection = document.getElementById("stateSelect");
-  change_state_fun(state);
-  if (level != "state"){
-    level = state;
-    state_button_fun();
-  }
-};
+  remove_layer(selected_state_pbf);
+  //update the selected state
+  selectedState = document.getElementById("stateSelect").value;
 
-function change_state_fun(state){
-  selectedState = dd_selection.value;
-  update_selected_state_pbf();
-  update_grid_layer();
-  zoomToSelectedState();
+  update_selected_state_pbf()
+  //Trigger the switch to state level
+  state_button_fun();
 };

@@ -32,12 +32,12 @@
 			<button onclick="national_button_fun()">National level</button>
 	  </div>
 	  <div id="state" class="cell small-6 level sidebar__btn">
-			<button onclick="state_button_fun()">State level</button>
+			<button onclick="">State level</button>
 	  </div>
 	  <div id="village" class="cell level sidebar__btn">
 			<button onclick="village_button_fun()">Village level</button>
 	  </div>
-      <div id="village" class="cell level sidebar__btn">
+      <div id="download_clusters" class="cell level sidebar__btn">
         <button onclick="download_clusters_fun()">Download selected clusters</button>
         <a style="display: none" id="export_csv" href="#"></a>
       </div>
@@ -46,6 +46,7 @@
 	<div class="grid-x align-center sidebar-dropdown">
       <div class="cell sidebar__btn active small-8 n_show s_show v_hide" data-toggle="state-dropdown">
 		<select id="stateSelect" class="dropdown-button" onchange="state_dropdown_fun();">
+            <option value="init" disabled selected>Select a state</option>
             <option value="Abia">Abia</option>
             <option value="Adamawa">Adamawa</option>
             <option value="Akwa Ibom">Akwa Ibom</option>
@@ -297,6 +298,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/wnumb/1.1.0/wNumb.min.js" integrity="sha384-9NhfMwMkkA6dDFEyj5CxOiYaL6KqLjKINTJkR7e5SlZthrndR9oB/SJsi5PBNnjw" crossorigin=""></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/11.0.3/nouislider.min.js" integrity="sha384-sxnhs+25aQQN+rABTQEEYOIX5CW20SBJyXt9oGMT5VDacFTTWGXKotTEAe8BUiwb" crossorigin=""></script>
 
+
+
   <!-- local scripts -->
   <script src="{{ url_for('static', filename='js/nigeria_osm_states_simplified.js') }}"></script>
   <script src="{{ url_for('static', filename='js/sidebar.js') }}"></script>
@@ -305,17 +308,15 @@
   <script src="{{ url_for('static', filename='js/foundation.min.js') }}"></script>
   <script src="{{ url_for('static', filename='js/map.js') }}"></script>
 
-
-  <script type=text/javascript>
-        var checkBox = document.getElementById("statesCheckbox")
+      <script type=text/javascript>
+        var stateCheckBox = document.getElementById("statesCheckbox")
         {% if states_content is defined %}
             var states_content = {{ states_content|safe }};
         {% else %}
             var states_content=false;
         {% endif %}
-
-        if (states_content != checkBox.checked){
-            checkBox.click()
+        if (states_content != stateCheckBox.checked){
+            stateCheckBox.click()
         }
 
         var gCheckBox = document.getElementById("gridCheckbox")

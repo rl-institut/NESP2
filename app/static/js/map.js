@@ -15,20 +15,20 @@ var map = L.map("map", options);
 map.addLayer(national_background);
 map.addLayer(osm_gray);
 
-var info = L.control({position: 'bottomright'});
+var legend = L.control({position: 'bottomright'});
 
-info.onAdd = function (map) {
+legend.onAdd = function (map) {
     this._div = L.DomUtil.create('div', 'map-legend'); // create a div with a class "map-legend"
     this.update();
 
     return this._div;
 };
 
-info.update = function (props) {
+legend.update = function (props) {
     this._div.innerHTML = '<div class="grid-x"><div class="small-3 map-legend__text"><div class="legend-color legend-color--green"></div></div><div class="small-9">Datasets available</div><div class="small-3 map-legend__text"><div class="legend-color legend-color--gray"></div></div><div class="small-9">Datasets <span class="map-legend--highlight">not yet</span> available</div></div>'
 };
 
-info.addTo(map);
+legend.addTo(map);
 
 
 var baseMaps = {
