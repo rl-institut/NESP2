@@ -237,7 +237,7 @@ var grid_layer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/" + gri
   }
 });
 
-// This function does ...
+// Assign the selected state grid tile to the grid_layer
 function redefine_grid_layer() {
   grid_layer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/" + gridLayers[selectedState] + "/{z}/{x}/{y}.pbf", {
     rendererFactory: L.canvas.tile,
@@ -252,10 +252,11 @@ function redefine_grid_layer() {
   });
 };
 
-// This function does ...
+// Update the state level grid layer with tiles
 function update_grid_layer(){
   remove_layer(grid_layer);
   redefine_grid_layer();
+  // Add the grid layer depending on grid checkbox value
   grid_cb_fun();
 };
 
