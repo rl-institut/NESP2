@@ -212,6 +212,19 @@ noUiSlider.create(ogDistanceSlider, {
 });
 ogDistanceSlider.noUiSlider.on("change", changeogDistanceSlider);
 
+function disable_sidebar__btn(className){
+    let answer=className;
+    if (className.includes(" is-disabled")){}
+    else {className = className + " is-disabled";}
+    return className;
+};
+
+function enable_sidebar__btn(className){
+    let answer=className;
+    if (className.includes(" is-disabled")){className = className.replace(" is-disabled", "");}
+    return className;
+};
+
 function adapt_sidebar_to_selection_level(selectionLevel) {
 
   var level_id =  selectionLevel.charAt(0)
@@ -219,11 +232,10 @@ function adapt_sidebar_to_selection_level(selectionLevel) {
   var hidelist = document.getElementsByClassName(level_id + "_hide");
   var showlist = document.getElementsByClassName(level_id + "_show");
   for (i = 0; i < hidelist.length; i++) {
-    // TODO: disable instead of hide
-    hidelist[i].style.display = "block";
+    hidelist[i].className = disable_sidebar__btn(hidelist[i].className);
   }
   for (j = 0; j < showlist.length; j++) {
-    showlist[j].style.display = "block";
+    showlist[j].className = enable_sidebar__btn(showlist[j].className)
   }
 
   document.getElementById("national").className = "cell small-6 level sidebar__btn";
@@ -279,7 +291,7 @@ function adapt_view_to_state_level() {
   document.getElementById("gridCheckbox").checked = true;
   // Load the remotely mapped villages clusters
   document.getElementById("ogClustersCheckbox").checked = true;
-  oGclusters_cb_fun();
+  ogClusters_cb_fun();
 
 
   update_selected_state_pbf()
@@ -287,9 +299,13 @@ function adapt_view_to_state_level() {
   update_ogclustersTileLayer();
   add_layer(osm_gray);
 
-  // remove the populated areas and the medium voltage grid layers
-  remove_layer(national_heatmap);
-  remove_layer(national_grid);
+  // remove the medium voltage grid
+  document.getElementById("heatmapCheckbox").checked = false;
+  heatmap_cb_fun();
+  // remove the populated areas
+  document.getElementById("nationalGridCheckbox").checked = false;
+  nationalGrid_cb_fun();
+
   remove_layer(hot);
 
   remove_basemaps_except_osm_gray();
@@ -316,7 +332,7 @@ function state_button_fun() {
   level="state";
   adapt_sidebar_to_selection_level(level);
   adapt_view_to_state_level();
-  remove_layer(nigeria_states_geojson)
+  //remove_layer(nigeria_states_geojson)
 };
 
 function village_button_fun() {
@@ -412,7 +428,7 @@ function clusters_cb_fun() {
 }
 
 
-function oGclusters_cb_fun() {
+function ogClusters_cb_fun() {
   var checkBox = document.getElementById("ogClustersCheckbox");
   var text = document.getElementsByName("ogClustersContent");
   if (checkBox.checked == true){
