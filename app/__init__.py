@@ -1,7 +1,7 @@
 import os
 
 from flask import Flask, render_template, request, jsonify, url_for, redirect
-
+from utils import assign_visibility
 
 def create_app(test_config=None):
     # create and configure the app
@@ -47,4 +47,5 @@ def create_app(test_config=None):
         # TODO: perform a db search
         return render_template('index.html', **request.args)
 
+    app.jinja_env.globals.update(assign_visibility=assign_visibility)
     return app
