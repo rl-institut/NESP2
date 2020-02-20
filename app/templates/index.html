@@ -88,98 +88,21 @@
       </div>
 	</div>
 
-    <div class="grid-x">
-      <div class="cell n_hide s_hide v_hide" style="display:none">
-        <div class="sidebar-panel">
-          <div class="sidebar-panel-item is-active" data-accordion-item>
-            <p href="#" class="sidebar-panel-item-title">States (availability)</p>
-            <div class="sidebar-panel-item-button">
-              <input class="switch-input" id="statesCheckbox" type="checkbox" onclick="states_cb_fun()">
-              <label class="switch-paddle" for="statesCheckbox">
-              </label>
-            </div>
-          </div>
-        </div>	
-      </div>	
-    </div>
+    {% import "sidebar_checkbox.html" as checkbox %}
 
-    <div class="grid-x">
-      <div class="cell n_show s_hide v_hide">
-        <div class="sidebar-panel">
-          <div class="sidebar-panel-item is-active" data-accordion-item>
-            <p href="#" class="sidebar-panel-item-title">Populated Areas</p>
-            <div class="sidebar-panel-item-button">
-              <input class="switch-input" id="heatmapCheckbox" type="checkbox" onclick="heatmap_cb_fun()">
-              <label class="switch-paddle" for="heatmapCheckbox">
-              </label>
-            </div>
-            <div class="sidebar-panel-item-icon">
-              <img src="{{ url_for('static', filename='icons/i_funnel_gray.svg') }}">
-            </div>
-          </div>
-        </div>	
-      </div>	
-    </div>
+    {{ checkbox.input(id="states", label="States (availability)", visible=[]) }}
+    {{ checkbox.input(id="buildingDensity", label="Buildings", visible=[]) }}
 
-    <div class="grid-x">
-      <div class="cell n_show s_hide v_hide">
-        <div class="sidebar-panel">
-          <div class="sidebar-panel-item is-active" data-accordion-item>
-            <p href="#" class="sidebar-panel-item-title">Medium Voltage Grid</p>
-            <div class="sidebar-panel-item-button">
-              <input class="switch-input" id="nationalGridCheckbox" type="checkbox" onclick="national_grid_cb_fun()">
-              <label class="switch-paddle" for="nationalGridCheckbox">
-              </label>
-            </div>
-          </div>
-        </div>	
-      </div>	
-    </div>
+    {{ checkbox.input(id="nationalGrid", label="Medium Voltage Grid", visible=['national']) }}
 
-    <div class="grid-x">
-      <div class="cell n_show s_show v_hide">
-        <div class="sidebar-panel">
-          <div class="sidebar-panel-item is-active" data-accordion-item>
-            <p href="#" class="sidebar-panel-item-title">LGAs</p>
-            <div class="sidebar-panel-item-button">
-              <input class="switch-input" id="lgaCheckbox" type="checkbox" onclick="lga_cb_fun()">
-              <label class="switch-paddle" for="lgaCheckbox">
-              </label>
-            </div>
-          </div>
-        </div>	
-      </div>	
-    </div>
+    {{ checkbox.input(id="heatmap", label="Populated Areas", visible=['national'], filter_func=True) }}
 
-    <div class="grid-x">
-      <div class="cell n_hide s_hide v_hide" style="display:none">
-        <div class="sidebar-panel">
-          <div class="sidebar-panel-item is-active" data-accordion-item>
-            <p href="#" class="sidebar-panel-item-title">Buildings</p>
-            <div class="sidebar-panel-item-button">
-              <input class="switch-input" id="buildingDensityCheckbox" type="checkbox" onclick="building_density_cb_fun()">
-              <label class="switch-paddle" for="buildingDensityCheckbox">
-              </label>
-            </div>
-          </div>
-        </div>	
-      </div>	
-    </div>
 
-    <div class="grid-x">
-      <div class="cell n_hide s_show v_show" style="display:none">
-        <div class="sidebar-panel">
-          <div class="sidebar-panel-item" data-accordion-item>
-            <p href="#" class="sidebar-panel-item-title">Clusters</p>
-            <div class="sidebar-panel-item-button">
-              <input class="switch-input" id="clustersCheckbox" type="checkbox" onclick="clusters_cb_fun()">
-              <label class="switch-paddle" for="clustersCheckbox">
-              </label>
-            </div>
-          </div>
-        </div>	
-      </div>	
-    </div>
+
+    {{ checkbox.input(id="clusters", label="Clusters", visible=['state', 'village'], filter_func=True) }}
+
+    {{ checkbox.input(id="ogClusters", label="Mapped off-grid clusters", visible=['state', 'village'], filter_func=True) }}
+
 
     <div class="grid-x">
       <div class="cell n_hide s_show v_show">
@@ -203,21 +126,6 @@
             <p href="#" class="sidebar-panel-item-title">Building Density</p>
             <div class="filter">
               <div class="filter__slider" id="dtgSlider"></div>
-            </div>
-          </div>
-        </div>	
-      </div>	
-    </div>
-
-    <div class="grid-x">
-      <div class="cell n_hide s_show v_show" style="display:none">
-        <div class="sidebar-panel">
-          <div class="sidebar-panel-item" data-accordion-item>
-            <p href="#" class="sidebar-panel-item-title">Remotely Mapped Villages</p>
-            <div class="sidebar-panel-item-button">
-              <input class="switch-input" id="ogClustersCheckbox" type="checkbox" onclick="og_clusters_cb_fun()">
-              <label class="switch-paddle" for="ogClustersCheckbox">
-              </label>
             </div>
           </div>
         </div>	
