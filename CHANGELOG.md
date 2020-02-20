@@ -47,6 +47,7 @@ Here is a template for new release sections
 - the State button is not active anymore, selection through click or menu (#105)
 - states borders are still visible in State level, one can hover on other states (#105)
 - no initial selected state in National level, user must choose (#105)
+- the selected state cannot be clicked or selected again (#109)
 
 ### Removed
 - redundant accordion menu (#10)

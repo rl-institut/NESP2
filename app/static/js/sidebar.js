@@ -209,11 +209,6 @@ function adapt_view_to_state_level() {
   map.options.minZoom = 8;
   map.options.maxZoom = 19;
 
-  // remove the populated areas and the medium voltage grid layers
-  remove_layer(national_heatmap);
-  remove_layer(national_grid);
-
-  remove_basemaps_except_osm_gray();
 
   // load the states boundaries
   document.getElementById("statesCheckbox").checked = true;
@@ -228,6 +223,12 @@ function adapt_view_to_state_level() {
   update_grid_layer();
 
   add_layer(osm_gray);
+
+  // remove the populated areas and the medium voltage grid layers
+  remove_layer(national_heatmap);
+  remove_layer(national_grid);
+
+  remove_basemaps_except_osm_gray();
 
   zoomToSelectedState();
 };
@@ -279,10 +280,13 @@ function states_cb_fun() {
 
 // Triggered by user interaction of the stateSelect dropdown menu
 function state_dropdown_fun(){
-  //update the selected state
-  selectedState = document.getElementById("stateSelect").value;
-  //Trigger the switch to state level
-  state_button_fun();
+  // Work only if the selected state is different than the currenlty selected
+  if (selectedState != document.getElementById("stateSelect").value){
+      //update the selected state
+      selectedState = document.getElementById("stateSelect").value;
+      //Trigger the switch to state level
+      state_button_fun();
+  }
 };
 
 
