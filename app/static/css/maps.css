@@ -54,6 +54,10 @@
   width: 1rem;
 }
 
+.sidebar-panel-item-hidden{
+    display: none;
+}
+
 body {
      padding: 0;
      margin: 0;
@@ -216,6 +220,11 @@ button {
   padding-left: 2.75rem;
   color: #464646;
   display: inline;
+}
+
+.is-disabled {
+    pointer-events: none;
+    opacity: 0.4;
 }
 
 .sidebar-panel-item.is-active {
