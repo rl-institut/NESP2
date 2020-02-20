@@ -264,11 +264,11 @@ function update_grid_layer(){
 
 // Definitions and functions for the clusters_layer
 // Vector tiles layer with clusters (populated areas). Contains layers 'regions' and 'kedco_lines'. regions-columns: admin1, admin2, area_km2, pop_hrsl
-let vecTileLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp/{z}/{x}/{y}.pbf", {
+let vecTileLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_state_clusters_kano/{z}/{x}/{y}.pbf", {
   rendererFactory: L.canvas.tile,
   vectorTileLayerStyles: {
-    ng_cluster_attr: function(prop, zoom) {
-      if (prop.FID > 0) {
+    regions: function(prop, zoom) {
+      if (prop.cluster_all_id > 0) {
         color = "red";
       } else {
         color = "lightgrey";
@@ -281,32 +281,13 @@ let vecTileLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp/
           weight: 1
       };
     },
-    regions: function(prop, zoom) {
-      if (zoom > 7) {
-        return {
-          stroke: false
-        };
-      } else {
-        return {
-          color: "LightGreen",
-          weight: 5,
-          opacity: 0.3
-        };
-      }
-    },
-    kedco_lines: {
-      color: "#ff7800",
-      weight: 2,
-      opacity: 0.85,
-      smoothFactor: 5
-    }
   },
   maxZoom: 19,
   minZoom: 5,
   interactive: true,
   getFeatureId: function(f) {
-    if (f.properties.FID !== undefined) {
-      return f.properties.FID;
+    if (f.properties.cluster_all_id !== undefined) {
+      return f.properties.cluster_all_id;
     }
     if (f.properties.osm_id !== undefined) {
       return "g" + f.properties.osm_id;
@@ -316,12 +297,12 @@ let vecTileLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp/
 })
 .on("click", function(e) {
   console.log('click')
-  this.clearHighlight();
+  //this.clearHighlight();
   let properties = e.layer.properties;
   console.log(properties)
-  if (properties.FID !== undefined) {
+  if (properties.cluster_all_id !== undefined) {
     var type = "c";
-    var ID = properties.FID;
+    var ID = properties.cluster_all_id;
     var popup='\
       <table>\
         <tr><td align="right"><b>State</b>:</td><td>'+properties.admin1+'</td></tr>\
@@ -359,11 +340,12 @@ let vecTileLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp/
     L.DomEvent.stop(e);
   }
   village_button_fun();
-  map.flyTo([e.latlng.lat, e.latlng.lng], 14);
+  map.flyToBounds([[e.layer.properties.bb_south,e.layer.properties.bb_west],[e.layer.properties.bb_north,e.layer.properties.bb_east]])
 });
 
+
 // Vector tiles layer with off-grid-clusters (remotely mapped villages). Contains layer 'OGClusters'. columns: cluster_offgrid_id, area_km2, building_count, large_building_count, percentage_large_building, building_area_km2, building_count_density_perkm2, percentage_building_area, grid_dist_km
-let ogclustersTileLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_offgrid_clusters/{z}/{x}/{y}.pbf", {
+var ogclustersTileLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/" + OGClusterLayers[selectedState] + "/{z}/{x}/{y}.pbf", {
   rendererFactory: L.canvas.tile,
   vectorTileLayerStyles: {
     OGClusters: function(prop, zoom) {
@@ -377,6 +359,7 @@ let ogclustersTileLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/dat
     },
   },
   maxZoom: 19,
+  maxNativeZoom: 17,
   minZoom: 5,
   interactive: true,
   getFeatureId: function(f) {
@@ -388,10 +371,11 @@ let ogclustersTileLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/dat
     }
     return "r" + f.properties.OBJECTID;
   }
-})
-.on("click", function(e) {
+});
+
+ogclustersTileLayer.on("click", function(e) {
   console.log('click')
-  this.clearHighlight();
+  //this.clearHighlight();
   let properties = e.layer.properties;
   console.log(properties)
   var layer = e.target;
@@ -428,11 +412,55 @@ let ogclustersTileLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/dat
     this.setFeatureStyle(ID, style);
     L.DomEvent.stop(e);
   }
-})
+});
 
 ogclustersTileLayer.on("click", function (event) {
   map.options.maxZoom = 19;
   village_button_fun();
-  map.flyTo([event.latlng.lat, event.latlng.lng], 14);
+  map.flyToBounds([[event.layer.properties.bb_south,event.layer.properties.bb_west],[event.layer.properties.bb_north,event.layer.properties.bb_east]]);
 });
 
+
+// Assign the selected state grid tile to the grid_layer
+function redefine_ogclustersTileLayer() {
+ogclustersTileLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/" + OGClusterLayers[selectedState] + "/{z}/{x}/{y}.pbf", {
+  rendererFactory: L.canvas.tile,
+  vectorTileLayerStyles: {
+    OGClusters: function(prop, zoom) {
+      return {
+          fill: true,
+          fillColor: "#0000ff",
+          fillOpacity: 0.2,
+          color: "blue",
+          weight: 1
+      };
+    },
+  },
+  maxZoom: 19,
+  maxNativeZoom: 17,
+  minZoom: 5,
+  interactive: true,
+  getFeatureId: function(f) {
+    if (f.properties.FID !== undefined) {
+      return f.properties.FID;
+    }
+    if (f.properties.osm_id !== undefined) {
+      return "g" + f.properties.osm_id;
+    }
+    return "r" + f.properties.OBJECTID;
+  }
+});
+ogclustersTileLayer.on("click", function (event) {
+  map.options.maxZoom = 19;
+  village_button_fun();
+  map.flyToBounds([[event.layer.properties.bb_south,event.layer.properties.bb_west],[event.layer.properties.bb_north,event.layer.properties.bb_east]]);
+});
+};
+
+// Update the state level grid layer with tiles
+function update_ogclustersTileLayer(){
+  remove_layer(ogclustersTileLayer);
+  redefine_ogclustersTileLayer();
+  // Add the grid layer depending on ogClustersCheckbox value
+  og_clusters_cb_fun();
+};

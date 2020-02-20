@@ -3,6 +3,16 @@ var statesList = ["Abia", "Adamawa", "Akwa Ibom", "Anambra", "Bauchi", "Bayelsa"
 var selectedState = "init";
 var selectedLGA = "";
 var thirtythreeKV = "33_kV_" + selectedState.toLowerCase();
+var currentfilter = {
+    minarea: 0.1,
+    maxarea: 10,
+    mindtg: 0,
+    maxdtg: 100,
+    ogminarea: 0.1,
+    ogmaxarea: 10,
+    ogmindtg: 0,
+    ogmaxdtg: 100,
+};
 var gridLayers = {
   "Abia": "",
   "Adamawa": "",
@@ -43,8 +53,85 @@ var gridLayers = {
   "Zamfara": "nesp2_state_grid_zamfara",
 };
 
+var OGClusterLayers = {
+  "Abia": "nesp2_state_offgrid_clusters_abia",
+  "Adamawa": "",
+  "Akwa Ibom": "",
+  "Anambra": "nesp2_state_offgrid_clusters_anambra",
+  "Bauchi": "nesp2_state_offgrid_clusters_bauchi",
+  "Bayelsa": "",
+  "Benue": "nesp2_state_offgrid_clusters_benue",
+  "Borno": "",
+  "Cross River": "",
+  "Delta": "nesp2_state_offgrid_clusters_delta",
+  "Ebonyi": "",
+  "Edo": "nesp2_state_offgrid_clusters_edo",
+  "Ekiti": "nesp2_state_offgrid_clusters_ekiti",
+  "Enugu": "nesp2_state_offgrid_clusters_enugu",
+  "Federal Capital Territory": "nesp2_state_offgrid_clusters_federal_capital_territory",
+  "Gombe": "",
+  "Imo": "",
+  "Jigawa": "nesp2_state_offgrid_clusters_jigawa",
+  "Kaduna": "nesp2_state_offgrid_clusters_kaduna",
+  "Kano": "nesp2_state_offgrid_clusters_kano",
+  "Katsina": "nesp2_state_offgrid_clusters_katsina",
+  "Kebbi": "nesp2_state_offgrid_clusters_kebbi",
+  "Kogi": "nesp2_state_offgrid_clusters_kogi",
+  "Kwara": "nesp2_state_offgrid_clusters_kwara",
+  "Lagos": "",
+  "Nasarawa": "nesp2_state_offgrid_clusters_nasarawa",
+  "Niger": "nesp2_state_offgrid_clusters_niger",
+  "Ogun": "nesp2_state_offgrid_clusters_ogun",
+  "Ondo": "nesp2_state_offgrid_clusters_ondo",
+  "Osun": "nesp2_state_offgrid_clusters_osun",
+  "Oyo": "nesp2_state_offgrid_clusters_oyo",
+  "Plateau": "nesp2_state_offgrid_clusters_plateau",
+  "Rivers": "",
+  "Sokoto": "nesp2_state_offgrid_clusters_sokoto",
+  "Taraba": "",
+  "Yobe": "nesp2_state_offgrid_clusters_yobe",
+  "Zamfara": "nesp2_state_offgrid_clusters_zamfara",
+}
 
-
+var clusterLayers = {
+  "Abia": "nesp2_state_clusters_abia",
+  "Adamawa": "nesp2_state_clusters_adamawa",
+  "Akwa Ibom": "nesp2_state_clusters_akwa_ibom",
+  "Anambra": "nesp2_state_clusters_anambra",
+  "Bauchi": "nesp2_state_clusters_bauchi",
+  "Bayelsa": "nesp2_state_clusters_bayelsa",
+  "Benue": "nesp2_state_clusters_benue",
+  "Borno": "nesp2_state_clusters_borno",
+  "Cross River": "nesp2_state_clusters_cross_river",
+  "Delta": "nesp2_state_clusters_delta",
+  "Ebonyi": "nesp2_state_clusters_ebonyi",
+  "Edo": "nesp2_state_clusters_edo",
+  "Ekiti": "nesp2_state_clusters_ekiti",
+  "Enugu": "nesp2_state_clusters_enugu",
+  "Federal Capital Territory": "nesp2_state_clusters_federal_capital_territory",
+  "Gombe": "nesp2_state_clusters_gombe",
+  "Imo": "nesp2_state_clusters_imo",
+  "Jigawa": "nesp2_state_clusters_jigawa",
+  "Kaduna": "nesp2_state_clusters_kaduna",
+  "Kano": "nesp2_state_clusters_kano",
+  "Katsina": "nesp2_state_clusters_katsina",
+  "Kebbi": "nesp2_state_clusters_kebbi",
+  "Kogi": "nesp2_state_clusters_kogi",
+  "Kwara": "nesp2_state_clusters_kwara",
+  "Lagos": "nesp2_state_clusters_lagos",
+  "Nasarawa": "nesp2_state_clusters_nasarawa",
+  "Niger": "nesp2_state_clusters_niger",
+  "Ogun": "nesp2_state_clusters_ogun",
+  "Ondo": "nesp2_state_clusters_ondo",
+  "Osun": "nesp2_state_clusters_osun",
+  "Oyo": "nesp2_state_clusters_oyo",
+  "Plateau": "nesp2_state_clusters_plateau",
+  "Rivers": "nesp2_state_clusters_rivers",
+  "Sokoto": "nesp2_state_clusters_sokoto",
+  "Taraba": "nesp2_state_clusters_taraba",
+  "Yobe": "nesp2_state_clusters_yobe",
+  "Zamfara": "nesp2_state_clusters_zamfara",
+}
 
 function resetStateSelect(){
     selectedState = "init"
@@ -66,52 +153,64 @@ function changeAreaSlider(str, h, values) {
     currentfilter.maxarea = values[1];
     map.fireEvent("filterchange", currentfilter);
 };
-
 var areaSlider = document.getElementById('areaSlider');
 noUiSlider.create(areaSlider, {
     ...sliderOptions,
-    start: [1, 5],
+    start: [0.1, 10],
     range: {
         'min': 0,
         'max': 10,
     },
 });
-
 areaSlider.noUiSlider.on("change", changeAreaSlider);
 
+function changedtgSlider(str, h, values) {
+    currentfilter.mindtg = values[0];
+    currentfilter.maxdtg = values[1];
+    map.fireEvent("filterchange", currentfilter);
+};
 var dtgSlider = document.getElementById('dtgSlider');
 noUiSlider.create(dtgSlider, {
     ...sliderOptions,
-    start: [300, 1500],
+    start: [0, 100],
     range: {
         'min': 0,
-        'max': 3000,
+        'max': 100,
     }
 });
+dtgSlider.noUiSlider.on("change", changedtgSlider);
 
-
+function changeogAreaSlider(str, h, values) {
+    currentfilter.minarea = values[0];
+    currentfilter.maxarea = values[1];
+    map.fireEvent("filterchange", currentfilter);
+};
 var ogAreaSlider = document.getElementById('ogAreaSlider');
 noUiSlider.create(ogAreaSlider, {
     ...sliderOptions,
-    start: [1, 5],
+    start: [0.1, 10],
     range: {
         'min': 0,
         'max': 10,
     }
 });
+ogAreaSlider.noUiSlider.on("change", changeogAreaSlider);
 
-ogAreaSlider.noUiSlider.on("change", changeAreaSlider);
-
-var ogPopulationSlider = document.getElementById('ogPopulationSlider');
-noUiSlider.create(ogPopulationSlider, {
-    start: [300, 1500],
+function changeogDistanceSlider(str, h, values) {
+    currentfilter.minarea = values[0];
+    currentfilter.maxarea = values[1];
+    map.fireEvent("filterchange", currentfilter);
+};
+var ogDistanceSlider = document.getElementById('ogDistanceSlider');
+noUiSlider.create(ogDistanceSlider, {
+    start: [5, 1000],
     ...sliderOptions,
     range: {
         'min': 0,
-        'max': 3000,
+        'max': 1000,
     }
 });
-
+ogDistanceSlider.noUiSlider.on("change", changeogDistanceSlider);
 
 function adapt_sidebar_to_selection_level(selectionLevel) {
 
@@ -137,6 +236,7 @@ function adapt_sidebar_to_selection_level(selectionLevel) {
 function adapt_view_to_national_level() {
   map.options.minZoom = 6.6;
   map.options.maxZoom = 9;
+  map.options.zoomSnap = 0.5;
   map.fitBounds([[2, 0],[15, 17]]); // [[S, W]],[[N, E]]
 
   // load the states boundaries
@@ -170,6 +270,7 @@ function adapt_view_to_state_level() {
 
   map.options.minZoom = 8;
   map.options.maxZoom = 19;
+  map.options.zoomSnap = 1,
 
 
   // load the states boundaries
@@ -183,17 +284,23 @@ function adapt_view_to_state_level() {
 
   update_selected_state_pbf()
   update_grid_layer();
-
+  update_ogclustersTileLayer();
   add_layer(osm_gray);
 
   // remove the populated areas and the medium voltage grid layers
   remove_layer(national_heatmap);
   remove_layer(national_grid);
+  remove_layer(hot);
 
   remove_basemaps_except_osm_gray();
 
   zoomToSelectedState();
 };
+
+function adapt_view_to_village_level() {
+  remove_layer(osm_gray);
+  add_layer(hot);
+}
 
 /*
 * triggered by the click on the level buttons
@@ -209,11 +316,13 @@ function state_button_fun() {
   level="state";
   adapt_sidebar_to_selection_level(level);
   adapt_view_to_state_level();
+  remove_layer(nigeria_states_geojson)
 };
 
 function village_button_fun() {
   level="village";
   adapt_sidebar_to_selection_level(level);
+  adapt_view_to_village_level();
 };
 
 // Triggered by the selection of a state with the combobox/dropdown menu
@@ -284,7 +393,8 @@ function clusters_cb_fun() {
     for (i = 0; i < text.length; i++) {
       text[i].style.display = "block";
     }
-    add_layer(vecTileLayer)
+    add_layer(vecTileLayer);
+    map.fireEvent("filterchange", currentfilter);
   } else {
     var j;
     for (j = 0; j < text.length; j++) {

@@ -32,7 +32,7 @@
 			<button onclick="national_button_fun()">National level</button>
 	  </div>
 	  <div id="state" class="cell small-6 level sidebar__btn">
-			<button onclick="">State level</button>
+			<button onclick="state_button_fun()">State level</button>
 	  </div>
 	  <div id="village" class="cell level sidebar__btn">
 			<button onclick="village_button_fun()">Village level</button>
@@ -123,7 +123,7 @@
       <div class="cell n_hide s_show v_show">
         <div class="sidebar-panel sidebar-panel-content" name="clustersContent">
           <div class="sidebar-panel-item">
-            <p href="#" class="sidebar-panel-item-title">Building Density</p>
+            <p href="#" class="sidebar-panel-item-title">Distance to Grid</p>
             <div class="filter">
               <div class="filter__slider" id="dtgSlider"></div>
             </div>
@@ -151,9 +151,9 @@
       <div class="cell n_hide s_show v_show">
         <div class="sidebar-panel sidebar-panel-content" name="ogClustersContent">
           <div class="sidebar-panel-item">
-            <p href="#" class="sidebar-panel-item-title">Buildings</p>
+            <p href="#" class="sidebar-panel-item-title">Distance to Grid</p>
             <div class="filter">
-              <div class="filter__slider" id="ogPopulationSlider"></div>
+              <div class="filter__slider" id="ogDistanceSlider"></div>
             </div>
           </div>
         </div>	
