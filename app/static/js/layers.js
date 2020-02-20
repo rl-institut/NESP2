@@ -198,9 +198,11 @@ function highlight_state(feature, layer) {
     mouseout:  lowlightStateBorders,
   });
   layer.on('click',function() {
+    // Update the name of the selected state
     selectedState = feature.properties["name"];
-    redefine_grid_layer();
     document.getElementById("stateSelect").value = selectedState;
+    // Trigger the switch to state level
+    state_button_fun();
   }
 );
 }
@@ -213,11 +215,6 @@ var nigeria_states_geojson = L.geoJSON(nigeria_states_simplified, {
   onEachFeature: highlight_state,
 });
 
-nigeria_states_geojson.on("click", function (event) {
-  map.flyToBounds(event.layer.getBounds());
-  info.remove();
-  state_button_fun();
-});
 
 function zoomToSelectedState() {
   nigeria_states_geojson.eachLayer(function(layer) {
