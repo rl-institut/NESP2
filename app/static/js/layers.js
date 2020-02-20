@@ -362,8 +362,9 @@ let vecTileLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp/
   map.flyTo([e.latlng.lat, e.latlng.lng], 14);
 });
 
+
 // Vector tiles layer with off-grid-clusters (remotely mapped villages). Contains layer 'OGClusters'. columns: cluster_offgrid_id, area_km2, building_count, large_building_count, percentage_large_building, building_area_km2, building_count_density_perkm2, percentage_building_area, grid_dist_km
-let ogclustersTileLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_offgrid_clusters/{z}/{x}/{y}.pbf", {
+var ogclustersTileLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/" + OGClusterLayers[selectedState] + "/{z}/{x}/{y}.pbf", {
   rendererFactory: L.canvas.tile,
   vectorTileLayerStyles: {
     OGClusters: function(prop, zoom) {
@@ -377,6 +378,7 @@ let ogclustersTileLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/dat
     },
   },
   maxZoom: 19,
+  maxNativeZoom: 17,
   minZoom: 5,
   interactive: true,
   getFeatureId: function(f) {
@@ -388,8 +390,9 @@ let ogclustersTileLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/dat
     }
     return "r" + f.properties.OBJECTID;
   }
-})
-.on("click", function(e) {
+});
+
+ogclustersTileLayer.on("click", function(e) {
   console.log('click')
   this.clearHighlight();
   let properties = e.layer.properties;
@@ -428,11 +431,50 @@ let ogclustersTileLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/dat
     this.setFeatureStyle(ID, style);
     L.DomEvent.stop(e);
   }
-})
+});
 
 ogclustersTileLayer.on("click", function (event) {
   map.options.maxZoom = 19;
   village_button_fun();
-  map.flyTo([event.latlng.lat, event.latlng.lng], 14);
+  map.flyToBounds([[event.layer.properties.bb_south,event.layer.properties.bb_west],[event.layer.properties.bb_north,event.layer.properties.bb_east]]);
 });
 
+
+// Assign the selected state grid tile to the grid_layer
+function redefine_ogclustersTileLayer() {
+ogclustersTileLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/" + OGClusterLayers[selectedState] + "/{z}/{x}/{y}.pbf", {
+  rendererFactory: L.canvas.tile,
+  vectorTileLayerStyles: {
+    OGClusters: function(prop, zoom) {
+      return {
+          fill: true,
+          fillColor: "#0000ff",
+          fillOpacity: 0.2,
+          color: "blue",
+          weight: 1
+      };
+    },
+  },
+  maxZoom: 19,
+  maxNativeZoom: 17,
+  minZoom: 5,
+  interactive: true,
+  getFeatureId: function(f) {
+    if (f.properties.FID !== undefined) {
+      return f.properties.FID;
+    }
+    if (f.properties.osm_id !== undefined) {
+      return "g" + f.properties.osm_id;
+    }
+    return "r" + f.properties.OBJECTID;
+  }
+});
+};
+
+// Update the state level grid layer with tiles
+function update_ogclustersTileLayer(){
+  remove_layer(ogclustersTileLayer);
+  redefine_ogclustersTileLayer();
+  // Add the grid layer depending on ogClustersCheckbox value
+  og_clusters_cb_fun();
+};

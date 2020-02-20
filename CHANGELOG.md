@@ -20,6 +20,7 @@ Here is a template for new release sections
 ## [Unreleased]
 
 ### Added
+- State Level Layers for Off-Grid-Clusters (#89) 
 - Satellite imagery layer (#7)
 - GridLayer (#10)
 - clusters sliders for area and distance to grid (#12)
@@ -33,6 +34,7 @@ Here is a template for new release sections
 - filter icon for filter (#82)
 
 ### Changed
+- zoom all the way to clicked cluster (#89)
 - availability info moved
 - level buttons indicate status (#9)
 - level buttons control options (#10)
