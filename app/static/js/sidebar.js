@@ -170,11 +170,6 @@ function adapt_view_to_state_level() {
   map.options.minZoom = 8;
   map.options.maxZoom = 19;
 
-  // remove the populated areas and the medium voltage grid layers
-  remove_layer(national_heatmap);
-  remove_layer(national_grid);
-
-  remove_basemaps_except_osm_gray();
 
   // load the states boundaries
   document.getElementById("statesCheckbox").checked = true;
@@ -189,6 +184,12 @@ function adapt_view_to_state_level() {
   update_grid_layer();
 
   add_layer(osm_gray);
+
+  // remove the populated areas and the medium voltage grid layers
+  remove_layer(national_heatmap);
+  remove_layer(national_grid);
+
+  remove_basemaps_except_osm_gray();
 
   zoomToSelectedState();
 };
