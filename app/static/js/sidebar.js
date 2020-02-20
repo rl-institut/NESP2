@@ -240,10 +240,13 @@ function states_cb_fun() {
 
 // Triggered by user interaction of the stateSelect dropdown menu
 function state_dropdown_fun(){
-  //update the selected state
-  selectedState = document.getElementById("stateSelect").value;
-  //Trigger the switch to state level
-  state_button_fun();
+  // Work only if the selected state is different than the currenlty selected
+  if (selectedState != document.getElementById("stateSelect").value){
+      //update the selected state
+      selectedState = document.getElementById("stateSelect").value;
+      //Trigger the switch to state level
+      state_button_fun();
+  }
 };
 
 
