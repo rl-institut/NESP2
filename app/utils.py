@@ -9,7 +9,7 @@ def assign_visibility(visible_levels):
     visibility = "n_{} s_{} v_{}".format(*display)
 
     if len(visible_levels) == 0:
-        visibility = "style=\"none\""
+        visibility = "sidebar-panel-item-hidden"
     return visibility
 
 
