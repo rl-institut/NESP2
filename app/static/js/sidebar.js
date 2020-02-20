@@ -120,7 +120,8 @@ function adapt_sidebar_to_selection_level(selectionLevel) {
   var hidelist = document.getElementsByClassName(level_id + "_hide");
   var showlist = document.getElementsByClassName(level_id + "_show");
   for (i = 0; i < hidelist.length; i++) {
-    hidelist[i].style.display = "none";
+    // TODO: disable instead of hide
+    hidelist[i].style.display = "block";
   }
   for (j = 0; j < showlist.length; j++) {
     showlist[j].style.display = "block";
@@ -146,7 +147,7 @@ function adapt_view_to_national_level() {
   heatmap_cb_fun();
   // load the medium voltage grid
   document.getElementById("nationalGridCheckbox").checked = true;
-  national_grid_cb_fun();
+  nationalGrid_cb_fun();
 
   // reset the selected state to None
   resetStateSelect()
@@ -177,7 +178,7 @@ function adapt_view_to_state_level() {
   document.getElementById("gridCheckbox").checked = true;
   // Load the remotely mapped villages clusters
   document.getElementById("ogClustersCheckbox").checked = true;
-  og_clusters_cb_fun();
+  oGclusters_cb_fun();
 
 
   update_selected_state_pbf()
@@ -265,7 +266,7 @@ function heatmap_cb_fun() {
 }
 
 // Triggered by the checkbox Medium Voltage Grid
-function national_grid_cb_fun() {
+function nationalGrid_cb_fun() {
   var checkBox = document.getElementById("nationalGridCheckbox");
   if (checkBox.checked == true){
     add_layer(national_grid);
@@ -301,7 +302,7 @@ function clusters_cb_fun() {
 }
 
 
-function og_clusters_cb_fun() {
+function oGclusters_cb_fun() {
   var checkBox = document.getElementById("ogClustersCheckbox");
   var text = document.getElementsByName("ogClustersContent");
   if (checkBox.checked == true){
@@ -338,7 +339,7 @@ function grid_cb_fun() {
   });
 }
 
-function building_density_cb_fun() {
+function buildingDensity_cb_fun() {
   var checkBox = document.getElementById("buildingDensityCheckbox");
   if (checkBox.checked == true){
     add_layer(buildingDensity)
@@ -356,13 +357,14 @@ function download_clusters_fun() {
 
 
 function lga_cb_fun(){
-  var checkBox = document.getElementById("lgaCheckbox");
+  /*var checkBox = document.getElementById("lgaCheckbox");
   if (checkBox.checked == true){
     add_layer(lgas_pbf)
   }
   else {
     remove_layer(lgas_pbf)
   }
+  */
 }
 
 function addParameter(url, parameterName, parameterValue, atStart/*Add param before others*/){
