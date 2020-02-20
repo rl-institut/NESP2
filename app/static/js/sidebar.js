@@ -49,7 +49,6 @@ var gridLayers = {
 function resetStateSelect(){
     selectedState = "init"
     var s = document.getElementById('stateSelect')
-    console.log(s.options)
     s.options[0].selected = true;
 }
 
@@ -171,6 +170,12 @@ function adapt_view_to_state_level() {
   map.options.minZoom = 8;
   map.options.maxZoom = 19;
 
+  // remove the populated areas and the medium voltage grid layers
+  remove_layer(national_heatmap);
+  remove_layer(national_grid);
+
+  remove_basemaps_except_osm_gray();
+
   // load the states boundaries
   document.getElementById("statesCheckbox").checked = true;
   states_cb_fun();
@@ -179,21 +184,13 @@ function adapt_view_to_state_level() {
   document.getElementById("ogClustersCheckbox").checked = true;
   og_clusters_cb_fun();
 
-  add_layer(selected_state_pbf);
+
+  update_selected_state_pbf()
   update_grid_layer();
-
-  // remove the populated areas and the medium voltage grid layers
-  remove_layer(national_heatmap);
-  remove_layer(national_grid);
-
-  remove_basemaps_except_osm_gray();
 
   add_layer(osm_gray);
 
   zoomToSelectedState();
-
-
-
 };
 
 /*
@@ -221,20 +218,12 @@ function village_button_fun() {
 function states_cb_fun() {
   var sCheckBox = document.getElementById("statesCheckbox")
   if (sCheckBox.checked == true){
-    if (map.hasLayer(statesLayer) == false){
-      map.addLayer(statesLayer);
-    }
-    if (map.hasLayer(nigeria_states_geojson) == false){
-      map.addLayer(nigeria_states_geojson);
-    }
+    add_layer(statesLayer)
+    add_layer(nigeria_states_geojson)
   }
   else {
-    if (map.hasLayer(statesLayer)){
-      map.removeLayer(statesLayer);
-    }
-    if (map.hasLayer(nigeria_states_geojson)){
-      map.removeLayer(nigeria_states_geojson);
-    }
+    remove_layer(statesLayer)
+    remove_layer(nigeria_states_geojson)
   }
 
 //https://stackoverflow.com/questions/31765968/toggle-url-parameter-with-button
@@ -249,13 +238,23 @@ function states_cb_fun() {
 */
 }
 
+// Triggered by user interaction of the stateSelect dropdown menu
+function state_dropdown_fun(){
+  //update the selected state
+  selectedState = document.getElementById("stateSelect").value;
+  //Trigger the switch to state level
+  state_button_fun();
+};
+
+
+
 // Triggered by the checkbox Populated Areas
 function heatmap_cb_fun() {
   var checkBox = document.getElementById("heatmapCheckbox");
   if (checkBox.checked == true){
     add_layer(national_heatmap);
   }
-  if (checkBox.checked == false){
+  else {
     remove_layer(national_heatmap);
     national_heatmap.bringToFront();
   }
@@ -267,7 +266,7 @@ function national_grid_cb_fun() {
   if (checkBox.checked == true){
     add_layer(national_grid);
   }
-  if (checkBox.checked == false){
+  else {
     remove_layer(national_grid);
   }
 }
@@ -280,17 +279,13 @@ function clusters_cb_fun() {
     for (i = 0; i < text.length; i++) {
       text[i].style.display = "block";
     }
-    if (map.hasLayer(vecTileLayer) == false){
-      map.addLayer(vecTileLayer);
-    }
+    add_layer(vecTileLayer)
   } else {
     var j;
     for (j = 0; j < text.length; j++) {
       text[j].style.display = "none";
     }
-    if (map.hasLayer(vecTileLayer) == true){
-      map.removeLayer(vecTileLayer);
-    }
+    remove_layer(vecTileLayer)
   }
 
   $.get({url: $SCRIPT_ROOT,
@@ -310,17 +305,14 @@ function og_clusters_cb_fun() {
     for (i = 0; i < text.length; i++) {
       text[i].style.display = "block";
     }
-    if (map.hasLayer(ogclustersTileLayer) == false){
-      map.addLayer(ogclustersTileLayer);
-    }
+    add_layer(ogclustersTileLayer)
+
   } else {
     var j;
     for (j = 0; j < text.length; j++) {
       text[j].style.display = "none";
     }
-    if (map.hasLayer(ogclustersTileLayer) == true){
-      map.removeLayer(ogclustersTileLayer);
-    }
+    remove_layer(ogclustersTileLayer)
   }
 }
 
@@ -330,7 +322,7 @@ function grid_cb_fun() {
   if (checkBox.checked == true){
     add_layer(grid_layer);
   }
-  if (checkBox.checked == false){
+  else{
     remove_layer(grid_layer);
   }
 
@@ -345,14 +337,10 @@ function grid_cb_fun() {
 function building_density_cb_fun() {
   var checkBox = document.getElementById("buildingDensityCheckbox");
   if (checkBox.checked == true){
-    if (map.hasLayer(buildingDensity) == false){
-      map.addLayer(buildingDensity);
-    }
+    add_layer(buildingDensity)
   }
-  if (checkBox.checked == false){
-    if (map.hasLayer(buildingDensity) == true){
-      map.removeLayer(buildingDensity);
-    }
+  else {
+    remove_layer(buildingDensity)
   }
 }
 
@@ -366,14 +354,10 @@ function download_clusters_fun() {
 function lga_cb_fun(){
   var checkBox = document.getElementById("lgaCheckbox");
   if (checkBox.checked == true){
-    if (map.hasLayer(lgas_pbf) == false){
-      map.addLayer(lgas_pbf);
-    }
+    add_layer(lgas_pbf)
   }
-  if (checkBox.checked == false){
-    if (map.hasLayer(lgas_pbf) == true){
-      map.removeLayer(lgas_pbf);
-    }
+  else {
+    remove_layer(lgas_pbf)
   }
 }
 
@@ -420,13 +404,3 @@ function addParameter(url, parameterName, parameterValue, atStart/*Add param bef
     return urlParts[0] + newQueryString + urlhash;
 };
 
-function state_dropdown_fun(){
-  remove_grid_layer();
-  remove_layer(selected_state_pbf);
-  //update the selected state
-  selectedState = document.getElementById("stateSelect").value;
-
-  update_selected_state_pbf()
-  //Trigger the switch to state level
-  state_button_fun();
-};

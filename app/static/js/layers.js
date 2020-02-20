@@ -107,7 +107,7 @@ function redefine_selected_state_pbf() {
 };
 
 function update_selected_state_pbf(){
-  remove_selected_state_pbf;
+  remove_layer(selected_state_pbf);
   redefine_selected_state_pbf();
   add_layer(selected_state_pbf);
 };
@@ -198,9 +198,11 @@ function highlight_state(feature, layer) {
     mouseout:  lowlightStateBorders,
   });
   layer.on('click',function() {
+    // Update the name of the selected state
     selectedState = feature.properties["name"];
-    redefine_grid_layer();
     document.getElementById("stateSelect").value = selectedState;
+    // Trigger the switch to state level
+    state_button_fun();
   }
 );
 }
@@ -213,11 +215,6 @@ var nigeria_states_geojson = L.geoJSON(nigeria_states_simplified, {
   onEachFeature: highlight_state,
 });
 
-nigeria_states_geojson.on("click", function (event) {
-  map.flyToBounds(event.layer.getBounds());
-  info.remove();
-  state_button_fun();
-});
 
 function zoomToSelectedState() {
   nigeria_states_geojson.eachLayer(function(layer) {
@@ -240,7 +237,7 @@ var grid_layer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/" + gri
   }
 });
 
-// This function does ...
+// Assign the selected state grid tile to the grid_layer
 function redefine_grid_layer() {
   grid_layer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/" + gridLayers[selectedState] + "/{z}/{x}/{y}.pbf", {
     rendererFactory: L.canvas.tile,
@@ -255,10 +252,11 @@ function redefine_grid_layer() {
   });
 };
 
-// This function does ...
+// Update the state level grid layer with tiles
 function update_grid_layer(){
   remove_layer(grid_layer);
   redefine_grid_layer();
+  // Add the grid layer depending on grid checkbox value
   grid_cb_fun();
 };
 
