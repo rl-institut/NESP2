@@ -83,7 +83,45 @@ var OGClusterLayers = {
   "Zamfara": "nesp2_state_offgrid_clusters_zamfara",
 }
 
-
+var clusterLayers = {
+  "Abia": "nesp2_state_clusters_abia",
+  "Adamawa": "nesp2_state_clusters_adamawa",
+  "Akwa Ibom": "nesp2_state_clusters_akwa_ibom",
+  "Anambra": "nesp2_state_clusters_anambra",
+  "Bauchi": "nesp2_state_clusters_bauchi",
+  "Bayelsa": "nesp2_state_clusters_bayelsa",
+  "Benue": "nesp2_state_clusters_benue",
+  "Borno": "nesp2_state_clusters_borno",
+  "Cross River": "nesp2_state_clusters_cross_river",
+  "Delta": "nesp2_state_clusters_delta",
+  "Ebonyi": "nesp2_state_clusters_ebonyi",
+  "Edo": "nesp2_state_clusters_edo",
+  "Ekiti": "nesp2_state_clusters_ekiti",
+  "Enugu": "nesp2_state_clusters_enugu",
+  "Federal Capital Territory": "nesp2_state_clusters_federal_capital_territory",
+  "Gombe": "nesp2_state_clusters_gombe",
+  "Imo": "nesp2_state_clusters_imo",
+  "Jigawa": "nesp2_state_clusters_jigawa",
+  "Kaduna": "nesp2_state_clusters_kaduna",
+  "Kano": "nesp2_state_clusters_kano",
+  "Katsina": "nesp2_state_clusters_katsina",
+  "Kebbi": "nesp2_state_clusters_kebbi",
+  "Kogi": "nesp2_state_clusters_kogi",
+  "Kwara": "nesp2_state_clusters_kwara",
+  "Lagos": "nesp2_state_clusters_lagos",
+  "Nasarawa": "nesp2_state_clusters_nasarawa",
+  "Niger": "nesp2_state_clusters_niger",
+  "Ogun": "nesp2_state_clusters_ogun",
+  "Ondo": "nesp2_state_clusters_ondo",
+  "Osun": "nesp2_state_clusters_osun",
+  "Oyo": "nesp2_state_clusters_oyo",
+  "Plateau": "nesp2_state_clusters_plateau",
+  "Rivers": "nesp2_state_clusters_rivers",
+  "Sokoto": "nesp2_state_clusters_sokoto",
+  "Taraba": "nesp2_state_clusters_taraba",
+  "Yobe": "nesp2_state_clusters_yobe",
+  "Zamfara": "nesp2_state_clusters_zamfara",
+}
 
 function resetStateSelect(){
     selectedState = "init"
@@ -109,7 +147,7 @@ function changeAreaSlider(str, h, values) {
 var areaSlider = document.getElementById('areaSlider');
 noUiSlider.create(areaSlider, {
     ...sliderOptions,
-    start: [1, 5],
+    start: [0.1, 10],
     range: {
         'min': 0,
         'max': 10,
@@ -132,7 +170,7 @@ noUiSlider.create(dtgSlider, {
 var ogAreaSlider = document.getElementById('ogAreaSlider');
 noUiSlider.create(ogAreaSlider, {
     ...sliderOptions,
-    start: [1, 5],
+    start: [0.1, 10],
     range: {
         'min': 0,
         'max': 10,
@@ -141,13 +179,13 @@ noUiSlider.create(ogAreaSlider, {
 
 ogAreaSlider.noUiSlider.on("change", changeAreaSlider);
 
-var ogPopulationSlider = document.getElementById('ogPopulationSlider');
-noUiSlider.create(ogPopulationSlider, {
-    start: [300, 1500],
+var ogDistanceSlider = document.getElementById('ogDistanceSlider');
+noUiSlider.create(ogDistanceSlider, {
+    start: [5, 1000],
     ...sliderOptions,
     range: {
         'min': 0,
-        'max': 3000,
+        'max': 1000,
     }
 });
 
