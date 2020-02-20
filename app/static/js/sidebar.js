@@ -171,6 +171,12 @@ function adapt_view_to_state_level() {
   map.options.minZoom = 8;
   map.options.maxZoom = 19;
 
+  // remove the populated areas and the medium voltage grid layers
+  remove_layer(national_heatmap);
+  remove_layer(national_grid);
+
+  remove_basemaps_except_osm_gray();
+
   // load the states boundaries
   document.getElementById("statesCheckbox").checked = true;
   states_cb_fun();
@@ -179,21 +185,13 @@ function adapt_view_to_state_level() {
   document.getElementById("ogClustersCheckbox").checked = true;
   og_clusters_cb_fun();
 
-  add_layer(selected_state_pbf);
+
+  update_selected_state_pbf()
   update_grid_layer();
-
-  // remove the populated areas and the medium voltage grid layers
-  remove_layer(national_heatmap);
-  remove_layer(national_grid);
-
-  remove_basemaps_except_osm_gray();
 
   add_layer(osm_gray);
 
   zoomToSelectedState();
-
-
-
 };
 
 /*
@@ -421,12 +419,10 @@ function addParameter(url, parameterName, parameterValue, atStart/*Add param bef
 };
 
 function state_dropdown_fun(){
-  remove_grid_layer();
-  remove_layer(selected_state_pbf);
+
   //update the selected state
   selectedState = document.getElementById("stateSelect").value;
 
-  update_selected_state_pbf()
   //Trigger the switch to state level
   state_button_fun();
 };
