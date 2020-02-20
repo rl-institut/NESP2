@@ -49,7 +49,6 @@ var gridLayers = {
 function resetStateSelect(){
     selectedState = "init"
     var s = document.getElementById('stateSelect')
-    console.log(s.options)
     s.options[0].selected = true;
 }
 
@@ -219,20 +218,12 @@ function village_button_fun() {
 function states_cb_fun() {
   var sCheckBox = document.getElementById("statesCheckbox")
   if (sCheckBox.checked == true){
-    if (map.hasLayer(statesLayer) == false){
-      map.addLayer(statesLayer);
-    }
-    if (map.hasLayer(nigeria_states_geojson) == false){
-      map.addLayer(nigeria_states_geojson);
-    }
+    add_layer(statesLayer)
+    add_layer(nigeria_states_geojson)
   }
   else {
-    if (map.hasLayer(statesLayer)){
-      map.removeLayer(statesLayer);
-    }
-    if (map.hasLayer(nigeria_states_geojson)){
-      map.removeLayer(nigeria_states_geojson);
-    }
+    remove_layer(statesLayer)
+    remove_layer(nigeria_states_geojson)
   }
 
 //https://stackoverflow.com/questions/31765968/toggle-url-parameter-with-button
@@ -253,7 +244,7 @@ function heatmap_cb_fun() {
   if (checkBox.checked == true){
     add_layer(national_heatmap);
   }
-  if (checkBox.checked == false){
+  else {
     remove_layer(national_heatmap);
     national_heatmap.bringToFront();
   }
@@ -265,7 +256,7 @@ function national_grid_cb_fun() {
   if (checkBox.checked == true){
     add_layer(national_grid);
   }
-  if (checkBox.checked == false){
+  else {
     remove_layer(national_grid);
   }
 }
@@ -278,17 +269,13 @@ function clusters_cb_fun() {
     for (i = 0; i < text.length; i++) {
       text[i].style.display = "block";
     }
-    if (map.hasLayer(vecTileLayer) == false){
-      map.addLayer(vecTileLayer);
-    }
+    add_layer(vecTileLayer)
   } else {
     var j;
     for (j = 0; j < text.length; j++) {
       text[j].style.display = "none";
     }
-    if (map.hasLayer(vecTileLayer) == true){
-      map.removeLayer(vecTileLayer);
-    }
+    remove_layer(vecTileLayer)
   }
 
   $.get({url: $SCRIPT_ROOT,
@@ -308,17 +295,14 @@ function og_clusters_cb_fun() {
     for (i = 0; i < text.length; i++) {
       text[i].style.display = "block";
     }
-    if (map.hasLayer(ogclustersTileLayer) == false){
-      map.addLayer(ogclustersTileLayer);
-    }
+    add_layer(ogclustersTileLayer)
+
   } else {
     var j;
     for (j = 0; j < text.length; j++) {
       text[j].style.display = "none";
     }
-    if (map.hasLayer(ogclustersTileLayer) == true){
-      map.removeLayer(ogclustersTileLayer);
-    }
+    remove_layer(ogclustersTileLayer)
   }
 }
 
@@ -328,7 +312,7 @@ function grid_cb_fun() {
   if (checkBox.checked == true){
     add_layer(grid_layer);
   }
-  if (checkBox.checked == false){
+  else{
     remove_layer(grid_layer);
   }
 
@@ -343,14 +327,10 @@ function grid_cb_fun() {
 function building_density_cb_fun() {
   var checkBox = document.getElementById("buildingDensityCheckbox");
   if (checkBox.checked == true){
-    if (map.hasLayer(buildingDensity) == false){
-      map.addLayer(buildingDensity);
-    }
+    add_layer(buildingDensity)
   }
-  if (checkBox.checked == false){
-    if (map.hasLayer(buildingDensity) == true){
-      map.removeLayer(buildingDensity);
-    }
+  else {
+    remove_layer(buildingDensity)
   }
 }
 
@@ -364,14 +344,10 @@ function download_clusters_fun() {
 function lga_cb_fun(){
   var checkBox = document.getElementById("lgaCheckbox");
   if (checkBox.checked == true){
-    if (map.hasLayer(lgas_pbf) == false){
-      map.addLayer(lgas_pbf);
-    }
+    add_layer(lgas_pbf)
   }
-  if (checkBox.checked == false){
-    if (map.hasLayer(lgas_pbf) == true){
-      map.removeLayer(lgas_pbf);
-    }
+  else {
+    remove_layer(lgas_pbf)
   }
 }
 
