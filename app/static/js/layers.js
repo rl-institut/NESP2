@@ -462,5 +462,5 @@ function update_ogclustersTileLayer(){
   remove_layer(ogclustersTileLayer);
   redefine_ogclustersTileLayer();
   // Add the grid layer depending on ogClustersCheckbox value
-  og_clusters_cb_fun();
+  ogClusters_cb_fun();
 };
