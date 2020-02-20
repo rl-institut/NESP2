@@ -20,6 +20,7 @@ Here is a template for new release sections
 ## [Unreleased]
 
 ### Added
+- Cluster styling (#95)
 - State Level Layers for Off-Grid-Clusters (#89) 
 - Satellite imagery layer (#7)
 - GridLayer (#10)
