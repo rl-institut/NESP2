@@ -215,6 +215,9 @@ var nigeria_states_geojson = L.geoJSON(nigeria_states_simplified, {
     return(statesStyleGeojsonTransparent);
   },
   onEachFeature: highlight_state,
+  // Avoid adding the selected state, to not cover the clusters
+  filter: function (feature){return (selectedState != feature.properties["name"])
+  }
 });
 
 
@@ -222,6 +225,9 @@ function zoomToSelectedState() {
   nigeria_states_geojson.eachLayer(function(layer) {
     if (layer.feature.properties.name == selectedState) {map.flyToBounds(layer.getBounds());}
   });
+  // Trigger the filter on add function
+  nigeria_states_geojson.clearLayers()
+  nigeria_states_geojson.addData(nigeria_states_simplified)
 };
 
 // Definitions and functions for the grid_layer

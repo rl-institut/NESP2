@@ -335,7 +335,6 @@ function state_button_fun() {
   level="state";
   adapt_sidebar_to_selection_level(level);
   adapt_view_to_state_level();
-  //remove_layer(nigeria_states_geojson)
 };
 
 function village_button_fun() {
