@@ -74,7 +74,7 @@ var gridStyle33kv = {
 };
 
 var gridStyle11kv = {
-  color: "#ffbb00",
+  color: "#7c0e14",
   weight: 1
 };
 
