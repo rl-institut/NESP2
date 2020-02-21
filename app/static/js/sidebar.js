@@ -511,7 +511,8 @@ function buildingDensity_cb_fun() {
 
 function download_clusters_fun() {
     var export_csv_link = document.getElementById("export_csv")
-    export_csv_link.href="/csv-export?min_area=" + currentfilter.minarea + ";max_area=" + currentfilter.maxarea
+    export_csv_link.href="/csv-export?state="+selectedState+"&min_area=" + currentfilter.minarea +
+    "&max_area=" + currentfilter.maxarea
     export_csv_link.click()
 }
 
