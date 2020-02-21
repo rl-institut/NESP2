@@ -56,7 +56,10 @@ Here is a template for new release sections
 - the selected state cannot be clicked or selected again (#109)
 - sidebar panels are defined via a template sidebar_checkbox.html (#115)
 - the side panel checkboxes are now grey out when not used (#128)
+
 - the grid and populated buttons appear now as the same button to the user (#136)
+- index.py is now at the root of the repository (#142)
+
 ### Removed
 - redundant accordion menu (#10)
 - redundant onclick function for nigeria_states_geojson layer (#108)

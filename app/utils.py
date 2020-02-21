@@ -18,3 +18,7 @@ def assign_visibility(visible_levels):
     if len(visible_levels) == 0:
         visibility = "sidebar-panel-item-hidden"
     return visibility
+
+
+def define_function_jinja(app):
+    app.jinja_env.globals.update(assign_visibility=assign_visibility)
