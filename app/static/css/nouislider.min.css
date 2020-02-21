@@ -18,19 +18,19 @@
 .noUi-state-drag *{cursor:inherit!important}
 .noUi-horizontal{height:7px}
 .noUi-horizontal 
-.noUi-handle{width:14px;height:15px;left:-7px;top:-5px}
+.noUi-handle{width:21px;height:20px;left:-7px;top:-5px}
 .noUi-vertical{width:18px}
 .noUi-vertical 
 .noUi-handle{width:28px;height:34px;left:-6px;top:-17px}html:not([dir=rtl]) 
 .noUi-horizontal 
 .noUi-handle{right:-7px;left:auto;border-radius: 100px;}
-.noUi-target{background:#FAFAFA;border-radius:4px;border:1px solid #D3D3D3;box-shadow:inset 0 1px 1px #F0F0F0,0 3px 6px -5px #BBB}
+.noUi-target{background:#FAFAFA;border-radius:4px;box-shadow:inset 0 1px 1px #F0F0F0,0 3px 6px -5px #BBB}
 .noUi-connects{border-radius:3px}
 .noUi-connect{background:#1dd069}
 .noUi-draggable{cursor:ew-resize}
 .noUi-vertical 
 .noUi-draggable{cursor:ns-resize}
-.noUi-handle{border:1.3px solid #c4c4c4;border-radius:3px;background:#FFF;cursor:default;box-shadow:inset 0 0 1px #FFF,inset 0 1px 7px #EBEBEB,0 3px 6px -3px #BBB}
+.noUi-handle{border-radius:3px;background:#FFF;cursor:default;box-shadow:inset 0 0 1px #FFF,inset 0 1px 7px #EBEBEB,0 3px 6px -3px #BBB}
 .noUi-active{box-shadow:inset 0 0 1px #FFF,inset 0 1px 7px #DDD,0 3px 6px -3px #BBB}
 /*.noUi-handle:after,.noUi-handle:before{content:"";display:block;position:absolute;height:14px;width:1px;background:#E8E7E6;left:14px;top:6px}
 .noUi-handle:after{left:17px}*/
@@ -61,8 +61,21 @@
 .noUi-marker-vertical.noUi-marker{width:5px;height:2px;margin-top:-1px}
 .noUi-marker-vertical.noUi-marker-sub{width:10px}
 .noUi-marker-vertical.noUi-marker-large{width:15px}
-.noUi-tooltip{display:block;position:absolute;border:1px solid #D9D9D9;border-radius:3px;background:#fff;color:#000;padding:5px;text-align:center;white-space:nowrap}
+.noUi-tooltip{display:block;position:absolute;border-radius:3px;background:#1dd069;color:#fff;padding:5px;min-width:3rem;text-align:center;font-size:11px;white-space:nowrap}
 .noUi-horizontal 
-.noUi-tooltip{-webkit-transform:translate(-50%,0);transform:translate(-50%,0);left:50%;bottom:120%}
+.noUi-tooltip{-webkit-transform:translate(-50%,0);transform:translate(-50%,0);left:50%;bottom:130%}
 .noUi-vertical 
 .noUi-tooltip{-webkit-transform:translate(0,-50%);transform:translate(0,-50%);top:50%;right:120%}
+
+/* custom CSS */
+
+.noUi-tooltip::after {
+    content:'';
+    position:absolute;
+    width:8px;
+    height:8px;
+    left:50%;
+    transform:translate(-50%,217%) rotate(45deg);
+    background-color:#1dd069;
+    z-index: -1;
+}

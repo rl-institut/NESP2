@@ -191,7 +191,8 @@ body {
 
 .filter {
   display: inline;
-  width: 18rem;
+  width: 15rem;
+  margin-top: .5rem;
   float: right;
   /*white-space: nowrap;
   padding: 0px 0px 20px 30px; /* top, right, bottom, left*/
@@ -259,7 +260,7 @@ button {
 }
 
 .sidebar-panel-item-filter {
-  height: 4rem;
+  height: 4.5rem;
   padding-top: 1rem;
 }
 
