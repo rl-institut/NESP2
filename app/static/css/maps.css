@@ -23,12 +23,31 @@
   right: 1rem;
 }
 
+.legend-color-grid {
+  height: .25rem;
+  width: 3rem;
+  border-radius: 100px;
+  position: absolute;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  right: 1rem;
+}
+
 .legend-color--green {
  background-color: #8DE6B4; 
 }
 
 .legend-color--gray {
   background-color: #C5C4CF; 
+ }
+
+.legend-color--brown {
+ background-color: #7C0E14; 
+}
+
+.legend-color--red {
+  background-color: #F64A2B; 
  }
 
 .sidebar-panel {
@@ -83,6 +102,10 @@ body {
 .map-legend {
     background-color: white;
     border-radius: 1rem;
+}
+
+.map-legend-grid {
+    padding-left: 5rem;
 }
 
 .split {
@@ -220,6 +243,10 @@ button {
   padding-left: 2.75rem;
   color: #464646;
   display: inline;
+}
+
+.is-hidden {
+    display: none;
 }
 
 .is-disabled {
