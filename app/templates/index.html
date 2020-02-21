@@ -44,7 +44,7 @@
 	</div>
 	
 	<div class="grid-x align-center sidebar-dropdown">
-      <div class="cell sidebar__btn active small-8 n_show s_show v_hide" data-toggle="state-dropdown">
+      <div class="cell sidebar__btn active small-8 n_show s_show v_grey" data-toggle="state-dropdown">
 		<select id="stateSelect" class="dropdown-button" onchange="state_dropdown_fun();">
             <option value="init" disabled selected>Select a state</option>
             <option value="Abia">Abia</option>
@@ -90,14 +90,59 @@
 
     {% import "sidebar_checkbox.html" as checkbox %}
 
-    {{ checkbox.input(id="states", label="States (availability)", visible=[]) }}
-    {{ checkbox.input(id="buildingDensity", label="Buildings", visible=[]) }}
+    {{ checkbox.input(id="states", label="States (availability)", visible={}) }}
+    {{ checkbox.input(id="buildingDensity", label="Buildings", visible={}) }}
+    <!-- grid layer on national level only -->
+    {{ checkbox.input(id="nationalGrid", label="Medium Voltage Grid", visible={'national': 'show'}) }}
+    <!-- grid layer on state and village level only -->
+    {{ checkbox.input(id="grid", label="Grid", visible={'state': 'show', 'village': 'show'}) }}
 
-    {{ checkbox.input(id="nationalGrid", label="Medium Voltage Grid", visible=['national']) }}
+    {{ checkbox.input(id="heatmap", label="Populated Areas", visible={'national': 'show'}) }}
 
-    {{ checkbox.input(id="heatmap", label="Populated Areas", visible=['national']) }}
+    {{ checkbox.input(id="clusters", label="Population Clusters", visible={'state': 'show', 'village': 'show'}, filter_func=True) }}
 
-    {{ checkbox.input(id="ogClusters", label="Mapped off-grid clusters", visible=['state', 'village'], filter_func=True) }}
+    <div class="grid-x">
+      <div class="cell n_hide s_show v_show">
+        <div class="sidebar-panel sidebar-panel-content content-filter hidden-filter" name="clustersContent">
+          <div class="sidebar-panel-item">
+            <p href="#" class="sidebar-panel-item-title">Area</p>
+              <div class="filter">
+                <div class="filter__slider" id="areaSlider"></div>
+                <div class="filter__i">
+                </div>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-x">
+      <div class="cell n_hide s_show v_show">
+        <div class="sidebar-panel sidebar-panel-content content-filter hidden-filter" name="clustersContent">
+          <div class="sidebar-panel-item">
+            <p href="#" class="sidebar-panel-item-title">Distance to Grid</p>
+            <div class="filter">
+              <div class="filter__slider" id="dtgSlider"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+           <div class="grid-x">
+      <div class="cell n_hide s_show v_show">
+        <div class="sidebar-panel sidebar-panel-content content-filter hidden-filter" name="clustersContent">
+          <div class="sidebar-panel-item">
+             <div id="download_clusters" class="sidebar__btn">
+        <button onclick="download_clusters_fun()">Download selection</button>
+
+      </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {{ checkbox.input(id="ogClusters", label="Mapped off-grid clusters", visible={'national': 'grey', 'state': 'show', 'village': 'show'}, filter_func=True) }}
 
     <div class="grid-x">
       <div class="cell n_hide s_show v_show">
@@ -142,50 +187,9 @@
 
 
 
-    {{ checkbox.input(id="clusters", label="Population Clusters", visible=['state', 'village'], filter_func=True) }}
 
-    <div class="grid-x">
-      <div class="cell n_hide s_show v_show">
-        <div class="sidebar-panel sidebar-panel-content content-filter hidden-filter" name="clustersContent">
-          <div class="sidebar-panel-item">
-            <p href="#" class="sidebar-panel-item-title">Area</p>
-              <div class="filter">
-                <div class="filter__slider" id="areaSlider"></div>
-                <div class="filter__i">
-                </div>
-              </div>
-          </div>
-        </div>
-      </div>
-    </div>
 
-    <div class="grid-x">
-      <div class="cell n_hide s_show v_show">
-        <div class="sidebar-panel sidebar-panel-content content-filter hidden-filter" name="clustersContent">
-          <div class="sidebar-panel-item">
-            <p href="#" class="sidebar-panel-item-title">Distance to Grid</p>
-            <div class="filter">
-              <div class="filter__slider" id="dtgSlider"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
 
-           <div class="grid-x">
-      <div class="cell n_hide s_show v_show">
-        <div class="sidebar-panel sidebar-panel-content content-filter hidden-filter" name="clustersContent">
-          <div class="sidebar-panel-item">
-             <div id="download_clusters" class="sidebar__btn">
-        <button onclick="download_clusters_fun()">Download selection</button>
-
-      </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    {{ checkbox.input(id="grid", label="Grid", visible=['state', 'village']) }}
 
 
 
