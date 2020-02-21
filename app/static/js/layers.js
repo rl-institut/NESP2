@@ -336,7 +336,9 @@ let vecTileLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2
     this.setFeatureStyle(ID, style);
     L.DomEvent.stop(e);
   }
-  village_button_fun();
+  map.on("click", function() {
+    clusterInfo.remove();
+  });
   map.flyToBounds([[e.layer.properties.bb_south,e.layer.properties.bb_west],[e.layer.properties.bb_north,e.layer.properties.bb_east]])
 });
 
@@ -467,6 +469,9 @@ ogclustersTileLayer.on("click", function(e) {
     this.setFeatureStyle(ID, style);
     L.DomEvent.stop(e);
   }
+  map.on("click", function() {
+    clusterInfo.remove();
+  });
 });
 
 ogclustersTileLayer.on("click", function (event) {
