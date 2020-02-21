@@ -3,7 +3,7 @@
     <div class="grid-x">
       <div class="cell {{ assign_visibility(visible) }}">
         <div class="sidebar-panel">
-          <div class="sidebar-panel-item is-active" data-accordion-item>
+          <div class="sidebar-panel-item is-active" id="{{ id }}Panel" data-accordion-item>
             <p href="#" class="sidebar-panel-item-title">{{ label }}</p>
             <div class="sidebar-panel-item-button">
               <input class="switch-input" id="{{ id }}Checkbox" type="checkbox" onclick="{{ id }}_cb_fun()">

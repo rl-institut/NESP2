@@ -40,6 +40,8 @@ Here is a template for new release sections
 - the user can click on Download clusters (#128)
 - possibility to hide, show or grey-out sidepane-items (#136)
 ### Changed
+- Levelbuttons in sidebar next to each other (137)
+- Styling of filtersubmenue (137)
 - availability info moved
 - level buttons indicate status (#9)
 - level buttons control options (#10)

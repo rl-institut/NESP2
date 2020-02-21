@@ -26,16 +26,16 @@
 {% block content %}
 <div id="map-content" class="grid-x">
 
-  <div id="sidebar" class="cell medium-10 large-3 left grid-container full">
+  <div id="sidebar" class="cell medium-10 large-3">
 	<div class="grid-x sidebar-levels">
-	  <div id="national" class="cell small-6 level sidebar__btn active">
-			<button onclick="national_button_fun()">National level</button>
+	  <div id="national" class="cell small-2 level sidebar__btn active">
+			<button onclick="national_button_fun()">National <br> Overview</button>
 	  </div>
-	  <div id="state" class="cell small-6 level sidebar__btn">
-			<button onclick="">State level</button>
+	  <div id="state" class="cell small-2 level sidebar__btn">
+			<button onclick="">State <br> level</button>
 	  </div>
-	  <div id="village" class="cell level sidebar__btn">
-			<button onclick="village_button_fun()">Village level</button>
+	  <div id="village" class="cell small-2 level sidebar__btn">
+			<button onclick="village_button_fun()">Village <br> level</button>
 	  </div>
 
         <a style="display: none" id="export_csv" href="#"></a>
@@ -101,13 +101,24 @@
 
     {{ checkbox.input(id="clusters", label="Populated areas", visible={'state': 'show', 'village': 'show'}, filter_func=True) }}
 
+
+    <div class="grid-x">
+      <div class="cell n_hide s_show v_show">
+        <div class="sidebar-panel sidebar-panel-content content-filter hidden-filter sidebar-panel-filter-label" name="clustersContent">
+          <div class="sidebar-panel-item sidebar-panel-item-filter">
+            <p href="#" class="sidebar-panel-item-title sidebar-panel-item-title-filter">FILTERS</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="grid-x">
       <div class="cell n_hide s_show v_show">
         <div class="sidebar-panel sidebar-panel-content content-filter hidden-filter" name="clustersContent">
-          <div class="sidebar-panel-item">
-            <p href="#" class="sidebar-panel-item-title">Area</p>
+          <div class="sidebar-panel-item sidebar-panel-item-filter">
+            <p href="#" class="sidebar-panel-item-title-filterlabel">Area</p>
               <div class="filter">
-                <div class="filter__slider" id="areaSlider"></div>
+                <div class="filter__slider filterslider" id="areaSlider"></div>
                 <div class="filter__i">
                 </div>
               </div>
@@ -120,7 +131,7 @@
       <div class="cell n_hide s_show v_show">
         <div class="sidebar-panel sidebar-panel-content content-filter hidden-filter" name="clustersContent">
           <div class="sidebar-panel-item">
-            <p href="#" class="sidebar-panel-item-title">Distance to Grid</p>
+            <p href="#" class="sidebar-panel-item-title-filterlabel">Distance to Grid</p>
             <div class="filter">
               <div class="filter__slider" id="dtgSlider"></div>
             </div>
@@ -146,9 +157,19 @@
 
     <div class="grid-x">
       <div class="cell n_hide s_show v_show">
+        <div class="sidebar-panel sidebar-panel-content content-filter hidden-filter sidebar-panel-filter-label" name="ogClustersContent">
+          <div class="sidebar-panel-item sidebar-panel-item-filter">
+            <p href="#" class="sidebar-panel-item-title sidebar-panel-item-title-filter">FILTERS</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-x">
+      <div class="cell n_hide s_show v_show">
         <div class="sidebar-panel sidebar-panel-content content-filter hidden-filter" name="ogClustersContent">
-          <div class="sidebar-panel-item">
-            <p href="#" class="sidebar-panel-item-title">Area</p>
+          <div class="sidebar-panel-item sidebar-panel-item-filter">
+            <p href="#" class="sidebar-panel-item-title-filterlabel">Area</p>
               <div class="filter">
                 <div class="filter__slider" id="ogAreaSlider"></div>
                 <div class="filter__i">
@@ -163,7 +184,7 @@
       <div class="cell n_hide s_show v_show">
         <div class="sidebar-panel sidebar-panel-content content-filter hidden-filter" name="ogClustersContent">
           <div class="sidebar-panel-item">
-            <p href="#" class="sidebar-panel-item-title">Distance to Grid</p>
+            <p href="#" class="sidebar-panel-item-title-filterlabel">Distance to Grid</p>
             <div class="filter">
               <div class="filter__slider" id="ogDistanceSlider"></div>
             </div>
