@@ -1,7 +1,7 @@
 import os
 
 from flask import Flask, render_template, request, jsonify, url_for, redirect, Response
-from utils import assign_visibility
+from .utils import define_function_jinja
 
 def create_app(test_config=None):
     # create and configure the app
@@ -54,5 +54,5 @@ def create_app(test_config=None):
             headers={"Content-disposition": "attachment; filename={}.csv".format(args["state"])}
         )
 
-    app.jinja_env.globals.update(assign_visibility=assign_visibility)
+    define_function_jinja(app)
     return app
