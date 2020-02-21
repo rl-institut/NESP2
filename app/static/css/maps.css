@@ -277,6 +277,10 @@ button {
   border-left: .25rem solid #1DD069;
 }
 
+.sidebar-panel-item.is-inactive {
+  border-left: 0rem solid #1DD069;
+}
+
 .sidebar-panel-item-button {
   float: right;
 }

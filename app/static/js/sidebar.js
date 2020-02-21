@@ -426,9 +426,11 @@ function state_dropdown_fun(){
 function heatmap_cb_fun() {
   var checkBox = document.getElementById("heatmapCheckbox");
   if (checkBox.checked == true){
+    document.getElementById("heatmapPanel").style.borderLeft= '.25rem solid #1DD069';
     add_layer(national_heatmap);
   }
   else {
+    document.getElementById("heatmapPanel").style.borderLeft= '0rem';
     remove_layer(national_heatmap);
     national_heatmap.bringToFront();
   }
@@ -438,9 +440,11 @@ function heatmap_cb_fun() {
 function nationalGrid_cb_fun() {
   var checkBox = document.getElementById("nationalGridCheckbox");
   if (checkBox.checked == true){
+    document.getElementById("nationalGridPanel").style.borderLeft= '.25rem solid #1DD069';
     add_layer(national_grid);
   }
   else {
+    document.getElementById("nationalGridPanel").style.borderLeft= '0rem';
     remove_layer(national_grid);
   }
 }
@@ -448,10 +452,12 @@ function nationalGrid_cb_fun() {
 function clusters_cb_fun() {
   var checkBox = document.getElementById("clustersCheckbox");
   if (checkBox.checked == true){
+    document.getElementById("clustersPanel").style.borderLeft= '.25rem solid #1DD069';
     document.getElementById("ogClustersCheckbox").checked = false;
     ogClusters_cb_fun();
     add_layer(vecTileLayer);
   } else {
+    document.getElementById("clustersPanel").style.borderLeft= '0rem';
     remove_layer(vecTileLayer)
   }
 
@@ -490,11 +496,13 @@ function clusters_filter_fun(){
 function ogClusters_cb_fun() {
   var checkBox = document.getElementById("ogClustersCheckbox");
   if (checkBox.checked == true){
+    document.getElementById("ogClustersPanel").style.borderLeft= '.25rem solid #1DD069';
     document.getElementById("clustersCheckbox").checked = false;
     clusters_cb_fun();
     add_layer(ogclustersTileLayer)
 
   } else {
+    document.getElementById("ogClustersPanel").style.borderLeft= '.0rem';
     remove_layer(ogclustersTileLayer)
   }
 }
@@ -510,9 +518,11 @@ function ogClusters_filter_fun(){
 function grid_cb_fun() {
   var checkBox = document.getElementById("gridCheckbox");
   if (checkBox.checked == true){
+    document.getElementById("gridPanel").style.borderLeft= '.25rem solid #1DD069';
     add_layer(grid_layer);
   }
   else{
+    document.getElementById("gridPanel").style.borderLeft= '0rem';
     remove_layer(grid_layer);
   }
 
