@@ -13,5 +13,5 @@ pip3 install -r app/requirements.txt
 
 Start the app with  
 ```
-python3 app/index.py
+python3 index.py
 ```
