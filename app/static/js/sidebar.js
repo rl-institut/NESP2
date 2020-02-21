@@ -1,4 +1,5 @@
 var level = "national";
+var previous_level = level;
 var statesList = ["Abia", "Adamawa", "Akwa Ibom", "Anambra", "Bauchi", "Bayelsa", "Benue", "Borno", "Cross River", "Delta", "Ebonyi", "Edo", "Ekiti", "Enugu", "Federal Capital Territory", "Gombe", "Imo", "Jigawa", "Kaduna", "Kano", "Katsina", "Kebbi", "Kogi", "Kwara", "Lagos", "Nasarawa", "Niger", "Ogun", "Ondo", "Osun", "Oyo", "Plateau", "Rivers", "Sokoto", "Taraba", "Yobe", "Zamfara"];
 var selectedState = "init";
 var selectedLGA = "";
@@ -279,7 +280,7 @@ function adapt_view_to_national_level() {
   remove_layer(grid_layer);
 };
 
-function adapt_view_to_state_level() {
+function adapt_view_to_state_level(previous_level) {
   console.log("adapt_view_to_state_level");
 
   map.options.minZoom = 8;
@@ -313,7 +314,9 @@ function adapt_view_to_state_level() {
 
   remove_basemaps_except_osm_gray();
 
-  zoomToSelectedState();
+  if (previous_level == "national"){
+    zoomToSelectedState();
+  }
 };
 
 function adapt_view_to_village_level() {
@@ -332,9 +335,10 @@ function national_button_fun() {
 }
 
 function state_button_fun() {
+  previous_level = level
   level="state";
   adapt_sidebar_to_selection_level(level);
-  adapt_view_to_state_level();
+  adapt_view_to_state_level(previous_level);
 };
 
 function village_button_fun() {
