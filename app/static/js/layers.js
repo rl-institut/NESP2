@@ -89,7 +89,10 @@ var selected_state_pbf = L.vectorGrid.protobuf("https://tile.rl-institut.de/data
       if (prop.name == selectedState) { return(SLstateSelection)}
       return (SLstates)
     }
-  }
+  },
+  maxZoom: 19,
+  maxNaturalZoom: 14,
+  minZoom: 5,
 });
 
 
@@ -283,6 +286,7 @@ let vecTileLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2
     },
   },
   maxZoom: 19,
+  maxNativeZoom: 16,
   minZoom: 5,
   interactive: true,
   getFeatureId: function(f) {
@@ -297,7 +301,7 @@ let vecTileLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2
 })
 .on("click", function(e) {
   console.log('click')
-  //this.clearHighlight();
+  this.clearHighlight();
   let properties = e.layer.properties;
   console.log(properties)
   if (properties.cluster_all_id !== undefined) {
@@ -305,10 +309,9 @@ let vecTileLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2
     var ID = properties.cluster_all_id;
     var popup='\
       <table>\
-        <tr><td align="right"><b>State</b>:</td><td>'+properties.admin1+'</td></tr>\
-        <tr><td align="right"><b>LGA</b>:</td><td>'+properties.admin2+'</td></tr>\
-        <tr><td align="right"><b>Area</b>:</td><td>'+parseFloat(properties.area_km2).toFixed(2)+' km2</td></tr>\
-        <tr><td align="right"><b>Population</b>:</td><td>'+parseFloat(properties.pop_hrsl).toFixed(0)+'</td></tr>\
+        <tr><td align="right"><b>ID</b>:</td><td>'+properties.cluster_all_id+'</td></tr>\
+        <tr><td align="right"><b>Area</b>:</td><td>'+properties.area_km2+'</td></tr>\
+        <tr><td align="right"><b>Distance to Grid</b>:</td><td>'+parseFloat(properties.grid_dist_km).toFixed(2)+' km2</td></tr>\
       </table>';
   } else if (properties.osm_id !== undefined) {
     var type = "g";
@@ -322,10 +325,12 @@ let vecTileLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2
     var ID = "r" + properties.OBJECTID;
   }
   if (type != "r") {
-    L.popup()
-    .setContent(popup)
-    .setLatLng(e.latlng)
-    .openOn(map);
+  clusterInfo.remove();
+  clusterInfo.update = function () {
+    this._div.innerHTML = popup;
+    this._div.innerHTML;
+  };
+  clusterInfo.addTo(map);
     this.highlight = ID;
     let style = clusterSelectionStyle;
     this.setFeatureStyle(ID, style);
@@ -381,6 +386,12 @@ ogclustersTileLayer.on("click", function(e) {
       </table>';
   }
   if (type != "r") {
+  clusterInfo.remove();
+  clusterInfo.update = function () {
+    this._div.innerHTML = popup;
+    this._div.innerHTML;
+  };
+  clusterInfo.addTo(map);
     L.popup()
     .setContent(popup)
     .setLatLng(e.latlng)
@@ -422,6 +433,42 @@ ogclustersTileLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/" 
     return "r" + f.properties.OBJECTID;
   }
 });
+
+ogclustersTileLayer.on("click", function(e) {
+  console.log('click')
+  //this.clearHighlight();
+  let properties = e.layer.properties;
+  console.log(properties)
+  var layer = e.target;
+
+  //alert(parseFloat(properties.area_km2).toFixed(2));
+  if (true) {
+    var type = "c";
+    var ID = properties.FID;
+    var popup='\
+      <table>\
+        <tr><td align="right"><b>Area</b>:</td><td>'+parseFloat(properties.area_km2).toFixed(2)+' km2</td></tr>\
+        <tr><td align="right"><b>Building Count</b>:</td><td>'+parseFloat(properties.building_count).toFixed(0)+'</td></tr>\
+        <tr><td align="right"><b>Building Area in km²</b>:</td><td>'+parseFloat(properties.building_area_km2).toFixed(0)+'</td></tr>\
+        <tr><td align="right"><b>Buildings per km²</b>:</td><td>'+parseFloat(properties.building_count_density_perkm2).toFixed(0)+'</td></tr>\
+        <tr><td align="right"><b>Percentage Building Area</b>:</td><td>'+parseFloat(properties.percentage_building_area).toFixed(0)+'</td></tr>\
+        <tr><td align="right"><b>Distance to Grid in km</b>:</td><td>'+parseFloat(properties.grid_dist_km).toFixed(0)+'</td></tr>\
+      </table>';
+  }
+  if (type != "r") {
+  clusterInfo.remove();
+  clusterInfo.update = function () {
+    this._div.innerHTML = popup;
+    this._div.innerHTML;
+  };
+  clusterInfo.addTo(map);
+    this.highlight = ID;
+    let style = ogClustersStyle;
+    this.setFeatureStyle(ID, style);
+    L.DomEvent.stop(e);
+  }
+});
+
 ogclustersTileLayer.on("click", function (event) {
   map.options.maxZoom = 19;
   village_button_fun();
