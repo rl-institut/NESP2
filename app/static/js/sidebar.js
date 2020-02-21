@@ -411,6 +411,9 @@ function clusters_cb_fun() {
   var checkBox = document.getElementById("clustersCheckbox");
   var text = document.getElementsByName("clustersContent");
   if (checkBox.checked == true){
+    // turn off ogClusters
+    document.getElementById("ogClustersCheckbox").checked = false;
+    ogClusters_cb_fun();
     var i;
     for (i = 0; i < text.length; i++) {
       text[i].style.display = "block";
@@ -438,6 +441,9 @@ function ogClusters_cb_fun() {
   var checkBox = document.getElementById("ogClustersCheckbox");
   var text = document.getElementsByName("ogClustersContent");
   if (checkBox.checked == true){
+    // turn off clusters
+    document.getElementById("clustersCheckbox").checked = false;
+    clusters_cb_fun();
     var i;
     for (i = 0; i < text.length; i++) {
       text[i].style.display = "block";
