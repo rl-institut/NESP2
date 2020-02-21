@@ -1,6 +1,6 @@
 var statesStyleGeojsonTransparent = {
-  color: "#ffffff",
-  weight: 0,
+  color: "#80ff80",
+  weight: 3,
   opacity: 0,
   fill: true,
   fillColor: "#ffffff",

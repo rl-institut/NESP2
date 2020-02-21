@@ -20,8 +20,6 @@ Here is a template for new release sections
 ## [Unreleased]
 
 ### Added
-- Cluster styling (#95)
-- State Level Layers for Off-Grid-Clusters (#89) 
 - Satellite imagery layer (#7)
 - GridLayer (#10)
 - clusters sliders for area and distance to grid (#12)
@@ -33,9 +31,13 @@ Here is a template for new release sections
 - base html template (#53)
 - link `style.css` for integration into website (#76)
 - filter icon for filter (#82)
+- State Level Layers for Off-Grid-Clusters (#89)
+- Cluster styling (#95)
+- possibility to "grey out" a sidebar panel item (#115)
+- filter to geoJSON layer which prevent the selected state cover the clusters (#115)
 
 ### Changed
-- zoom all the way to clicked cluster (#89)
+
 - availability info moved
 - level buttons indicate status (#9)
 - level buttons control options (#10)
@@ -44,11 +46,13 @@ Here is a template for new release sections
 - update leaflet version (#53)
 - split page using grid-x rather than css (#53)
 - Menu item naming (#77)
-- layout of side panel (#82) 
+- layout of side panel (#82)
+- zoom all the way to clicked cluster (#89)
 - the State button is not active anymore, selection through click or menu (#105)
 - states borders are still visible in State level, one can hover on other states (#105)
 - no initial selected state in National level, user must choose (#105)
 - the selected state cannot be clicked or selected again (#109)
+- sidebar panels are defined via a template sidebar_checkbox.html (#115)
 
 ### Removed
 - redundant accordion menu (#10)
