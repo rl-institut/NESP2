@@ -61,6 +61,7 @@ Here is a template for new release sections
 
 - the grid and populated buttons appear now as the same button to the user (#136)
 - index.py is now at the root of the repository (#142)
+- increased the map height to 1000px (#148)
 
 ### Removed
 - redundant accordion menu (#10)
