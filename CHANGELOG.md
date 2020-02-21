@@ -36,7 +36,8 @@ Here is a template for new release sections
 - possibility to "grey out" a sidebar panel item (#115)
 - filter to geoJSON layer which prevent the selected state cover the clusters (#115)
 - the level change between state and village based on the zoom (#122)
-
+- clicking on the funnel expand the filters (#128)
+- the user can click on Download clusters (#128)
 ### Changed
 
 - availability info moved
@@ -54,6 +55,7 @@ Here is a template for new release sections
 - no initial selected state in National level, user must choose (#105)
 - the selected state cannot be clicked or selected again (#109)
 - sidebar panels are defined via a template sidebar_checkbox.html (#115)
+- the side panel checkboxes are now grey out when not used (#128)
 
 ### Removed
 - redundant accordion menu (#10)
