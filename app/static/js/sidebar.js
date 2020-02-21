@@ -428,6 +428,8 @@ function nationalGrid_cb_fun() {
 function clusters_cb_fun() {
   var checkBox = document.getElementById("clustersCheckbox");
   if (checkBox.checked == true){
+    document.getElementById("ogClustersCheckbox").checked = false;
+    ogClusters_cb_fun();
     add_layer(vecTileLayer);
   } else {
     remove_layer(vecTileLayer)
@@ -468,6 +470,8 @@ function clusters_filter_fun(){
 function ogClusters_cb_fun() {
   var checkBox = document.getElementById("ogClustersCheckbox");
   if (checkBox.checked == true){
+    document.getElementById("clustersCheckbox").checked = false;
+    clusters_cb_fun();
     add_layer(ogclustersTileLayer)
 
   } else {
