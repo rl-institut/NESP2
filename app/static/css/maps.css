@@ -50,10 +50,6 @@
   background-color: #F64A2B; 
  }
 
-.sidebar-panel {
-  padding-right: 1.5rem;
-}
-
 #stateSelect.dropdown-button {
   color: #fff;
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' width='32' height='24' viewBox='0 0 32 24'><polygon points='0,0 32,0 16,24' style='fill: rgb%28255, 255, 255%29'></polygon></svg>");
@@ -62,6 +58,10 @@
 #stateSelect.dropdown-button:focus{
   color: #464646;
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' width='32' height='24' viewBox='0 0 32 24'><polygon points='0,0 32,0 16,24' style='fill: rgb%28138, 138, 138%29'></polygon></svg>");
+}
+
+.sidebar-panel-item {
+  padding-right: 1.5rem;
 }
 
 .sidebar-panel-item-icon {
@@ -75,6 +75,10 @@
 
 .sidebar-panel-item-hidden{
     display: none;
+}
+
+.sidebar-panel-item--download {
+  background-color: #eeeff1;
 }
 
 body {
@@ -260,10 +264,9 @@ button {
 }
 
 .sidebar-panel-item-filter {
-  height: 4.5rem;
+  height: 3.5rem;
   padding-top: 1rem;
 }
-
 
 .is-hidden {
     display: none;
@@ -289,6 +292,10 @@ button {
 .sidebar-panel-content {
   background-color: #91919f;
   display: none;
+}
+
+.content-filter {
+  padding-bottom: .5rem;
 }
 
 .sidebar-dropdown {
