@@ -35,6 +35,7 @@ Here is a template for new release sections
 - Cluster styling (#95)
 - possibility to "grey out" a sidebar panel item (#115)
 - filter to geoJSON layer which prevent the selected state cover the clusters (#115)
+- the level change between state and village based on the zoom (#122)
 
 ### Changed
 

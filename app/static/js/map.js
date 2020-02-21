@@ -115,6 +115,21 @@ var info = L.control({position: 'bottomleft'});
             vecTileLayer.clearHighlight();
         });
 
+        map.on("zoom", function(e){
+            // change level between village and state depending on the zoom
+            var zoom = map.getZoom();
+            var zoom_threshold = 13;
+            if (level == "state") {
+                if (zoom >= zoom_threshold){
+                    village_button_fun();
+                }
+            }
+            if (level == "village") {
+                if (zoom < zoom_threshold){
+                    state_button_fun();
+                }
+            }
+        })
 
         // const AREA = 0,POP = 1,LONG = 3,LAT = 4,INFO = 5;
         currentfilter = {
