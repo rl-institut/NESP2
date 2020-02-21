@@ -30,6 +30,18 @@ legend.update = function (props) {
 
 legend.addTo(map);
 
+var gridLegend = L.control({position: 'bottomright'});
+
+gridLegend.onAdd = function (map) {
+    this._div = L.DomUtil.create('div', 'map-legend map-legend-grid'); // create a div with a class "map-legend"
+    this.update();
+
+    return this._div;
+};
+
+gridLegend.update = function (props) {
+    this._div.innerHTML = '<div class="grid-x"><div class="small-3 map-legend__text"><div class="legend-color-grid legend-color--brown"></div></div><div class="small-9">11kV Grid</div><div class="small-3 map-legend__text"><div class="legend-color legend-color-grid legend-color--red"></div></div><div class="small-9">33kV Grid</div></div>'
+};
 
 var baseMaps = {
   "hot" : hot,
