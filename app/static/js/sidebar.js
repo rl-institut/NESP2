@@ -226,6 +226,20 @@ function enable_sidebar__btn(className){
     return className;
 };
 
+function hide_sidebar__btn(className){
+    let answer=className;
+    if (className.includes(" is-hidden")){}
+    else {className = className + " is-hidden";}
+    return className;
+};
+
+function show_sidebar__btn(className){
+    let answer=className;
+    if (className.includes(" is-disabled")){className = className.replace(" is-disabled", "");}
+    if (className.includes(" is-hidden")){className = className.replace(" is-hidden", "");}
+    return className;
+};
+
 
 function disable_sidebar_filter(className){
     return className.replace(" active-filter", " hidden-filter");
@@ -248,12 +262,16 @@ function adapt_sidebar_to_selection_level(selectionLevel) {
   var level_id =  selectionLevel.charAt(0)
   // hide and show elements according to their classes
   var hidelist = document.getElementsByClassName(level_id + "_hide");
+  var greylist = document.getElementsByClassName(level_id + "_grey");
   var showlist = document.getElementsByClassName(level_id + "_show");
   for (i = 0; i < hidelist.length; i++) {
-    hidelist[i].className = disable_sidebar__btn(hidelist[i].className);
+    hidelist[i].className = hide_sidebar__btn(hidelist[i].className);
   }
   for (j = 0; j < showlist.length; j++) {
-    showlist[j].className = enable_sidebar__btn(showlist[j].className)
+    showlist[j].className = show_sidebar__btn(showlist[j].className)
+  }
+  for (k = 0; k < greylist.length; k++) {
+    greylist[k].className = disable_sidebar__btn(greylist[k].className)
   }
 
   document.getElementById("national").className = "cell small-6 level sidebar__btn";

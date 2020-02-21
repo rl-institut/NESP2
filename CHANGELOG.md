@@ -38,8 +38,8 @@ Here is a template for new release sections
 - the level change between state and village based on the zoom (#122)
 - clicking on the funnel expand the filters (#128)
 - the user can click on Download clusters (#128)
+- possibility to hide, show or grey-out sidepane-items (#136)
 ### Changed
-
 - availability info moved
 - level buttons indicate status (#9)
 - level buttons control options (#10)
@@ -56,7 +56,7 @@ Here is a template for new release sections
 - the selected state cannot be clicked or selected again (#109)
 - sidebar panels are defined via a template sidebar_checkbox.html (#115)
 - the side panel checkboxes are now grey out when not used (#128)
-
+- the grid and populated buttons appear now as the same button to the user (#136)
 ### Removed
 - redundant accordion menu (#10)
 - redundant onclick function for nigeria_states_geojson layer (#108)
