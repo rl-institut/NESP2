@@ -338,6 +338,7 @@ function adapt_view_to_state_level(previous_level) {
 
 function adapt_view_to_village_level() {
   remove_layer(osm_gray);
+  info.remove();
   add_layer(hot);
 }
 
