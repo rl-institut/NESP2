@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, render_template, request, jsonify, url_for, redirect
+from flask import Flask, render_template, request, jsonify, url_for, redirect, Response
 from utils import assign_visibility
 
 def create_app(test_config=None):
@@ -44,8 +44,15 @@ def create_app(test_config=None):
     def download_csv():
 
         print(request.args)
+        args = dict(request.args)
         # TODO: perform a db search
-        return render_template('index.html', **request.args)
+
+        csv = '1,2,3\n4,5,6\n'
+        return Response(
+            csv,
+            mimetype="text/csv",
+            headers={"Content-disposition": "attachment; filename={}.csv".format(args["state"])}
+        )
 
     app.jinja_env.globals.update(assign_visibility=assign_visibility)
     return app

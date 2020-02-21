@@ -226,6 +226,23 @@ function enable_sidebar__btn(className){
     return className;
 };
 
+
+function disable_sidebar_filter(className){
+    return className.replace(" active-filter", " hidden-filter");
+};
+
+function toggle_sidebar_filter(className){
+    let answer=className;
+    if (className.includes(" hidden-filter")){className = enable_sidebar_filter(className);}
+    else if (className.includes(" active-filter")){className = disable_sidebar_filter(className);}
+    return className;
+};
+
+function enable_sidebar_filter(className){
+    return className.replace(" hidden-filter", " active-filter");
+};
+
+
 function adapt_sidebar_to_selection_level(selectionLevel) {
 
   var level_id =  selectionLevel.charAt(0)
@@ -410,55 +427,60 @@ function nationalGrid_cb_fun() {
 
 function clusters_cb_fun() {
   var checkBox = document.getElementById("clustersCheckbox");
-  var text = document.getElementsByName("clustersContent");
   if (checkBox.checked == true){
-    // turn off ogClusters
-    document.getElementById("ogClustersCheckbox").checked = false;
-    ogClusters_cb_fun();
-    var i;
-    for (i = 0; i < text.length; i++) {
-      text[i].style.display = "block";
-    }
     add_layer(vecTileLayer);
-    map.fireEvent("filterchange", currentfilter);
   } else {
-    var j;
-    for (j = 0; j < text.length; j++) {
-      text[j].style.display = "none";
-    }
     remove_layer(vecTileLayer)
   }
 
-  $.get({url: $SCRIPT_ROOT,
+  /*$.get({url: $SCRIPT_ROOT,
   data: {
     grid_content: gCheckBox.checked,
     states_content: stateCheckBox.checked
   },
   });
+  */
+}
+
+function template_filter_fun(id){
+    var newFilter = document.getElementsByName(id);
+    var i;
+    for (i = 0; i < newFilter.length; i++) {
+       newFilter[i].className = toggle_sidebar_filter(newFilter[i].className)
+    }
+
+   var prevFilter = document.querySelectorAll(".content-filter");
+    var j;
+    for (j = 0; j < prevFilter.length; j++) {
+
+       if(prevFilter[j].attributes.name.value !== id){
+            prevFilter[j].className = disable_sidebar_filter(prevFilter[j].className);
+       }
+    }
+    map.fireEvent("filterchange", currentfilter);
+}
+
+function clusters_filter_fun(){
+    template_filter_fun("clustersContent");
 }
 
 
 function ogClusters_cb_fun() {
   var checkBox = document.getElementById("ogClustersCheckbox");
-  var text = document.getElementsByName("ogClustersContent");
   if (checkBox.checked == true){
-    // turn off clusters
-    document.getElementById("clustersCheckbox").checked = false;
-    clusters_cb_fun();
-    var i;
-    for (i = 0; i < text.length; i++) {
-      text[i].style.display = "block";
-    }
     add_layer(ogclustersTileLayer)
 
   } else {
-    var j;
-    for (j = 0; j < text.length; j++) {
-      text[j].style.display = "none";
-    }
     remove_layer(ogclustersTileLayer)
   }
 }
+
+function ogClusters_filter_fun(){
+    template_filter_fun("ogClustersContent");
+}
+
+
+
 
 // Triggered by the checkbox Grid
 function grid_cb_fun() {
@@ -470,12 +492,12 @@ function grid_cb_fun() {
     remove_layer(grid_layer);
   }
 
-  $.get({url: $SCRIPT_ROOT,
+  /*$.get({url: $SCRIPT_ROOT,
   data: {
     grid_content: gCheckBox.checked,
     states_content: stateCheckBox.checked
   },
-  });
+  });*/
 }
 
 function buildingDensity_cb_fun() {
@@ -490,7 +512,8 @@ function buildingDensity_cb_fun() {
 
 function download_clusters_fun() {
     var export_csv_link = document.getElementById("export_csv")
-    export_csv_link.href="/csv-export?min_area=" + currentfilter.minarea + ";max_area=" + currentfilter.maxarea
+    export_csv_link.href="/csv-export?state="+selectedState+"&min_area=" + currentfilter.minarea +
+    "&max_area=" + currentfilter.maxarea
     export_csv_link.click()
 }
 

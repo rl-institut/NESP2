@@ -264,6 +264,13 @@ button {
   padding-left: 2.75rem;
 }
 
+.hidden-filter {
+    display: none;
+}
+.active-filter {
+    display: block;
+}
+
  .noUi-connect {
      background: #210B61;
 }
