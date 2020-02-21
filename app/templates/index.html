@@ -1,5 +1,8 @@
-{% extends 'base.html' %}
-
+{% if nesp2_website is defined %}
+  {% extends 'maps/maps_base.html' %}
+{% else %}
+  {% extends 'base.html' %}
+{% endif %}
 {% block title %}Population cluster for electrification in Nigeria{% endblock %}
 
  {% block head %}
