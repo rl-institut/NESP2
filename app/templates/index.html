@@ -88,7 +88,11 @@
       </div>
 	</div>
 
-    {% import "sidebar_checkbox.html" as checkbox %}
+    {% if nesp2_website is defined %}
+      {% import "maps/sidebar_checkbox.html" as checkbox %}
+    {% else %}
+      {% import "sidebar_checkbox.html" as checkbox %}
+    {% endif %}
 
     {{ checkbox.input(id="states", label="States (availability)", visible={}) }}
     {{ checkbox.input(id="buildingDensity", label="Buildings", visible={}) }}
