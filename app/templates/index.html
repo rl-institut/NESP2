@@ -30,13 +30,13 @@
 
   <div id="sidebar" class="cell medium-10 large-3">
 	<div class="grid-x sidebar-levels">
-	  <div id="national" class="cell small-2 level sidebar__btn active">
+	  <div id="national" class="cell small-2 level sidebar__btn active" title="national level">
 			<button onclick="national_button_fun()">National <br> Overview</button>
 	  </div>
-	  <div id="state" class="cell small-2 level sidebar__btn">
+	  <div id="state" class="cell small-2 level sidebar__btn" title="state level">
 			<button onclick="">State <br> level</button>
 	  </div>
-	  <div id="village" class="cell small-2 level sidebar__btn">
+	  <div id="village" class="cell small-2 level sidebar__btn" title="village level">
 			<button onclick="village_button_fun()">Village <br> level</button>
 	  </div>
       <!-- hidden link used for csv download of the data -->
@@ -45,7 +45,7 @@
 
 	</div>
 	
-	<div class="grid-x align-center sidebar-dropdown">
+	<div class="grid-x align-center sidebar-dropdown" title="select a state">
       <div class="cell sidebar__btn active small-8 n_show s_show v_grey" data-toggle="state-dropdown">
 		<select id="stateSelect" class="dropdown-button" onchange="state_dropdown_fun();">
             <option value="init" disabled selected>Select a state</option>
@@ -125,8 +125,6 @@
             <p href="#" class="sidebar-panel-item-title-filterlabel">Area</p>
               <div class="filter">
                 <div class="filter__slider filterslider" id="areaSlider"></div>
-                <div class="filter__i">
-                </div>
               </div>
           </div>
         </div>
@@ -178,8 +176,6 @@
             <p href="#" class="sidebar-panel-item-title-filterlabel">Area</p>
               <div class="filter">
                 <div class="filter__slider" id="ogAreaSlider"></div>
-                <div class="filter__i">
-                </div>
               </div>
           </div>
         </div>

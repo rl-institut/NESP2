@@ -204,6 +204,7 @@ function highlight_state(feature, layer) {
     // Update the name of the selected state only if different from the currently selected
     if (selectedState != feature.properties["name"]){
         selectedState = feature.properties["name"];
+        // Update the dropdown menu for state selection
         document.getElementById("stateSelect").value = selectedState;
         // Trigger the switch to state level
         state_button_fun();
@@ -226,7 +227,8 @@ var nigeria_states_geojson = L.geoJSON(nigeria_states_simplified, {
 
 function zoomToSelectedState() {
   nigeria_states_geojson.eachLayer(function(layer) {
-    if (layer.feature.properties.name == selectedState) {map.flyToBounds(layer.getBounds());}
+    if (layer.feature.properties.name == selectedState) {
+    map.flyToBounds(layer.getBounds(), {maxZoom: 9});}
   });
 };
 

@@ -1,6 +1,6 @@
- {% macro input(id, label, visible=['national', 'state', 'village'],filter_func=False) -%}
+ {% macro input(id, label, visible=['national', 'state', 'village'],filter_func=False, help_text="") -%}
 
-    <div class="grid-x">
+    <div class="grid-x" title="{{ label if help_text == '' else help_text }}">
       <div class="cell {{ assign_visibility(visible) }}">
         <div class="sidebar-panel">
           <div class="sidebar-panel-item is-active" id="{{ id }}Panel" data-accordion-item>

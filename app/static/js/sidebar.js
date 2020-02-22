@@ -363,7 +363,7 @@ function village_button_fun() {
   adapt_view_to_village_level();
 };
 
-// Triggered by the selection of a state with the combobox/dropdown menu
+// Triggered by the national and state views
 function states_cb_fun() {
   var sCheckBox = document.getElementById("statesCheckbox")
   if (sCheckBox.checked == true){
@@ -427,6 +427,13 @@ function nationalGrid_cb_fun() {
   }
 }
 
+function download_clusters_fun() {
+    var export_csv_link = document.getElementById("export_csv")
+    export_csv_link.href="/csv-export?state="+selectedState+"&min_area=" + currentfilter.minarea +
+    "&max_area=" + currentfilter.maxarea
+    export_csv_link.click()
+}
+
 function clusters_cb_fun() {
   var checkBox = document.getElementById("clustersCheckbox");
   if (checkBox.checked == true){
@@ -437,6 +444,8 @@ function clusters_cb_fun() {
   } else {
     document.getElementById("clustersPanel").style.borderLeft= '0rem';
     remove_layer(clusterLayer[selectedState]);
+    // Close the filters if they were available
+    clusters_filter_fun();
   }
 
   /*$.get({url: $SCRIPT_ROOT,
@@ -449,25 +458,39 @@ function clusters_cb_fun() {
 }
 
 function template_filter_fun(id){
-    var newFilter = document.getElementsByName(id);
-    var i;
-    for (i = 0; i < newFilter.length; i++) {
-       newFilter[i].className = toggle_sidebar_filter(newFilter[i].className)
-    }
+    var newFilter = document.getElementsByName(id + "Content");
+    var checkBox = document.getElementById(id + "Checkbox");
+    if (checkBox.checked == true){
+        var i;
+        for (i = 0; i < newFilter.length; i++) {
+           newFilter[i].className = toggle_sidebar_filter(newFilter[i].className)
+        }
 
-   var prevFilter = document.querySelectorAll(".content-filter");
-    var j;
-    for (j = 0; j < prevFilter.length; j++) {
+       var prevFilter = document.querySelectorAll(".content-filter");
+        var j;
+        for (j = 0; j < prevFilter.length; j++) {
 
-       if(prevFilter[j].attributes.name.value !== id){
-            prevFilter[j].className = disable_sidebar_filter(prevFilter[j].className);
-       }
-    }
-    map.fireEvent("filterchange", currentfilter);
+           if(prevFilter[j].attributes.name.value !== id + "Content"){
+                prevFilter[j].className = disable_sidebar_filter(prevFilter[j].className);
+           }
+        }
+        map.fireEvent("filterchange", currentfilter);
+     }
+     else{
+         var prevFilter = document.querySelectorAll(".content-filter");
+            var j;
+            for (j = 0; j < prevFilter.length; j++) {
+
+               if(prevFilter[j].attributes.name.value === id + "Content"){
+                    prevFilter[j].className = disable_sidebar_filter(prevFilter[j].className);
+               }
+            }
+
+     }
 }
 
 function clusters_filter_fun(){
-    template_filter_fun("clustersContent");
+    template_filter_fun("clusters");
 }
 
 
@@ -482,11 +505,13 @@ function ogClusters_cb_fun() {
   } else {
     document.getElementById("ogClustersPanel").style.borderLeft= '.0rem';
     remove_layer(ogClusterLayers[selectedState]);
+    // Close the filters if they were available
+    ogClusters_filter_fun();
   }
 }
 
 function ogClusters_filter_fun(){
-    template_filter_fun("ogClustersContent");
+    template_filter_fun("ogClusters");
 }
 
 
@@ -520,14 +545,6 @@ function buildingDensity_cb_fun() {
   }
 }
 
-function download_clusters_fun() {
-    var export_csv_link = document.getElementById("export_csv")
-    export_csv_link.href="/csv-export?state="+selectedState+"&min_area=" + currentfilter.minarea +
-    "&max_area=" + currentfilter.maxarea
-    export_csv_link.click()
-}
-
-
 function lga_cb_fun(){
   /*var checkBox = document.getElementById("lgaCheckbox");
   if (checkBox.checked == true){
@@ -538,47 +555,3 @@ function lga_cb_fun(){
   }
   */
 }
-
-function addParameter(url, parameterName, parameterValue, atStart/*Add param before others*/){
-    replaceDuplicates = true;
-    if(url.indexOf('#') > 0){
-        var cl = url.indexOf('#');
-        urlhash = url.substring(url.indexOf('#'),url.length);
-    } else {
-        urlhash = '';
-        cl = url.length;
-    }
-    sourceUrl = url.substring(0,cl);
-
-    var urlParts = sourceUrl.split("?");
-    var newQueryString = "";
-
-    if (urlParts.length > 1)
-    {
-        var parameters = urlParts[1].split("&");
-        for (var i=0; (i < parameters.length); i++)
-        {
-            var parameterParts = parameters[i].split("=");
-            if (!(replaceDuplicates && parameterParts[0] == parameterName))
-            {
-                if (newQueryString == "")
-                    newQueryString = "?";
-                else
-                    newQueryString += "&";
-                newQueryString += parameterParts[0] + "=" + (parameterParts[1]?parameterParts[1]:'');
-            }
-        }
-    }
-    if (newQueryString == "")
-        newQueryString = "?";
-
-    if(atStart){
-        newQueryString = '?'+ parameterName + "=" + parameterValue + (newQueryString.length>1?'&'+newQueryString.substring(1):'');
-    } else {
-        if (newQueryString !== "" && newQueryString != '?')
-            newQueryString += "&";
-        newQueryString += parameterName + "=" + (parameterValue?parameterValue:'');
-    }
-    return urlParts[0] + newQueryString + urlhash;
-};
-
