@@ -186,6 +186,40 @@ noUiSlider.create(ogDistanceSlider, {
 });
 ogDistanceSlider.noUiSlider.on("change", changeogDistanceSlider);
 
+function changeogBuildingsSlider(str, h, values) {
+  currentfilter.ogmindtg = values[0];
+  currentfilter.ogmaxdtg = values[1];
+  map.fireEvent("filterchange", currentfilter);
+};
+var ogBuildinsSlider = document.getElementById('ogBuildingsSlider');
+noUiSlider.create(ogBuildingsSlider, {
+  start: [5, 1000],
+  ...sliderOptions,
+  range: {
+    'min': 0,
+    'max': 1000,
+  }
+});
+ogDistanceSlider.noUiSlider.on("change", changeogBuildingsSlider);
+
+function changeogBuildingsFootprintSlider(str, h, values) {
+  currentfilter.ogmindtg = values[0];
+  currentfilter.ogmaxdtg = values[1];
+  map.fireEvent("filterchange", currentfilter);
+};
+var ogBuildingsFootprintSlider = document.getElementById('ogBuildingsFootprintSlider');
+noUiSlider.create(ogBuildingsFootprintSlider, {
+  start: [5, 1000],
+  ...sliderOptions,
+  range: {
+    'min': 0,
+    'max': 1000,
+  }
+});
+ogDistanceSlider.noUiSlider.on("change", changeogBuildingsFootprintSlider);
+
+
+
 function disable_sidebar__btn(className) {
   let answer = className;
   if (className.includes(" is-disabled")) {} else {

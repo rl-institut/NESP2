@@ -175,7 +175,7 @@
     <div class="grid-x">
       <div class="cell n_hide s_show v_show">
         <div class="sidebar-panel sidebar-panel-content content-filter hidden-filter" name="ogClustersContent">
-          <div class="sidebar-panel-item">
+          <div class="sidebar-panel-item sidebar-panel-item-filter">
             <p href="#" class="sidebar-panel-item-title-filterlabel">Distance to Grid</p>
             <div class="filter">
               <div class="filter__slider" id="ogDistanceSlider"></div>
@@ -187,7 +187,29 @@
 
     <div class="grid-x">
       <div class="cell n_hide s_show v_show">
-        <div class="sidebar-panel content-filter hidden-filter" name="ogClustersContent">
+        <div class="sidebar-panel sidebar-panel-content content-filter hidden-filter" name="ogClustersContent">
+          <div class="sidebar-panel-item sidebar-panel-item-filter">
+            <p href="#" class="sidebar-panel-item-title-filterlabel">Buildings</p>
+            <div class="filter">
+              <div class="filter__slider" id="ogBuildingsSlider"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-x">
+      <div class="cell n_hide s_show v_show">
+        <div class="sidebar-panel sidebar-panel-content content-filter hidden-filter" name="ogClustersContent">
+          <div class="sidebar-panel-item sidebar-panel-item-filter">
+            <p href="#" class="sidebar-panel-item-title-filterlabel">Buildings footprint</p>
+            <div class="filter">
+              <div class="filter__slider" id="ogBuildingsFootprintSlider"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
           <div class="sidebar-panel-item  sidebar-panel-item--download">
             <div id="download_ogClusters" class="sidebar__btn">
               <button onclick="download_clusters_fun()">Download selection</button>
