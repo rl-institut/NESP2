@@ -1,3 +1,16 @@
+var options = {
+  center: [9, 7],
+  zoomSnap: 0.5,
+  zoom: 6.6,
+  minZoom: 6,
+  maxZoom: 19,
+  zoomControl: false,
+  maxBounds: [
+    [2, 17], // S, E
+    [15, 0]  // N, W
+  ]
+};
+var map = L.map("map", options);
 var level = "national";
 var previous_level = level;
 var statesList = ["Abia", "Adamawa", "Akwa Ibom", "Anambra", "Bauchi", "Bayelsa", "Benue", "Borno", "Cross River", "Delta", "Ebonyi", "Edo", "Ekiti", "Enugu", "Federal Capital Territory", "Gombe", "Imo", "Jigawa", "Kaduna", "Kano", "Katsina", "Kebbi", "Kogi", "Kwara", "Lagos", "Nasarawa", "Niger", "Ogun", "Ondo", "Osun", "Oyo", "Plateau", "Rivers", "Sokoto", "Taraba", "Yobe", "Zamfara"];

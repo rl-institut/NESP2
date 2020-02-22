@@ -1,17 +1,3 @@
-var options = {
-  center: [9, 7],
-  zoomSnap: 0.5,
-  zoom: 6.6,
-  minZoom: 6,
-  maxZoom: 19,
-  zoomControl: false,
-  maxBounds: [
-    [2, 17], // S, E
-    [15, 0]  // N, W
-  ]
-};
-
-var map = L.map("map", options);
 map.addLayer(national_background);
 map.addLayer(osm_gray);
 
@@ -163,14 +149,6 @@ var clusterInfo = L.control({position: 'bottomleft'});
                 }
             }
         })
-
-        // const AREA = 0,POP = 1,LONG = 3,LAT = 4,INFO = 5;
-        currentfilter = {
-            minarea: 0.001,
-            maxarea: 10,
-            minpop: 1,
-            maxpop: 1000000,
-        };
 
         vecTileLayer.filter = function(filter) {
             let newhiddenIDs = [];
