@@ -414,9 +414,8 @@ layer.on("click", function(e) {
   });
 }
 
-// Definitions and functions for the clusters_layer
-// Vector tiles layer with clusters (populated areas). Contains layers 'regions' and 'kedco_lines'. regions-columns: admin1, admin2, area_km2, pop_hrsl
-var vecTileLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_state_clusters_kano/{z}/{x}/{y}.pbf", {
+function createNewClusterLayer(selectedState){
+  var layer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/" + selectedState + "/{z}/{x}/{y}.pbf", {
   rendererFactory: L.canvas.tile,
   vectorTileLayerStyles: {
     regions: function(prop, zoom) {
@@ -440,9 +439,127 @@ var vecTileLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2
       return "g" + f.properties.osm_id;
     }
     return "r" + f.properties.OBJECTID;
-  }
-})
-addFunctionsToClusterLayers(vecTileLayer);
+    }
+  })
+  return(layer);
+}
+
+// Definitions and functions for the clusters_layer
+// Vector tiles layer with clusters (populated areas). Contains layers 'regions' and 'kedco_lines'. regions-columns: admin1, admin2, area_km2, pop_hrsl
+  var clusterLayerAbia = createNewClusterLayer("nesp2_state_clusters_abia");
+  addFunctionsToClusterLayers(clusterLayerAbia);
+  var clusterLayerAdamawa = createNewClusterLayer("nesp2_state_clusters_adamawa");
+  addFunctionsToClusterLayers(clusterLayerAdamawa);
+  var clusterLayerAkwaIbom = createNewClusterLayer("nesp2_state_clusters_akwa_ibom");
+  addFunctionsToClusterLayers(clusterLayerAkwaIbom);
+  var clusterLayerAnambra = createNewClusterLayer("nesp2_state_clusters_anambra");
+  addFunctionsToClusterLayers(clusterLayerAnambra);
+  var clusterLayerBauchi = createNewClusterLayer("nesp2_state_clusters_bauchi");
+  addFunctionsToClusterLayers(clusterLayerBauchi);
+  var clusterLayerBayelsa = createNewClusterLayer("nesp2_state_clusters_bayelsa");
+  addFunctionsToClusterLayers(clusterLayerBayelsa);
+  var clusterLayerBenue = createNewClusterLayer("nesp2_state_clusters_benue");
+  addFunctionsToClusterLayers(clusterLayerBenue);
+  var clusterLayerBorno = createNewClusterLayer("nesp2_state_clusters_borno");
+  addFunctionsToClusterLayers(clusterLayerBorno);
+  var clusterLayerCrossRiver = createNewClusterLayer("nesp2_state_clusters_cross_river");
+  addFunctionsToClusterLayers(clusterLayerCrossRiver);
+  var clusterLayerDelta = createNewClusterLayer("nesp2_state_clusters_delta");
+  addFunctionsToClusterLayers(clusterLayerDelta);
+  var clusterLayerEbonyi = createNewClusterLayer("nesp2_state_clusters_ebonyi");
+  addFunctionsToClusterLayers(clusterLayerEbonyi);
+  var clusterLayerEdo = createNewClusterLayer("nesp2_state_clusters_edo");
+  addFunctionsToClusterLayers(clusterLayerEdo);
+  var clusterLayerEkiti = createNewClusterLayer("nesp2_state_clusters_ekiti");
+  addFunctionsToClusterLayers(clusterLayerEkiti);
+  var clusterLayerEnugu = createNewClusterLayer("nesp2_state_clusters_enugu");
+  addFunctionsToClusterLayers(clusterLayerEnugu);
+  var clusterLayerFederalCapitalTerritory = createNewClusterLayer("nesp2_state_clusters_federal_capital_territory");
+  addFunctionsToClusterLayers(clusterLayerFederalCapitalTerritory);
+  var clusterLayerGombe = createNewClusterLayer("nesp2_state_clusters_gombe");
+  addFunctionsToClusterLayers(clusterLayerGombe);
+  var clusterLayerImo = createNewClusterLayer("nesp2_state_clusters_imo");
+  addFunctionsToClusterLayers(clusterLayerImo);
+  var clusterLayerJigawa = createNewClusterLayer("nesp2_state_clusters_jigawa");
+  addFunctionsToClusterLayers(clusterLayerJigawa);
+  var clusterLayerKaduna = createNewClusterLayer("nesp2_state_clusters_kaduna");
+  addFunctionsToClusterLayers(clusterLayerKaduna);
+  var clusterLayerKano = createNewClusterLayer("nesp2_state_clusters_kano");
+  addFunctionsToClusterLayers(clusterLayerKano);
+  var clusterLayerKatsina = createNewClusterLayer("nesp2_state_clusters_katsina");
+  addFunctionsToClusterLayers(clusterLayerKatsina);
+  var clusterLayerKebbi = createNewClusterLayer("nesp2_state_clusters_kebbi");
+  addFunctionsToClusterLayers(clusterLayerKebbi);
+  var clusterLayerKogi = createNewClusterLayer("nesp2_state_clusters_kogi");
+  addFunctionsToClusterLayers(clusterLayerKogi);
+  var clusterLayerKwara = createNewClusterLayer("nesp2_state_clusters_kwara");
+  addFunctionsToClusterLayers(clusterLayerKwara);
+  var clusterLayerLagos = createNewClusterLayer("nesp2_state_clusters_lagos");
+  addFunctionsToClusterLayers(clusterLayerLagos);
+  var clusterLayerNasarawa = createNewClusterLayer("nesp2_state_clusters_nasarawa");
+  addFunctionsToClusterLayers(clusterLayerNasarawa);
+  var clusterLayerNiger = createNewClusterLayer("nesp2_state_clusters_niger");
+  addFunctionsToClusterLayers(clusterLayerNiger);
+  var clusterLayerOgun = createNewClusterLayer("nesp2_state_clusters_ogun");
+  addFunctionsToClusterLayers(clusterLayerOgun);
+  var clusterLayerOndo = createNewClusterLayer("nesp2_state_clusters_ondo");
+  addFunctionsToClusterLayers(clusterLayerOndo);
+  var clusterLayerOsun = createNewClusterLayer("nesp2_state_clusters_osun");
+  addFunctionsToClusterLayers(clusterLayerOsun);
+  var clusterLayerOyo = createNewClusterLayer("nesp2_state_clusters_oyo");
+  addFunctionsToClusterLayers(clusterLayerOyo);
+  var clusterLayerPlateau = createNewClusterLayer("nesp2_state_clusters_plateau");
+  addFunctionsToClusterLayers(clusterLayerPlateau);
+  var clusterLayerRivers = createNewClusterLayer("nesp2_state_clusters_rivers");
+  addFunctionsToClusterLayers(clusterLayerRivers);
+  var clusterLayerSokoto = createNewClusterLayer("nesp2_state_clusters_sokoto");
+  addFunctionsToClusterLayers(clusterLayerSokoto);
+  var clusterLayerTaraba = createNewClusterLayer("nesp2_state_clusters_taraba");
+  addFunctionsToClusterLayers(clusterLayerTaraba);
+  var clusterLayerYobe = createNewClusterLayer("nesp2_state_clusters_yobe");
+  addFunctionsToClusterLayers(clusterLayerYobe);
+  var clusterLayerZamfara = createNewClusterLayer("nesp2_state_clusters_zamfara");
+  addFunctionsToClusterLayers(clusterLayerZamfara);
+
+var clusterLayer = {
+  "Abia": clusterLayerAbia,
+  "Adamawa": clusterLayerAdamawa,
+  "Akwa Ibom": clusterLayerAkwaIbom,
+  "Anambra": clusterLayerAnambra,
+  "Bauchi": clusterLayerBauchi,
+  "Bayelsa": clusterLayerBayelsa,
+  "Benue": clusterLayerBenue,
+  "Borno": clusterLayerBorno,
+  "Cross River": clusterLayerCrossRiver,
+  "Delta": clusterLayerDelta,
+  "Ebonyi": clusterLayerEbonyi,
+  "Edo": clusterLayerEdo,
+  "Ekiti": clusterLayerEkiti,
+  "Enugu": clusterLayerEnugu,
+  "Federal Capital Territory": clusterLayerFederalCapitalTerritory,
+  "Gombe": clusterLayerGombe,
+  "Imo": clusterLayerImo,
+  "Jigawa": clusterLayerJigawa,
+  "Kaduna": clusterLayerKaduna,
+  "Kano": clusterLayerKano,
+  "Katsina": clusterLayerKatsina,
+  "Kebbi": clusterLayerKebbi,
+  "Kogi": clusterLayerKogi,
+  "Kwara": clusterLayerKwara,
+  "Lagos": clusterLayerLagos,
+  "Nasarawa": clusterLayerNasarawa,
+  "Niger": clusterLayerNiger,
+  "Ogun": clusterLayerOgun,
+  "Ondo": clusterLayerOndo,
+  "Osun": clusterLayerOsun,
+  "Oyo": clusterLayerOyo,
+  "Plateau": clusterLayerPlateau,
+  "Rivers": clusterLayerRivers,
+  "Sokoto": clusterLayerSokoto,
+  "Taraba": clusterLayerTaraba,
+  "Yobe": clusterLayerYobe,
+  "Zamfara": clusterLayerZamfara,
+}
 
 // Vector tiles layer with off-grid-clusters (remotely mapped villages). Contains layer 'OGClusters'. columns: cluster_offgrid_id, area_km2, building_count, large_building_count, percentage_large_building, building_area_km2, building_count_density_perkm2, percentage_building_area, grid_dist_km
 var ogclustersTileLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/" + OGClusterLayers[selectedState] + "/{z}/{x}/{y}.pbf", {

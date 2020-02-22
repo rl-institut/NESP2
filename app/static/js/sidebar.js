@@ -107,46 +107,6 @@ var OGClusterLayers = {
   "Zamfara": "nesp2_state_offgrid_clusters_zamfara",
 }
 
-var clusterLayers = {
-  "Abia": "nesp2_state_clusters_abia",
-  "Adamawa": "nesp2_state_clusters_adamawa",
-  "Akwa Ibom": "nesp2_state_clusters_akwa_ibom",
-  "Anambra": "nesp2_state_clusters_anambra",
-  "Bauchi": "nesp2_state_clusters_bauchi",
-  "Bayelsa": "nesp2_state_clusters_bayelsa",
-  "Benue": "nesp2_state_clusters_benue",
-  "Borno": "nesp2_state_clusters_borno",
-  "Cross River": "nesp2_state_clusters_cross_river",
-  "Delta": "nesp2_state_clusters_delta",
-  "Ebonyi": "nesp2_state_clusters_ebonyi",
-  "Edo": "nesp2_state_clusters_edo",
-  "Ekiti": "nesp2_state_clusters_ekiti",
-  "Enugu": "nesp2_state_clusters_enugu",
-  "Federal Capital Territory": "nesp2_state_clusters_federal_capital_territory",
-  "Gombe": "nesp2_state_clusters_gombe",
-  "Imo": "nesp2_state_clusters_imo",
-  "Jigawa": "nesp2_state_clusters_jigawa",
-  "Kaduna": "nesp2_state_clusters_kaduna",
-  "Kano": "nesp2_state_clusters_kano",
-  "Katsina": "nesp2_state_clusters_katsina",
-  "Kebbi": "nesp2_state_clusters_kebbi",
-  "Kogi": "nesp2_state_clusters_kogi",
-  "Kwara": "nesp2_state_clusters_kwara",
-  "Lagos": "nesp2_state_clusters_lagos",
-  "Nasarawa": "nesp2_state_clusters_nasarawa",
-  "Niger": "nesp2_state_clusters_niger",
-  "Ogun": "nesp2_state_clusters_ogun",
-  "Ondo": "nesp2_state_clusters_ondo",
-  "Osun": "nesp2_state_clusters_osun",
-  "Oyo": "nesp2_state_clusters_oyo",
-  "Plateau": "nesp2_state_clusters_plateau",
-  "Rivers": "nesp2_state_clusters_rivers",
-  "Sokoto": "nesp2_state_clusters_sokoto",
-  "Taraba": "nesp2_state_clusters_taraba",
-  "Yobe": "nesp2_state_clusters_yobe",
-  "Zamfara": "nesp2_state_clusters_zamfara",
-}
-
 function resetStateSelect(){
     selectedState = "init"
     var s = document.getElementById('stateSelect')
@@ -468,10 +428,10 @@ function clusters_cb_fun() {
     document.getElementById("clustersPanel").style.borderLeft= '.25rem solid #1DD069';
     document.getElementById("ogClustersCheckbox").checked = false;
     ogClusters_cb_fun();
-    add_layer(vecTileLayer);
+    add_layer(clusterLayer[selectedState]);
   } else {
     document.getElementById("clustersPanel").style.borderLeft= '0rem';
-    remove_layer(vecTileLayer)
+    remove_layer(clusterLayerJigawa)
   }
 
   /*$.get({url: $SCRIPT_ROOT,

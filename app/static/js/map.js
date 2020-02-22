@@ -129,7 +129,7 @@ var clusterInfo = L.control({position: 'bottomleft'});
         };
         L.control.layers(baseMaps, overlayMaps).addTo(map);
         map.on("layeradd",function (){
-          vecTileLayer.bringToFront(); 
+          //vecTileLayer.bringToFront(); 
           national_heatmap.bringToFront();
           national_grid.bringToFront();
           national_background.bringToBack(); 
