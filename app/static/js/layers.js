@@ -228,9 +228,6 @@ function zoomToSelectedState() {
   nigeria_states_geojson.eachLayer(function(layer) {
     if (layer.feature.properties.name == selectedState) {map.flyToBounds(layer.getBounds());}
   });
-  // Trigger the filter on add function
-  nigeria_states_geojson.clearLayers()
-  nigeria_states_geojson.addData(nigeria_states_simplified)
 };
 
 // Definitions and functions for the grid_layer
