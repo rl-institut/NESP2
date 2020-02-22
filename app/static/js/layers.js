@@ -271,6 +271,146 @@ function update_grid_layer(){
   grid_cb_fun();
 };
 
+function addFunctionsToClusterLayers(layer){
+layer.on("click", function(e) {
+  console.log('click')
+  this.clearHighlight();
+  let properties = e.layer.properties;
+  console.log(properties)
+  if (properties.cluster_all_id !== undefined) {
+    var type = "c";
+    var ID = properties.cluster_all_id;
+    var popup='\
+      <table>\
+        <tr><td align="right"><b>ID</b>:</td><td>'+properties.cluster_all_id+'</td></tr>\
+        <tr><td align="right"><b>Area</b>:</td><td>'+properties.area_km2+'</td></tr>\
+        <tr><td align="right"><b>Distance to Grid</b>:</td><td>'+parseFloat(properties.grid_dist_km).toFixed(2)+' km2</td></tr>\
+      </table>';
+  } else {
+    var type = "r";
+    var ID = "r" + properties.OBJECTID;
+  }
+  if (type != "r") {
+  clusterInfo.remove();
+  clusterInfo.update = function () {
+    this._div.innerHTML = popup;
+    this._div.innerHTML;
+  };
+  clusterInfo.addTo(map);
+    this.highlight = ID;
+    let style = clusterSelectionStyle;
+    this.setFeatureStyle(ID, style);
+    L.DomEvent.stop(e);
+  }
+  map.on("click", function() {
+    clusterInfo.remove();
+  });
+  map.flyToBounds([[e.layer.properties.bb_south,e.layer.properties.bb_west],[e.layer.properties.bb_north,e.layer.properties.bb_east]])
+  });
+  layer.filter = function(filter) {
+    let newhiddenIDs = [];
+    let vt = this._vectorTiles;
+    for (let vtkey in vt) {
+        let f = vt[vtkey]._features;
+        for (let fkey in f) {
+            
+            let prop = f[fkey].feature.properties;
+            if (typeof prop.area_km2 !== 'undefined'){
+                if (!(prop.area_km2 > filter.minarea && prop.area_km2 < filter.maxarea && prop.grid_dist_km > filter.mindtg && prop.grid_dist_km < filter.maxdtg)) {
+                    newhiddenIDs.push(prop.cluster_all_id);
+                    if (this.hiddenIDs.indexOf(prop.cluster_all_id) == -1){
+                        this.setFeatureStyle(prop.cluster_all_id, this.hiddenstyle);
+                    }
+                } else if (this.hiddenIDs.indexOf(prop.cluster_all_id) > -1){
+                    this.resetFeatureStyle(prop.cluster_all_id);
+                }
+            }
+        }
+    }
+    this.hiddenIDs = newhiddenIDs;
+  };
+
+  layer.on("load", function(e) {
+    layer.filter(currentfilter);
+  });
+  layer.highlight = null;
+  layer.hidden = null;
+  layer.hiddenstyle = {
+    fillColor: "lightgray",
+    fillOpacity: 0.3,
+    opacity: 0,
+    fill: true,
+    color: "lightgray"
+  };
+  layer.clearHidden = function() {
+    if (this.hiddenIDs) {
+        for (let i = 0, len = this.hiddenIDs.length; i < len; i++) {
+            let id = this.hiddenIDs[i];
+            this.resetFeatureStyle(id);
+        }
+    }
+  };
+  layer.clearHighlight = function() {
+    if (this.highlight) {
+        if (this.hiddenIDs && this.hiddenIDs.indexOf(this.highlight) > -1){
+            this.setFeatureStyle(this.highlight, this.hiddenstyle);
+        } else {
+            this.resetFeatureStyle(this.highlight);
+        }
+    }
+    this.highlight = null;
+  };
+  layer.on("click", function(e) {
+      console.log('click')
+      this.clearHighlight();
+      let properties = e.layer.properties;
+      console.log(properties)
+      if (properties.cluster_all_id !== undefined) {
+        var type = "c";
+        var ID = properties.cluster_all_id;
+        var popup='\
+          <table>\
+            <tr><td align="right"><b>ID</b>:</td><td>'+properties.cluster_all_id+'</td></tr>\
+            <tr><td align="right"><b>Area</b>:</td><td>'+properties.area_km2+'</td></tr>\
+            <tr><td align="right"><b>Distance to Grid</b>:</td><td>'+parseFloat(properties.grid_dist_km).toFixed(2)+' km2</td></tr>\
+          </table>';
+      } else if (properties.osm_id !== undefined) {
+        var type = "g";
+        var ID = "g" + properties.osm_id;
+        var popup = '\
+          <b>Voltage</b>: '+properties.voltage+' kV <br/>\
+          <b>Operator</b>: '+properties.operator+'<br/>\
+          ';
+      } else {
+        var type = "r";
+        var ID = "r" + properties.OBJECTID;
+      }
+      if (type != "r") {
+      clusterInfo.remove();
+      clusterInfo.update = function () {
+        this._div.innerHTML = popup;
+        this._div.innerHTML;
+      };
+      clusterInfo.addTo(map);
+        this.highlight = ID;
+        let style = clusterSelectionStyle;
+        this.setFeatureStyle(ID, style);
+        L.DomEvent.stop(e);
+      }
+      map.on("click", function() {
+        clusterInfo.remove();
+      });
+      map.flyToBounds([[e.layer.properties.bb_south,e.layer.properties.bb_west],[e.layer.properties.bb_north,e.layer.properties.bb_east]])
+  });
+  layer.on("load", function(e) {
+    layer.filter(currentfilter);        
+  });
+
+  map.addEventListener("filterchange", function(filter) {
+    layer.filter(currentfilter);
+  });
+}
+
 // Definitions and functions for the clusters_layer
 // Vector tiles layer with clusters (populated areas). Contains layers 'regions' and 'kedco_lines'. regions-columns: admin1, admin2, area_km2, pop_hrsl
 let vecTileLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_state_clusters_kano/{z}/{x}/{y}.pbf", {
@@ -299,49 +439,7 @@ let vecTileLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2
     return "r" + f.properties.OBJECTID;
   }
 })
-.on("click", function(e) {
-  console.log('click')
-  this.clearHighlight();
-  let properties = e.layer.properties;
-  console.log(properties)
-  if (properties.cluster_all_id !== undefined) {
-    var type = "c";
-    var ID = properties.cluster_all_id;
-    var popup='\
-      <table>\
-        <tr><td align="right"><b>ID</b>:</td><td>'+properties.cluster_all_id+'</td></tr>\
-        <tr><td align="right"><b>Area</b>:</td><td>'+properties.area_km2+'</td></tr>\
-        <tr><td align="right"><b>Distance to Grid</b>:</td><td>'+parseFloat(properties.grid_dist_km).toFixed(2)+' km2</td></tr>\
-      </table>';
-  } else if (properties.osm_id !== undefined) {
-    var type = "g";
-    var ID = "g" + properties.osm_id;
-    var popup = '\
-      <b>Voltage</b>: '+properties.voltage+' kV <br/>\
-      <b>Operator</b>: '+properties.operator+'<br/>\
-      ';
-  } else {
-    var type = "r";
-    var ID = "r" + properties.OBJECTID;
-  }
-  if (type != "r") {
-  clusterInfo.remove();
-  clusterInfo.update = function () {
-    this._div.innerHTML = popup;
-    this._div.innerHTML;
-  };
-  clusterInfo.addTo(map);
-    this.highlight = ID;
-    let style = clusterSelectionStyle;
-    this.setFeatureStyle(ID, style);
-    L.DomEvent.stop(e);
-  }
-  map.on("click", function() {
-    clusterInfo.remove();
-  });
-  map.flyToBounds([[e.layer.properties.bb_south,e.layer.properties.bb_west],[e.layer.properties.bb_north,e.layer.properties.bb_east]])
-});
-
+addFunctionsToClusterLayers(vecTileLayer);
 
 // Vector tiles layer with off-grid-clusters (remotely mapped villages). Contains layer 'OGClusters'. columns: cluster_offgrid_id, area_km2, building_count, large_building_count, percentage_large_building, building_area_km2, building_count_density_perkm2, percentage_building_area, grid_dist_km
 var ogclustersTileLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/" + OGClusterLayers[selectedState] + "/{z}/{x}/{y}.pbf", {
