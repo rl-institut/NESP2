@@ -427,6 +427,13 @@ function nationalGrid_cb_fun() {
   }
 }
 
+function download_clusters_fun() {
+    var export_csv_link = document.getElementById("export_csv")
+    export_csv_link.href="/csv-export?state="+selectedState+"&min_area=" + currentfilter.minarea +
+    "&max_area=" + currentfilter.maxarea
+    export_csv_link.click()
+}
+
 function clusters_cb_fun() {
   var checkBox = document.getElementById("clustersCheckbox");
   if (checkBox.checked == true){
@@ -519,14 +526,6 @@ function buildingDensity_cb_fun() {
     remove_layer(buildingDensity)
   }
 }
-
-function download_clusters_fun() {
-    var export_csv_link = document.getElementById("export_csv")
-    export_csv_link.href="/csv-export?state="+selectedState+"&min_area=" + currentfilter.minarea +
-    "&max_area=" + currentfilter.maxarea
-    export_csv_link.click()
-}
-
 
 function lga_cb_fun(){
   /*var checkBox = document.getElementById("lgaCheckbox");
