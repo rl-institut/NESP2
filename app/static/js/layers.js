@@ -226,7 +226,8 @@ var nigeria_states_geojson = L.geoJSON(nigeria_states_simplified, {
 
 function zoomToSelectedState() {
   nigeria_states_geojson.eachLayer(function(layer) {
-    if (layer.feature.properties.name == selectedState) {map.flyToBounds(layer.getBounds());}
+    if (layer.feature.properties.name == selectedState) {
+    map.flyToBounds(layer.getBounds(), {maxZoom: 9});}
   });
 };
 
