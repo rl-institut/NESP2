@@ -324,7 +324,8 @@ function adapt_view_to_state_level(previous_level) {
 
   remove_basemaps_except_osm_gray();
 
-  if (previous_level == "national"){
+  // When coming from village to state level it should not zoom out to the selected state
+  if (previous_level == "national" || previous_level == "state") {
     zoomToSelectedState();
   }
 };
