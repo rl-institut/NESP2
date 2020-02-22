@@ -7,7 +7,7 @@ var options = {
   zoomControl: false,
   maxBounds: [
     [2, 17], // S, E
-    [15, 0]  // N, W
+    [15, 0] // N, W
   ]
 };
 var map = L.map("map", options);
@@ -18,14 +18,14 @@ var selectedState = "init";
 var selectedLGA = "";
 var thirtythreeKV = "33_kV_" + selectedState.toLowerCase();
 var currentfilter = {
-    minarea: 0.1,
-    maxarea: 10,
-    mindtg: 0,
-    maxdtg: 100,
-    ogminarea: 0.1,
-    ogmaxarea: 10,
-    ogmindtg: 0,
-    ogmaxdtg: 100,
+  minarea: 0.1,
+  maxarea: 10,
+  mindtg: 0,
+  maxdtg: 100,
+  ogminarea: 0.1,
+  ogmaxarea: 10,
+  ogmindtg: 0,
+  ogmaxdtg: 100,
 };
 var gridLayers = {
   "Abia": "",
@@ -107,132 +107,143 @@ var OGClusterLayers = {
   "Zamfara": "nesp2_state_offgrid_clusters_zamfara",
 }
 
-function resetStateSelect(){
-    selectedState = "init"
-    var s = document.getElementById('stateSelect')
-    s.options[0].selected = true;
+function resetStateSelect() {
+  selectedState = "init"
+  var s = document.getElementById('stateSelect')
+  s.options[0].selected = true;
 }
 
 
 var sliderOptions = {
-    connect: true,
-    tooltips: true,
-    format: wNumb({
-        decimals: 2
-    }),
+  connect: true,
+  tooltips: true,
+  format: wNumb({
+    decimals: 2
+  }),
 };
 
 function changeAreaSlider(str, h, values) {
-    currentfilter.minarea = values[0];
-    currentfilter.maxarea = values[1];
-    map.fireEvent("filterchange", currentfilter);
+  currentfilter.minarea = values[0];
+  currentfilter.maxarea = values[1];
+  map.fireEvent("filterchange", currentfilter);
 };
 var areaSlider = document.getElementById('areaSlider');
 noUiSlider.create(areaSlider, {
-    ...sliderOptions,
-    start: [0.1, 10],
-    range: {
-        'min': 0,
-        'max': 10,
-    },
+  ...sliderOptions,
+  start: [0.1, 10],
+  range: {
+    'min': 0,
+    'max': 10,
+  },
 });
 areaSlider.noUiSlider.on("change", changeAreaSlider);
 
 function changedtgSlider(str, h, values) {
-    currentfilter.mindtg = values[0];
-    currentfilter.maxdtg = values[1];
-    map.fireEvent("filterchange", currentfilter);
+  currentfilter.mindtg = values[0];
+  currentfilter.maxdtg = values[1];
+  map.fireEvent("filterchange", currentfilter);
 };
 var dtgSlider = document.getElementById('dtgSlider');
 noUiSlider.create(dtgSlider, {
-    ...sliderOptions,
-    start: [0, 100],
-    range: {
-        'min': 0,
-        'max': 100,
-    }
+  ...sliderOptions,
+  start: [0, 100],
+  range: {
+    'min': 0,
+    'max': 100,
+  }
 });
 dtgSlider.noUiSlider.on("change", changedtgSlider);
 
 function changeogAreaSlider(str, h, values) {
-    currentfilter.ogminarea = values[0];
-    currentfilter.ogmaxarea = values[1];
-    map.fireEvent("filterchange", currentfilter);
+  currentfilter.ogminarea = values[0];
+  currentfilter.ogmaxarea = values[1];
+  map.fireEvent("filterchange", currentfilter);
 };
 var ogAreaSlider = document.getElementById('ogAreaSlider');
 noUiSlider.create(ogAreaSlider, {
-    ...sliderOptions,
-    start: [0.1, 10],
-    range: {
-        'min': 0,
-        'max': 10,
-    }
+  ...sliderOptions,
+  start: [0.1, 10],
+  range: {
+    'min': 0,
+    'max': 10,
+  }
 });
 ogAreaSlider.noUiSlider.on("change", changeogAreaSlider);
 
 function changeogDistanceSlider(str, h, values) {
-    currentfilter.ogmindtg = values[0];
-    currentfilter.ogmaxdtg = values[1];
-    map.fireEvent("filterchange", currentfilter);
+  currentfilter.ogmindtg = values[0];
+  currentfilter.ogmaxdtg = values[1];
+  map.fireEvent("filterchange", currentfilter);
 };
 var ogDistanceSlider = document.getElementById('ogDistanceSlider');
 noUiSlider.create(ogDistanceSlider, {
-    start: [5, 1000],
-    ...sliderOptions,
-    range: {
-        'min': 0,
-        'max': 1000,
-    }
+  start: [5, 1000],
+  ...sliderOptions,
+  range: {
+    'min': 0,
+    'max': 1000,
+  }
 });
 ogDistanceSlider.noUiSlider.on("change", changeogDistanceSlider);
 
-function disable_sidebar__btn(className){
-    let answer=className;
-    if (className.includes(" is-disabled")){}
-    else {className = className + " is-disabled";}
-    return className;
+function disable_sidebar__btn(className) {
+  let answer = className;
+  if (className.includes(" is-disabled")) {} else {
+    className = className + " is-disabled";
+  }
+  return className;
 };
 
-function enable_sidebar__btn(className){
-    let answer=className;
-    if (className.includes(" is-disabled")){className = className.replace(" is-disabled", "");}
-    return className;
+function enable_sidebar__btn(className) {
+  let answer = className;
+  if (className.includes(" is-disabled")) {
+    className = className.replace(" is-disabled", "");
+  }
+  return className;
 };
 
-function hide_sidebar__btn(className){
-    let answer=className;
-    if (className.includes(" is-hidden")){}
-    else {className = className + " is-hidden";}
-    return className;
+function hide_sidebar__btn(className) {
+  let answer = className;
+  if (className.includes(" is-hidden")) {} else {
+    className = className + " is-hidden";
+  }
+  return className;
 };
 
-function show_sidebar__btn(className){
-    let answer=className;
-    if (className.includes(" is-disabled")){className = className.replace(" is-disabled", "");}
-    if (className.includes(" is-hidden")){className = className.replace(" is-hidden", "");}
-    return className;
+function show_sidebar__btn(className) {
+  let answer = className;
+  if (className.includes(" is-disabled")) {
+    className = className.replace(" is-disabled", "");
+  }
+  if (className.includes(" is-hidden")) {
+    className = className.replace(" is-hidden", "");
+  }
+  return className;
 };
 
 
-function disable_sidebar_filter(className){
-    return className.replace(" active-filter", " hidden-filter");
+function disable_sidebar_filter(className) {
+  return className.replace(" active-filter", " hidden-filter");
 };
 
-function toggle_sidebar_filter(className){
-    let answer=className;
-    if (className.includes(" hidden-filter")){className = enable_sidebar_filter(className);}
-    else if (className.includes(" active-filter")){className = disable_sidebar_filter(className);}
-    return className;
+function toggle_sidebar_filter(className) {
+  let answer = className;
+  if (className.includes(" hidden-filter")) {
+    className = enable_sidebar_filter(className);
+  } else if (className.includes(" active-filter")) {
+    className = disable_sidebar_filter(className);
+  }
+  return className;
 };
 
-function enable_sidebar_filter(className){
-    return className.replace(" hidden-filter", " active-filter");
+function enable_sidebar_filter(className) {
+  return className.replace(" hidden-filter", " active-filter");
 };
 
 
 function adapt_sidebar_to_selection_level(selectionLevel) {
 
-  var level_id =  selectionLevel.charAt(0)
+  var level_id = selectionLevel.charAt(0)
   // hide and show elements according to their classes
   var hidelist = document.getElementsByClassName(level_id + "_hide");
   var greylist = document.getElementsByClassName(level_id + "_grey");
@@ -258,7 +269,10 @@ function adapt_view_to_national_level() {
   map.options.minZoom = 6.6;
   map.options.maxZoom = 9;
   map.options.zoomSnap = 0.5;
-  map.fitBounds([[2, 0],[15, 17]]); // [[S, W]],[[N, E]]
+  map.fitBounds([
+    [2, 0],
+    [15, 17]
+  ]); // [[S, W]],[[N, E]]
 
   legend.addTo(map);
   gridLegend.remove();
@@ -296,7 +310,7 @@ function adapt_view_to_state_level(previous_level) {
   map.options.maxZoom = 19;
   map.options.zoomSnap = 1,
 
-  legend.remove();
+    legend.remove();
   gridLegend.addTo(map);
 
   // load the states boundaries
@@ -328,9 +342,9 @@ function adapt_view_to_state_level(previous_level) {
   if (previous_level == "national" || previous_level == "state") {
     zoomToSelectedState();
 
-  // Trigger the filter function so that the selected state geojson does not hide the clusters
-  nigeria_states_geojson.clearLayers()
-  nigeria_states_geojson.addData(nigeria_states_simplified)
+    // Trigger the filter function so that the selected state geojson does not hide the clusters
+    nigeria_states_geojson.clearLayers()
+    nigeria_states_geojson.addData(nigeria_states_simplified)
   }
 };
 
@@ -341,24 +355,24 @@ function adapt_view_to_village_level() {
 }
 
 /*
-* triggered by the click on the level buttons
-*/
+ * triggered by the click on the level buttons
+ */
 
 function national_button_fun() {
-  level="national";
+  level = "national";
   adapt_sidebar_to_selection_level(level);
   adapt_view_to_national_level()
 }
 
 function state_button_fun() {
   previous_level = level
-  level="state";
+  level = "state";
   adapt_sidebar_to_selection_level(level);
   adapt_view_to_state_level(previous_level);
 };
 
 function village_button_fun() {
-  level="village";
+  level = "village";
   adapt_sidebar_to_selection_level(level);
   adapt_view_to_village_level();
 };
@@ -366,19 +380,18 @@ function village_button_fun() {
 // Triggered by the national and state views
 function states_cb_fun() {
   var sCheckBox = document.getElementById("statesCheckbox")
-  if (sCheckBox.checked == true){
+  if (sCheckBox.checked == true) {
     add_layer(statesLayer)
     add_layer(nigeria_states_geojson)
-  }
-  else {
+  } else {
     remove_layer(statesLayer)
     remove_layer(nigeria_states_geojson)
   }
 
-//https://stackoverflow.com/questions/31765968/toggle-url-parameter-with-button
-//https://dev.to/gaels/an-alternative-to-handle-global-state-in-react-the-url--3753
-//https://stackoverflow.com/questions/13063838/add-change-parameter-of-url-and-redirect-to-the-new-url/13064060
- /*$.get({url: $SCRIPT_ROOT,
+  //https://stackoverflow.com/questions/31765968/toggle-url-parameter-with-button
+  //https://dev.to/gaels/an-alternative-to-handle-global-state-in-react-the-url--3753
+  //https://stackoverflow.com/questions/13063838/add-change-parameter-of-url-and-redirect-to-the-new-url/13064060
+  /*$.get({url: $SCRIPT_ROOT,
   data: {
         grid_content: gCheckBox.checked,
         states_content: sCheckBox.checked,
@@ -388,13 +401,13 @@ function states_cb_fun() {
 }
 
 // Triggered by user interaction of the stateSelect dropdown menu
-function state_dropdown_fun(){
+function state_dropdown_fun() {
   // Work only if the selected state is different than the currenlty selected
-  if (selectedState != document.getElementById("stateSelect").value){
-      //update the selected state
-      selectedState = document.getElementById("stateSelect").value;
-      //Trigger the switch to state level
-      state_button_fun();
+  if (selectedState != document.getElementById("stateSelect").value) {
+    //update the selected state
+    selectedState = document.getElementById("stateSelect").value;
+    //Trigger the switch to state level
+    state_button_fun();
   }
 };
 
@@ -403,12 +416,11 @@ function state_dropdown_fun(){
 // Triggered by the checkbox Populated Areas
 function heatmap_cb_fun() {
   var checkBox = document.getElementById("heatmapCheckbox");
-  if (checkBox.checked == true){
-    document.getElementById("heatmapPanel").style.borderLeft= '.25rem solid #1DD069';
+  if (checkBox.checked == true) {
+    document.getElementById("heatmapPanel").style.borderLeft = '.25rem solid #1DD069';
     add_layer(national_heatmap);
-  }
-  else {
-    document.getElementById("heatmapPanel").style.borderLeft= '0rem';
+  } else {
+    document.getElementById("heatmapPanel").style.borderLeft = '0rem';
     remove_layer(national_heatmap);
     national_heatmap.bringToFront();
   }
@@ -417,32 +429,31 @@ function heatmap_cb_fun() {
 // Triggered by the checkbox Medium Voltage Grid
 function nationalGrid_cb_fun() {
   var checkBox = document.getElementById("nationalGridCheckbox");
-  if (checkBox.checked == true){
-    document.getElementById("nationalGridPanel").style.borderLeft= '.25rem solid #1DD069';
+  if (checkBox.checked == true) {
+    document.getElementById("nationalGridPanel").style.borderLeft = '.25rem solid #1DD069';
     add_layer(national_grid);
-  }
-  else {
-    document.getElementById("nationalGridPanel").style.borderLeft= '0rem';
+  } else {
+    document.getElementById("nationalGridPanel").style.borderLeft = '0rem';
     remove_layer(national_grid);
   }
 }
 
 function download_clusters_fun() {
-    var export_csv_link = document.getElementById("export_csv")
-    export_csv_link.href="/csv-export?state="+selectedState+"&min_area=" + currentfilter.minarea +
+  var export_csv_link = document.getElementById("export_csv")
+  export_csv_link.href = "/csv-export?state=" + selectedState + "&min_area=" + currentfilter.minarea +
     "&max_area=" + currentfilter.maxarea
-    export_csv_link.click()
+  export_csv_link.click()
 }
 
 function clusters_cb_fun() {
   var checkBox = document.getElementById("clustersCheckbox");
-  if (checkBox.checked == true){
-    document.getElementById("clustersPanel").style.borderLeft= '.25rem solid #1DD069';
+  if (checkBox.checked == true) {
+    document.getElementById("clustersPanel").style.borderLeft = '.25rem solid #1DD069';
     document.getElementById("ogClustersCheckbox").checked = false;
     ogClusters_cb_fun();
     add_layer(clusterLayer[selectedState]);
   } else {
-    document.getElementById("clustersPanel").style.borderLeft= '0rem';
+    document.getElementById("clustersPanel").style.borderLeft = '0rem';
     remove_layer(clusterLayer[selectedState]);
     // Close the filters if they were available
     clusters_filter_fun();
@@ -457,73 +468,71 @@ function clusters_cb_fun() {
   */
 }
 
-function template_filter_fun(id){
-    var newFilter = document.getElementsByName(id + "Content");
-    var checkBox = document.getElementById(id + "Checkbox");
-    if (checkBox.checked == true){
-        var i;
-        for (i = 0; i < newFilter.length; i++) {
-           newFilter[i].className = toggle_sidebar_filter(newFilter[i].className)
-        }
+function template_filter_fun(id) {
+  var newFilter = document.getElementsByName(id + "Content");
+  var checkBox = document.getElementById(id + "Checkbox");
+  if (checkBox.checked == true) {
+    var i;
+    for (i = 0; i < newFilter.length; i++) {
+      newFilter[i].className = toggle_sidebar_filter(newFilter[i].className)
+    }
 
-       var prevFilter = document.querySelectorAll(".content-filter");
-        var j;
-        for (j = 0; j < prevFilter.length; j++) {
+    var prevFilter = document.querySelectorAll(".content-filter");
+    var j;
+    for (j = 0; j < prevFilter.length; j++) {
 
-           if(prevFilter[j].attributes.name.value !== id + "Content"){
-                prevFilter[j].className = disable_sidebar_filter(prevFilter[j].className);
-           }
-        }
-        map.fireEvent("filterchange", currentfilter);
-     }
-     else{
-         var prevFilter = document.querySelectorAll(".content-filter");
-            var j;
-            for (j = 0; j < prevFilter.length; j++) {
+      if (prevFilter[j].attributes.name.value !== id + "Content") {
+        prevFilter[j].className = disable_sidebar_filter(prevFilter[j].className);
+      }
+    }
+    map.fireEvent("filterchange", currentfilter);
+  } else {
+    var prevFilter = document.querySelectorAll(".content-filter");
+    var j;
+    for (j = 0; j < prevFilter.length; j++) {
 
-               if(prevFilter[j].attributes.name.value === id + "Content"){
-                    prevFilter[j].className = disable_sidebar_filter(prevFilter[j].className);
-               }
-            }
+      if (prevFilter[j].attributes.name.value === id + "Content") {
+        prevFilter[j].className = disable_sidebar_filter(prevFilter[j].className);
+      }
+    }
 
-     }
+  }
 }
 
-function clusters_filter_fun(){
-    template_filter_fun("clusters");
+function clusters_filter_fun() {
+  template_filter_fun("clusters");
 }
 
 
 function ogClusters_cb_fun() {
   var checkBox = document.getElementById("ogClustersCheckbox");
-  if (checkBox.checked == true){
-    document.getElementById("ogClustersPanel").style.borderLeft= '.25rem solid #1DD069';
+  if (checkBox.checked == true) {
+    document.getElementById("ogClustersPanel").style.borderLeft = '.25rem solid #1DD069';
     document.getElementById("clustersCheckbox").checked = false;
     clusters_cb_fun();
     add_layer(ogClusterLayers[selectedState]);
 
   } else {
-    document.getElementById("ogClustersPanel").style.borderLeft= '.0rem';
+    document.getElementById("ogClustersPanel").style.borderLeft = '.0rem';
     remove_layer(ogClusterLayers[selectedState]);
     // Close the filters if they were available
     ogClusters_filter_fun();
   }
 }
 
-function ogClusters_filter_fun(){
-    template_filter_fun("ogClusters");
+function ogClusters_filter_fun() {
+  template_filter_fun("ogClusters");
 }
 
 
 // Triggered by the checkbox Grid
 function grid_cb_fun() {
   var checkBox = document.getElementById("gridCheckbox");
-  if (checkBox.checked == true){
-    document.getElementById("gridPanel").style.borderLeft= '.25rem solid #1DD069';
+  if (checkBox.checked == true) {
+    document.getElementById("gridPanel").style.borderLeft = '.25rem solid #1DD069';
     add_layer(grid_layer);
-  }
-  else{
-    document.getElementById("gridPanel").style.borderLeft= '0rem';
+  } else {
+    document.getElementById("gridPanel").style.borderLeft = '0rem';
     remove_layer(grid_layer);
   }
 
@@ -537,15 +546,14 @@ function grid_cb_fun() {
 
 function buildingDensity_cb_fun() {
   var checkBox = document.getElementById("buildingDensityCheckbox");
-  if (checkBox.checked == true){
+  if (checkBox.checked == true) {
     add_layer(buildingDensity)
-  }
-  else {
+  } else {
     remove_layer(buildingDensity)
   }
 }
 
-function lga_cb_fun(){
+function lga_cb_fun() {
   /*var checkBox = document.getElementById("lgaCheckbox");
   if (checkBox.checked == true){
     add_layer(lgas_pbf)

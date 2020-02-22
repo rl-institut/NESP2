@@ -1,32 +1,23 @@
 {% if nesp2_website is defined %}
-  {% extends 'maps/maps_base.html' %}
+{% extends 'maps/maps_base.html' %}
 {% else %}
-  {% extends 'base.html' %}
+{% extends 'base.html' %}
 {% endif %}
 {% block title %}Population cluster for electrification in Nigeria{% endblock %}
 
- {% block head %}
+{% block head %}
 
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ==" crossorigin=""/>
-    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js" integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew==" crossorigin=""></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ==" crossorigin="" />
+<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js" integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew==" crossorigin=""></script>
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" integrity="sha384-X7L1bhgb36bF1iFvaqvhgpaGpayKM+vXNNYRlF89BFA5s3vi1qZ8EX9086RlZjy1" crossorigin="" />
-	<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.3.0/dist/MarkerCluster.css" integrity="sha384-lPzjPsFQL6te2x+VxmV6q1DpRxpRk0tmnl2cpwAO5y04ESyc752tnEWPKDfl1olr" crossorigin="" />
-	<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.3.0/dist/MarkerCluster.Default.css" integrity="sha384-5kMSQJ6S4Qj5i09mtMNrWpSi8iXw230pKU76xTmrpezGnNJQzj0NzXjQLLg+jE7k" crossorigin="" />
-	<!-- Compressed CSS -->
-	<link rel="stylesheet" href="{{ url_for('static', filename='css/maps.css') }}" />
-	<link rel="stylesheet" href="{{ url_for('static', filename='css/foundation.min.css') }}" />
-	<link rel="stylesheet" href="{{ url_for('static', filename='css/nouislider.min.css') }}" />
-        <script type=text/javascript>
-           $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
-        </script>
-
-{% endblock %}
-
-{% block header %}{% endblock %}
-
-{% block content %}
-<div id="map-content" class="grid-x">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" integrity="sha384-X7L1bhgb36bF1iFvaqvhgpaGpayKM+vXNNYRlF89BFA5s3vi1qZ8EX9086RlZjy1" crossorigin="" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.3.0/dist/MarkerCluster.css" integrity="sha384-lPzjPsFQL6te2x+VxmV6q1DpRxpRk0tmnl2cpwAO5y04ESyc752tnEWPKDfl1olr" crossorigin="" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.3.0/dist/MarkerCluster.Default.css" integrity="sha384-5kMSQJ6S4Qj5i09mtMNrWpSi8iXw230pKU76xTmrpezGnNJQzj0NzXjQLLg+jE7k" crossorigin="" />
+<!-- Compressed CSS -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/maps.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/foundation.min.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/nouislider.min.css') }}" />
+<script type=text/javascript> $SCRIPT_ROOT={{ request.script_root|tojson|safe }}; </script> {% endblock %} {% block header %}{% endblock %} {% block content %} <div id="map-content" class="grid-x">
 
   <div id="sidebar" class="cell medium-10 large-3">
 	<div class="grid-x sidebar-levels">
@@ -44,7 +35,7 @@
 
 
 	</div>
-	
+
 	<div class="grid-x align-center sidebar-dropdown" title="select a state">
       <div class="cell sidebar__btn active small-8 n_show s_show v_grey" data-toggle="state-dropdown">
 		<select id="stateSelect" class="dropdown-button" onchange="state_dropdown_fun();">
@@ -109,52 +100,51 @@
 
 
     <div class="grid-x">
-      <div class="cell n_hide s_show v_show">
-        <div class="sidebar-panel sidebar-panel-content content-filter hidden-filter sidebar-panel-filter-label" name="clustersContent">
-          <div class="sidebar-panel-item sidebar-panel-item-filter">
-            <p href="#" class="sidebar-panel-item-title sidebar-panel-item-title-filter">FILTERS</p>
-          </div>
+    <div class="cell n_hide s_show v_show">
+      <div class="sidebar-panel sidebar-panel-content content-filter hidden-filter sidebar-panel-filter-label" name="clustersContent">
+        <div class="sidebar-panel-item sidebar-panel-item-filter">
+          <p href="#" class="sidebar-panel-item-title sidebar-panel-item-title-filter">FILTERS</p>
         </div>
       </div>
+    </div>
     </div>
 
     <div class="grid-x">
-      <div class="cell n_hide s_show v_show">
-        <div class="sidebar-panel sidebar-panel-content content-filter hidden-filter" name="clustersContent">
-          <div class="sidebar-panel-item sidebar-panel-item-filter">
-            <p href="#" class="sidebar-panel-item-title-filterlabel">Area</p>
-              <div class="filter">
-                <div class="filter__slider filterslider" id="areaSlider"></div>
-              </div>
+    <div class="cell n_hide s_show v_show">
+      <div class="sidebar-panel sidebar-panel-content content-filter hidden-filter" name="clustersContent">
+        <div class="sidebar-panel-item sidebar-panel-item-filter">
+          <p href="#" class="sidebar-panel-item-title-filterlabel">Area</p>
+          <div class="filter">
+            <div class="filter__slider filterslider" id="areaSlider"></div>
           </div>
         </div>
       </div>
+    </div>
     </div>
 
     <div class="grid-x">
-      <div class="cell n_hide s_show v_show">
-        <div class="sidebar-panel sidebar-panel-content content-filter hidden-filter" name="clustersContent">
-          <div class="sidebar-panel-item">
-            <p href="#" class="sidebar-panel-item-title-filterlabel">Distance to Grid</p>
-            <div class="filter">
-              <div class="filter__slider" id="dtgSlider"></div>
-            </div>
+    <div class="cell n_hide s_show v_show">
+      <div class="sidebar-panel sidebar-panel-content content-filter hidden-filter" name="clustersContent">
+        <div class="sidebar-panel-item">
+          <p href="#" class="sidebar-panel-item-title-filterlabel">Distance to Grid</p>
+          <div class="filter">
+            <div class="filter__slider" id="dtgSlider"></div>
           </div>
         </div>
       </div>
     </div>
+    </div>
 
-           <div class="grid-x">
-      <div class="cell n_hide s_show v_show">
-        <div class="sidebar-panel content-filter hidden-filter" name="clustersContent">
-          <div class="sidebar-panel-item sidebar-panel-item--download">
-             <div id="download_clusters" class="sidebar__btn">
-        <button onclick="download_clusters_fun()">Download selection</button>
-
-      </div>
+    <div class="grid-x">
+    <div class="cell n_hide s_show v_show">
+      <div class="sidebar-panel content-filter hidden-filter" name="clustersContent">
+        <div class="sidebar-panel-item sidebar-panel-item--download">
+          <div id="download_clusters" class="sidebar__btn">
+            <button onclick="download_clusters_fun()">Download selection</button>
           </div>
         </div>
       </div>
+    </div>
     </div>
 
     {{ checkbox.input(id="ogClusters", label="Mapped off-grid clusters", visible={'national': 'grey', 'state': 'show', 'village': 'show'}, filter_func=True) }}
@@ -174,9 +164,9 @@
         <div class="sidebar-panel sidebar-panel-content content-filter hidden-filter" name="ogClustersContent">
           <div class="sidebar-panel-item sidebar-panel-item-filter">
             <p href="#" class="sidebar-panel-item-title-filterlabel">Area</p>
-              <div class="filter">
-                <div class="filter__slider" id="ogAreaSlider"></div>
-              </div>
+            <div class="filter">
+              <div class="filter__slider" id="ogAreaSlider"></div>
+            </div>
           </div>
         </div>
       </div>
@@ -195,26 +185,17 @@
       </div>
     </div>
 
-      <div class="grid-x">
+    <div class="grid-x">
       <div class="cell n_hide s_show v_show">
         <div class="sidebar-panel content-filter hidden-filter" name="ogClustersContent">
           <div class="sidebar-panel-item  sidebar-panel-item--download">
-             <div id="download_ogClusters" class="sidebar__btn">
-        <button onclick="download_clusters_fun()">Download selection</button>
-
-      </div>
+            <div id="download_ogClusters" class="sidebar__btn">
+              <button onclick="download_clusters_fun()">Download selection</button>
+            </div>
           </div>
         </div>
       </div>
     </div>
-
-
-
-
-
-
-
-
 
   </div>
 
@@ -227,8 +208,6 @@
   <script src="https://cdn.jsdelivr.net/npm/leaflet-sidebar-v2@3.0.2/js/leaflet-sidebar.min.js" integrity="sha384-LzTQ6yhqVy/ipjMq5MMk98mo0E64Wtu9K1Jm5OeKPolnqrlv3FMdc457RoOANGMb" crossorigin=""></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/wnumb/1.1.0/wNumb.min.js" integrity="sha384-9NhfMwMkkA6dDFEyj5CxOiYaL6KqLjKINTJkR7e5SlZthrndR9oB/SJsi5PBNnjw" crossorigin=""></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/11.0.3/nouislider.min.js" integrity="sha384-sxnhs+25aQQN+rABTQEEYOIX5CW20SBJyXt9oGMT5VDacFTTWGXKotTEAe8BUiwb" crossorigin=""></script>
-
-
 
   <!-- local scripts -->
   <script src="{{ url_for('static', filename='js/nigeria_osm_states_simplified.js') }}"></script>
