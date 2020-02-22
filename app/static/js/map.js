@@ -1,17 +1,3 @@
-var options = {
-  center: [9, 7],
-  zoomSnap: 0.5,
-  zoom: 6.6,
-  minZoom: 6,
-  maxZoom: 19,
-  zoomControl: false,
-  maxBounds: [
-    [2, 17], // S, E
-    [15, 0]  // N, W
-  ]
-};
-
-var map = L.map("map", options);
 map.addLayer(national_background);
 map.addLayer(osm_gray);
 
@@ -109,45 +95,6 @@ var clusterInfo = L.control({position: 'bottomleft'});
                 this._div.innerHTML
             };
 
-
-        vecTileLayer.highlight = null;
-        vecTileLayer.hidden = null;
-        vecTileLayer.hiddenstyle = {
-            fillColor: "lightgray",
-            fillOpacity: 0.3,
-            opacity: 0,
-            fill: true,
-            color: "lightgray"
-        };
-        vecTileLayer.clearHidden = function() {
-            if (this.hiddenIDs) {
-                for (let i = 0, len = this.hiddenIDs.length; i < len; i++) {
-                    let id = this.hiddenIDs[i];
-                    this.resetFeatureStyle(id);
-                }
-            }
-        };
-        vecTileLayer.clearHighlight = function() {
-            if (this.highlight) {
-                if (this.hiddenIDs && this.hiddenIDs.indexOf(this.highlight) > -1){
-                    this.setFeatureStyle(this.highlight, this.hiddenstyle);
-                } else {
-                    this.resetFeatureStyle(this.highlight);
-                }
-            }
-            this.highlight = null;
-        };
-
-        //map.addLayer(vecTileLayer);
-        //map.addLayer(statesLayer);
-
-        map.on("click", function() {
-            vecTileLayer.clearHighlight();
-        });
-        map.on("popupclose", function() {
-            vecTileLayer.clearHighlight();
-        });
-
         map.on("zoom", function(e){
             // change level between village and state depending on the zoom
             var zoom = map.getZoom();
@@ -164,44 +111,6 @@ var clusterInfo = L.control({position: 'bottomleft'});
             }
         })
 
-        // const AREA = 0,POP = 1,LONG = 3,LAT = 4,INFO = 5;
-        currentfilter = {
-            minarea: 0.001,
-            maxarea: 10,
-            minpop: 1,
-            maxpop: 1000000,
-        };
-
-        vecTileLayer.filter = function(filter) {
-            let newhiddenIDs = [];
-            let vt = this._vectorTiles;
-            for (let vtkey in vt) {
-                let f = vt[vtkey]._features;
-                for (let fkey in f) {
-                    
-                    let prop = f[fkey].feature.properties;
-                    if (typeof prop.area_km2 !== 'undefined'){
-                        if (!(prop.area_km2 > filter.minarea && prop.area_km2 < filter.maxarea && prop.grid_dist_km > filter.mindtg && prop.grid_dist_km < filter.maxdtg)) {
-                            newhiddenIDs.push(prop.cluster_all_id);
-                            if (this.hiddenIDs.indexOf(prop.cluster_all_id) == -1){
-                                this.setFeatureStyle(prop.cluster_all_id, this.hiddenstyle);
-                            }
-                        } else if (this.hiddenIDs.indexOf(prop.cluster_all_id) > -1){
-                            this.resetFeatureStyle(prop.cluster_all_id);
-                        }
-                    }
-                }
-            }
-            this.hiddenIDs = newhiddenIDs;
-        };
-
-        map.addEventListener("filterchange", function(filter) {
-            vecTileLayer.filter(currentfilter);
-        });
-
-        vecTileLayer.on("load", function(e) {
-            vecTileLayer.filter(currentfilter);
-        });
         let logFormat = function(decimals){
             return wNumb({
                 decimals: decimals,
@@ -220,7 +129,7 @@ var clusterInfo = L.control({position: 'bottomleft'});
         };
         L.control.layers(baseMaps, overlayMaps).addTo(map);
         map.on("layeradd",function (){
-          vecTileLayer.bringToFront(); 
+          //vecTileLayer.bringToFront(); 
           national_heatmap.bringToFront();
           national_grid.bringToFront();
           national_background.bringToBack(); 
