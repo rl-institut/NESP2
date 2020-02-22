@@ -409,11 +409,14 @@ layer.on("click", function(e) {
   map.addEventListener("filterchange", function(filter) {
     layer.filter(currentfilter);
   });
+  map.on("click", function() {
+      layer.clearHighlight();
+  });
 }
 
 // Definitions and functions for the clusters_layer
 // Vector tiles layer with clusters (populated areas). Contains layers 'regions' and 'kedco_lines'. regions-columns: admin1, admin2, area_km2, pop_hrsl
-let vecTileLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_state_clusters_kano/{z}/{x}/{y}.pbf", {
+var vecTileLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_state_clusters_kano/{z}/{x}/{y}.pbf", {
   rendererFactory: L.canvas.tile,
   vectorTileLayerStyles: {
     regions: function(prop, zoom) {
