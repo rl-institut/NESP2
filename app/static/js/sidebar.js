@@ -327,6 +327,10 @@ function adapt_view_to_state_level(previous_level) {
   // When coming from village to state level it should not zoom out to the selected state
   if (previous_level == "national" || previous_level == "state") {
     zoomToSelectedState();
+
+  // Trigger the filter function so that the selected state geojson does not hide the clusters
+  nigeria_states_geojson.clearLayers()
+  nigeria_states_geojson.addData(nigeria_states_simplified)
   }
 };
 
