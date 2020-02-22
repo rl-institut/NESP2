@@ -431,7 +431,7 @@ function clusters_cb_fun() {
     add_layer(clusterLayer[selectedState]);
   } else {
     document.getElementById("clustersPanel").style.borderLeft= '0rem';
-    remove_layer(clusterLayerJigawa)
+    remove_layer(clusterLayer[selectedState]);
   }
 
   /*$.get({url: $SCRIPT_ROOT,
