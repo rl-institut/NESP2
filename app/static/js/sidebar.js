@@ -122,6 +122,7 @@ var sliderOptions = {
   }),
 };
 
+// TODO: maybe redundant could use the same function for all sliders
 function changeAreaSlider(str, h, values) {
   currentfilter.minarea = values[0];
   currentfilter.maxarea = values[1];
