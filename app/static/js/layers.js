@@ -204,6 +204,7 @@ function highlight_state(feature, layer) {
     // Update the name of the selected state only if different from the currently selected
     if (selectedState != feature.properties["name"]){
         selectedState = feature.properties["name"];
+        // Update the dropdown menu for state selection
         document.getElementById("stateSelect").value = selectedState;
         // Trigger the switch to state level
         state_button_fun();
