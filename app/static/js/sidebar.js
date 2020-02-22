@@ -440,8 +440,19 @@ function nationalGrid_cb_fun() {
 
 function download_clusters_fun() {
   var export_csv_link = document.getElementById("export_csv")
-  export_csv_link.href = "/csv-export?state=" + selectedState + "&min_area=" + currentfilter.minarea +
+
+  var checkBox = document.getElementById("clustersCheckbox");
+  // currently there are only two filters which are mutually exclusive
+  if (checkBox.checked == true){
+  // TODO send the correct filter depending on og cluster or populated areas
+    export_csv_link.href = "/csv-export?state=" + selectedState + "&min_area=" + currentfilter.minarea +
     "&max_area=" + currentfilter.maxarea
+  }
+  else{
+  // TODO send the correct filter depending on og cluster or populated areas
+      export_csv_link.href = "/csv-export?state=" + selectedState + "&min_area=" + currentfilter.minarea +
+    "&max_area=" + currentfilter.maxarea
+  }
   export_csv_link.click()
 }
 
