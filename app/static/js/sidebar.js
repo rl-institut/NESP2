@@ -155,8 +155,8 @@ noUiSlider.create(dtgSlider, {
 dtgSlider.noUiSlider.on("change", changedtgSlider);
 
 function changeogAreaSlider(str, h, values) {
-    currentfilter.minarea = values[0];
-    currentfilter.maxarea = values[1];
+    currentfilter.ogminarea = values[0];
+    currentfilter.ogmaxarea = values[1];
     map.fireEvent("filterchange", currentfilter);
 };
 var ogAreaSlider = document.getElementById('ogAreaSlider');
@@ -171,8 +171,8 @@ noUiSlider.create(ogAreaSlider, {
 ogAreaSlider.noUiSlider.on("change", changeogAreaSlider);
 
 function changeogDistanceSlider(str, h, values) {
-    currentfilter.minarea = values[0];
-    currentfilter.maxarea = values[1];
+    currentfilter.ogmindtg = values[0];
+    currentfilter.ogmaxdtg = values[1];
     map.fireEvent("filterchange", currentfilter);
 };
 var ogDistanceSlider = document.getElementById('ogDistanceSlider');
@@ -283,7 +283,7 @@ function adapt_view_to_national_level() {
   map.addLayer(national_background);
 
   // Remotely mapped villages layer
-  remove_layer(ogclustersTileLayer);
+  remove_layer(ogClusterLayers[selectedState]);
 
   // Linked to the checkbox Grid
   remove_layer(grid_layer);
@@ -310,7 +310,7 @@ function adapt_view_to_state_level(previous_level) {
 
   update_selected_state_pbf()
   update_grid_layer();
-  update_ogclustersTileLayer();
+  //update_ogclustersTileLayer();
   add_layer(osm_gray);
 
   // remove the medium voltage grid
@@ -472,19 +472,17 @@ function ogClusters_cb_fun() {
     document.getElementById("ogClustersPanel").style.borderLeft= '.25rem solid #1DD069';
     document.getElementById("clustersCheckbox").checked = false;
     clusters_cb_fun();
-    add_layer(ogclustersTileLayer)
+    add_layer(ogClusterLayers[selectedState]);
 
   } else {
     document.getElementById("ogClustersPanel").style.borderLeft= '.0rem';
-    remove_layer(ogclustersTileLayer)
+    remove_layer(ogClusterLayers[selectedState]);
   }
 }
 
 function ogClusters_filter_fun(){
     template_filter_fun("ogClustersContent");
 }
-
-
 
 
 // Triggered by the checkbox Grid
