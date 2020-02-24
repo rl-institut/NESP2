@@ -194,7 +194,7 @@ ogDistanceSlider.noUiSlider.on("change", changeogDistanceSlider);
 function changeogBuildingsSlider(str, h, values) {
   currentfilter.ogminb = values[0];
   currentfilter.ogmaxb = values[1];
-  map.fireEvent("filterchange", currentfilter);
+  map.fireEvent("ogfilterchange", currentfilter);
 };
 var ogBuildingsSlider = document.getElementById('ogBuildingsSlider');
 noUiSlider.create(ogBuildingsSlider, {
@@ -210,7 +210,7 @@ ogBuildingsSlider.noUiSlider.on("change", changeogBuildingsSlider);
 function changeogBuildingsFootprintSlider(str, h, values) {
   currentfilter.ogminbfp = values[0];
   currentfilter.ogmaxbfp = values[1];
-  map.fireEvent("filterchange", currentfilter);
+  map.fireEvent("ogfilterchange", currentfilter);
 };
 var ogBuildingsFootprintSlider = document.getElementById('ogBuildingsFootprintSlider');
 noUiSlider.create(ogBuildingsFootprintSlider, {
