@@ -17,8 +17,14 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/maps.css') }}" />
 <link rel="stylesheet" href="{{ url_for('static', filename='css/foundation.min.css') }}" />
 <link rel="stylesheet" href="{{ url_for('static', filename='css/nouislider.min.css') }}" />
-<script type=text/javascript> $SCRIPT_ROOT={{ request.script_root|tojson|safe }}; </script> {% endblock %} {% block header %}{% endblock %} {% block content %} <div id="map-content" class="grid-x">
+<script type=text/javascript> $SCRIPT_ROOT={{ request.script_root|tojson|safe }}; </script>
 
+
+{% endblock %}
+{% block header %}
+{% endblock %}
+{% block content %}
+  <div id="map-content" class="grid-x">
   <div id="sidebar" class="cell medium-10 large-3">
 	<div class="grid-x sidebar-levels">
 	  <div id="national" class="cell small-2 level sidebar__btn active" title="national level">
@@ -32,7 +38,6 @@
 	  </div>
       <!-- hidden link used for csv download of the data -->
       <a style="display: none" id="export_csv" href="#"></a>
-
 
 	</div>
 
