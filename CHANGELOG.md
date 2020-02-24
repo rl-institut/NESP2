@@ -40,8 +40,6 @@ Here is a template for new release sections
 - the user can click on Download clusters (#128)
 - possibility to hide, show or grey-out sidepane-items (#136)
 ### Changed
-- Levelbuttons in sidebar next to each other (137)
-- Styling of filtersubmenue (137)
 - availability info moved
 - level buttons indicate status (#9)
 - level buttons control options (#10)
@@ -58,10 +56,13 @@ Here is a template for new release sections
 - the selected state cannot be clicked or selected again (#109)
 - sidebar panels are defined via a template sidebar_checkbox.html (#115)
 - the side panel checkboxes are now grey out when not used (#128)
-
 - the grid and populated buttons appear now as the same button to the user (#136)
 - index.py is now at the root of the repository (#142)
 - increased the map height to 1000px (#148)
+- Levelbuttons in sidebar next to each other (#137)
+- Styling of filtersubmenue (#137)
+- Replaced lines of static code with for loops (#155)
+- Split the filter events for og clusters and normal clusters (#155)
 
 ### Removed
 - redundant accordion menu (#10)
