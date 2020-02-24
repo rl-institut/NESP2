@@ -48,13 +48,17 @@ var welcome_view = L.tileLayer("https://tile.rl-institut.de/data/nesp2_national_
 
 function remove_layer(layer) {
   if (map.hasLayer(layer) == true) {
+    map.spin(true);
     map.removeLayer(layer);
+    map.spin(false);
   }
 };
 
 function add_layer(layer) {
   if (map.hasLayer(layer) == false) {
+    map.spin(true);
     map.addLayer(layer);
+    map.spin(false);
   }
 };
 
@@ -262,6 +266,7 @@ var nigeria_states_geojson = L.geoJSON(nigeria_states_simplified, {
 
 
 function zoomToSelectedState() {
+  map.spin(true);
   nigeria_states_geojson.eachLayer(function(layer) {
     if (layer.feature.properties.name == selectedState) {
       map.flyToBounds(layer.getBounds(), {
@@ -269,6 +274,7 @@ function zoomToSelectedState() {
       });
     }
   });
+  map.spin(false);
 };
 
 // Definitions and functions for the grid_layer
@@ -304,9 +310,11 @@ function redefine_grid_layer() {
 // Update the state level grid layer with tiles
 function update_grid_layer() {
   remove_layer(grid_layer);
+  map.spin(true);
   redefine_grid_layer();
   // Add the grid layer depending on grid checkbox value
   grid_cb_fun();
+  map.spin(false);
 };
 
 // Adds functions for filters and styling to a defined input grid-cluster-Layer
