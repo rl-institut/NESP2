@@ -15,6 +15,7 @@ var level = "national";
 var previous_level = level;
 var statesList = ["Abia", "Adamawa", "Akwa Ibom", "Anambra", "Bauchi", "Bayelsa", "Benue", "Borno", "Cross River", "Delta", "Ebonyi", "Edo", "Ekiti", "Enugu", "Federal Capital Territory", "Gombe", "Imo", "Jigawa", "Kaduna", "Kano", "Katsina", "Kebbi", "Kogi", "Kwara", "Lagos", "Nasarawa", "Niger", "Ogun", "Ondo", "Osun", "Oyo", "Plateau", "Rivers", "Sokoto", "Taraba", "Yobe", "Zamfara"];
 var selectedState = "init";
+var selectedStateOptions = {bounds: null};
 var selectedLGA = "";
 var thirtythreeKV = "33_kV_" + selectedState.toLowerCase();
 var currentfilter = {
@@ -388,6 +389,10 @@ function adapt_view_to_state_level(previous_level, trigger) {
     nigeria_states_geojson.clearLayers()
     nigeria_states_geojson.addData(nigeria_states_simplified)
   }
+  };
+  if (previous_level == "village" && trigger == "button") {
+    zoomToSelectedState(newlySelected=false);
+  };
 };
 
 function adapt_view_to_village_level(previous_level, trigger) {
