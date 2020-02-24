@@ -39,6 +39,8 @@ Here is a template for new release sections
 - clicking on the funnel expand the filters (#128)
 - the user can click on Download clusters (#128)
 - possibility to hide, show or grey-out sidepane-items (#136)
+- loading spinner (#174)
+
 ### Changed
 - availability info moved
 - level buttons indicate status (#9)
