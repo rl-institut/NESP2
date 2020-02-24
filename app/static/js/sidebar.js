@@ -348,6 +348,17 @@ function adapt_view_to_national_level() {
 
 function adapt_view_to_state_level(previous_level, trigger) {
   console.log("adapt_view_to_state_level");
+  // click on the state level button from national level
+  if (previous_level == "national" && trigger == "button"){
+      // select a random state which has off-grid clusters
+      hasCluster = ""
+      while (hasCluster == ""){
+        selectedState = statesList[Math.floor(Math.random()*statesList.length)]
+        hasCluster = OGClusterLayers[selectedState];
+      };
+      // Update the states menu list
+      document.getElementById("stateSelect").value = selectedState;
+  };
 
   map.options.minZoom = 8;
   map.options.maxZoom = 19;
@@ -396,6 +407,18 @@ function adapt_view_to_state_level(previous_level, trigger) {
 };
 
 function adapt_view_to_village_level(previous_level, trigger) {
+
+  // click on the village level button from national level
+  if (previous_level == "national" && trigger == "button"){
+      // select a random state which has off-grid clusters
+      hasCluster = ""
+      while (hasCluster == ""){
+        selectedState = statesList[Math.floor(Math.random()*statesList.length)]
+        hasCluster = OGClusterLayers[selectedState];
+      };
+      // Update the states menu list
+      document.getElementById("stateSelect").value = selectedState;
+  };
   remove_layer(osm_gray);
   info.remove();
   add_layer(hot);
