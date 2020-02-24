@@ -57,7 +57,7 @@ var gridLayers = {
   "Kogi": "",
   "Kwara": "",
   "Lagos": "",
-  "Nasarawa": "nesp2_state_grid_nasawara",
+  "Nasarawa": "nesp2_state_grid_nasarawa",
   "Niger": "",
   "Ogun": "",
   "Ondo": "",
