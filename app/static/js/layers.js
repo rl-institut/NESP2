@@ -247,7 +247,7 @@ function highlight_state(feature, layer) {
       // Update the dropdown menu for state selection
       document.getElementById("stateSelect").value = selectedState;
       // Trigger the switch to state level
-      state_button_fun();
+      state_button_fun(trigger="map-click");
     }
   });
 }

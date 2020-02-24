@@ -109,12 +109,12 @@ map.on("zoom", function(e) {
   var zoom_threshold = 13;
   if (level == "state") {
     if (zoom >= zoom_threshold) {
-      village_button_fun();
+      village_button_fun(trigger="zoom");
     }
   }
   if (level == "village") {
     if (zoom < zoom_threshold) {
-      state_button_fun();
+      state_button_fun(trigger="zoom");
     }
   }
 })
@@ -153,4 +153,4 @@ L.control.scale({
   position: "topright"
 }).addTo(map);
 
-national_button_fun();
+national_button_fun(trigger="init");

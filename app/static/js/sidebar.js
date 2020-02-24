@@ -345,7 +345,7 @@ function adapt_view_to_national_level() {
   remove_layer(grid_layer);
 };
 
-function adapt_view_to_state_level(previous_level) {
+function adapt_view_to_state_level(previous_level, trigger) {
   console.log("adapt_view_to_state_level");
 
   map.options.minZoom = 8;
@@ -390,7 +390,7 @@ function adapt_view_to_state_level(previous_level) {
   }
 };
 
-function adapt_view_to_village_level() {
+function adapt_view_to_village_level(previous_level, trigger) {
   remove_layer(osm_gray);
   info.remove();
   add_layer(hot);
@@ -400,23 +400,24 @@ function adapt_view_to_village_level() {
  * triggered by the click on the level buttons
  */
 
-function national_button_fun() {
+function national_button_fun(trigger="button") {
   level = "national";
   adapt_sidebar_to_selection_level(level);
   adapt_view_to_national_level()
 }
 
-function state_button_fun() {
+function state_button_fun(trigger="button") {
   previous_level = level
   level = "state";
   adapt_sidebar_to_selection_level(level);
-  adapt_view_to_state_level(previous_level);
+  adapt_view_to_state_level(previous_level, trigger);
 };
 
-function village_button_fun() {
+function village_button_fun(trigger="button") {
+  previous_level = level
   level = "village";
   adapt_sidebar_to_selection_level(level);
-  adapt_view_to_village_level();
+  adapt_view_to_village_level(previous_level, trigger);
 };
 
 // Triggered by the national and state views
@@ -449,7 +450,7 @@ function state_dropdown_fun() {
     //update the selected state
     selectedState = document.getElementById("stateSelect").value;
     //Trigger the switch to state level
-    state_button_fun();
+    state_button_fun(trigger="menu");
   }
 };
 
