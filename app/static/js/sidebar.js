@@ -26,6 +26,10 @@ var currentfilter = {
   ogmaxarea: 10,
   ogmindtg: 0,
   ogmaxdtg: 100,
+  ogminb: 0,
+  ogmaxb: 5000,
+  ogminbfp: 0,
+  ogmaxbfp: 0.8,
 };
 var gridLayers = {
   "Abia": "",
@@ -188,37 +192,36 @@ noUiSlider.create(ogDistanceSlider, {
 ogDistanceSlider.noUiSlider.on("change", changeogDistanceSlider);
 
 function changeogBuildingsSlider(str, h, values) {
-  currentfilter.ogmindtg = values[0];
-  currentfilter.ogmaxdtg = values[1];
-  map.fireEvent("ogfilterchange", currentfilter);
+  currentfilter.ogminb = values[0];
+  currentfilter.ogmaxb = values[1];
+  map.fireEvent("filterchange", currentfilter);
 };
-var ogBuildinsSlider = document.getElementById('ogBuildingsSlider');
+var ogBuildingsSlider = document.getElementById('ogBuildingsSlider');
 noUiSlider.create(ogBuildingsSlider, {
-  start: [5, 1000],
+  start: [0, 5000],
   ...sliderOptions,
   range: {
     'min': 0,
-    'max': 1000,
+    'max': 5000,
   }
 });
-ogDistanceSlider.noUiSlider.on("change", changeogBuildingsSlider);
+ogBuildingsSlider.noUiSlider.on("change", changeogBuildingsSlider);
 
 function changeogBuildingsFootprintSlider(str, h, values) {
-  currentfilter.ogmindtg = values[0];
-  currentfilter.ogmaxdtg = values[1];
-  map.fireEvent("ogfilterchange", currentfilter);
+  currentfilter.ogminbfp = values[0];
+  currentfilter.ogmaxbfp = values[1];
+  map.fireEvent("filterchange", currentfilter);
 };
 var ogBuildingsFootprintSlider = document.getElementById('ogBuildingsFootprintSlider');
 noUiSlider.create(ogBuildingsFootprintSlider, {
-  start: [5, 1000],
+  start: [0, 0.8],
   ...sliderOptions,
   range: {
     'min': 0,
-    'max': 1000,
+    'max': 0.8,
   }
 });
-ogDistanceSlider.noUiSlider.on("change", changeogBuildingsFootprintSlider);
-
+ogBuildingsFootprintSlider.noUiSlider.on("change", changeogBuildingsFootprintSlider);
 
 
 function disable_sidebar__btn(className) {
