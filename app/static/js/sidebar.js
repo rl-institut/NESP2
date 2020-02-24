@@ -419,6 +419,9 @@ function adapt_view_to_village_level(previous_level, trigger) {
       // Update the states menu list
       document.getElementById("stateSelect").value = selectedState;
   };
+  if ((previous_level == "national" || previous_level == "state") && trigger == "button"){
+    //TODO: pick a random cluster among the large ones and display it
+  }
   remove_layer(osm_gray);
   info.remove();
   add_layer(hot);
