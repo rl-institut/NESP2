@@ -325,9 +325,13 @@ function adapt_view_to_national_level() {
   document.getElementById("nationalGridCheckbox").checked = true;
   nationalGrid_cb_fun();
 
-  // reset the selected state to None
+  // reset the selected state to "init"
   resetStateSelect()
   remove_layer(selected_state_pbf);
+
+  // Trigger the filter function so that all geojson state are available again
+  nigeria_states_geojson.clearLayers()
+  nigeria_states_geojson.addData(nigeria_states_simplified)
 
   remove_basemaps();
 
