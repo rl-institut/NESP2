@@ -520,9 +520,6 @@ function addFunctionsToOGClusterLayer(layer) {
     this.hiddenIDs = newhiddenIDs;
   };
 
-  layer.on("load", function(e) {
-    layer.filter(currentfilter);
-  });
   layer.highlight = null;
   layer.hidden = null;
   layer.hiddenstyle = {
