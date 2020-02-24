@@ -420,6 +420,11 @@ function adapt_view_to_village_level(previous_level, trigger) {
   };
   if ((previous_level == "national" || previous_level == "state") && trigger == "button"){
     //TODO: pick a random cluster among the large ones and display it
+     $.post({
+        url: "/filter-cluster",
+        data: currentfilter,
+        success: function(data){console.log(data);},
+     }).done(function() {console.log("now done");});
   }
   remove_layer(osm_gray);
   info.remove();
@@ -460,6 +465,8 @@ function states_cb_fun() {
     remove_layer(statesLayer)
     remove_layer(nigeria_states_geojson)
   }
+
+
 
   //https://stackoverflow.com/questions/31765968/toggle-url-parameter-with-button
   //https://dev.to/gaels/an-alternative-to-handle-global-state-in-react-the-url--3753
