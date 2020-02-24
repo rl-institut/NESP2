@@ -331,8 +331,8 @@ function adapt_view_to_national_level() {
   remove_layer(selected_state_pbf);
 
   // Trigger the filter function so that all geojson state are available again
-  nigeria_states_geojson.clearLayers()
-  nigeria_states_geojson.addData(nigeria_states_simplified)
+  nigeria_states_geojson.clearLayers();
+  nigeria_states_geojson.addData(nigeria_states_simplified);
 
   remove_basemaps();
 
@@ -364,7 +364,7 @@ function adapt_view_to_state_level(previous_level, trigger) {
   map.options.maxZoom = 19;
   map.options.zoomSnap = 1,
 
-    legend.remove();
+  legend.remove();
   gridLegend.addTo(map);
 
   // load the states boundaries
@@ -397,9 +397,8 @@ function adapt_view_to_state_level(previous_level, trigger) {
     zoomToSelectedState();
 
     // Trigger the filter function so that the selected state geojson does not hide the clusters
-    nigeria_states_geojson.clearLayers()
-    nigeria_states_geojson.addData(nigeria_states_simplified)
-  }
+    nigeria_states_geojson.clearLayers();
+    nigeria_states_geojson.addData(nigeria_states_simplified);
   };
   if (previous_level == "village" && trigger == "button") {
     zoomToSelectedState(newlySelected=false);
