@@ -58,6 +58,19 @@ function add_layer(layer) {
   }
 };
 
+// Convert "a_string_name" to "A String Name"
+function snake_to_title(fname){
+  var state_name = fname.split('_').map(w => w[0].toUpperCase() + w.substr(1).toLowerCase());
+  return state_name.join(' ');
+};
+
+// Convert "A String Name" to "a_string_name"
+function title_to_snake(fname){
+  var state_name = fname.split(' ').map(w => w.toLowerCase());
+  return state_name.join('_');
+};
+
+
 // Vector-tiles layer that has layer shapes and columns in its attribute table: id, name, source, type, wikidata, wikipedia, availability (int)
 var statesLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_states/{z}/{x}/{y}.pbf", {
   rendererFactory: L.canvas.tile,
@@ -401,8 +414,8 @@ function addFunctionsToClusterLayer(layer) {
   });
 }
 
-function createNewClusterLayer(selectedState) {
-  var layer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/" + selectedState + "/{z}/{x}/{y}.pbf", {
+function createNewClusterLayer(clusterString) {
+  var layer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_state_clusters_" + clusterString + "/{z}/{x}/{y}.pbf", {
     rendererFactory: L.canvas.tile,
     vectorTileLayerStyles: {
       regions: function(prop, zoom) {
@@ -434,83 +447,10 @@ function createNewClusterLayer(selectedState) {
 
 // Definitions and functions for the clusters_layer
 // Vector tiles layer with clusters (populated areas). Contains layers 'regions' and 'kedco_lines'. regions-columns: admin1, admin2, area_km2, pop_hrsl
-var clusterLayerAbia = createNewClusterLayer("nesp2_state_clusters_abia");
-var clusterLayerAdamawa = createNewClusterLayer("nesp2_state_clusters_adamawa");
-var clusterLayerAkwaIbom = createNewClusterLayer("nesp2_state_clusters_akwa_ibom");
-var clusterLayerAnambra = createNewClusterLayer("nesp2_state_clusters_anambra");
-var clusterLayerBauchi = createNewClusterLayer("nesp2_state_clusters_bauchi");
-var clusterLayerBayelsa = createNewClusterLayer("nesp2_state_clusters_bayelsa");
-var clusterLayerBenue = createNewClusterLayer("nesp2_state_clusters_benue");
-var clusterLayerBorno = createNewClusterLayer("nesp2_state_clusters_borno");
-var clusterLayerCrossRiver = createNewClusterLayer("nesp2_state_clusters_cross_river");
-var clusterLayerDelta = createNewClusterLayer("nesp2_state_clusters_delta");
-var clusterLayerEbonyi = createNewClusterLayer("nesp2_state_clusters_ebonyi");
-var clusterLayerEdo = createNewClusterLayer("nesp2_state_clusters_edo");
-var clusterLayerEkiti = createNewClusterLayer("nesp2_state_clusters_ekiti");
-var clusterLayerEnugu = createNewClusterLayer("nesp2_state_clusters_enugu");
-var clusterLayerFederalCapitalTerritory = createNewClusterLayer("nesp2_state_clusters_federal_capital_territory");
-var clusterLayerGombe = createNewClusterLayer("nesp2_state_clusters_gombe");
-var clusterLayerImo = createNewClusterLayer("nesp2_state_clusters_imo");
-var clusterLayerJigawa = createNewClusterLayer("nesp2_state_clusters_jigawa");
-var clusterLayerKaduna = createNewClusterLayer("nesp2_state_clusters_kaduna");
-var clusterLayerKano = createNewClusterLayer("nesp2_state_clusters_kano");
-var clusterLayerKatsina = createNewClusterLayer("nesp2_state_clusters_katsina");
-var clusterLayerKebbi = createNewClusterLayer("nesp2_state_clusters_kebbi");
-var clusterLayerKogi = createNewClusterLayer("nesp2_state_clusters_kogi");
-var clusterLayerKwara = createNewClusterLayer("nesp2_state_clusters_kwara");
-var clusterLayerLagos = createNewClusterLayer("nesp2_state_clusters_lagos");
-var clusterLayerNasarawa = createNewClusterLayer("nesp2_state_clusters_nasarawa");
-var clusterLayerNiger = createNewClusterLayer("nesp2_state_clusters_niger");
-var clusterLayerOgun = createNewClusterLayer("nesp2_state_clusters_ogun");
-var clusterLayerOndo = createNewClusterLayer("nesp2_state_clusters_ondo");
-var clusterLayerOsun = createNewClusterLayer("nesp2_state_clusters_osun");
-var clusterLayerOyo = createNewClusterLayer("nesp2_state_clusters_oyo");
-var clusterLayerPlateau = createNewClusterLayer("nesp2_state_clusters_plateau");
-var clusterLayerRivers = createNewClusterLayer("nesp2_state_clusters_rivers");
-var clusterLayerSokoto = createNewClusterLayer("nesp2_state_clusters_sokoto");
-var clusterLayerTaraba = createNewClusterLayer("nesp2_state_clusters_taraba");
-var clusterLayerYobe = createNewClusterLayer("nesp2_state_clusters_yobe");
-var clusterLayerZamfara = createNewClusterLayer("nesp2_state_clusters_zamfara");
-
-var clusterLayer = {
-  "Abia": clusterLayerAbia,
-  "Adamawa": clusterLayerAdamawa,
-  "Akwa Ibom": clusterLayerAkwaIbom,
-  "Anambra": clusterLayerAnambra,
-  "Bauchi": clusterLayerBauchi,
-  "Bayelsa": clusterLayerBayelsa,
-  "Benue": clusterLayerBenue,
-  "Borno": clusterLayerBorno,
-  "Cross River": clusterLayerCrossRiver,
-  "Delta": clusterLayerDelta,
-  "Ebonyi": clusterLayerEbonyi,
-  "Edo": clusterLayerEdo,
-  "Ekiti": clusterLayerEkiti,
-  "Enugu": clusterLayerEnugu,
-  "Federal Capital Territory": clusterLayerFederalCapitalTerritory,
-  "Gombe": clusterLayerGombe,
-  "Imo": clusterLayerImo,
-  "Jigawa": clusterLayerJigawa,
-  "Kaduna": clusterLayerKaduna,
-  "Kano": clusterLayerKano,
-  "Katsina": clusterLayerKatsina,
-  "Kebbi": clusterLayerKebbi,
-  "Kogi": clusterLayerKogi,
-  "Kwara": clusterLayerKwara,
-  "Lagos": clusterLayerLagos,
-  "Nasarawa": clusterLayerNasarawa,
-  "Niger": clusterLayerNiger,
-  "Ogun": clusterLayerOgun,
-  "Ondo": clusterLayerOndo,
-  "Osun": clusterLayerOsun,
-  "Oyo": clusterLayerOyo,
-  "Plateau": clusterLayerPlateau,
-  "Rivers": clusterLayerRivers,
-  "Sokoto": clusterLayerSokoto,
-  "Taraba": clusterLayerTaraba,
-  "Yobe": clusterLayerYobe,
-  "Zamfara": clusterLayerZamfara,
-}
+var clusterLayer = {}
+statesList.forEach(function(item){
+    clusterLayer[item] = createNewClusterLayer(title_to_snake(item));
+});
 
 
 // Adds functions for filters and styling to a defined input off-grid-cluster-Layer
@@ -622,7 +562,7 @@ function addFunctionsToOGClusterLayer(layer) {
 }
 
 function createNewOGClusterLayer(ogClusterString) {
-  var layer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/" + ogClusterString + "/{z}/{x}/{y}.pbf", {
+  var layer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_state_offgrid_clusters_" + ogClusterString + "/{z}/{x}/{y}.pbf", {
     rendererFactory: L.canvas.tile,
     vectorTileLayerStyles: {
       OGClusters: function(prop, zoom) {
@@ -652,80 +592,10 @@ function createNewOGClusterLayer(ogClusterString) {
   return (layer);
 }
 
-var ogClusterLayerAbia = createNewOGClusterLayer("nesp2_state_offgrid_clusters_abia");
-var ogClusterLayerAdamawa = createNewOGClusterLayer("nesp2_state_offgrid_clusters_adamawa");
-var ogClusterLayerAkwaIbom = createNewOGClusterLayer("nesp2_state_offgrid_clusters_akwa_ibom");
-var ogClusterLayerAnambra = createNewOGClusterLayer("nesp2_state_offgrid_clusters_anambra");
-var ogClusterLayerBauchi = createNewOGClusterLayer("nesp2_state_offgrid_clusters_bauchi");
-var ogClusterLayerBayelsa = createNewOGClusterLayer("nesp2_state_offgrid_clusters_bayelsa");
-var ogClusterLayerBenue = createNewOGClusterLayer("nesp2_state_offgrid_clusters_benue");
-var ogClusterLayerBorno = createNewOGClusterLayer("nesp2_state_offgrid_clusters_borno");
-var ogClusterLayerCrossRiver = createNewOGClusterLayer("nesp2_state_offgrid_clusters_cross_river");
-var ogClusterLayerDelta = createNewOGClusterLayer("nesp2_state_offgrid_clusters_delta");
-var ogClusterLayerEbonyi = createNewOGClusterLayer("nesp2_state_offgrid_clusters_ebonyi");
-var ogClusterLayerEdo = createNewOGClusterLayer("nesp2_state_offgrid_clusters_edo");
-var ogClusterLayerEkiti = createNewOGClusterLayer("nesp2_state_offgrid_clusters_ekiti");
-var ogClusterLayerEnugu = createNewOGClusterLayer("nesp2_state_offgrid_clusters_enugu");
-var ogClusterLayerFederalCapitalTerritory = createNewOGClusterLayer("nesp2_state_offgrid_clusters_federal_capital_territory");
-var ogClusterLayerGombe = createNewOGClusterLayer("nesp2_state_offgrid_clusters_gombe");
-var ogClusterLayerImo = createNewOGClusterLayer("nesp2_state_offgrid_clusters_imo");
-var ogClusterLayerJigawa = createNewOGClusterLayer("nesp2_state_offgrid_clusters_jigawa");
-var ogClusterLayerKaduna = createNewOGClusterLayer("nesp2_state_offgrid_clusters_kaduna");
-var ogClusterLayerKano = createNewOGClusterLayer("nesp2_state_offgrid_clusters_kano");
-var ogClusterLayerKatsina = createNewOGClusterLayer("nesp2_state_offgrid_clusters_katsina");
-var ogClusterLayerKebbi = createNewOGClusterLayer("nesp2_state_offgrid_clusters_kebbi");
-var ogClusterLayerKogi = createNewOGClusterLayer("nesp2_state_offgrid_clusters_kogi");
-var ogClusterLayerKwara = createNewOGClusterLayer("nesp2_state_offgrid_clusters_kwara");
-var ogClusterLayerLagos = createNewOGClusterLayer("nesp2_state_offgrid_clusters_lagos");
-var ogClusterLayerNasarawa = createNewOGClusterLayer("nesp2_state_offgrid_clusters_nasarawa");
-var ogClusterLayerNiger = createNewOGClusterLayer("nesp2_state_offgrid_clusters_niger");
-var ogClusterLayerOgun = createNewOGClusterLayer("nesp2_state_offgrid_clusters_ogun");
-var ogClusterLayerOndo = createNewOGClusterLayer("nesp2_state_offgrid_clusters_ondo");
-var ogClusterLayerOsun = createNewOGClusterLayer("nesp2_state_offgrid_clusters_osun");
-var ogClusterLayerOyo = createNewOGClusterLayer("nesp2_state_offgrid_clusters_oyo");
-var ogClusterLayerPlateau = createNewOGClusterLayer("nesp2_state_offgrid_clusters_plateau");
-var ogClusterLayerRivers = createNewOGClusterLayer("nesp2_state_offgrid_clusters_rivers");
-var ogClusterLayerSokoto = createNewOGClusterLayer("nesp2_state_offgrid_clusters_sokoto");
-var ogClusterLayerTaraba = createNewOGClusterLayer("nesp2_state_offgrid_clusters_taraba");
-var ogClusterLayerYobe = createNewOGClusterLayer("nesp2_state_offgrid_clusters_yobe");
-var ogClusterLayerZamfara = createNewOGClusterLayer("nesp2_state_offgrid_clusters_zamfara");
 
-var ogClusterLayers = {
-  "Abia": ogClusterLayerAbia,
-  "Adamawa": ogClusterLayerAdamawa,
-  "Akwa Ibom": ogClusterLayerAkwaIbom,
-  "Anambra": ogClusterLayerAnambra,
-  "Bauchi": ogClusterLayerBauchi,
-  "Bayelsa": ogClusterLayerBayelsa,
-  "Benue": ogClusterLayerBenue,
-  "Borno": ogClusterLayerBorno,
-  "Cross River": ogClusterLayerCrossRiver,
-  "Delta": ogClusterLayerDelta,
-  "Ebonyi": ogClusterLayerEbonyi,
-  "Edo": ogClusterLayerEdo,
-  "Ekiti": ogClusterLayerEkiti,
-  "Enugu": ogClusterLayerEnugu,
-  "Federal Capital Territory": ogClusterLayerFederalCapitalTerritory,
-  "Gombe": ogClusterLayerGombe,
-  "Imo": ogClusterLayerImo,
-  "Jigawa": ogClusterLayerJigawa,
-  "Kaduna": ogClusterLayerKaduna,
-  "Kano": ogClusterLayerKano,
-  "Katsina": ogClusterLayerKatsina,
-  "Kebbi": ogClusterLayerKebbi,
-  "Kogi": ogClusterLayerKogi,
-  "Kwara": ogClusterLayerKwara,
-  "Lagos": ogClusterLayerLagos,
-  "Nasarawa": ogClusterLayerNasarawa,
-  "Niger": ogClusterLayerNiger,
-  "Ogun": ogClusterLayerOgun,
-  "Ondo": ogClusterLayerOndo,
-  "Osun": ogClusterLayerOsun,
-  "Oyo": ogClusterLayerOyo,
-  "Plateau": ogClusterLayerPlateau,
-  "Rivers": ogClusterLayerRivers,
-  "Sokoto": ogClusterLayerSokoto,
-  "Taraba": ogClusterLayerTaraba,
-  "Yobe": ogClusterLayerYobe,
-  "Zamfara": ogClusterLayerZamfara,
-}
+// Store the cluster layer for each state into an object
+var ogClusterLayers = {}
+statesList.forEach(function(item){
+    ogClusterLayers[item] = createNewOGClusterLayer(title_to_snake(item));
+});
+
