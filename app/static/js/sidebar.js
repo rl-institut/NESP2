@@ -126,6 +126,7 @@ var sliderOptions = {
   }),
 };
 
+// TODO: maybe redundant could use the same function for all sliders
 function changeAreaSlider(str, h, values) {
   currentfilter.minarea = values[0];
   currentfilter.maxarea = values[1];
@@ -161,7 +162,7 @@ dtgSlider.noUiSlider.on("change", changedtgSlider);
 function changeogAreaSlider(str, h, values) {
   currentfilter.ogminarea = values[0];
   currentfilter.ogmaxarea = values[1];
-  map.fireEvent("filterchange", currentfilter);
+  map.fireEvent("ogfilterchange", currentfilter);
 };
 var ogAreaSlider = document.getElementById('ogAreaSlider');
 noUiSlider.create(ogAreaSlider, {
@@ -177,7 +178,7 @@ ogAreaSlider.noUiSlider.on("change", changeogAreaSlider);
 function changeogDistanceSlider(str, h, values) {
   currentfilter.ogmindtg = values[0];
   currentfilter.ogmaxdtg = values[1];
-  map.fireEvent("filterchange", currentfilter);
+  map.fireEvent("ogfilterchange", currentfilter);
 };
 var ogDistanceSlider = document.getElementById('ogDistanceSlider');
 noUiSlider.create(ogDistanceSlider, {
@@ -193,7 +194,7 @@ ogDistanceSlider.noUiSlider.on("change", changeogDistanceSlider);
 function changeogBuildingsSlider(str, h, values) {
   currentfilter.ogminb = values[0];
   currentfilter.ogmaxb = values[1];
-  map.fireEvent("filterchange", currentfilter);
+  map.fireEvent("ogfilterchange", currentfilter);
 };
 var ogBuildingsSlider = document.getElementById('ogBuildingsSlider');
 noUiSlider.create(ogBuildingsSlider, {
@@ -206,13 +207,13 @@ noUiSlider.create(ogBuildingsSlider, {
 });
 ogBuildingsSlider.noUiSlider.on("change", changeogBuildingsSlider);
 
-function changeogBuildingsFPSlider(str, h, values) {
+function changeogBuildingsFootprintSlider(str, h, values) {
   currentfilter.ogminbfp = values[0];
   currentfilter.ogmaxbfp = values[1];
-  map.fireEvent("filterchange", currentfilter);
+  map.fireEvent("ogfilterchange", currentfilter);
 };
-var ogBuildingsFPSlider = document.getElementById('ogBuildingsFPSlider');
-noUiSlider.create(ogBuildingsFPSlider, {
+var ogBuildingsFootprintSlider = document.getElementById('ogBuildingsFootprintSlider');
+noUiSlider.create(ogBuildingsFootprintSlider, {
   start: [0, 0.8],
   ...sliderOptions,
   range: {
@@ -220,7 +221,7 @@ noUiSlider.create(ogBuildingsFPSlider, {
     'max': 0.8,
   }
 });
-ogBuildingsFPSlider.noUiSlider.on("change", changeogBuildingsFPSlider);
+ogBuildingsFootprintSlider.noUiSlider.on("change", changeogBuildingsFootprintSlider);
 
 
 function disable_sidebar__btn(className) {

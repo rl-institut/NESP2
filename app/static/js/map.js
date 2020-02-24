@@ -147,6 +147,7 @@ map.on("layeradd", function() {
   osm_gray.bringToBack();
 });
 map.fireEvent("filterchange", currentfilter);
+map.fireEvent("ogfilterchange", currentfilter);
 
 L.control.scale({
   position: "topright"
