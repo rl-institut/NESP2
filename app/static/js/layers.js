@@ -324,7 +324,7 @@ function addFunctionsToClusterLayer(layer) {
       };
       clusterInfo.addTo(map);
       this.highlight = ID;
-      let style = ClusterSelectionStyle;
+      let style = clusterSelectionStyle;
       this.setFeatureStyle(ID, style);
       L.DomEvent.stop(e);
     }
