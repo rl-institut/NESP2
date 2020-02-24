@@ -324,7 +324,7 @@ function addFunctionsToClusterLayer(layer) {
       };
       clusterInfo.addTo(map);
       this.highlight = ID;
-      let style = clusterSelectionStyle;
+      let style = ClusterSelectionStyle;
       this.setFeatureStyle(ID, style);
       L.DomEvent.stop(e);
     }
@@ -544,7 +544,7 @@ function addFunctionsToOGClusterLayer(layer) {
       };
       clusterInfo.addTo(map);
       this.highlight = ID;
-      let style = clusterSelectionStyle;
+      let style = ogClusterSelectionStyle;
       this.setFeatureStyle(ID, style);
       L.DomEvent.stop(e);
     }
