@@ -441,6 +441,7 @@ function createNewClusterLayer(clusterString) {
       return "r" + f.properties.OBJECTID;
     }
   })
+  layer.state_name = snake_to_title(clusterString);
   addFunctionsToClusterLayer(layer);
   return (layer);
 }
@@ -588,6 +589,7 @@ function createNewOGClusterLayer(ogClusterString) {
       return "r" + f.properties.OBJECTID;
     }
   })
+  layer.state_name = snake_to_title(ogClusterString);
   addFunctionsToOGClusterLayer(layer);
   return (layer);
 }
