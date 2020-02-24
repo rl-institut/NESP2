@@ -26,6 +26,10 @@ var currentfilter = {
   ogmaxarea: 10,
   ogmindtg: 0,
   ogmaxdtg: 100,
+  ogminb: 0,
+  ogmaxb: 5000,
+  ogminbfp: 0,
+  ogmaxbfp: 0.8,
 };
 var gridLayers = {
   "Abia": "",
@@ -185,6 +189,39 @@ noUiSlider.create(ogDistanceSlider, {
   }
 });
 ogDistanceSlider.noUiSlider.on("change", changeogDistanceSlider);
+
+function changeogBuildingsSlider(str, h, values) {
+  currentfilter.ogminb = values[0];
+  currentfilter.ogmaxb = values[1];
+  map.fireEvent("filterchange", currentfilter);
+};
+var ogBuildingsSlider = document.getElementById('ogBuildingsSlider');
+noUiSlider.create(ogBuildingsSlider, {
+  start: [0, 5000],
+  ...sliderOptions,
+  range: {
+    'min': 0,
+    'max': 5000,
+  }
+});
+ogBuildingsSlider.noUiSlider.on("change", changeogBuildingsSlider);
+
+function changeogBuildingsFPSlider(str, h, values) {
+  currentfilter.ogminbfp = values[0];
+  currentfilter.ogmaxbfp = values[1];
+  map.fireEvent("filterchange", currentfilter);
+};
+var ogBuildingsFPSlider = document.getElementById('ogBuildingsFPSlider');
+noUiSlider.create(ogBuildingsFPSlider, {
+  start: [0, 0.8],
+  ...sliderOptions,
+  range: {
+    'min': 0,
+    'max': 0.8,
+  }
+});
+ogBuildingsFPSlider.noUiSlider.on("change", changeogBuildingsFPSlider);
+
 
 function disable_sidebar__btn(className) {
   let answer = className;
