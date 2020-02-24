@@ -222,7 +222,7 @@ function highlightStateBorders(e) {
       '<table class="selection_detail">' +
       '<tr><td align="right"><b>Grid Tracking</b>:</td><td>' + avail.gridTracking + '</td></tr>' +
       '<tr><td align="right"><b>Remote Mapping</b>:</td><td>' + avail.remoteMapping + '</td></tr>' +
-      '<tr><td align="right"><b>Surveying</b>:</td><td>' + avail.Surveying + '</td></tr>' +
+      '<tr><td align="right"><b>Field Surveys</b>:</td><td>' + avail.Surveying + '</td></tr>' +
       '</table>';
     this._div.innerHTML;
   };

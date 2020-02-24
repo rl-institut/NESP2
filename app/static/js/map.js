@@ -76,7 +76,7 @@ info.update = function(props) {
     '<table class="selection_detail">' +
     '<tr><td align="right"><b>Grid Tracking</b>:</td><td>' + "aaa" + '</td></tr>' +
     '<tr><td align="right"><b>Remote Mapping</b>:</td><td>' + "bbb" + '</td></tr>' +
-    '<tr><td align="right"><b>Surveying</b>:</td><td>' + "ccc" + '</td></tr>' +
+    '<tr><td align="right"><b>Field Surveys</b>:</td><td>' + "ccc" + '</td></tr>' +
     '</table>';
   this._div.innerHTML
 };
@@ -98,7 +98,7 @@ clusterInfo.update = function(props) {
     '<table class="selection_detail">' +
     '<tr><td align="right"><b>Grid Tracking</b>:</td><td>' + "aaa" + '</td></tr>' +
     '<tr><td align="right"><b>Remote Mapping</b>:</td><td>' + "bbb" + '</td></tr>' +
-    '<tr><td align="right"><b>Surveying</b>:</td><td>' + "ccc" + '</td></tr>' +
+    '<tr><td align="right"><b>Field Surveys</b>:</td><td>' + "ccc" + '</td></tr>' +
     '</table>';
   this._div.innerHTML
 };
