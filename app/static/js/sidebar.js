@@ -158,7 +158,7 @@ dtgSlider.noUiSlider.on("change", changedtgSlider);
 function changeogAreaSlider(str, h, values) {
   currentfilter.ogminarea = values[0];
   currentfilter.ogmaxarea = values[1];
-  map.fireEvent("filterchange", currentfilter);
+  map.fireEvent("ogfilterchange", currentfilter);
 };
 var ogAreaSlider = document.getElementById('ogAreaSlider');
 noUiSlider.create(ogAreaSlider, {
@@ -174,7 +174,7 @@ ogAreaSlider.noUiSlider.on("change", changeogAreaSlider);
 function changeogDistanceSlider(str, h, values) {
   currentfilter.ogmindtg = values[0];
   currentfilter.ogmaxdtg = values[1];
-  map.fireEvent("filterchange", currentfilter);
+  map.fireEvent("ogfilterchange", currentfilter);
 };
 var ogDistanceSlider = document.getElementById('ogDistanceSlider');
 noUiSlider.create(ogDistanceSlider, {
@@ -190,7 +190,7 @@ ogDistanceSlider.noUiSlider.on("change", changeogDistanceSlider);
 function changeogBuildingsSlider(str, h, values) {
   currentfilter.ogmindtg = values[0];
   currentfilter.ogmaxdtg = values[1];
-  map.fireEvent("filterchange", currentfilter);
+  map.fireEvent("ogfilterchange", currentfilter);
 };
 var ogBuildinsSlider = document.getElementById('ogBuildingsSlider');
 noUiSlider.create(ogBuildingsSlider, {
@@ -206,7 +206,7 @@ ogDistanceSlider.noUiSlider.on("change", changeogBuildingsSlider);
 function changeogBuildingsFootprintSlider(str, h, values) {
   currentfilter.ogmindtg = values[0];
   currentfilter.ogmaxdtg = values[1];
-  map.fireEvent("filterchange", currentfilter);
+  map.fireEvent("ogfilterchange", currentfilter);
 };
 var ogBuildingsFootprintSlider = document.getElementById('ogBuildingsFootprintSlider');
 noUiSlider.create(ogBuildingsFootprintSlider, {

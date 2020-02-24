@@ -613,7 +613,7 @@ function addFunctionsToOGClusterLayer(layer) {
     layer.filter(currentfilter);
   });
 
-  map.addEventListener("filterchange", function(filter) {
+  map.addEventListener("ogfilterchange", function(filter) {
     layer.filter(currentfilter);
   });
   map.on("click", function() {
