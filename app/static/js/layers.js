@@ -147,6 +147,14 @@ function update_selected_state_pbf() {
   add_layer(selected_state_pbf);
 };
 
+var notnigerialayer = L.vectorGrid.slicer(not_nigeria, {
+    vectorTileLayerStyles: {
+      'sliced': function(prop, zoom) {
+      return notNigeriaStyle
+      }
+    }
+}).addTo(map);
+
 // Vector-tiles layer that has LGA shapes in high resolution and columns in its attribute table: id, name, source, type, wikidata, wikipedia
 var lgas_pbf = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_lgas_hr/{z}/{x}/{y}.pbf", {
   rendererFactory: L.canvas.tile,
