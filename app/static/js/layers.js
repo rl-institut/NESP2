@@ -462,6 +462,7 @@ function createNewClusterLayer(clusterString) {
     maxNativeZoom: 16,
     minZoom: 5,
     interactive: true,
+    tolerance: 10,
     getFeatureId: function(f) {
       if (f.properties.cluster_all_id !== undefined) {
         return f.properties.cluster_all_id;
@@ -607,6 +608,7 @@ function createNewOGClusterLayer(ogClusterString) {
     maxNativeZoom: 16,
     minZoom: 5,
     interactive: true,
+    tolerance: 10,
     getFeatureId: function(f) {
       if (f.properties.cluster_offgrid_id !== undefined) {
         return f.properties.cluster_offgrid_id;
