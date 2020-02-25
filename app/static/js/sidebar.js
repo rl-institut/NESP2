@@ -327,6 +327,9 @@ function adapt_view_to_national_level() {
   // load the medium voltage grid
   document.getElementById("nationalGridCheckbox").checked = true;
   nationalGrid_cb_fun();
+  // hide the remotely mapped villages clusters
+  document.getElementById("ogClustersCheckbox").checked = false;
+  ogClusters_cb_fun();
 
   // reset the selected state to "init"
   resetStateSelect()
@@ -348,19 +351,9 @@ function adapt_view_to_national_level() {
   remove_layer(grid_layer);
 };
 
-function adapt_view_to_state_level(previous_level, trigger) {
+function adapt_view_to_state_level() {
   console.log("adapt_view_to_state_level");
-  // click on the state level button from national level
-  if (previous_level == "national" && trigger == "button"){
-      // select a random state which has off-grid clusters
-      hasCluster = ""
-      while (hasCluster == ""){
-        selectedState = statesList[Math.floor(Math.random()*statesList.length)]
-        hasCluster = OGClusterLayers[selectedState];
-      };
-      // Update the states menu list
-      document.getElementById("stateSelect").value = selectedState;
-  };
+
 
   map.options.minZoom = 8;
   map.options.maxZoom = 19;
@@ -393,46 +386,13 @@ function adapt_view_to_state_level(previous_level, trigger) {
   remove_layer(hot);
 
   remove_basemaps_except_osm_gray();
-
-  // When coming from village to state level it should not zoom out to the selected state
-  if (previous_level == "national" || previous_level == "state") {
-    zoomToSelectedState();
-
-    // Trigger the filter function so that the selected state geojson does not hide the clusters
-    nigeria_states_geojson.clearLayers();
-    nigeria_states_geojson.addData(nigeria_states_simplified);
-  };
-  if (previous_level == "village" && trigger == "button") {
-    zoomToSelectedState(newlySelected=false);
-  };
 };
 
-function adapt_view_to_village_level(previous_level, trigger) {
-
-  // click on the village level button from national level
-  if (previous_level == "national" && trigger == "button"){
-      // select a random state which has off-grid clusters
-      hasCluster = ""
-      while (hasCluster == ""){
-        selectedState = statesList[Math.floor(Math.random()*statesList.length)]
-        hasCluster = OGClusterLayers[selectedState];
-      };
-      // Update the states menu list
-      document.getElementById("stateSelect").value = selectedState;
-  };
-  if ((previous_level == "national" || previous_level == "state") && trigger == "button"){
-    //TODO: pick a random cluster among the large ones and display it
-     $.post({
-        url: "/filter-cluster",
-        dataType: "json",
-        data: {"state_name": selectedState},
-        success: function(data){console.log(data);},
-     }).done(function() {console.log("now done");});
-  }
+function adapt_view_to_village_level() {
   remove_layer(osm_gray);
   info.remove();
   add_layer(hot);
-}
+};
 
 /*
  * triggered by the click on the level buttons
@@ -448,14 +408,63 @@ function state_button_fun(trigger="button") {
   previous_level = level
   level = "state";
   adapt_sidebar_to_selection_level(level);
-  adapt_view_to_state_level(previous_level, trigger);
+
+  // click on the state level button from national level
+  if (previous_level == "national" && trigger == "button"){
+      // select a random state which has off-grid clusters
+      hasCluster = ""
+      while (hasCluster == ""){
+        selectedState = statesList[Math.floor(Math.random()*statesList.length)]
+        hasCluster = OGClusterLayers[selectedState];
+      };
+      // Update the states menu list
+      document.getElementById("stateSelect").value = selectedState;
+  };
+
+  // manages the layers for the state level
+  adapt_view_to_state_level();
+
+  // When coming from village to state level it should not zoom out to the selected state
+  if (previous_level == "national" || previous_level == "state") {
+    zoomToSelectedState();
+
+    // Trigger the filter function so that the selected state geojson does not hide the clusters
+    nigeria_states_geojson.clearLayers();
+    nigeria_states_geojson.addData(nigeria_states_simplified);
+  };
+  if (previous_level == "village" && trigger == "button") {
+    zoomToSelectedState(newlySelected=false);
+  };
 };
 
 function village_button_fun(trigger="button") {
   previous_level = level
   level = "village";
   adapt_sidebar_to_selection_level(level);
-  adapt_view_to_village_level(previous_level, trigger);
+  // click on the village level button from national level
+  if (previous_level == "national" && trigger == "button"){
+      // select a random state which has off-grid clusters
+      hasCluster = ""
+      while (hasCluster == ""){
+        selectedState = statesList[Math.floor(Math.random()*statesList.length)]
+        hasCluster = OGClusterLayers[selectedState];
+      };
+      // Update the states menu list
+      document.getElementById("stateSelect").value = selectedState;
+
+       adapt_view_to_state_level();
+  };
+  if ((previous_level == "national" || previous_level == "state") && trigger == "button"){
+    //TODO: pick a random cluster among the large ones and display it
+    $.post({
+    url: "/filter-cluster",
+    dataType: "json",
+    data: {"state_name": selectedState},
+    success: function(data){console.log(data);},
+    }).done(function() {console.log("now done");});
+  }
+
+  adapt_view_to_village_level();
 };
 
 // Triggered by the national and state views
