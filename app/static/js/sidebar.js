@@ -15,6 +15,7 @@ var level = "national";
 var previous_level = level;
 var statesList = ["Abia", "Adamawa", "Akwa Ibom", "Anambra", "Bauchi", "Bayelsa", "Benue", "Borno", "Cross River", "Delta", "Ebonyi", "Edo", "Ekiti", "Enugu", "Federal Capital Territory", "Gombe", "Imo", "Jigawa", "Kaduna", "Kano", "Katsina", "Kebbi", "Kogi", "Kwara", "Lagos", "Nasarawa", "Niger", "Ogun", "Ondo", "Osun", "Oyo", "Plateau", "Rivers", "Sokoto", "Taraba", "Yobe", "Zamfara"];
 var selectedState = "init";
+var prevState = selectedState;
 var selectedStateOptions = {bounds: null};
 var selectedLGA = "";
 var thirtythreeKV = "33_kV_" + selectedState.toLowerCase();
@@ -113,8 +114,9 @@ var OGClusterLayers = {
 }
 
 function resetStateSelect() {
-  selectedState = "init"
-  var s = document.getElementById('stateSelect')
+  prevState = selectedState;
+  selectedState = "init";
+  var s = document.getElementById('stateSelect');
   s.options[0].selected = true;
 }
 
@@ -485,9 +487,7 @@ function states_cb_fun() {
 function state_dropdown_fun() {
   // Work only if the selected state is different than the currenlty selected
   if (selectedState != document.getElementById("stateSelect").value) {
-    // remove layers of previously selected state
-    remove_layer(ogClusterLayers[selectedState]);
-    remove_layer(clusterLayer[selectedState]);
+    prevState = selectedState;
     //update the selected state
     selectedState = document.getElementById("stateSelect").value;
     //Trigger the switch to state level
@@ -532,9 +532,14 @@ function download_clusters_fun() {
 function clusters_cb_fun() {
   var checkBox = document.getElementById("clustersCheckbox");
   if (checkBox.checked == true) {
+    // deactivate og clusters
     document.getElementById("clustersPanel").style.borderLeft = '.25rem solid #1DD069';
     document.getElementById("ogClustersCheckbox").checked = false;
     ogClusters_cb_fun();
+
+    if (prevState != "init") {
+        remove_layer(clusterLayer[prevState])
+    }
     add_layer(clusterLayer[selectedState]);
   } else {
     document.getElementById("clustersPanel").style.borderLeft = '0rem';
@@ -591,9 +596,13 @@ function clusters_filter_fun() {
 function ogClusters_cb_fun() {
   var checkBox = document.getElementById("ogClustersCheckbox");
   if (checkBox.checked == true) {
+    // deactivate clusters
     document.getElementById("ogClustersPanel").style.borderLeft = '.25rem solid #1DD069';
     document.getElementById("clustersCheckbox").checked = false;
     clusters_cb_fun();
+    if (prevState != "init") {
+        remove_layer(ogClusterLayers[prevState])
+    }
     add_layer(ogClusterLayers[selectedState]);
 
   } else {
