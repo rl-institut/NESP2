@@ -1,7 +1,13 @@
 import os
 
 from flask import Flask, render_template, request, jsonify, url_for, redirect, Response
+from flask_wtf.csrf import CSRFProtect
 from .utils import define_function_jinja
+
+from .database import get_state_codes, query_random_og_cluster
+
+STATE_CODES_DICT = get_state_codes()
+
 
 def create_app(test_config=None):
     # create and configure the app
@@ -29,6 +35,8 @@ def create_app(test_config=None):
 
     # register blueprints (like views in django)
 
+    csrf = CSRFProtect(app)
+
     @app.route('/')
     def index():
         defaultArgs = {
@@ -53,6 +61,14 @@ def create_app(test_config=None):
             mimetype="text/csv",
             headers={"Content-disposition": "attachment; filename={}.csv".format(args["state"])}
         )
+
+    @app.route('/filter-cluster', methods=["POST"])
+    def filter_clusters():
+
+        state_name = request.form.get("state_name")
+        resp = jsonify(query_random_og_cluster(state_name, STATE_CODES_DICT))
+        resp.status_code = 200
+        return resp
 
     define_function_jinja(app)
     return app

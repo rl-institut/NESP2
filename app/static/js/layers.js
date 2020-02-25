@@ -118,7 +118,7 @@ var selected_state_pbf = L.vectorGrid.protobuf("https://tile.rl-institut.de/data
     }
   },
   maxZoom: 19,
-  maxNaturalZoom: 14,
+  maxNativeZoom: 14,
   minZoom: 5,
 });
 
@@ -134,7 +134,10 @@ function redefine_selected_state_pbf() {
         }
         return (SLstates)
       }
-    }
+    },
+  maxZoom: 19,
+  maxNativeZoom: 14,
+  minZoom: 5,
   });
 };
 
@@ -222,7 +225,7 @@ function highlightStateBorders(e) {
       '<table class="selection_detail">' +
       '<tr><td align="right"><b>Grid Tracking</b>:</td><td>' + avail.gridTracking + '</td></tr>' +
       '<tr><td align="right"><b>Remote Mapping</b>:</td><td>' + avail.remoteMapping + '</td></tr>' +
-      '<tr><td align="right"><b>Surveying</b>:</td><td>' + avail.Surveying + '</td></tr>' +
+      '<tr><td align="right"><b>Field Surveys</b>:</td><td>' + avail.Surveying + '</td></tr>' +
       '</table>';
     this._div.innerHTML;
   };
@@ -247,7 +250,7 @@ function highlight_state(feature, layer) {
       // Update the dropdown menu for state selection
       document.getElementById("stateSelect").value = selectedState;
       // Trigger the switch to state level
-      state_button_fun();
+      state_button_fun(trigger="map-click");
     }
   });
 }
@@ -265,15 +268,22 @@ var nigeria_states_geojson = L.geoJSON(nigeria_states_simplified, {
 });
 
 
-function zoomToSelectedState() {
+function zoomToSelectedState(newlySelected=true) {
   map.spin(true);
-  nigeria_states_geojson.eachLayer(function(layer) {
-    if (layer.feature.properties.name == selectedState) {
-      map.flyToBounds(layer.getBounds(), {
-        maxZoom: 19
+  if (newlySelected == true) {
+      nigeria_states_geojson.eachLayer(function(layer) {
+        if (layer.feature.properties.name == selectedState) {
+          // save the bounds of the selected state for later uses
+          selectedStateOptions.bounds = layer.getBounds();
+          // currently the geojson is not defined below zoom level 9
+          map.flyToBounds(layer.getBounds(), {maxZoom: 19});
+        }
       });
-    }
-  });
+  }
+  else{
+    // currently the geojson is not defined below zoom level 9
+    map.flyToBounds(selectedStateOptions.bounds, {maxZoom: 19});
+  }
   map.spin(false);
 };
 
