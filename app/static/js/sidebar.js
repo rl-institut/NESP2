@@ -485,6 +485,9 @@ function states_cb_fun() {
 function state_dropdown_fun() {
   // Work only if the selected state is different than the currenlty selected
   if (selectedState != document.getElementById("stateSelect").value) {
+    // remove layers of previously selected state
+    remove_layer(ogClusterLayers[selectedState]);
+    remove_layer(clusterLayer[selectedState]);
     //update the selected state
     selectedState = document.getElementById("stateSelect").value;
     //Trigger the switch to state level

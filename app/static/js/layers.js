@@ -256,6 +256,9 @@ function highlight_state(feature, layer) {
   layer.on('click', function() {
     // Update the name of the selected state only if different from the currently selected
     if (selectedState != feature.properties["name"]) {
+      // Remove layers of old state selection
+      remove_layer(ogClusterLayers[selectedState]);
+      remove_layer(clusterLayer[selectedState]);
       selectedState = feature.properties["name"];
       // Update the dropdown menu for state selection
       document.getElementById("stateSelect").value = selectedState;
