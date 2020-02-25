@@ -422,7 +422,8 @@ function adapt_view_to_village_level(previous_level, trigger) {
     //TODO: pick a random cluster among the large ones and display it
      $.post({
         url: "/filter-cluster",
-        data: currentfilter,
+        dataType: "json",
+        data: {"state_name": selectedState},
         success: function(data){console.log(data);},
      }).done(function() {console.log("now done");});
   }
