@@ -40,6 +40,8 @@ Here is a template for new release sections
 - the user can click on Download clusters (#128)
 - possibility to hide, show or grey-out sidepane-items (#136)
 - loading spinner (#174)
+- clicking on village button will randomly select a cluster in a random state (#175)
+- clicking on state button will randomly select a state
 
 ### Changed
 - availability info moved
