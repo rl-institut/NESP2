@@ -117,3 +117,13 @@ var ogClustersStyle = {
   opacity: 1,
   weight: 2,
 };
+
+var notNigeriaStyle = {
+  fillColor: "#000000",
+  fillOpacity: 0.3,
+  stroke: true,
+  fill: true,
+  color: "#1dd069",
+  opacity: 1,
+  weight: 2,
+};
