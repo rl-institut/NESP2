@@ -273,13 +273,13 @@ function zoomToSelectedState(newlySelected=true) {
           // save the bounds of the selected state for later uses
           selectedStateOptions.bounds = layer.getBounds();
           // currently the geojson is not defined below zoom level 9
-          map.flyToBounds(layer.getBounds(), {maxZoom: 9});
+          map.flyToBounds(layer.getBounds(), {maxZoom: 19});
         }
       });
   }
   else{
     // currently the geojson is not defined below zoom level 9
-    map.flyToBounds(selectedStateOptions.bounds, {maxZoom: 9});
+    map.flyToBounds(selectedStateOptions.bounds, {maxZoom: 19});
   }
   map.spin(false);
 };
