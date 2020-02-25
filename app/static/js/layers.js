@@ -270,7 +270,7 @@ function zoomToSelectedState() {
   nigeria_states_geojson.eachLayer(function(layer) {
     if (layer.feature.properties.name == selectedState) {
       map.flyToBounds(layer.getBounds(), {
-        maxZoom: 9
+        maxZoom: 19
       });
     }
   });
