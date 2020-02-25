@@ -118,7 +118,7 @@ var selected_state_pbf = L.vectorGrid.protobuf("https://tile.rl-institut.de/data
     }
   },
   maxZoom: 19,
-  maxNaturalZoom: 14,
+  maxNativeZoom: 14,
   minZoom: 5,
 });
 
@@ -134,7 +134,10 @@ function redefine_selected_state_pbf() {
         }
         return (SLstates)
       }
-    }
+    },
+  maxZoom: 19,
+  maxNativeZoom: 14,
+  minZoom: 5,
   });
 };
 
