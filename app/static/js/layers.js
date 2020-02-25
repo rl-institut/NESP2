@@ -152,7 +152,9 @@ var notnigerialayer = L.vectorGrid.slicer(not_nigeria, {
       'sliced': function(prop, zoom) {
       return notNigeriaStyle
       }
-    }
+    },
+  maxZoom: 19,
+  minZoom: 5,
 }).addTo(map);
 
 // Vector-tiles layer that has LGA shapes in high resolution and columns in its attribute table: id, name, source, type, wikidata, wikipedia
