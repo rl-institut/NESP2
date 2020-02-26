@@ -26,7 +26,7 @@
 
   <div id="map-content" class="grid-x">
     <div id="sidebar" class="cell medium-10 large-3" data-sticky-container>
-      <div id="header-maps" class="grid-x">
+      <div id="header-maps" style="display:none" class="grid-x">
         <div id="header-maps-blitz-div" class="cell small-10">
           <a href="{{ url_for('landing')}}">
             <img src="{{ url_for('static', filename='logos/logo-5-blitz.png') }}">
@@ -110,9 +110,9 @@
       <!-- grid layer on state and village level only -->
       {{ checkbox.input(id="grid", label="Medium Voltage Grid", visible={'state': 'show', 'village': 'show'}) }}
 
-      {{ checkbox.input(id="heatmap", label="Populated Areas", visible={'national': 'show'}) }}
+      {{ checkbox.input(id="heatmap", label="Identified settlements by sattelite imagery", visible={'national': 'show'}) }}
 
-      {{ checkbox.input(id="clusters", label="Populated areas", visible={'state': 'show', 'village': 'show'}, filter_func=True) }}
+      {{ checkbox.input(id="clusters", label="Identified settlements by sattelite imagery", visible={'state': 'show', 'village': 'show'}, filter_func=True) }}
 
 
       <div class="grid-x">
@@ -163,7 +163,7 @@
         </div>
       </div>
 
-      {{ checkbox.input(id="ogClusters", label="Mapped off-grid clusters", visible={'national': 'grey', 'state': 'show', 'village': 'show'}, filter_func=True) }}
+      {{ checkbox.input(id="ogClusters", label="Remotely mapped settlements", visible={'national': 'grey', 'state': 'show', 'village': 'show'}, filter_func=True) }}
 
       <div class="grid-x">
         <div class="cell n_hide s_show v_show">
@@ -239,7 +239,7 @@
         </div>
       </div>
 
-      <div id="footer-maps" class="grid-x">
+      <div id="footer-maps" style="display:none" class="grid-x">
         <div class="cell">
           <p>Provided with the financial support of</p>
         </div>
