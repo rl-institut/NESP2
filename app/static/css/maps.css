@@ -383,6 +383,54 @@ button {
      -ms-transform: translateX(26px);
      transform: translateX(26px);
 }
+
+/* Header */
+
+#header-maps{
+    background-color: #ffffff;
+    width: 100%;
+    padding-top: .875rem;
+    padding-bottom: .875rem;
+}
+
+#header-maps div{
+    display: flex;
+    align-items: center;
+}
+
+#header-maps h2{
+    color: #ffbb00;
+    font-size: 16pt;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding-top: .4rem;
+    padding-left: .4rem;
+}
+
+#header-maps-blitz-div a{
+    display: flex;
+    align-items: center;
+}
+
+#header-maps-blitz-div img{
+    height: 3.25rem;
+    transform: translateY(0px);
+    padding-left: .75rem;
+}
+
+#header-maps-logo-nigeria{
+    align-items: center;
+
+}
+
+#header-maps-logo-nigeria img {
+    max-height: 6rem;
+    height:100%;
+    transform: translateY(-3px);
+     text-align: right;
+    //width: 3.25rem;
+}
+
 /* Footer */
 
 #footer-maps{

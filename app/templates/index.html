@@ -25,22 +25,18 @@
 {% block content %}
 
   <div id="map-content" class="grid-x">
-    <div id="sidebar" class="cell medium-10 large-3">
-      <header>
-        <div id="header-blitz-div" class="cell medium-4 medium-offset-1">
+    <div id="sidebar" class="cell medium-10 large-3" data-sticky-container>
+      <div id="header-maps" class="grid-x">
+        <div id="header-maps-blitz-div" class="cell small-10">
           <a href="{{ url_for('landing')}}">
             <img src="{{ url_for('static', filename='logos/logo-5-blitz.png') }}">
             <h2>Nigeria Se4All</h2>
           </a>
         </div>
-        <div class="cell medium-7 large-5 large header-right">
-          <div class="header-right__item nav__logo-nigeria" id="header-logo-nigeria">
-            <div>
+        <div id="header-maps-logo-nigeria" class="cell small-2">
               <img src="{{ url_for('static', filename='logos/logo-2-crest.png') }}">
-            </div>
-          </div>
         </div>
-      </header>
+      </div>
       <div class="grid-x sidebar-levels">
         <div id="national" class="cell small-2 level sidebar__btn active" title="national level">
           <button onclick="national_button_fun()">National <br> Overview</button>
