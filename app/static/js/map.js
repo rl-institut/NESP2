@@ -76,7 +76,7 @@ info.update = function(props) {
     '<table class="selection_detail">' +
     '<tr><td align="right"><b>Grid Tracking</b>:</td><td>' + "aaa" + '</td></tr>' +
     '<tr><td align="right"><b>Remote Mapping</b>:</td><td>' + "bbb" + '</td></tr>' +
-    '<tr><td align="right"><b>Surveying</b>:</td><td>' + "ccc" + '</td></tr>' +
+    '<tr><td align="right"><b>Field Surveys</b>:</td><td>' + "ccc" + '</td></tr>' +
     '</table>';
   this._div.innerHTML
 };
@@ -98,7 +98,7 @@ clusterInfo.update = function(props) {
     '<table class="selection_detail">' +
     '<tr><td align="right"><b>Grid Tracking</b>:</td><td>' + "aaa" + '</td></tr>' +
     '<tr><td align="right"><b>Remote Mapping</b>:</td><td>' + "bbb" + '</td></tr>' +
-    '<tr><td align="right"><b>Surveying</b>:</td><td>' + "ccc" + '</td></tr>' +
+    '<tr><td align="right"><b>Field Surveys</b>:</td><td>' + "ccc" + '</td></tr>' +
     '</table>';
   this._div.innerHTML
 };
@@ -109,12 +109,12 @@ map.on("zoom", function(e) {
   var zoom_threshold = 13;
   if (level == "state") {
     if (zoom >= zoom_threshold) {
-      village_button_fun();
+      village_button_fun(trigger="zoom");
     }
   }
   if (level == "village") {
     if (zoom < zoom_threshold) {
-      state_button_fun();
+      state_button_fun(trigger="zoom");
     }
   }
 })
@@ -147,9 +147,10 @@ map.on("layeradd", function() {
   osm_gray.bringToBack();
 });
 map.fireEvent("filterchange", currentfilter);
+map.fireEvent("ogfilterchange", currentfilter);
 
 L.control.scale({
   position: "topright"
 }).addTo(map);
 
-national_button_fun();
+national_button_fun(trigger="init");

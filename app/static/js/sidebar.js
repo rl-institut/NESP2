@@ -15,6 +15,7 @@ var level = "national";
 var previous_level = level;
 var statesList = ["Abia", "Adamawa", "Akwa Ibom", "Anambra", "Bauchi", "Bayelsa", "Benue", "Borno", "Cross River", "Delta", "Ebonyi", "Edo", "Ekiti", "Enugu", "Federal Capital Territory", "Gombe", "Imo", "Jigawa", "Kaduna", "Kano", "Katsina", "Kebbi", "Kogi", "Kwara", "Lagos", "Nasarawa", "Niger", "Ogun", "Ondo", "Osun", "Oyo", "Plateau", "Rivers", "Sokoto", "Taraba", "Yobe", "Zamfara"];
 var selectedState = "init";
+var selectedStateOptions = {bounds: null};
 var selectedLGA = "";
 var thirtythreeKV = "33_kV_" + selectedState.toLowerCase();
 var currentfilter = {
@@ -26,6 +27,10 @@ var currentfilter = {
   ogmaxarea: 10,
   ogmindtg: 0,
   ogmaxdtg: 100,
+  ogminb: 0,
+  ogmaxb: 5000,
+  ogminbfp: 0,
+  ogmaxbfp: 0.8,
 };
 var gridLayers = {
   "Abia": "",
@@ -53,7 +58,7 @@ var gridLayers = {
   "Kogi": "",
   "Kwara": "",
   "Lagos": "",
-  "Nasarawa": "nesp2_state_grid_nasawara",
+  "Nasarawa": "nesp2_state_grid_nasarawa",
   "Niger": "",
   "Ogun": "",
   "Ondo": "",
@@ -122,6 +127,7 @@ var sliderOptions = {
   }),
 };
 
+// TODO: maybe redundant could use the same function for all sliders
 function changeAreaSlider(str, h, values) {
   currentfilter.minarea = values[0];
   currentfilter.maxarea = values[1];
@@ -157,7 +163,7 @@ dtgSlider.noUiSlider.on("change", changedtgSlider);
 function changeogAreaSlider(str, h, values) {
   currentfilter.ogminarea = values[0];
   currentfilter.ogmaxarea = values[1];
-  map.fireEvent("filterchange", currentfilter);
+  map.fireEvent("ogfilterchange", currentfilter);
 };
 var ogAreaSlider = document.getElementById('ogAreaSlider');
 noUiSlider.create(ogAreaSlider, {
@@ -173,7 +179,7 @@ ogAreaSlider.noUiSlider.on("change", changeogAreaSlider);
 function changeogDistanceSlider(str, h, values) {
   currentfilter.ogmindtg = values[0];
   currentfilter.ogmaxdtg = values[1];
-  map.fireEvent("filterchange", currentfilter);
+  map.fireEvent("ogfilterchange", currentfilter);
 };
 var ogDistanceSlider = document.getElementById('ogDistanceSlider');
 noUiSlider.create(ogDistanceSlider, {
@@ -185,6 +191,39 @@ noUiSlider.create(ogDistanceSlider, {
   }
 });
 ogDistanceSlider.noUiSlider.on("change", changeogDistanceSlider);
+
+function changeogBuildingsSlider(str, h, values) {
+  currentfilter.ogminb = values[0];
+  currentfilter.ogmaxb = values[1];
+  map.fireEvent("ogfilterchange", currentfilter);
+};
+var ogBuildingsSlider = document.getElementById('ogBuildingsSlider');
+noUiSlider.create(ogBuildingsSlider, {
+  start: [0, 5000],
+  ...sliderOptions,
+  range: {
+    'min': 0,
+    'max': 5000,
+  }
+});
+ogBuildingsSlider.noUiSlider.on("change", changeogBuildingsSlider);
+
+function changeogBuildingsFootprintSlider(str, h, values) {
+  currentfilter.ogminbfp = values[0];
+  currentfilter.ogmaxbfp = values[1];
+  map.fireEvent("ogfilterchange", currentfilter);
+};
+var ogBuildingsFootprintSlider = document.getElementById('ogBuildingsFootprintSlider');
+noUiSlider.create(ogBuildingsFootprintSlider, {
+  start: [0, 0.8],
+  ...sliderOptions,
+  range: {
+    'min': 0,
+    'max': 0.8,
+  }
+});
+ogBuildingsFootprintSlider.noUiSlider.on("change", changeogBuildingsFootprintSlider);
+
 
 function disable_sidebar__btn(className) {
   let answer = className;
@@ -287,9 +326,13 @@ function adapt_view_to_national_level() {
   document.getElementById("nationalGridCheckbox").checked = true;
   nationalGrid_cb_fun();
 
-  // reset the selected state to None
+  // reset the selected state to "init"
   resetStateSelect()
   remove_layer(selected_state_pbf);
+
+  // Trigger the filter function so that all geojson state are available again
+  nigeria_states_geojson.clearLayers();
+  nigeria_states_geojson.addData(nigeria_states_simplified);
 
   remove_basemaps();
 
@@ -303,14 +346,25 @@ function adapt_view_to_national_level() {
   remove_layer(grid_layer);
 };
 
-function adapt_view_to_state_level(previous_level) {
+function adapt_view_to_state_level(previous_level, trigger) {
   console.log("adapt_view_to_state_level");
+  // click on the state level button from national level
+  if (previous_level == "national" && trigger == "button"){
+      // select a random state which has off-grid clusters
+      hasCluster = ""
+      while (hasCluster == ""){
+        selectedState = statesList[Math.floor(Math.random()*statesList.length)]
+        hasCluster = OGClusterLayers[selectedState];
+      };
+      // Update the states menu list
+      document.getElementById("stateSelect").value = selectedState;
+  };
 
   map.options.minZoom = 8;
   map.options.maxZoom = 19;
   map.options.zoomSnap = 1,
 
-    legend.remove();
+  legend.remove();
   gridLegend.addTo(map);
 
   // load the states boundaries
@@ -343,12 +397,36 @@ function adapt_view_to_state_level(previous_level) {
     zoomToSelectedState();
 
     // Trigger the filter function so that the selected state geojson does not hide the clusters
-    nigeria_states_geojson.clearLayers()
-    nigeria_states_geojson.addData(nigeria_states_simplified)
-  }
+    nigeria_states_geojson.clearLayers();
+    nigeria_states_geojson.addData(nigeria_states_simplified);
+  };
+  if (previous_level == "village" && trigger == "button") {
+    zoomToSelectedState(newlySelected=false);
+  };
 };
 
-function adapt_view_to_village_level() {
+function adapt_view_to_village_level(previous_level, trigger) {
+
+  // click on the village level button from national level
+  if (previous_level == "national" && trigger == "button"){
+      // select a random state which has off-grid clusters
+      hasCluster = ""
+      while (hasCluster == ""){
+        selectedState = statesList[Math.floor(Math.random()*statesList.length)]
+        hasCluster = OGClusterLayers[selectedState];
+      };
+      // Update the states menu list
+      document.getElementById("stateSelect").value = selectedState;
+  };
+  if ((previous_level == "national" || previous_level == "state") && trigger == "button"){
+    //TODO: pick a random cluster among the large ones and display it
+     $.post({
+        url: "/filter-cluster",
+        dataType: "json",
+        data: {"state_name": selectedState},
+        success: function(data){console.log(data);},
+     }).done(function() {console.log("now done");});
+  }
   remove_layer(osm_gray);
   info.remove();
   add_layer(hot);
@@ -358,23 +436,24 @@ function adapt_view_to_village_level() {
  * triggered by the click on the level buttons
  */
 
-function national_button_fun() {
+function national_button_fun(trigger="button") {
   level = "national";
   adapt_sidebar_to_selection_level(level);
   adapt_view_to_national_level()
 }
 
-function state_button_fun() {
+function state_button_fun(trigger="button") {
   previous_level = level
   level = "state";
   adapt_sidebar_to_selection_level(level);
-  adapt_view_to_state_level(previous_level);
+  adapt_view_to_state_level(previous_level, trigger);
 };
 
-function village_button_fun() {
+function village_button_fun(trigger="button") {
+  previous_level = level
   level = "village";
   adapt_sidebar_to_selection_level(level);
-  adapt_view_to_village_level();
+  adapt_view_to_village_level(previous_level, trigger);
 };
 
 // Triggered by the national and state views
@@ -387,6 +466,8 @@ function states_cb_fun() {
     remove_layer(statesLayer)
     remove_layer(nigeria_states_geojson)
   }
+
+
 
   //https://stackoverflow.com/questions/31765968/toggle-url-parameter-with-button
   //https://dev.to/gaels/an-alternative-to-handle-global-state-in-react-the-url--3753
@@ -404,10 +485,13 @@ function states_cb_fun() {
 function state_dropdown_fun() {
   // Work only if the selected state is different than the currenlty selected
   if (selectedState != document.getElementById("stateSelect").value) {
+    // remove layers of previously selected state
+    remove_layer(ogClusterLayers[selectedState]);
+    remove_layer(clusterLayer[selectedState]);
     //update the selected state
     selectedState = document.getElementById("stateSelect").value;
     //Trigger the switch to state level
-    state_button_fun();
+    state_button_fun(trigger="menu");
   }
 };
 

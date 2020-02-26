@@ -90,7 +90,7 @@ var clustersStyle = {
 
 var clusterSelectionStyle = {
   fillColor: "#0000FF",
-  fillOpacity: 0.5,
+  fillOpacity: 0,
   stroke: true,
   fill: true,
   color: "#0000FF",
@@ -98,9 +98,29 @@ var clusterSelectionStyle = {
   weight: 2,
 };
 
+var ogClusterSelectionStyle = {
+  fillColor: "#1dd069",
+  fillOpacity: 0,
+  stroke: true,
+  fill: true,
+  color: "#1dd069",
+  opacity: 1,
+  weight: 3,
+};
+
 var ogClustersStyle = {
   fillColor: "#1dd069",
   fillOpacity: 0,
+  stroke: true,
+  fill: true,
+  color: "#1dd069",
+  opacity: 1,
+  weight: 2,
+};
+
+var notNigeriaStyle = {
+  fillColor: "#000000",
+  fillOpacity: 0.3,
   stroke: true,
   fill: true,
   color: "#1dd069",

@@ -39,9 +39,11 @@ Here is a template for new release sections
 - clicking on the funnel expand the filters (#128)
 - the user can click on Download clusters (#128)
 - possibility to hide, show or grey-out sidepane-items (#136)
+- loading spinner (#174)
+- clicking on village button will randomly select a cluster in a random state (#175)
+- clicking on state button will randomly select a state
+
 ### Changed
-- Levelbuttons in sidebar next to each other (137)
-- Styling of filtersubmenue (137)
 - availability info moved
 - level buttons indicate status (#9)
 - level buttons control options (#10)
@@ -58,10 +60,13 @@ Here is a template for new release sections
 - the selected state cannot be clicked or selected again (#109)
 - sidebar panels are defined via a template sidebar_checkbox.html (#115)
 - the side panel checkboxes are now grey out when not used (#128)
-
 - the grid and populated buttons appear now as the same button to the user (#136)
 - index.py is now at the root of the repository (#142)
 - increased the map height to 1000px (#148)
+- Levelbuttons in sidebar next to each other (#137)
+- Styling of filtersubmenue (#137)
+- Replaced lines of static code with for loops (#155)
+- Split the filter events for og clusters and normal clusters (#155)
 
 ### Removed
 - redundant accordion menu (#10)
