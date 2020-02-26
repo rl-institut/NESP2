@@ -48,6 +48,10 @@ def create_app(test_config=None):
 
         return render_template('index.html', **request.args)
 
+    @app.route('/landing')
+    def landing():
+        return index()
+
     @app.route('/csv-export')
     def download_csv():
 
