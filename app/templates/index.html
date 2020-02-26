@@ -243,24 +243,18 @@
         </div>
       </div>
 
-      <footer>
-        <div id="footer-logos-div" class="cell">
-          <div class="grid-x">
-            <div class="cell medium-3 large-2 large-offset-1">
-              <p>Provided with the financial support of</p>
-            </div>
-            <div id="footer-logos-eu-ger" class="cell medium-6 footer-logos__img">
-              <img src="{{ url_for('static', filename='logos/logo-1-eu.png') }}">
-              <img src="{{ url_for('static', filename='logos/logo-4-ger-coop.png') }}">
-            </div>
-            <div id="footer-logos-giz" class="cell medium-3 large-2 footer-logos__img footer-logos__img--giz">
-              <div>
-                <img src="{{ url_for('static', filename='logos/logo-3-giz.png') }}">
-              </div>
-            </div>
-          </div>
+      <div id="footer-maps" class="grid-x">
+        <div class="cell">
+          <p>Provided with the financial support of</p>
         </div>
-      </footer>
+        <div id="footer-maps-logos-eu-ger" class="cell medium-8">
+          <img src="{{ url_for('static', filename='logos/logo-1-eu.png') }}">
+          <img src="{{ url_for('static', filename='logos/logo-4-ger-coop.png') }}">
+        </div>
+        <div id="footer-maps-logos-giz" class="cell medium-4">
+            <img src="{{ url_for('static', filename='logos/logo-3-giz.png') }}">
+        </div>
+      </div>
 
     </div>
 

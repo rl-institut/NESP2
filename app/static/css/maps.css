@@ -151,6 +151,11 @@ body {
   text-align: center;
 }
 
+#sidebar {
+display: flex;
+flex-direction: column;
+}
+
 #sidebar .switch-paddle {
   border-radius: 100px;
   height: 1.5rem;
@@ -377,4 +382,28 @@ button {
      -webkit-transform: translateX(26px);
      -ms-transform: translateX(26px);
      transform: translateX(26px);
+}
+/* Footer */
+
+#footer-maps{
+    background-color: #ffffff;
+    font-size: 14pt;
+    line-height: 18pt;
+    margin-top: auto;
+}
+
+#footer-maps p {
+    padding-left: .75rem;
+    font-size: 14pt;
+    line-height: 18pt;
+}
+
+#footer-maps-logos-eu-ger img{
+    text-align: left;
+    height: 7rem;
+}
+
+#footer-maps-logos-giz img{
+    text-align: right;
+    height: 4.09rem;
 }
