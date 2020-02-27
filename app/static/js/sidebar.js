@@ -528,16 +528,43 @@ function download_clusters_fun() {
   var checkBox = document.getElementById("clustersCheckbox");
   // currently there are only two filters which are mutually exclusive
   if (checkBox.checked == true){
+
+         $.post({
+        url: "/csv-export",
+        dataType: "json",
+        data: {
+            "cluster_type": "cluster",
+            "state_name": selectedState,
+            "area": [currentfilter.minarea, currentfilter.maxarea],
+            "distance_grid": [currentfilter.mindtg, currentfilter.maxdtg],
+            },
+
+        success: function(data){console.log(data);},
+     }).done(function() {console.log("now done");});
+
   // TODO send the correct filter depending on og cluster or populated areas
     export_csv_link.href = "/csv-export?state=" + selectedState + "&min_area=" + currentfilter.minarea +
     "&max_area=" + currentfilter.maxarea
   }
   else{
+    $.post({
+        url: "/csv-export",
+        dataType: "json",
+        data: JSON.stringify({
+            "cluster_type": "ogcluster",
+            "state_name": selectedState,
+            "area": [currentfilter.ogminarea, currentfilter.ogmaxarea],
+            "distance_grid": [currentfilter.ogmindtg, currentfilter.ogmaxdtg],
+            "buildings": [currentfilter.ogminb, currentfilter.ogmaxb],
+            "buildings_footprint": [currentfilter.ogminbfp, currentfilter.ogmaxbfp],
+            }),
+        success: function(data){console.log(data);},
+     }).done(function() {console.log("now done");});
   // TODO send the correct filter depending on og cluster or populated areas
       export_csv_link.href = "/csv-export?state=" + selectedState + "&min_area=" + currentfilter.minarea +
     "&max_area=" + currentfilter.maxarea
   }
-  export_csv_link.click()
+  //export_csv_link.click()
 }
 
 function clusters_cb_fun() {
