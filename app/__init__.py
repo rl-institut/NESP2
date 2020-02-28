@@ -58,14 +58,11 @@ def create_app(test_config=None):
     def landing():
         return index()
 
-    @app.route('/csv-export', methods=["POST"])
+    @app.route('/csv-export', methods=["GET"])
     def download_csv():
-        json_str = [v for v in request.form.to_dict()]
-        args = json.loads(json_str[0])
-
+        args = request.args
         state = args.get("state_name")
         cluster_type = args.get("cluster_type")
-        print(cluster_type)
         if os.environ.get("POSTGRES_URL", None) is not None:
             keys = (
                 'adm1_pcode',
@@ -77,24 +74,21 @@ def create_app(test_config=None):
             )
             if "og" in cluster_type:
                 records = query_filtered_og_clusters(
-                    "Kano",
+                    state,
                     STATE_CODES_DICT,
-                    area=[0.2, 0.6],
-                    distance_grid=[10, 40],
+                    area=[args.get("ogmin_area"), args.get("ogmax_area")],
+                    distance_grid=[args.get("ogmindtg"), args.get("ogmaxdtg")],
                     keys=keys,
-                    limit=3
                 )
             else:
                 records = query_filtered_clusters(
-                    "Kano",
+                    state,
                     STATE_CODES_DICT,
-                    area=[0.2, 0.6],
-                    distance_grid=[10, 40],
+                    area=[args.get("min_area"), args.get("max_area")],
+                    distance_grid=[args.get("mindtg"), args.get("maxdtg")],
                     keys=keys,
-                    limit=3
                 )
 
-            print(records)
             csv = []
             csv.append(", ".join(keys))
             for line in records:
