@@ -61,7 +61,7 @@ def create_app(test_config=None):
     @app.route('/csv-export', methods=["GET"])
     def download_csv():
         args = request.args
-        state = args.get("state_name")
+        state = args.get("state")
         cluster_type = args.get("cluster_type")
         if os.environ.get("POSTGRES_URL", None) is not None:
             keys = (
@@ -78,7 +78,7 @@ def create_app(test_config=None):
                     STATE_CODES_DICT,
                     area=[args.get("ogmin_area"), args.get("ogmax_area")],
                     distance_grid=[args.get("ogmindtg"), args.get("ogmaxdtg")],
-                    keys=keys,
+                    keys=keys
                 )
             else:
                 records = query_filtered_clusters(
@@ -86,7 +86,7 @@ def create_app(test_config=None):
                     STATE_CODES_DICT,
                     area=[args.get("min_area"), args.get("max_area")],
                     distance_grid=[args.get("mindtg"), args.get("maxdtg")],
-                    keys=keys,
+                    keys=keys
                 )
 
             csv = []
