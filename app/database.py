@@ -129,16 +129,21 @@ def query_filtered_clusters(
     :param keys:
     :return:
     """
-    view_name = "cluster_all_{}_mv".format(state_codes_dict[state_name])
-    return filter_materialized_view(
-        engine,
-        view_name,
-        schema="web",
-        area=area,
-        distance_grid=distance_grid,
-        limit=limit,
-        keys=keys
-    )
+    if state_name in state_codes_dict:
+        view_name = "cluster_all_{}_mv".format(state_codes_dict[state_name])
+        answer = filter_materialized_view(
+            engine,
+            view_name,
+            schema="web",
+            area=area,
+            distance_grid=distance_grid,
+            limit=limit,
+            keys=keys
+        )
+    else:
+        print("Non existent state name: {}".format(state_name))
+        answer = []
+    return answer
 
 
 def query_filtered_og_clusters(
@@ -163,18 +168,23 @@ def query_filtered_og_clusters(
     :param keys:
     :return:
     """
-    view_name = "cluster_offgrid_{}_mv".format(state_codes_dict[state_name])
-    return filter_materialized_view(
-        engine,
-        view_name,
-        schema="web",
-        area=area,
-        distance_grid=distance_grid,
-        building=building,
-        buildingfp=buildingfp,
-        limit=limit,
-        keys=keys
-    )
+    if state_name in state_codes_dict:
+        view_name = "cluster_offgrid_{}_mv".format(state_codes_dict[state_name])
+        answer = filter_materialized_view(
+            engine,
+            view_name,
+            schema="web",
+            area=area,
+            distance_grid=distance_grid,
+            building=building,
+            buildingfp=buildingfp,
+            limit=limit,
+            keys=keys
+        )
+    else:
+        print("Non existent state name: {}".format(state_name))
+        answer = []
+    return answer
 
 
 
