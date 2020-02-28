@@ -39,7 +39,7 @@ Here is a template for new release sections
 - clicking on the funnel expand the filters (#128)
 - the user can click on Download clusters (#128)
 - possibility to hide, show or grey-out sidepane-items (#136)
-- loading spinner (#174)
+- loading spinner (#174, #192)
 - clicking on village button will randomly select a cluster in a random state (#175)
 - clicking on state button will randomly select a state
 

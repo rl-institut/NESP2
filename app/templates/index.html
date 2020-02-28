@@ -17,6 +17,7 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/maps.css') }}" />
 <link rel="stylesheet" href="{{ url_for('static', filename='css/foundation.min.css') }}" />
 <link rel="stylesheet" href="{{ url_for('static', filename='css/nouislider.min.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/Control.Loading.css') }}" />
 <script type=text/javascript> $SCRIPT_ROOT={{ request.script_root|tojson|safe }}; </script>
 
 
@@ -272,9 +273,8 @@
     <script src="https://cdn.jsdelivr.net/npm/leaflet-sidebar-v2@3.0.2/js/leaflet-sidebar.min.js" integrity="sha384-LzTQ6yhqVy/ipjMq5MMk98mo0E64Wtu9K1Jm5OeKPolnqrlv3FMdc457RoOANGMb" crossorigin=""></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/wnumb/1.1.0/wNumb.min.js" integrity="sha384-9NhfMwMkkA6dDFEyj5CxOiYaL6KqLjKINTJkR7e5SlZthrndR9oB/SJsi5PBNnjw" crossorigin=""></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/11.0.3/nouislider.min.js" integrity="sha384-sxnhs+25aQQN+rABTQEEYOIX5CW20SBJyXt9oGMT5VDacFTTWGXKotTEAe8BUiwb" crossorigin=""></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/spin.js/2.3.2/spin.min.js" integrity="sha256-PieqE0QdEDMppwXrTzSZQr6tWFX3W5KkyRVyF1zN3eg=" crossorigin=""></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.Spin/1.1.2/leaflet.spin.min.js" integrity="sha256-js2Nm9/wX+Qv6K71Q276zHaO+/oeBmETJ/biagzb5go=" crossorigin=""></script>
     <!-- local scripts -->
+    <script src="{{ url_for('static', filename='js/Control.Loading.js') }}"></script>
     <script src="{{ url_for('static', filename='js/nigeria_states_availability.js') }}"></script>
     <script src="{{ url_for('static', filename='js/notnigeria.js') }}"></script>
     <script src="{{ url_for('static', filename='js/sidebar.js') }}"></script>
