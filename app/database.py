@@ -54,6 +54,8 @@ def filter_materialized_view(
         schema=None,
         area=None,
         distance_grid=None,
+        building=None,
+        buildingfp=None,
         limit=None,
         keys=None
 ):
@@ -67,14 +69,35 @@ def filter_materialized_view(
     filter_cond = ""
 
     if area is not None:
-        filter_cond = f" WHERE {view_name}.area_km2 > {area[0]} AND {view_name}.area_km2 < {area[1]}"
+        key = "area_km2"
+        filter_cond = f" WHERE {view_name}.{key} > {area[0]} AND {view_name}.{key} < {area[1]}"
 
     if distance_grid is not None:
+        key = "grid_dist_km"
         if "WHERE" in filter_cond:
-            filter_cond = filter_cond + f" AND {view_name}.grid_dist_km > {distance_grid[0]} AND" \
-                                        f" {view_name}.grid_dist_km < {distance_grid[1]}"
+            filter_cond = filter_cond + f" AND {view_name}.{key} > {distance_grid[0]} AND" \
+                                        f" {view_name}.{key} < {distance_grid[1]}"
         else:
-            filter_cond = f" WHERE {view_name}.grid_dist_km > {distance_grid[0]} AND {view_name}.grid_dist_km < {distance_grid[1]}"
+            filter_cond = f" WHERE {view_name}.{key} > {distance_grid[0]} AND" \
+                          f" {view_name}.{key} < {distance_grid[1]}"
+
+    if building is not None:
+        key = "building_count"
+        if "WHERE" in filter_cond:
+            filter_cond = filter_cond + f" AND {view_name}.{key} > {building[0]} AND" \
+                                        f" {view_name}.{key} < {building[1]}"
+        else:
+            filter_cond = f" WHERE {view_name}.{key} > {building[0]} AND"\
+                          f" {view_name}.{key} < {building[1]}"
+
+    if buildingfp is not None:
+        key = "percentage_building_area"
+        if "WHERE" in filter_cond:
+            filter_cond = filter_cond + f" AND {view_name}.{key} > {buildingfp[0]} AND" \
+                                        f" {view_name}.{key} < {buildingfp[1]}"
+        else:
+            filter_cond = f" WHERE {view_name}.{key} > {buildingfp[0]} AND" \
+                          f" {view_name}.{key} < {buildingfp[1]}"
 
     if keys is None:
         columns = "*"
@@ -123,6 +146,8 @@ def query_filtered_og_clusters(
         state_codes_dict,
         area=None,
         distance_grid=None,
+        building=None,
+        buildingfp=None,
         limit=None,
         keys=None
 ):
@@ -132,6 +157,8 @@ def query_filtered_og_clusters(
     :param state_codes_dict:
     :param area:
     :param distance_grid:
+    :param building:
+    :param buildingfp:
     :param limit:
     :param keys:
     :return:
@@ -143,6 +170,8 @@ def query_filtered_og_clusters(
         schema="web",
         area=area,
         distance_grid=distance_grid,
+        building=building,
+        buildingfp=buildingfp,
         limit=limit,
         keys=keys
     )
