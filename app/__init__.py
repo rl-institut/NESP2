@@ -1,7 +1,11 @@
 import os
+import geojson
 from flask import Flask, render_template, request, jsonify, url_for, redirect, Response
 from flask_wtf.csrf import CSRFProtect
 from .utils import define_function_jinja
+
+from shapely.geometry import shape
+from shapely.wkb import loads as loadswkb
 
 from .database import (
     get_state_codes,
@@ -118,7 +122,15 @@ def create_app(test_config=None):
     def filter_clusters():
 
         state_name = request.form.get("state_name")
-        resp = jsonify(query_random_og_cluster(state_name, STATE_CODES_DICT))
+        resp = query_random_og_cluster(state_name, STATE_CODES_DICT)
+        # TODO: change the projection the one from the map
+        geom = shape(loadswkb(str(resp.pop("geom")), hex=True))
+        feature = geojson.Feature(
+            id=resp.pop("cluster_offgrid_id"),
+            geometry=geom,
+            properties=resp
+        )
+        resp = jsonify(feature)
         resp.status_code = 200
         return resp
 

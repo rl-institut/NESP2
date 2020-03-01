@@ -227,7 +227,7 @@ def get_random_og_cluster(engine, view_code, schema="web", limit=20):
         rs = con.execute('SELECT * FROM {} ORDER BY area_km2 LIMIT {};'.format(view_name, limit))
         data = rs.fetchall()
     single_cluster = data[random.randint(0, int(limit)-1)]
-    return {key: single_cluster[key] for key in OG_CLUSTERS_COLUMNS}
+    return {key: str(single_cluster[key]) for key in OG_CLUSTERS_COLUMNS}
 
 
 def query_random_og_cluster(state_name, state_codes_dict):
