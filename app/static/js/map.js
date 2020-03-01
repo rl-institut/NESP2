@@ -153,4 +153,9 @@ L.control.scale({
   position: "topright"
 }).addTo(map);
 
+// spinning wheel when loading layers
+L.Control.loading({
+    position: "topright"
+}).addTo(map);
+
 national_button_fun(trigger="init");

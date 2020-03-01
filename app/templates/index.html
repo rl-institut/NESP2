@@ -17,33 +17,45 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/maps.css') }}" />
 <link rel="stylesheet" href="{{ url_for('static', filename='css/foundation.min.css') }}" />
 <link rel="stylesheet" href="{{ url_for('static', filename='css/nouislider.min.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/Control.Loading.css') }}" />
 <script type=text/javascript> $SCRIPT_ROOT={{ request.script_root|tojson|safe }}; </script>
 
 
 {% endblock %}
-{% block header %}
-{% endblock %}
+
 {% block content %}
+
   <div id="map-content" class="grid-x">
-  <div id="sidebar" class="cell medium-10 large-3">
-	<div class="grid-x sidebar-levels">
-	  <div id="national" class="cell small-2 level sidebar__btn active" title="national level">
-			<button onclick="national_button_fun()">National <br> Overview</button>
-	  </div>
-	  <div id="state" class="cell small-2 level sidebar__btn" title="state level">
-			<button onclick="state_button_fun()">State <br> level</button>
-	  </div>
-	  <div id="village" class="cell small-2 level sidebar__btn" title="village level">
-			<button onclick="village_button_fun()">Village <br> level</button>
-	  </div>
-      <!-- hidden link used for csv download of the data -->
-      <a style="display: none" id="export_csv" href="#"></a>
+    <div id="sidebar" class="cell medium-10 large-3" data-sticky-container>
+      <div id="header-maps" style="display:none" class="grid-x">
+        <div id="header-maps-blitz-div" class="cell small-10">
+          <a href="{{ url_for('landing')}}">
+            <img src="{{ url_for('static', filename='logos/logo-5-blitz.png') }}">
+            <h2>Nigeria Se4All</h2>
+          </a>
+        </div>
+        <div id="header-maps-logo-nigeria" class="cell small-2">
+              <img src="{{ url_for('static', filename='logos/logo-2-crest.png') }}">
+        </div>
+      </div>
+      <div class="grid-x sidebar-levels">
+        <div id="national" class="cell small-2 level sidebar__btn active" title="national level">
+          <button onclick="national_button_fun()">National <br> Overview</button>
+        </div>
+        <div id="state" class="cell small-2 level sidebar__btn" title="state level">
+          <button onclick="state_button_fun()">State <br> level</button>
+        </div>
+        <div id="village" class="cell small-2 level sidebar__btn" title="village level">
+          <button onclick="village_button_fun()">Village <br> level</button>
+        </div>
+        <!-- hidden link used for csv download of the data -->
+        <a style="display: none" id="export_csv" href="#"></a>
 
-	</div>
+      </div>
 
-	<div class="grid-x align-center sidebar-dropdown" title="select a state">
-      <div class="cell sidebar__btn active small-8 n_show s_show v_grey" data-toggle="state-dropdown">
-		<select id="stateSelect" class="dropdown-button" onchange="state_dropdown_fun();">
+      <div class="grid-x align-center sidebar-dropdown" title="select a state">
+        <div class="cell sidebar__btn active small-8 n_show s_show v_grey" data-toggle="state-dropdown">
+          <select id="stateSelect" class="dropdown-button" onchange="state_dropdown_fun();">
             <option value="init" disabled selected>Select a state</option>
             <option value="Abia">Abia</option>
             <option value="Adamawa">Adamawa</option>
@@ -82,205 +94,215 @@
             <option value="Taraba">Taraba</option>
             <option value="Yobe">Yobe</option>
             <option value="Zamfara">Zamfara</option>
-		</select>
-      </div>
-	</div>
-
-    {% if nesp2_website is defined %}
-      {% import "maps/sidebar_checkbox.html" as checkbox %}
-    {% else %}
-      {% import "sidebar_checkbox.html" as checkbox %}
-    {% endif %}
-
-    {{ checkbox.input(id="states", label="States (availability)", visible={}) }}
-    {{ checkbox.input(id="buildingDensity", label="Buildings", visible={}) }}
-    <!-- grid layer on national level only -->
-    {{ checkbox.input(id="nationalGrid", label="Medium Voltage Grid", visible={'national': 'show'}) }}
-    <!-- grid layer on state and village level only -->
-    {{ checkbox.input(id="grid", label="Medium Voltage Grid", visible={'state': 'show', 'village': 'show'}) }}
-
-    {{ checkbox.input(id="heatmap", label="Populated Areas", visible={'national': 'show'}) }}
-
-    {{ checkbox.input(id="clusters", label="Populated areas", visible={'state': 'show', 'village': 'show'}, filter_func=True) }}
-
-
-    <div class="grid-x">
-    <div class="cell n_hide s_show v_show">
-      <div class="sidebar-panel sidebar-panel-content content-filter hidden-filter sidebar-panel-filter-label" name="clustersContent">
-        <div class="sidebar-panel-item sidebar-panel-item-filter">
-          <p href="#" class="sidebar-panel-item-title sidebar-panel-item-title-filter">FILTERS</p>
+          </select>
         </div>
       </div>
-    </div>
-    </div>
 
-    <div class="grid-x">
-    <div class="cell n_hide s_show v_show">
-      <div class="sidebar-panel sidebar-panel-content content-filter hidden-filter" name="clustersContent">
-        <div class="sidebar-panel-item sidebar-panel-item-filter">
-          <p href="#" class="sidebar-panel-item-title-filterlabel">Area</p>
-          <div class="filter">
-            <div class="filter__slider filterslider" id="areaSlider"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-    </div>
+      {% if nesp2_website is defined %}
+        {% import "maps/sidebar_checkbox.html" as checkbox %}
+      {% else %}
+        {% import "sidebar_checkbox.html" as checkbox %}
+      {% endif %}
 
-    <div class="grid-x">
-    <div class="cell n_hide s_show v_show">
-      <div class="sidebar-panel sidebar-panel-content content-filter hidden-filter" name="clustersContent">
-        <div class="sidebar-panel-item">
-          <p href="#" class="sidebar-panel-item-title-filterlabel">Distance to Grid</p>
-          <div class="filter">
-            <div class="filter__slider" id="dtgSlider"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-    </div>
+      {{ checkbox.input(id="states", label="States (availability)", visible={}) }}
+      {{ checkbox.input(id="buildingDensity", label="Buildings", visible={}) }}
+      <!-- grid layer on national level only -->
+      {{ checkbox.input(id="nationalGrid", label="Medium Voltage Grid", visible={'national': 'show'}) }}
+      <!-- grid layer on state and village level only -->
+      {{ checkbox.input(id="grid", label="Medium Voltage Grid", visible={'state': 'show', 'village': 'show'}) }}
 
-    <div class="grid-x">
-    <div class="cell n_hide s_show v_show">
-      <div class="sidebar-panel sidebar-panel-content content-filter hidden-filter" name="clustersContent">
-        <div class="sidebar-panel-item sidebar-panel-item--download">
-          <div id="download_clusters" class="download__btn">
-            <button onclick="download_clusters_fun()">Download selection</button>
-          </div>
-        </div>
-      </div>
-    </div>
-    </div>
+      {{ checkbox.input(id="heatmap", label="Identified settlements by satellite imagery", visible={'national': 'show'}) }}
 
-    {{ checkbox.input(id="ogClusters", label="Mapped off-grid clusters", visible={'national': 'grey', 'state': 'show', 'village': 'show'}, filter_func=True) }}
+      {{ checkbox.input(id="clusters", label="Identified settlements by satellite imagery", visible={'state': 'show', 'village': 'show'}, filter_func=True) }}
 
-    <div class="grid-x">
-      <div class="cell n_hide s_show v_show">
-        <div class="sidebar-panel sidebar-panel-content content-filter hidden-filter sidebar-panel-filter-label" name="ogClustersContent">
-          <div class="sidebar-panel-item sidebar-panel-item-filter">
-            <p href="#" class="sidebar-panel-item-title sidebar-panel-item-title-filter">FILTERS</p>
-          </div>
-        </div>
-      </div>
-    </div>
 
-    <div class="grid-x">
-      <div class="cell n_hide s_show v_show">
-        <div class="sidebar-panel sidebar-panel-content content-filter hidden-filter" name="ogClustersContent">
-          <div class="sidebar-panel-item sidebar-panel-item-filter">
-            <p href="#" class="sidebar-panel-item-title-filterlabel">Area in km²</p>
-            <div class="filter">
-              <div class="filter__slider" id="ogAreaSlider"></div>
+      <div class="grid-x">
+        <div class="cell n_hide s_show v_show">
+          <div class="sidebar-panel sidebar-panel-content content-filter hidden-filter sidebar-panel-filter-label" name="clustersContent">
+            <div class="sidebar-panel-item sidebar-panel-item-filter">
+              <p href="#" class="sidebar-panel-item-title sidebar-panel-item-title-filter">FILTERS</p>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <div class="grid-x">
-      <div class="cell n_hide s_show v_show">
-        <div class="sidebar-panel sidebar-panel-content content-filter hidden-filter" name="ogClustersContent">
-          <div class="sidebar-panel-item sidebar-panel-item-filter">
-            <p href="#" class="sidebar-panel-item-title-filterlabel">Distance to Grid</p>
-            <div class="filter">
-              <div class="filter__slider" id="ogDistanceSlider"></div>
+      <div class="grid-x">
+        <div class="cell n_hide s_show v_show">
+          <div class="sidebar-panel sidebar-panel-content content-filter hidden-filter" name="clustersContent">
+            <div class="sidebar-panel-item sidebar-panel-item-filter">
+              <p href="#" class="sidebar-panel-item-title-filterlabel">Area</p>
+              <div class="filter">
+                <div class="filter__slider filterslider" id="areaSlider"></div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <div class="grid-x">
-      <div class="cell n_hide s_show v_show">
-        <div class="sidebar-panel sidebar-panel-content content-filter hidden-filter" name="ogClustersContent">
-          <div class="sidebar-panel-item">
-            <p href="#" class="sidebar-panel-item-title-filterlabel">Buildings</p>
-            <div class="filter">
-              <div class="filter__slider" id="ogBuildingsSlider"></div>
+      <div class="grid-x">
+        <div class="cell n_hide s_show v_show">
+          <div class="sidebar-panel sidebar-panel-content content-filter hidden-filter" name="clustersContent">
+            <div class="sidebar-panel-item">
+              <p href="#" class="sidebar-panel-item-title-filterlabel">Distance to Grid</p>
+              <div class="filter">
+                <div class="filter__slider" id="dtgSlider"></div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <div class="grid-x">
-      <div class="cell n_hide s_show v_show">
-        <div class="sidebar-panel sidebar-panel-content content-filter hidden-filter" name="ogClustersContent">
-          <div class="sidebar-panel-item">
-            <p href="#" class="sidebar-panel-item-title-filterlabel">Building Footprint in %</p>
-            <div class="filter">
-              <div class="filter__slider" id="ogBuildingsFootprintSlider"></div>
+      <div class="grid-x">
+        <div class="cell n_hide s_show v_show">
+          <div class="sidebar-panel sidebar-panel-content content-filter hidden-filter" name="clustersContent">
+            <div class="sidebar-panel-item sidebar-panel-item--download">
+              <div id="download_clusters" class="download__btn">
+                <button onclick="download_clusters_fun()">Download selection</button>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <div class="grid-x">
-      <div class="cell n_hide s_show v_show">
-        <div class="sidebar-panel sidebar-panel-content content-filter hidden-filter" name="ogClustersContent">
-          <div class="sidebar-panel-item  sidebar-panel-item--download">
-            <div id="download_ogClusters" class="download__btn">
-              <button onclick="download_clusters_fun()">Download selection</button>
+      {{ checkbox.input(id="ogClusters", label="Remotely mapped settlements", visible={'national': 'grey', 'state': 'show', 'village': 'show'}, filter_func=True) }}
+
+      <div class="grid-x">
+        <div class="cell n_hide s_show v_show">
+          <div class="sidebar-panel sidebar-panel-content content-filter hidden-filter sidebar-panel-filter-label" name="ogClustersContent">
+            <div class="sidebar-panel-item sidebar-panel-item-filter">
+              <p href="#" class="sidebar-panel-item-title sidebar-panel-item-title-filter">FILTERS</p>
             </div>
           </div>
         </div>
       </div>
+
+      <div class="grid-x">
+        <div class="cell n_hide s_show v_show">
+          <div class="sidebar-panel sidebar-panel-content content-filter hidden-filter" name="ogClustersContent">
+            <div class="sidebar-panel-item sidebar-panel-item-filter">
+              <p href="#" class="sidebar-panel-item-title-filterlabel">Area in km²</p>
+              <div class="filter">
+                <div class="filter__slider" id="ogAreaSlider"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-x">
+        <div class="cell n_hide s_show v_show">
+          <div class="sidebar-panel sidebar-panel-content content-filter hidden-filter" name="ogClustersContent">
+            <div class="sidebar-panel-item sidebar-panel-item-filter">
+              <p href="#" class="sidebar-panel-item-title-filterlabel">Distance to Grid</p>
+              <div class="filter">
+                <div class="filter__slider" id="ogDistanceSlider"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-x">
+        <div class="cell n_hide s_show v_show">
+          <div class="sidebar-panel sidebar-panel-content content-filter hidden-filter" name="ogClustersContent">
+            <div class="sidebar-panel-item">
+              <p href="#" class="sidebar-panel-item-title-filterlabel">Buildings</p>
+              <div class="filter">
+                <div class="filter__slider" id="ogBuildingsSlider"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-x">
+        <div class="cell n_hide s_show v_show">
+          <div class="sidebar-panel sidebar-panel-content content-filter hidden-filter" name="ogClustersContent">
+            <div class="sidebar-panel-item">
+              <p href="#" class="sidebar-panel-item-title-filterlabel">Building Footprint in %</p>
+              <div class="filter">
+                <div class="filter__slider" id="ogBuildingsFootprintSlider"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-x">
+        <div class="cell n_hide s_show v_show">
+          <div class="sidebar-panel sidebar-panel-content content-filter hidden-filter" name="ogClustersContent">
+            <div class="sidebar-panel-item  sidebar-panel-item--download">
+              <div id="download_ogClusters" class="download__btn">
+                <button onclick="download_clusters_fun()">Download selection</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="footer-maps" style="display:none" class="grid-x">
+        <div class="cell">
+          <p>Provided with the financial support of</p>
+        </div>
+        <div id="footer-maps-logos-eu-ger" class="cell medium-8">
+          <img src="{{ url_for('static', filename='logos/logo-1-eu.png') }}">
+          <img src="{{ url_for('static', filename='logos/logo-4-ger-coop.png') }}">
+        </div>
+        <div id="footer-maps-logos-giz" class="cell medium-4">
+            <img src="{{ url_for('static', filename='logos/logo-3-giz.png') }}">
+        </div>
+      </div>
+
     </div>
 
-  </div>
-
-  <div id="map" class="cell medium-10 large-9"></div>
-
-  <script src="{{ url_for('static', filename='js/jquery-3.4.1.min.js') }}"></script>
-  <script type="text/javascript">
+    <div id="map" class="cell medium-10 large-9"></div>
+    <script src="{{ url_for('static', filename='js/jquery-3.4.1.min.js') }}"></script>
+    <script type="text/javascript">
       var csrf_token = "{{ csrf_token() }}";
       $.ajaxSetup({
-          beforeSend: function(xhr, settings) {
-              if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
-                  xhr.setRequestHeader("X-CSRFToken", csrf_token);
-              }
+        beforeSend: function(xhr, settings) {
+          if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", csrf_token);
           }
+        }
       });
-  </script>
-  <script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
-  <script src="https://unpkg.com/leaflet.markercluster@1.3.0/dist/leaflet.markercluster-src.js" integrity="sha384-NAOEbWFcjnXc7U9GkULPhupHZNAbqru9dS3c+4ANYAwtFoVAWuVuMVDH0DIy4ESp" crossorigin=""></script>
-  <script src="https://unpkg.com/leaflet.vectorgrid@1.3.0/dist/Leaflet.VectorGrid.bundled.js" integrity="sha384-FON5fTjCTtPuBgUS1r2H/PGXstH0Rk23YKjZmB6qITkbFqBcqtey/rPo9eXwOWpx" crossorigin=""></script>
-  <script src="https://cdn.jsdelivr.net/npm/leaflet-sidebar-v2@3.0.2/js/leaflet-sidebar.min.js" integrity="sha384-LzTQ6yhqVy/ipjMq5MMk98mo0E64Wtu9K1Jm5OeKPolnqrlv3FMdc457RoOANGMb" crossorigin=""></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/wnumb/1.1.0/wNumb.min.js" integrity="sha384-9NhfMwMkkA6dDFEyj5CxOiYaL6KqLjKINTJkR7e5SlZthrndR9oB/SJsi5PBNnjw" crossorigin=""></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/11.0.3/nouislider.min.js" integrity="sha384-sxnhs+25aQQN+rABTQEEYOIX5CW20SBJyXt9oGMT5VDacFTTWGXKotTEAe8BUiwb" crossorigin=""></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/spin.js/2.3.2/spin.min.js" integrity="sha256-PieqE0QdEDMppwXrTzSZQr6tWFX3W5KkyRVyF1zN3eg=" crossorigin=""></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.Spin/1.1.2/leaflet.spin.min.js" integrity="sha256-js2Nm9/wX+Qv6K71Q276zHaO+/oeBmETJ/biagzb5go=" crossorigin=""></script>
-  <!-- local scripts -->
-  <script src="{{ url_for('static', filename='js/nigeria_states_availability.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/notnigeria.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/sidebar.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/layerstyles.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/layers.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/foundation.min.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/map.js') }}"></script>
+    </script>
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.3.0/dist/leaflet.markercluster-src.js" integrity="sha384-NAOEbWFcjnXc7U9GkULPhupHZNAbqru9dS3c+4ANYAwtFoVAWuVuMVDH0DIy4ESp" crossorigin=""></script>
+    <script src="https://unpkg.com/leaflet.vectorgrid@1.3.0/dist/Leaflet.VectorGrid.bundled.js" integrity="sha384-FON5fTjCTtPuBgUS1r2H/PGXstH0Rk23YKjZmB6qITkbFqBcqtey/rPo9eXwOWpx" crossorigin=""></script>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet-sidebar-v2@3.0.2/js/leaflet-sidebar.min.js" integrity="sha384-LzTQ6yhqVy/ipjMq5MMk98mo0E64Wtu9K1Jm5OeKPolnqrlv3FMdc457RoOANGMb" crossorigin=""></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/wnumb/1.1.0/wNumb.min.js" integrity="sha384-9NhfMwMkkA6dDFEyj5CxOiYaL6KqLjKINTJkR7e5SlZthrndR9oB/SJsi5PBNnjw" crossorigin=""></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/11.0.3/nouislider.min.js" integrity="sha384-sxnhs+25aQQN+rABTQEEYOIX5CW20SBJyXt9oGMT5VDacFTTWGXKotTEAe8BUiwb" crossorigin=""></script>
+    <!-- local scripts -->
+    <script src="{{ url_for('static', filename='js/Control.Loading.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/nigeria_states_availability.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/notnigeria.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/sidebar.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/layerstyles.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/layers.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/foundation.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/map.js') }}"></script>
+    <script type=text/javascript>
+      var stateCheckBox = document.getElementById("statesCheckbox")
+      {% if states_content is defined %}
+          var states_content = {{ states_content|safe }};
+      {% else %}
+          var states_content=false;
+      {% endif %}
+      if (states_content != stateCheckBox.checked){
+          stateCheckBox.click()
+      }
 
-      <script type=text/javascript>
-        var stateCheckBox = document.getElementById("statesCheckbox")
-        {% if states_content is defined %}
-            var states_content = {{ states_content|safe }};
-        {% else %}
-            var states_content=false;
-        {% endif %}
-        if (states_content != stateCheckBox.checked){
-            stateCheckBox.click()
-        }
+      var gCheckBox = document.getElementById("gridCheckbox")
+      {% if grid_content is defined %}
+          var grid_content = {{ grid_content|safe }};
+      {% else %}
+          var grid_content=false;
+      {% endif %}
 
-        var gCheckBox = document.getElementById("gridCheckbox")
-        {% if grid_content is defined %}
-            var grid_content = {{ grid_content|safe }};
-        {% else %}
-            var grid_content=false;
-        {% endif %}
-
-        if (grid_content != gCheckBox.checked){
-            gCheckBox.click()
-        }
+      if (grid_content != gCheckBox.checked){
+          gCheckBox.click()
+      }
 
     </script>
   </div>

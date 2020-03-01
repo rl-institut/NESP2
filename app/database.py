@@ -48,6 +48,168 @@ def get_state_codes():
 OG_CLUSTERS_COLUMNS = ('adm1_pcode', 'cluster_offgrid_id', 'area_km2',
     'building_count', 'percentage_building_area', 'grid_dist_km', 'geom')
 
+def filter_materialized_view(
+        engine,
+        view_name,
+        schema=None,
+        area=None,
+        distance_grid=None,
+        building=None,
+        buildingfp=None,
+        limit=None,
+        keys=None
+):
+    if schema is not None:
+        view_name = "{}.{}".format(schema, view_name)
+    if limit is None:
+        limit = ""
+    else:
+        limit = " LIMIT {}".format(limit)
+
+    filter_cond = ""
+
+    if area is not None:
+        key = "area_km2"
+        filter_cond = f" WHERE {view_name}.{key} > {area[0]} AND {view_name}.{key} < {area[1]}"
+
+    if distance_grid is not None:
+        key = "grid_dist_km"
+        if "WHERE" in filter_cond:
+            filter_cond = filter_cond + f" AND {view_name}.{key} > {distance_grid[0]} AND" \
+                                        f" {view_name}.{key} < {distance_grid[1]}"
+        else:
+            filter_cond = f" WHERE {view_name}.{key} > {distance_grid[0]} AND" \
+                          f" {view_name}.{key} < {distance_grid[1]}"
+
+    if building is not None:
+        key = "building_count"
+        if "WHERE" in filter_cond:
+            filter_cond = filter_cond + f" AND {view_name}.{key} > {building[0]} AND" \
+                                        f" {view_name}.{key} < {building[1]}"
+        else:
+            filter_cond = f" WHERE {view_name}.{key} > {building[0]} AND"\
+                          f" {view_name}.{key} < {building[1]}"
+
+    if buildingfp is not None:
+        key = "percentage_building_area"
+        if "WHERE" in filter_cond:
+            filter_cond = filter_cond + f" AND {view_name}.{key} > {buildingfp[0]} AND" \
+                                        f" {view_name}.{key} < {buildingfp[1]}"
+        else:
+            filter_cond = f" WHERE {view_name}.{key} > {buildingfp[0]} AND" \
+                          f" {view_name}.{key} < {buildingfp[1]}"
+
+    if keys is None:
+        columns = "*"
+    else:
+        columns = ", ".join(keys)
+    with engine.connect() as con:
+        query = 'SELECT {} FROM {}{}{};'.format(columns, view_name, filter_cond, limit)
+        rs = con.execute(query)
+        data = rs.fetchall()
+    return data
+
+
+def query_filtered_clusters(
+        state_name,
+        state_codes_dict,
+        area=None,
+        distance_grid=None,
+        limit=None,
+        keys=None
+):
+    """
+
+    :param state_name:
+    :param state_codes_dict:
+    :param area:
+    :param distance_grid:
+    :param limit:
+    :param keys:
+    :return:
+    """
+    if state_name in state_codes_dict:
+        view_name = "cluster_all_{}_mv".format(state_codes_dict[state_name])
+        answer = filter_materialized_view(
+            engine,
+            view_name,
+            schema="web",
+            area=area,
+            distance_grid=distance_grid,
+            limit=limit,
+            keys=keys
+        )
+    else:
+        print("Non existent state name: {}".format(state_name))
+        answer = []
+    return answer
+
+
+def query_filtered_og_clusters(
+        state_name,
+        state_codes_dict,
+        area=None,
+        distance_grid=None,
+        building=None,
+        buildingfp=None,
+        limit=None,
+        keys=None
+):
+    """
+
+    :param state_name:
+    :param state_codes_dict:
+    :param area:
+    :param distance_grid:
+    :param building:
+    :param buildingfp:
+    :param limit:
+    :param keys:
+    :return:
+    """
+    if state_name in state_codes_dict:
+        view_name = "cluster_offgrid_{}_mv".format(state_codes_dict[state_name])
+        answer = filter_materialized_view(
+            engine,
+            view_name,
+            schema="web",
+            area=area,
+            distance_grid=distance_grid,
+            building=building,
+            buildingfp=buildingfp,
+            limit=limit,
+            keys=keys
+        )
+    else:
+        print("Non existent state name: {}".format(state_name))
+        answer = []
+    return answer
+
+def get_number_of_entries(engine, view_code, schema="web", table_name="cluster_offgrid"):
+    """
+
+    :param engine:
+    :param view_code:
+    :param schema:
+    :return:
+    """
+
+    if schema is not None:
+        view_name = "{}.{}_{}_mv".format(schema, table_name, view_code)
+    with engine.connect() as con:
+        rs = con.execute('SELECT count(*) as n FROM {};'.format(view_name))
+        data = rs.fetchall()
+    return data[0].n
+
+
+def query_row_count_cluster(state_code):
+    return get_number_of_entries(engine, state_code, schema="web", table_name="cluster_all")
+
+
+def query_row_count_ogcluster(state_code):
+    return get_number_of_entries(engine, state_code, schema="web", table_name="cluster_offgrid")
+
+
 def get_random_og_cluster(engine, view_code, schema="web", limit=20):
     """Select a random cluster from a given view
 
