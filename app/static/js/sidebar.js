@@ -524,8 +524,33 @@ function nationalGrid_cb_fun() {
 
 function download_clusters_fun() {
   var export_csv_link = document.getElementById("export_csv")
-  export_csv_link.href = "/csv-export?state=" + selectedState + "&min_area=" + currentfilter.minarea +
-    "&max_area=" + currentfilter.maxarea
+
+  var checkBox = document.getElementById("clustersCheckbox");
+  // currently there are only two filters which are mutually exclusive
+  if (checkBox.checked == true){
+
+    export_csv_link.href = "/csv-export"
+    + "?state=" + selectedState
+    + "&cluster_type=cluster"
+    + "&min_area=" + currentfilter.minarea
+    + "&max_area=" + currentfilter.maxarea
+    + "&mindtg=" + currentfilter.mindtg
+    + "&maxdtg=" + currentfilter.maxdtg
+  }
+  else{
+
+    export_csv_link.href = "/csv-export"
+    + "?state=" + selectedState
+    + "&cluster_type=ogcluster"
+    + "&ogmin_area=" + currentfilter.ogminarea
+    + "&ogmax_area=" + currentfilter.ogmaxarea
+    + "&ogmindtg=" + currentfilter.ogmindtg
+    + "&ogmaxdtg=" + currentfilter.ogmaxdtg
+    + "&ogminb=" + currentfilter.ogminb
+    + "&ogmaxb=" + currentfilter.ogmaxb
+    + "&ogminbfp=" + currentfilter.ogminbfp
+    + "&ogmaxbfp=" + currentfilter.ogmaxbfp
+  }
   export_csv_link.click()
 }
 
