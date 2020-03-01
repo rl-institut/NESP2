@@ -186,6 +186,29 @@ def query_filtered_og_clusters(
         answer = []
     return answer
 
+def get_number_of_entries(engine, view_code, schema="web", table_name="cluster_offgrid"):
+    """
+
+    :param engine:
+    :param view_code:
+    :param schema:
+    :return:
+    """
+
+    if schema is not None:
+        view_name = "{}.{}_{}_mv".format(schema, table_name, view_code)
+    with engine.connect() as con:
+        rs = con.execute('SELECT count(*) as n FROM {};'.format(view_name))
+        data = rs.fetchall()
+    return data[0].n
+
+
+def query_row_count_cluster(state_code):
+    return get_number_of_entries(engine, state_code, schema="web", table_name="cluster_all")
+
+
+def query_row_count_ogcluster(state_code):
+    return get_number_of_entries(engine, state_code, schema="web", table_name="cluster_offgrid")
 
 
 def get_random_og_cluster(engine, view_code, schema="web", limit=20):
