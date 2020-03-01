@@ -42,6 +42,7 @@ Here is a template for new release sections
 - loading spinner (#174, #192)
 - clicking on village button will randomly select a cluster in a random state (#175)
 - clicking on state button will randomly select a state
+- ability to download the information about settlements clusters in a csv file (#156)
 
 ### Changed
 - availability info moved
