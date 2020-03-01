@@ -389,6 +389,7 @@ function adapt_view_to_state_level() {
 };
 
 function adapt_view_to_village_level() {
+  console.log("adapt_view_to_village_level");
   remove_layer(osm_gray);
   info.remove();
   add_layer(hot);
@@ -451,8 +452,7 @@ function village_button_fun(trigger="button") {
       };
       // Update the states menu list
       document.getElementById("stateSelect").value = selectedState;
-
-       adapt_view_to_state_level();
+      adapt_view_to_state_level();
   };
   if ((previous_level == "national" || previous_level == "state") && trigger == "button"){
     //TODO: pick a random cluster among the large ones and display it
@@ -460,8 +460,13 @@ function village_button_fun(trigger="button") {
     url: "/filter-cluster",
     dataType: "json",
     data: {"state_name": selectedState},
-    success: function(data){console.log(data);},
+    success: function(data){
+        console.log(data);
+        random_og_cluster_geojson.addData(data);
+    },
     }).done(function() {console.log("now done");});
+
+    //vt = ogClusterLayers[selectedState]._vectorTiles
   }
 
   adapt_view_to_village_level();
