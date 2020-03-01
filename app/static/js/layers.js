@@ -276,6 +276,22 @@ var nigeria_states_geojson = L.geoJSON(nigeria_states_simplified, {
 });
 
 
+function highlight_village(feature, layer) {
+    console.log(layer);
+    layer.on("click", function(e) {
+        console.log(e);
+        var bnds = e.target.getBounds();
+        console.log(bnds);
+        map.flyToBounds([
+        [bnds.getSouth(), bnds.getWest()],
+        [bnds.getNorth(), bnds.getEast()]
+        ]);
+    })
+    layer.fireEvent('click');
+}
+
+var random_og_cluster_geojson = L.geoJSON([], {onEachFeature: highlight_village});
+
 function zoomToSelectedState(newlySelected=true) {
   if (newlySelected == true) {
       nigeria_states_geojson.eachLayer(function(layer) {
