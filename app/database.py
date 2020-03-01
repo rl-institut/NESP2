@@ -105,7 +105,6 @@ def filter_materialized_view(
         columns = ", ".join(keys)
     with engine.connect() as con:
         query = 'SELECT {} FROM {}{}{};'.format(columns, view_name, filter_cond, limit)
-        print(query)
         rs = con.execute(query)
         data = rs.fetchall()
     return data
