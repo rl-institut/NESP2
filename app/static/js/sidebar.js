@@ -175,8 +175,9 @@ noUiSlider.create(ogAreaSlider, {
   ...sliderOptions,
   start: [0.1, 10],
   range: {
-    'min': 0,
-    'max': 10,
+    'min': [0, 0.01],
+    '70%': [0.5, 0.05],
+    'max': 3.5,
   }
 });
 ogAreaSlider.noUiSlider.on("change", changeogAreaSlider);
@@ -191,8 +192,10 @@ noUiSlider.create(ogDistanceSlider, {
   start: [5, 1000],
   ...sliderOptions,
   range: {
-    'min': 0,
-    'max': 1000,
+    'min': [0, 0.1],
+    '25%': [5, 0.5],
+    '75%': [10, 1],
+    'max': 50,
   }
 });
 ogDistanceSlider.noUiSlider.on("change", changeogDistanceSlider);
@@ -207,8 +210,11 @@ noUiSlider.create(ogBuildingsSlider, {
   start: [0, 5000],
   ...sliderOptions,
   range: {
-    'min': 0,
-    'max': 5000,
+    'min': [0, 1],
+    '10%': [10, 1],
+    '30%': [100, 10],
+    '80%': [1000, 100],
+    'max': 11000,
   }
 });
 ogBuildingsSlider.noUiSlider.on("change", changeogBuildingsSlider);
@@ -223,8 +229,10 @@ noUiSlider.create(ogBuildingsFootprintSlider, {
   start: [0, 0.8],
   ...sliderOptions,
   range: {
-    'min': 0,
-    'max': 0.8,
+    'min': [0, 0.01],
+    '50%': [0.1, 0.01],
+    '75%': [0.2, 0.05],
+    'max': 1,
   }
 });
 ogBuildingsFootprintSlider.noUiSlider.on("change", changeogBuildingsFootprintSlider);
