@@ -138,8 +138,11 @@ noUiSlider.create(areaSlider, {
   ...sliderOptions,
   start: [0.1, 10],
   range: {
-    'min': 0,
-    'max': 10,
+    'min': [0, 0.05],
+    '20%': [1, 0.5],
+    '70%': [10, 1],
+    '90%': [100, 100],
+    'max': 1100,
   },
 });
 areaSlider.noUiSlider.on("change", changeAreaSlider);
@@ -154,8 +157,10 @@ noUiSlider.create(dtgSlider, {
   ...sliderOptions,
   start: [0, 100],
   range: {
-    'min': 0,
-    'max': 100,
+    'min': [0, 0.1],
+    '20%': [1, 0.5],
+    '50%': [10, 1],
+    'max': 50,
   }
 });
 dtgSlider.noUiSlider.on("change", changedtgSlider);
