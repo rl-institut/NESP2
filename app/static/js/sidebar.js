@@ -138,8 +138,11 @@ noUiSlider.create(areaSlider, {
   ...sliderOptions,
   start: [0.1, 10],
   range: {
-    'min': 0,
-    'max': 10,
+    'min': [0, 0.05],
+    '40%': [1, 0.5],
+    '70%': [10, 1],
+    '90%': [100, 100],
+    'max': 1100,
   },
 });
 areaSlider.noUiSlider.on("change", changeAreaSlider);
@@ -154,8 +157,10 @@ noUiSlider.create(dtgSlider, {
   ...sliderOptions,
   start: [0, 100],
   range: {
-    'min': 0,
-    'max': 100,
+    'min': [0, 0.1],
+    '20%': [1, 0.5],
+    '50%': [10, 1],
+    'max': 50,
   }
 });
 dtgSlider.noUiSlider.on("change", changedtgSlider);
@@ -170,8 +175,9 @@ noUiSlider.create(ogAreaSlider, {
   ...sliderOptions,
   start: [0.1, 10],
   range: {
-    'min': 0,
-    'max': 10,
+    'min': [0, 0.01],
+    '70%': [0.5, 0.05],
+    'max': 3.5,
   }
 });
 ogAreaSlider.noUiSlider.on("change", changeogAreaSlider);
@@ -186,8 +192,10 @@ noUiSlider.create(ogDistanceSlider, {
   start: [5, 1000],
   ...sliderOptions,
   range: {
-    'min': 0,
-    'max': 1000,
+    'min': [0, 0.1],
+    '25%': [5, 0.5],
+    '75%': [10, 1],
+    'max': 50,
   }
 });
 ogDistanceSlider.noUiSlider.on("change", changeogDistanceSlider);
@@ -202,8 +210,11 @@ noUiSlider.create(ogBuildingsSlider, {
   start: [0, 5000],
   ...sliderOptions,
   range: {
-    'min': 0,
-    'max': 5000,
+    'min': [0, 1],
+    '10%': [10, 1],
+    '30%': [100, 10],
+    '80%': [1000, 100],
+    'max': 11000,
   }
 });
 ogBuildingsSlider.noUiSlider.on("change", changeogBuildingsSlider);
@@ -218,8 +229,10 @@ noUiSlider.create(ogBuildingsFootprintSlider, {
   start: [0, 0.8],
   ...sliderOptions,
   range: {
-    'min': 0,
-    'max': 0.8,
+    'min': [0, 0.01],
+    '50%': [0.1, 0.01],
+    '75%': [0.2, 0.05],
+    'max': 1,
   }
 });
 ogBuildingsFootprintSlider.noUiSlider.on("change", changeogBuildingsFootprintSlider);
