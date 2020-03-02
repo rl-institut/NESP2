@@ -343,6 +343,9 @@ function addFunctionsToClusterLayer(layer) {
       var type = "c";
       var ID = properties.cluster_all_id;
       var popup = '\
+      <div id="download_clusters" class="consecutive__btn">\
+        <button style="float:left" onclick="prev_selection_fun()"> < </button> <button style="float:right" onclick="next_selection_fun()"> > </button>\
+      </div>\
       <table>\
         <tr><td align="right"><b>ID</b>:</td><td>' + properties.cluster_all_id + '</td></tr>\
         <tr><td align="right"><b>Area</b>:</td><td>' + properties.area_km2 + '</td></tr>\
@@ -489,6 +492,9 @@ function addFunctionsToOGClusterLayer(layer) {
       var type = "c";
       var ID = properties.cluster_offgrid_id;
       var popup = '\
+      <div id="download_clusters" class="consecutive__btn">\
+        <button style="float:left" onclick="prev_selection_fun()"> < </button> <button style="float:right" onclick="next_selection_fun()"> > </button>\
+      </div>\
       <table>\
         <tr><td align="right"><b>Area</b>:</td><td>' + parseFloat(properties.area_km2).toFixed(2) + ' km2</td></tr>\
         <tr><td align="right"><b>Building Count</b>:</td><td>' + parseFloat(properties.building_count).toFixed(0) + '</td></tr>\
