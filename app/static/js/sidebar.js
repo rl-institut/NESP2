@@ -675,6 +675,14 @@ function buildingDensity_cb_fun() {
   }
 }
 
+function prev_selection_fun(){
+  console.log("previous");
+}
+
+function next_selection_fun(){
+  console.log("next");
+}
+
 function lga_cb_fun() {
   /*var checkBox = document.getElementById("lgaCheckbox");
   if (checkBox.checked == true){
