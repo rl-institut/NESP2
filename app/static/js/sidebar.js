@@ -756,23 +756,45 @@ function get_bbox_from_cluster_centroid(centroid){
   return(bbox);
 }
 
+var filtered_centroids_keys = [];
+var currently_featured_centroid_id = 0;
+var currently_featured_centroid_index = 0;
+
+function filter_centroid_keys(){
+  filtered_centroids_keys = [];
+  centroids = current_cluster_centroids[centroids_layer_id]._layers
+  const keys = Object.keys(current_cluster_centroids[centroids_layer_id]._layers);
+  // interates though cluster centroids and pushes keys of clusters that fal within filter settings to filtered_centroids_keys
+  for (const key of keys) {
+    if (
+        centroids[key].feature.properties.area_km2 > currentfilter.ogminarea && 
+        centroids[key].feature.properties.area_km2 < currentfilter.ogmaxarea &&
+        centroids[key].feature.properties.grid_dist_km > currentfilter.ogmindtg && 
+        centroids[key].feature.properties.grid_dist_km < currentfilter.ogmaxdtg && 
+        centroids[key].feature.properties.building_count > currentfilter.ogminb && 
+        centroids[key].feature.properties.building_count < currentfilter.ogmaxb &&
+        centroids[key].feature.properties.percentage_building_area > currentfilter.ogminbfp && 
+        centroids[key].feature.properties.percentage_building_area < currentfilter.ogmaxbfp
+    ){
+      filtered_centroids_keys.push(key);
+    }
+  }
+  console.log("filtered keys list:");
+  console.log(filtered_centroids_keys);
+}
+
 function next_selection_fun(){
   console.log("next");
-  var data = centroidsGroup._layers;
-  current_cluster_centroids = data;
+  current_cluster_centroids = centroidsGroup._layers;
   var centroid = Object();
   var list_of_centroids = {};
   var target = [[0,0][0,0]];
-  const keys = Object.keys(current_cluster_centroids[centroids_layer_id]._layers);
-  console.log(keys);
-  // iterate through cluster_centroids
-  for (const key of keys) {
-    centroid = (current_cluster_centroids[centroids_layer_id]._layers[key]);
-    target = get_bbox_from_cluster_centroid(centroid);
-  }
+  filter_centroid_keys();
+  // select next cluster and to zoom to its bounds
+  centroid = (current_cluster_centroids[centroids_layer_id]._layers[filtered_centroids_keys[currently_featured_centroid_index]]);
+  ++currently_featured_centroid_index;
+  target = get_bbox_from_cluster_centroid(centroid);
   map.flyToBounds(target);
-  //layers[id].feature.properties.bb_east
-  //console.log(current_cluster_centroids[centroids_layer_id]._layers);
 }
 
 function lga_cb_fun() {
