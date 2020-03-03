@@ -127,3 +127,6 @@ var notNigeriaStyle = {
   opacity: 1,
   weight: 2,
 };
+
+var points_style = {
+};

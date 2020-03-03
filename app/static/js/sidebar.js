@@ -18,6 +18,7 @@ var selectedState = "init";
 var selectedStateOptions = {bounds: null};
 var selectedLGA = "";
 var thirtythreeKV = "33_kV_" + selectedState.toLowerCase();
+var centroids_layer_id = -1;
 var currentfilter = {
   minarea: 0.1,
   maxarea: 10,
@@ -503,6 +504,8 @@ function state_dropdown_fun() {
     remove_layer(clusterLayer[selectedState]);
     //update the selected state
     selectedState = document.getElementById("stateSelect").value;
+    // update the centroids layer to the newly selected state
+    update_centroids_group();
     //Trigger the switch to state level
     state_button_fun(trigger="menu");
   }
@@ -678,6 +681,64 @@ function buildingDensity_cb_fun() {
 function prev_selection_fun(){
   console.log("previous");
 }
+
+
+// The following functions allow to asynchronously call geojson files and create a layer with them
+// Handling is made somewhat difficult: due to asynchronous nature of the call the data cannot simply
+// be stored in a variable. Therefore the data are used to create a geojson-layer in a layergroup.
+// The layer can then be selected via it's _leaflet_id
+
+// Function asynchronously calls geojsons with centroids of selected state
+function update_centroids_data(handleData){
+  // TODO implement title_to_snake()
+  var centroids_file_key = selectedState
+  if (selectedState == "init"){
+    centroids_file_key = "Kano";
+  }
+  $.ajax({
+    url: "/static/data/centroids/nesp2_state_offgrid_clusters_centroids_" + centroids_file_key.toLowerCase() + ".geojson",
+    dataType: "json",
+    success: function(data) {
+      // handleData allows this function to be called in another function
+      handleData(data);
+    },
+    error: function (xhr) {
+      alert(xhr.statusText)
+    }
+  })
+
+}
+
+// Function takes the data from update_centroids_data. Due to the asynchronous call they cannot simply be stored in a variable
+function update_centroids(){
+  update_centroids_data(function(output){
+    centroids = output;
+    // Creates a geojson-layer with the data
+    var centroids_layer = L.geoJSON(centroids, {
+    style: function(feature) {
+      return (points_style);
+    }
+  });
+  // add geojson-layer to a group
+  centroids_layer.addTo(centroidsGroup);
+  console.log("leaflet_id:")
+  console.log(centroids_layer._leaflet_id)
+  // store the _leaflet_id of the centroids layer in a variable. The layer can be called with this id.
+  centroids_layer_id = centroids_layer._leaflet_id;
+  });
+}
+
+// initial call of this function upon map start is necessary
+update_centroids();
+
+// function removes previous centroid layer
+function update_centroids_group(){
+  centroidsGroup.removeLayer(centroids_layer_id);
+  update_centroids();
+}
+
+// End of functions for asynchronous call
+
 
 function next_selection_fun(){
   console.log("next");
