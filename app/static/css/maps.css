@@ -446,12 +446,23 @@ button {
     line-height: 18pt;
 }
 
-#footer-maps-logos-eu-ger img{
-    text-align: left;
-    height: 7rem;
+#footer-maps-logos-eu-ger,
+#footer-maps-logos-giz {
+  text-align: center;
 }
 
-#footer-maps-logos-giz img{
-    text-align: right;
-    height: 4.09rem;
+#footer-maps .footer-maps__text {
+  text-align: center;
+}
+
+#footer-maps .footer-maps__text p {
+  font-size: 1rem;
+  padding-left: 0;
+}
+
+#footer-maps-logos-eu-ger img,
+#footer-maps-logos-giz img {
+  width: 45%;
+  min-width: 8rem;
+  max-width: 10rem;
 }
