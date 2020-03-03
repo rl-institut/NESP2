@@ -19,6 +19,7 @@ var selectedStateOptions = {bounds: null};
 var selectedLGA = "";
 var thirtythreeKV = "33_kV_" + selectedState.toLowerCase();
 var centroids_layer_id = -1;
+var current_cluster_centroids = Object();
 var currentfilter = {
   minarea: 0.1,
   maxarea: 10,
@@ -715,8 +716,14 @@ function update_centroids(){
     centroids = output;
     // Creates a geojson-layer with the data
     var centroids_layer = L.geoJSON(centroids, {
-    style: function(feature) {
-      return (points_style);
+    pointToLayer: function (feature, latlng) {
+        return L.circleMarker(latlng, {
+            interactive: false,
+            radius: 0,
+            weight: 5,
+            opacity: 0,
+            fillOpacity: 0,
+        });
     }
   });
   // add geojson-layer to a group
@@ -739,9 +746,33 @@ function update_centroids_group(){
 
 // End of functions for asynchronous call
 
+// functions takes in centroid from cluster-centroid-layer and returns its bounds from properties
+function get_bbox_from_cluster_centroid(centroid){
+  var north = centroid.feature.properties.bb_north;
+  var east = centroid.feature.properties.bb_east;
+  var south = centroid.feature.properties.bb_south;
+  var west = centroid.feature.properties.bb_west;
+  var bbox = [[south,west],[north,east]]
+  return(bbox);
+}
 
 function next_selection_fun(){
   console.log("next");
+  var data = centroidsGroup._layers;
+  current_cluster_centroids = data;
+  var centroid = Object();
+  var list_of_centroids = {};
+  var target = [[0,0][0,0]];
+  const keys = Object.keys(current_cluster_centroids[centroids_layer_id]._layers);
+  console.log(keys);
+  // iterate through cluster_centroids
+  for (const key of keys) {
+    centroid = (current_cluster_centroids[centroids_layer_id]._layers[key]);
+    target = get_bbox_from_cluster_centroid(centroid);
+  }
+  map.flyToBounds(target);
+  //layers[id].feature.properties.bb_east
+  //console.log(current_cluster_centroids[centroids_layer_id]._layers);
 }
 
 function lga_cb_fun() {
