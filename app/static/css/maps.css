@@ -94,13 +94,8 @@ body {
      line-height: 150%;
 }
 
-
-#map-content{
-    margin-top: 5px;
-}
-
 #map{
-    height: 1000px
+    height: 100vh;
 }
 
 .map-legend {
@@ -154,6 +149,7 @@ body {
 #sidebar {
 display: flex;
 flex-direction: column;
+padding-top: 1rem;
 }
 
 #sidebar .switch-paddle {
