@@ -43,6 +43,7 @@ Here is a template for new release sections
 - clicking on village button will randomly select a cluster in a random state (#175)
 - clicking on state button will randomly select a state
 - ability to download the information about settlements clusters in a csv file (#156)
+- add next and previous buttons (#194)
 
 ### Changed
 - Filter slider get reasonable steps (#167)
