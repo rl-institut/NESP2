@@ -20,6 +20,8 @@ var selectedLGA = "";
 var thirtythreeKV = "33_kV_" + selectedState.toLowerCase();
 var centroids_layer_id = -1;
 var current_cluster_centroids = Object();
+var filtered_centroids_keys = [];
+var currently_featured_centroid_id = 0;
 var currentfilter = {
   minarea: 0.1,
   maxarea: 10,
@@ -750,9 +752,6 @@ function get_bbox_from_cluster_centroid(centroid){
   var bbox = [[south,west],[north,east]]
   return(bbox);
 }
-
-var filtered_centroids_keys = [];
-var currently_featured_centroid_id = 0;
 
 //function updates the list of cluster keys in filtered_centroids_keys
 function filter_centroid_keys(){
