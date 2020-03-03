@@ -679,11 +679,6 @@ function buildingDensity_cb_fun() {
   }
 }
 
-function prev_selection_fun(){
-  console.log("previous");
-}
-
-
 // The following functions allow to asynchronously call geojson files and create a layer with them
 // Handling is made somewhat difficult: due to asynchronous nature of the call the data cannot simply
 // be stored in a variable. Therefore the data are used to create a geojson-layer in a layergroup.
@@ -758,13 +753,13 @@ function get_bbox_from_cluster_centroid(centroid){
 
 var filtered_centroids_keys = [];
 var currently_featured_centroid_id = 0;
-var currently_featured_centroid_index = 0;
 
+//function updates the list of cluster keys in filtered_centroids_keys
 function filter_centroid_keys(){
   filtered_centroids_keys = [];
   centroids = current_cluster_centroids[centroids_layer_id]._layers
   const keys = Object.keys(current_cluster_centroids[centroids_layer_id]._layers);
-  // interates though cluster centroids and pushes keys of clusters that fal within filter settings to filtered_centroids_keys
+  // interates though cluster centroids and pushes keys of clusters that fal within filter settings
   for (const key of keys) {
     if (
         centroids[key].feature.properties.area_km2 > currentfilter.ogminarea && 
@@ -791,10 +786,50 @@ function next_selection_fun(){
   var target = [[0,0][0,0]];
   filter_centroid_keys();
   // select next cluster and to zoom to its bounds
-  centroid = (current_cluster_centroids[centroids_layer_id]._layers[filtered_centroids_keys[currently_featured_centroid_index]]);
-  ++currently_featured_centroid_index;
+  // if currently no centroid has been selected, set the selection to the first cluster and fly there
+  if(filtered_centroids_keys.indexOf(currently_featured_centroid_id) == -1){
+    currently_featured_centroid_id = filtered_centroids_keys[0];
+    centroid = (current_cluster_centroids[centroids_layer_id]._layers[currently_featured_centroid_id]);
+    target = get_bbox_from_cluster_centroid(centroid);
+    map.flyToBounds(target);
+  }
+  // else if the selected centroid is the last one, keep it selected
+  else if (filtered_centroids_keys.indexOf(currently_featured_centroid_id) == filtered_centroids_keys.length -1){
+    console.log("last element")
+  }
+  // else set the selected centroid to be the next one via index
+  else{currently_featured_centroid_id = filtered_centroids_keys[filtered_centroids_keys.indexOf(currently_featured_centroid_id) + 1 ];
+  centroid = (current_cluster_centroids[centroids_layer_id]._layers[currently_featured_centroid_id]);
   target = get_bbox_from_cluster_centroid(centroid);
-  map.flyToBounds(target);
+  map.flyToBounds(target);}
+}
+
+function prev_selection_fun(){
+  console.log("previous");
+  current_cluster_centroids = centroidsGroup._layers;
+  var centroid = Object();
+  var list_of_centroids = {};
+  var target = [[0,0][0,0]];
+  filter_centroid_keys();
+  // if currently no centroid has been selected, set the selection to the first cluster
+  if(filtered_centroids_keys.indexOf(currently_featured_centroid_id) == -1){
+    currently_featured_centroid_id = filtered_centroids_keys[0];
+    centroid = (current_cluster_centroids[centroids_layer_id]._layers[currently_featured_centroid_id]);
+    target = get_bbox_from_cluster_centroid(centroid);
+    map.flyToBounds(target);
+  }
+  // else if the selected centroid is the first one, keep it selected
+  else if (filtered_centroids_keys.indexOf(currently_featured_centroid_id) == 0){
+    currently_featured_centroid_id = filtered_centroids_keys[0]; 
+    console.log("first element")
+  }
+  // else set the selected centroid to be the previous one via index
+  else{currently_featured_centroid_id = filtered_centroids_keys[filtered_centroids_keys.indexOf(currently_featured_centroid_id) - 1 ]; 
+    // select the next centroid and fly to its bounds
+    centroid = (current_cluster_centroids[centroids_layer_id]._layers[currently_featured_centroid_id]);
+    target = get_bbox_from_cluster_centroid(centroid);
+    map.flyToBounds(target);
+  }
 }
 
 function lga_cb_fun() {
