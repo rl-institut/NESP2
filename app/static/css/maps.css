@@ -226,7 +226,8 @@ padding-top: 1rem;
 }
 
 .download__btn button {
-  width: 40%;
+  width: auto;
+  margin-left: 1rem;
   font-size: 10pt;
   font-weight: bold;
   padding: 12px 30px 12px 30px;
@@ -239,7 +240,7 @@ padding-top: 1rem;
 
 .filter {
   display: inline;
-  width: 15rem;
+  width: 45%;
   margin-top: .5rem;
   float: right;
   /*white-space: nowrap;
