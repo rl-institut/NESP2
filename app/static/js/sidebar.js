@@ -818,12 +818,12 @@ function update_cluster_info(){
         <button style="float:right" onclick="next_selection_fun()"> > </button>\
       </div>\
       <table>\
-        <tr><td align="right"><b>Area</b>:</td><td>' + centroid_info.area_km2 + ' km2</td></tr>\
-        <tr><td align="right"><b>Building Count</b>:</td><td>' + centroid_info.building_count + '</td></tr>\
-        <tr><td align="right"><b>Building Area in km²</b>:</td><td>' + centroid_info.building_area_km2 + '</td></tr>\
-        <tr><td align="right"><b>Buildings per km²</b>:</td><td>' + centroid_info.building_count_density_perkm2 + '</td></tr>\
-        <tr><td align="right"><b>Percentage Building Area</b>:</td><td>' + centroid_info.percentage_building_area + '</td></tr>\
-        <tr><td align="right"><b>Distance to Grid in km</b>:</td><td>' + centroid_info.grid_dist_km + '</td></tr>\
+        <tr><td align="right"><b>Area</b>:</td><td>' + parseFloat(centroid_info.area_km2).toFixed(2) + ' km2</td></tr>\
+        <tr><td align="right"><b>Building Count</b>:</td><td>' + parseFloat(centroid_info.building_count).toFixed(0) + '</td></tr>\
+        <tr><td align="right"><b>Building Area in km²</b>:</td><td>' + parseFloat(centroid_info.building_area_km2).toFixed(3) + '</td></tr>\
+        <tr><td align="right"><b>Buildings per km²</b>:</td><td>' + parseFloat(centroid_info.building_count_density_perkm2).toFixed(0) + '</td></tr>\
+        <tr><td align="right"><b>Percentage Building Area</b>:</td><td>' + parseFloat(centroid_info.percentage_building_area).toFixed(2) + '</td></tr>\
+        <tr><td align="right"><b>Distance to Grid in km</b>:</td><td>' + parseFloat(centroid_info.grid_dist_km).toFixed(1) + '</td></tr>\
       </table>';
 
   clusterInfo.remove();
