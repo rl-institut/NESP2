@@ -1,4 +1,27 @@
 /* custom CSS */
+.leaflet-bottom.leaflet-left .leaflet-control {
+  padding-left: 0;
+  margin-left: 1rem;
+  background-color: #eeeff1;
+}
+
+.leaflet-bottom.leaflet-left .leaflet-control h4 {
+  padding-left: .5rem;
+  padding-right: .5rem;
+  padding-top: .5rem;
+  text-align: center;
+}
+
+.leaflet-bottom.leaflet-left .selection_detail {
+  padding-left: 0;
+  margin-left: 0;
+  margin-bottom: 0;
+}
+
+.leaflet-bottom.leaflet-left {
+  
+}
+
 .map-legend {
   padding: 1rem 1rem;
 }
@@ -94,13 +117,8 @@ body {
      line-height: 150%;
 }
 
-
-#map-content{
-    margin-top: 5px;
-}
-
 #map{
-    height: 1000px
+    height: 100vh;
 }
 
 .map-legend {
@@ -154,6 +172,7 @@ body {
 #sidebar {
 display: flex;
 flex-direction: column;
+padding-top: 1rem;
 }
 
 #sidebar .switch-paddle {
