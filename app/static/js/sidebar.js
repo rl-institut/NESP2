@@ -787,6 +787,30 @@ function filter_centroid_keys(){
   console.log(filtered_centroids_keys);
 }
 
+function update_cluster_info(){
+      var control_content = '\
+      <div id="download_clusters" class="consecutive__btn">\
+        <button style="float:left" onclick="prev_selection_fun()"> < </button> \
+        ' + (filtered_centroids_keys.indexOf(currently_featured_centroid_id) + 1) + ' / ' + filtered_centroids_keys.length + ' \
+        <button style="float:right" onclick="next_selection_fun()"> > </button>\
+      </div>\
+      <table>\
+        <tr><td align="right"><b>Area</b>:</td><td>' + 1 + ' km2</td></tr>\
+        <tr><td align="right"><b>Building Count</b>:</td><td>' + 1 + '</td></tr>\
+        <tr><td align="right"><b>Building Area in km²</b>:</td><td>' + 1 + '</td></tr>\
+        <tr><td align="right"><b>Buildings per km²</b>:</td><td>' + 1 + '</td></tr>\
+        <tr><td align="right"><b>Percentage Building Area</b>:</td><td>' + 1 + '</td></tr>\
+        <tr><td align="right"><b>Distance to Grid in km</b>:</td><td>' + 1 + '</td></tr>\
+      </table>';
+
+  clusterInfo.remove();
+  clusterInfo.update = function() {
+    this._div.innerHTML = control_content;
+    this._div.innerHTML;
+  };
+  clusterInfo.addTo(map);
+}
+
 function next_selection_fun(){
   console.log("next");
   current_cluster_centroids = centroidsGroup._layers;
@@ -811,6 +835,7 @@ function next_selection_fun(){
   centroid = (current_cluster_centroids[centroids_layer_id]._layers[currently_featured_centroid_id]);
   target = get_bbox_from_cluster_centroid(centroid);
   map.flyToBounds(target);}
+  update_cluster_info();
 }
 
 function prev_selection_fun(){
@@ -839,6 +864,7 @@ function prev_selection_fun(){
     target = get_bbox_from_cluster_centroid(centroid);
     map.flyToBounds(target);
   }
+  update_cluster_info();
 }
 
 function lga_cb_fun() {
