@@ -27,15 +27,15 @@
 
   <div id="map-content" class="grid-x">
     <div id="sidebar" class="cell medium-10 large-3" data-sticky-container>
-      <div id="header-maps" style="display:none" class="grid-x">
-        <div id="header-maps-blitz-div" class="cell small-10">
+      <div id="header-maps" class="grid-x">
+        <div id="header-maps-blitz-div" class="cell small-9">
           <a href="{{ url_for('landing')}}">
             <img src="{{ url_for('static', filename='logos/logo-5-blitz.png') }}">
             <h2>Nigeria Se4All</h2>
           </a>
         </div>
-        <div id="header-maps-logo-nigeria" class="cell small-2">
-              <img src="{{ url_for('static', filename='logos/logo-2-crest.png') }}">
+        <div id="header-maps-logo-nigeria" class="cell small-3">
+          <img src="{{ url_for('static', filename='logos/logo-2-crest.png') }}">
         </div>
       </div>
       <div class="grid-x sidebar-levels">
@@ -114,7 +114,6 @@
       {{ checkbox.input(id="heatmap", label="Identified settlements by satellite imagery", visible={'national': 'show'}) }}
 
       {{ checkbox.input(id="clusters", label="Identified settlements by satellite imagery", visible={'state': 'show', 'village': 'show'}, filter_func=True) }}
-
 
       <div class="grid-x">
         <div class="cell n_hide s_show v_show">
@@ -240,16 +239,17 @@
         </div>
       </div>
 
-      <div id="footer-maps" style="display:none" class="grid-x">
-        <div class="cell">
+      <div id="footer-maps" class="grid-x">
+        <div class="cell footer-maps__text">
           <p>Provided with the financial support of</p>
         </div>
-        <div id="footer-maps-logos-eu-ger" class="cell medium-8">
-          <img src="{{ url_for('static', filename='logos/logo-1-eu.png') }}">
-          <img src="{{ url_for('static', filename='logos/logo-4-ger-coop.png') }}">
+        <div id="footer-maps-logos-eu-ger" class="cell">
+          <img class="footer-maps-logos__eu" src="{{ url_for('static', filename='logos/logo-1-eu.png') }}">
+          <img class="footer-maps-logos__coop" src="{{ url_for('static', filename='logos/logo-4-ger-coop.png') }}">
+          <img class="footer-maps-logos__giz" src="{{ url_for('static', filename='logos/logo-3-giz.png') }}">
         </div>
-        <div id="footer-maps-logos-giz" class="cell medium-4">
-            <img src="{{ url_for('static', filename='logos/logo-3-giz.png') }}">
+        <div id="footer-maps-logos-giz" class="cell">
+            
         </div>
       </div>
 
