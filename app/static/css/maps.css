@@ -479,9 +479,14 @@ button {
   padding-left: 0;
 }
 
-#footer-maps-logos-eu-ger img,
-#footer-maps-logos-giz img {
-  width: 45%;
-  min-width: 8rem;
-  max-width: 10rem;
+img.footer-maps-logos__eu {
+  width: 10rem;
+}
+
+img.footer-maps-logos__coop {
+  width: 10rem;
+}
+
+img.footer-maps-logos__giz {
+  width: 6.87rem; /* = 10rem * 0.687 w_coop (w_g = 0.687 w_coop) */
 }
