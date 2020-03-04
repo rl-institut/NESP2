@@ -811,6 +811,10 @@ function update_cluster_info(){
       var centroid = get_centroid_by_id(currently_featured_centroid_id);
       var centroid_info = get_centroid_info(centroid);
       console.log(centroid_info);
+      var control_content = ''
+
+      //if activated clusters are off-grid-clusters
+      if (centroid_info.hasOwnProperty('percentage_building_area')){
       var control_content = '\
       <div id="download_clusters" class="consecutive__btn">\
         <button style="float:left" onclick="prev_selection_fun()"> < </button> \
@@ -825,6 +829,19 @@ function update_cluster_info(){
         <tr><td align="right"><b>Percentage Building Area</b>:</td><td>' + parseFloat(centroid_info.percentage_building_area).toFixed(2) + '</td></tr>\
         <tr><td align="right"><b>Distance to Grid in km</b>:</td><td>' + parseFloat(centroid_info.grid_dist_km).toFixed(1) + '</td></tr>\
       </table>';
+      }
+      //if activated clusters are all-clusters
+      else if (centroid_info.hasOwnProperty('cluster_all_id')){
+      var control_content = '\
+      <div id="download_clusters" class="consecutive__btn">\
+        <button style="float:left" onclick="prev_selection_fun()"> < </button> <button style="float:right" onclick="next_selection_fun()"> > </button>\
+      </div>\
+      <table>\
+        <tr><td align="right"><b>ID</b>:</td><td>' + centroid_info.cluster_all_id + '</td></tr>\
+        <tr><td align="right"><b>Area</b>:</td><td>' + centroid_info.area_km2 + '</td></tr>\
+        <tr><td align="right"><b>Distance to Grid</b>:</td><td>' + parseFloat(centroid_info.grid_dist_km).toFixed(2) + ' km2</td></tr>\
+      </table>';
+      }
 
   clusterInfo.remove();
   clusterInfo.update = function() {
