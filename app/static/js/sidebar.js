@@ -370,7 +370,7 @@ function adapt_view_to_state_level(previous_level, trigger) {
   };
 
   map.options.minZoom = 8;
-  map.options.maxZoom = 19;
+  map.options.maxZoom = 18;
   map.options.zoomSnap = 1,
 
   legend.remove();
