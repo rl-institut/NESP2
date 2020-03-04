@@ -84,12 +84,16 @@
 }
 
 .sidebar-panel-item {
+  padding-top: 1rem;
   padding-right: 1.5rem;
+  padding-bottom: 1rem;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .sidebar-panel-item-icon {
   width: 2rem;
-  float: right;
+  text-align: center;
 }
 
 .sidebar-panel-item-icon img {
@@ -205,7 +209,7 @@ padding-top: 1rem;
   width: 100%;
   font-size: 10pt;
   font-weight: bold;
-  padding: 12px 30px 12px 30px;
+  padding: .75rem .5rem;
   border-radius: 4px;
   cursor: pointer;
   background-color: #eeeff1;
@@ -222,7 +226,8 @@ padding-top: 1rem;
 }
 
 .download__btn button {
-  width: 40%;
+  width: auto;
+  margin-left: 1rem;
   font-size: 10pt;
   font-weight: bold;
   padding: 12px 30px 12px 30px;
@@ -235,7 +240,7 @@ padding-top: 1rem;
 
 .filter {
   display: inline;
-  width: 15rem;
+  width: 45%;
   margin-top: .5rem;
   float: right;
   /*white-space: nowrap;
@@ -279,15 +284,13 @@ button {
   font-family: Helvetica, Arial, sans-serif;
 }
 
-.sidebar-panel-item {
-  height: 3rem;
-  padding-top: 1rem;
-}
-
 .sidebar-panel-item-title {
   padding-left: 2.75rem;
   color: #464646;
-  display: inline;
+}
+
+p.sidebar-panel-item-title {
+  margin-bottom: 0;
 }
 
 .sidebar-panel-item-title-filter {
@@ -304,7 +307,7 @@ button {
 }
 
 .sidebar-panel-item-filter {
-  height: 3.5rem;
+  height: auto;
   padding-top: 1rem;
 }
 
@@ -327,6 +330,7 @@ button {
 
 .sidebar-panel-item-button {
   float: right;
+  transform: translateY(3px);
 }
 
 .sidebar-panel-content {
