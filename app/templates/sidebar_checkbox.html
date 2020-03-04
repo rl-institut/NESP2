@@ -1,27 +1,4 @@
  {% macro input(id, label, visible=['national', 'state', 'village'],filter_func=False, help_text="") -%}
-
- <!--
-    <div class="grid-x" title="{{ label if help_text == '' else help_text }}">
-      <div class="cell {{ assign_visibility(visible) }}">
-        <div class="sidebar-panel">
-          <div class="sidebar-panel-item is-active" id="{{ id }}Panel" data-accordion-item>
-            <p href="#" class="sidebar-panel-item-title">{{ label }}</p>
-            <div class="sidebar-panel-item-button">
-              <input class="switch-input" id="{{ id }}Checkbox" type="checkbox" onclick="{{ id }}_cb_fun()">
-              <label class="switch-paddle" for="{{ id }}Checkbox">
-              </label>
-            </div>
-            {% if filter_func %}
-            <div class="sidebar-panel-item-icon">
-              <img onclick="{{ id }}_filter_fun()" id="{{ id }}_filter" src="{{ url_for('static', filename='img/icons/i_funnel_gray.svg') }}">
-            </div>
-            {% endif %}
-          </div>
-        </div>
-      </div>
-    </div>
-  -->
-
     <div class="grid-x" title="{{ label if help_text == '' else help_text }}">
       <div class="cell sidebar-panel {{ assign_visibility(visible) }}">
         <div class="grid-x sidebar-panel-item is-active" id="{{ id }}Panel" data-accordion-item>
