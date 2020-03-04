@@ -11,6 +11,7 @@ var options = {
   ]
 };
 var map = L.map("map", options);
+map.fitBounds(L.latLngBounds(L.latLng(15, 17), L.latLng(2.4, 0.85)))
 var level = "national";
 var previous_level = level;
 var statesList = ["Abia", "Adamawa", "Akwa Ibom", "Anambra", "Bauchi", "Bayelsa", "Benue", "Borno", "Cross River", "Delta", "Ebonyi", "Edo", "Ekiti", "Enugu", "Federal Capital Territory", "Gombe", "Imo", "Jigawa", "Kaduna", "Kano", "Katsina", "Kebbi", "Kogi", "Kwara", "Lagos", "Nasarawa", "Niger", "Ogun", "Ondo", "Osun", "Oyo", "Plateau", "Rivers", "Sokoto", "Taraba", "Yobe", "Zamfara"];
@@ -140,8 +141,11 @@ noUiSlider.create(areaSlider, {
   ...sliderOptions,
   start: [0.1, 10],
   range: {
-    'min': 0,
-    'max': 10,
+    'min': [0, 0.05],
+    '40%': [1, 0.5],
+    '70%': [10, 1],
+    '90%': [100, 100],
+    'max': 1100,
   },
 });
 areaSlider.noUiSlider.on("change", changeAreaSlider);
@@ -156,8 +160,10 @@ noUiSlider.create(dtgSlider, {
   ...sliderOptions,
   start: [0, 100],
   range: {
-    'min': 0,
-    'max': 100,
+    'min': [0, 0.1],
+    '20%': [1, 0.5],
+    '50%': [10, 1],
+    'max': 50,
   }
 });
 dtgSlider.noUiSlider.on("change", changedtgSlider);
@@ -172,8 +178,9 @@ noUiSlider.create(ogAreaSlider, {
   ...sliderOptions,
   start: [0.1, 10],
   range: {
-    'min': 0,
-    'max': 10,
+    'min': [0, 0.01],
+    '70%': [0.5, 0.05],
+    'max': 3.5,
   }
 });
 ogAreaSlider.noUiSlider.on("change", changeogAreaSlider);
@@ -188,8 +195,10 @@ noUiSlider.create(ogDistanceSlider, {
   start: [5, 1000],
   ...sliderOptions,
   range: {
-    'min': 0,
-    'max': 1000,
+    'min': [0, 0.1],
+    '25%': [5, 0.5],
+    '75%': [10, 1],
+    'max': 50,
   }
 });
 ogDistanceSlider.noUiSlider.on("change", changeogDistanceSlider);
@@ -204,8 +213,11 @@ noUiSlider.create(ogBuildingsSlider, {
   start: [0, 5000],
   ...sliderOptions,
   range: {
-    'min': 0,
-    'max': 5000,
+    'min': [0, 1],
+    '10%': [10, 1],
+    '30%': [100, 10],
+    '80%': [1000, 100],
+    'max': 11000,
   }
 });
 ogBuildingsSlider.noUiSlider.on("change", changeogBuildingsSlider);
@@ -220,8 +232,10 @@ noUiSlider.create(ogBuildingsFootprintSlider, {
   start: [0, 0.8],
   ...sliderOptions,
   range: {
-    'min': 0,
-    'max': 0.8,
+    'min': [0, 0.01],
+    '50%': [0.1, 0.01],
+    '75%': [0.2, 0.05],
+    'max': 1,
   }
 });
 ogBuildingsFootprintSlider.noUiSlider.on("change", changeogBuildingsFootprintSlider);
@@ -518,7 +532,7 @@ function heatmap_cb_fun() {
     document.getElementById("heatmapPanel").style.borderLeft = '.25rem solid #1DD069';
     add_layer(national_heatmap);
   } else {
-    document.getElementById("heatmapPanel").style.borderLeft = '0rem';
+    document.getElementById("heatmapPanel").style.borderLeft = '.25rem solid #eeeff1';
     remove_layer(national_heatmap);
     national_heatmap.bringToFront();
   }
@@ -531,7 +545,7 @@ function nationalGrid_cb_fun() {
     document.getElementById("nationalGridPanel").style.borderLeft = '.25rem solid #1DD069';
     add_layer(national_grid);
   } else {
-    document.getElementById("nationalGridPanel").style.borderLeft = '0rem';
+    document.getElementById("nationalGridPanel").style.borderLeft = '.25rem solid #eeeff1';
     remove_layer(national_grid);
   }
 }
@@ -581,7 +595,7 @@ function clusters_cb_fun() {
     }
     add_layer(clusterLayer[selectedState]);
   } else {
-    document.getElementById("clustersPanel").style.borderLeft = '0rem';
+    document.getElementById("clustersPanel").style.borderLeft = '.25rem solid #eeeff1';
     remove_layer(clusterLayer[selectedState]);
     // Close the filters if they were available
     clusters_filter_fun();
@@ -645,7 +659,7 @@ function ogClusters_cb_fun() {
     add_layer(ogClusterLayers[selectedState]);
 
   } else {
-    document.getElementById("ogClustersPanel").style.borderLeft = '.0rem';
+    document.getElementById("ogClustersPanel").style.borderLeft = '.25rem solid #eeeff1';
     remove_layer(ogClusterLayers[selectedState]);
     // Close the filters if they were available
     ogClusters_filter_fun();
@@ -664,7 +678,7 @@ function grid_cb_fun() {
     document.getElementById("gridPanel").style.borderLeft = '.25rem solid #1DD069';
     add_layer(grid_layer);
   } else {
-    document.getElementById("gridPanel").style.borderLeft = '0rem';
+    document.getElementById("gridPanel").style.borderLeft = '.25rem solid #eeeff1';
     remove_layer(grid_layer);
   }
 

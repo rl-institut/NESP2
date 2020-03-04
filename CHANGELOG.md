@@ -45,6 +45,7 @@ Here is a template for new release sections
 - ability to download the information about settlements clusters in a csv file (#156)
 
 ### Changed
+- Filter slider get reasonable steps (#167)
 - availability info moved
 - level buttons indicate status (#9)
 - level buttons control options (#10)
@@ -72,6 +73,7 @@ Here is a template for new release sections
 ### Removed
 - redundant accordion menu (#10)
 - redundant onclick function for nigeria_states_geojson layer (#108)
+- outline around components after being clicked on (#202)
 
 
 ## [0.0.1] 2019-11-11
