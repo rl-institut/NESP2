@@ -245,6 +245,8 @@ function highlight_state(feature, layer) {
       remove_layer(ogClusterLayers[selectedState]);
       remove_layer(clusterLayer[selectedState]);
       selectedState = feature.properties["name"];
+      // Update the centroids layer to enable cluster click-through
+      update_centroids_group();
       // Update the dropdown menu for state selection
       document.getElementById("stateSelect").value = selectedState;
       // Trigger the switch to state level
