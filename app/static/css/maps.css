@@ -492,3 +492,23 @@ img.footer-maps-logos__coop {
 img.footer-maps-logos__giz {
   width: 6.87rem; /* = 10rem * 0.687 w_coop (w_g = 0.687 w_coop) */
 }
+
+.sidebar-accordion {
+  max-height: 55vh;
+  overflow-y: scroll;
+}
+
+@media only screen and (min-width: 1024px) and (max-width: 1300px) {
+  #sidebar {
+    width: 33%;
+  }
+  #map {
+    width: 67%;
+  }
+}
+
+@media screen and (min-width: 1024px) and ( max-height: 800px ) {
+  .sidebar-accordion {
+    max-height: 45vh;
+  }
+}
