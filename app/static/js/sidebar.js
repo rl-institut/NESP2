@@ -763,11 +763,31 @@ function get_bbox_from_cluster_centroid(centroid){
   return(bbox);
 }
 
+
+function set_current_cluster_centroids(){
+  current_cluster_centroids = centroidsGroup._layers;
+}
+
+function get_current_centroids_from_layer(){
+  centroids = current_cluster_centroids[centroids_layer_id]._layers;
+  return(centroids);
+}
+
+function get_centroid_by_id(centroid_id){
+  centroid = current_cluster_centroids[centroids_layer_id]._layers[centroid_id];
+  return(centroid);
+}
+
+function get_centroid_info(centroid){
+  info = centroid.feature.properties;
+  return(info);
+}
+
 //function updates the list of cluster keys in filtered_centroids_keys
 function filter_centroid_keys(){
   filtered_centroids_keys = [];
-  centroids = current_cluster_centroids[centroids_layer_id]._layers
-  const keys = Object.keys(current_cluster_centroids[centroids_layer_id]._layers);
+  centroids = get_current_centroids_from_layer();
+  const keys = Object.keys(centroids);
   // interates though cluster centroids and pushes keys of clusters that fal within filter settings
   for (const key of keys) {
     if (
@@ -788,6 +808,9 @@ function filter_centroid_keys(){
 }
 
 function update_cluster_info(){
+      var centroid = get_centroid_by_id(currently_featured_centroid_id);
+      var centroid_info = get_centroid_info(centroid);
+      console.log(centroid_info);
       var control_content = '\
       <div id="download_clusters" class="consecutive__btn">\
         <button style="float:left" onclick="prev_selection_fun()"> < </button> \
@@ -795,12 +818,12 @@ function update_cluster_info(){
         <button style="float:right" onclick="next_selection_fun()"> > </button>\
       </div>\
       <table>\
-        <tr><td align="right"><b>Area</b>:</td><td>' + 1 + ' km2</td></tr>\
-        <tr><td align="right"><b>Building Count</b>:</td><td>' + 1 + '</td></tr>\
-        <tr><td align="right"><b>Building Area in km²</b>:</td><td>' + 1 + '</td></tr>\
-        <tr><td align="right"><b>Buildings per km²</b>:</td><td>' + 1 + '</td></tr>\
-        <tr><td align="right"><b>Percentage Building Area</b>:</td><td>' + 1 + '</td></tr>\
-        <tr><td align="right"><b>Distance to Grid in km</b>:</td><td>' + 1 + '</td></tr>\
+        <tr><td align="right"><b>Area</b>:</td><td>' + centroid_info.area_km2 + ' km2</td></tr>\
+        <tr><td align="right"><b>Building Count</b>:</td><td>' + centroid_info.building_count + '</td></tr>\
+        <tr><td align="right"><b>Building Area in km²</b>:</td><td>' + centroid_info.building_area_km2 + '</td></tr>\
+        <tr><td align="right"><b>Buildings per km²</b>:</td><td>' + centroid_info.building_count_density_perkm2 + '</td></tr>\
+        <tr><td align="right"><b>Percentage Building Area</b>:</td><td>' + centroid_info.percentage_building_area + '</td></tr>\
+        <tr><td align="right"><b>Distance to Grid in km</b>:</td><td>' + centroid_info.grid_dist_km + '</td></tr>\
       </table>';
 
   clusterInfo.remove();
@@ -813,16 +836,15 @@ function update_cluster_info(){
 
 function next_selection_fun(){
   console.log("next");
-  current_cluster_centroids = centroidsGroup._layers;
+  set_current_cluster_centroids();
   var centroid = Object();
-  var list_of_centroids = {};
   var target = [[0,0][0,0]];
   filter_centroid_keys();
   // select next cluster and to zoom to its bounds
   // if currently no centroid has been selected, set the selection to the first cluster and fly there
   if(filtered_centroids_keys.indexOf(currently_featured_centroid_id) == -1){
     currently_featured_centroid_id = filtered_centroids_keys[0];
-    centroid = (current_cluster_centroids[centroids_layer_id]._layers[currently_featured_centroid_id]);
+    centroid = get_centroid_by_id(currently_featured_centroid_id);
     target = get_bbox_from_cluster_centroid(centroid);
     map.flyToBounds(target);
   }
@@ -840,15 +862,14 @@ function next_selection_fun(){
 
 function prev_selection_fun(){
   console.log("previous");
-  current_cluster_centroids = centroidsGroup._layers;
+  set_current_cluster_centroids();
   var centroid = Object();
-  var list_of_centroids = {};
   var target = [[0,0][0,0]];
   filter_centroid_keys();
   // if currently no centroid has been selected, set the selection to the first cluster
   if(filtered_centroids_keys.indexOf(currently_featured_centroid_id) == -1){
     currently_featured_centroid_id = filtered_centroids_keys[0];
-    centroid = (current_cluster_centroids[centroids_layer_id]._layers[currently_featured_centroid_id]);
+    centroid = get_centroid_by_id(currently_featured_centroid_id);
     target = get_bbox_from_cluster_centroid(centroid);
     map.flyToBounds(target);
   }
@@ -860,7 +881,7 @@ function prev_selection_fun(){
   // else set the selected centroid to be the previous one via index
   else{currently_featured_centroid_id = filtered_centroids_keys[filtered_centroids_keys.indexOf(currently_featured_centroid_id) - 1 ]; 
     // select the next centroid and fly to its bounds
-    centroid = (current_cluster_centroids[centroids_layer_id]._layers[currently_featured_centroid_id]);
+    centroid = get_centroid_by_id(currently_featured_centroid_id);
     target = get_bbox_from_cluster_centroid(centroid);
     map.flyToBounds(target);
   }
