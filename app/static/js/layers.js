@@ -60,19 +60,6 @@ function add_layer(layer) {
   }
 };
 
-// Convert "a_string_name" to "A String Name"
-function snake_to_title(fname){
-  var state_name = fname.split('_').map(w => w[0].toUpperCase() + w.substr(1).toLowerCase());
-  return state_name.join(' ');
-};
-
-// Convert "A String Name" to "a_string_name"
-function title_to_snake(fname){
-  var state_name = fname.split(' ').map(w => w.toLowerCase());
-  return state_name.join('_');
-};
-
-
 // Vector-tiles layer that has layer shapes and columns in its attribute table: id, name, source, type, wikidata, wikipedia, availability (int)
 var statesLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_states/{z}/{x}/{y}.pbf", {
   rendererFactory: L.canvas.tile,
