@@ -517,7 +517,7 @@ function heatmap_cb_fun() {
     document.getElementById("heatmapPanel").style.borderLeft = '.25rem solid #1DD069';
     add_layer(national_heatmap);
   } else {
-    document.getElementById("heatmapPanel").style.borderLeft = '0rem';
+    document.getElementById("heatmapPanel").style.borderLeft = '.25rem solid #eeeff1';
     remove_layer(national_heatmap);
     national_heatmap.bringToFront();
   }
@@ -530,7 +530,7 @@ function nationalGrid_cb_fun() {
     document.getElementById("nationalGridPanel").style.borderLeft = '.25rem solid #1DD069';
     add_layer(national_grid);
   } else {
-    document.getElementById("nationalGridPanel").style.borderLeft = '0rem';
+    document.getElementById("nationalGridPanel").style.borderLeft = '.25rem solid #eeeff1';
     remove_layer(national_grid);
   }
 }
@@ -575,7 +575,7 @@ function clusters_cb_fun() {
     ogClusters_cb_fun();
     add_layer(clusterLayer[selectedState]);
   } else {
-    document.getElementById("clustersPanel").style.borderLeft = '0rem';
+    document.getElementById("clustersPanel").style.borderLeft = '.25rem solid #eeeff1';
     remove_layer(clusterLayer[selectedState]);
     // Close the filters if they were available
     clusters_filter_fun();
@@ -635,7 +635,7 @@ function ogClusters_cb_fun() {
     add_layer(ogClusterLayers[selectedState]);
 
   } else {
-    document.getElementById("ogClustersPanel").style.borderLeft = '.0rem';
+    document.getElementById("ogClustersPanel").style.borderLeft = '.25rem solid #eeeff1';
     remove_layer(ogClusterLayers[selectedState]);
     // Close the filters if they were available
     ogClusters_filter_fun();
@@ -654,7 +654,7 @@ function grid_cb_fun() {
     document.getElementById("gridPanel").style.borderLeft = '.25rem solid #1DD069';
     add_layer(grid_layer);
   } else {
-    document.getElementById("gridPanel").style.borderLeft = '0rem';
+    document.getElementById("gridPanel").style.borderLeft = '.25rem solid #eeeff1';
     remove_layer(grid_layer);
   }
 
