@@ -408,8 +408,8 @@ button {
 #header-maps{
     background-color: #ffffff;
     width: 100%;
-    padding-top: .875rem;
-    padding-bottom: .875rem;
+    padding-top: 0;
+    padding-bottom: 3rem;
 }
 
 #header-maps div{
@@ -420,6 +420,7 @@ button {
 #header-maps h2{
     color: #ffbb00;
     font-size: 16pt;
+    font-family: Poppins, Arial, Helvetica, sans-serif;
     font-weight: bold;
     text-transform: uppercase;
     padding-top: .4rem;
@@ -439,15 +440,12 @@ button {
 
 #header-maps-logo-nigeria{
     align-items: center;
-
+    justify-content: flex-end;
+    padding-right: 1rem;
 }
 
 #header-maps-logo-nigeria img {
-    max-height: 6rem;
-    height:100%;
-    transform: translateY(-3px);
-     text-align: right;
-    //width: 3.25rem;
+    height: 3.25rem;
 }
 
 /* Footer */
