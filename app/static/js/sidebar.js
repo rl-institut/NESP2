@@ -700,13 +700,12 @@ function buildingDensity_cb_fun() {
 
 // Function asynchronously calls geojsons with centroids of selected state
 function update_centroids_data(handleData){
-  // TODO implement title_to_snake()
   var centroids_file_key = selectedState
   if (selectedState == "init"){
     centroids_file_key = "Kano";
   }
   $.ajax({
-    url: "/static/data/centroids/nesp2_state_offgrid_clusters_centroids_" + centroids_file_key.toLowerCase() + ".geojson",
+    url: "/static/data/centroids/nesp2_state_offgrid_clusters_centroids_" + title_to_snake(centroids_file_key) + ".geojson",
     dataType: "json",
     success: function(data) {
       // handleData allows this function to be called in another function
@@ -716,7 +715,6 @@ function update_centroids_data(handleData){
       alert(xhr.statusText)
     }
   })
-
 }
 
 // Function takes the data from update_centroids_data. Due to the asynchronous call they cannot simply be stored in a variable
