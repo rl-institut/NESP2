@@ -450,6 +450,7 @@ function state_button_fun(trigger="button") {
   if (previous_level == "village" && trigger == "button") {
     zoomToSelectedState(newlySelected=false);
   };
+
 };
 
 function village_button_fun(trigger="button") {
@@ -467,23 +468,27 @@ function village_button_fun(trigger="button") {
       // Update the states menu list
       document.getElementById("stateSelect").value = selectedState;
       adapt_view_to_state_level();
+
+      // Trigger the filter function so that the selected state geojson does not hide the clusters
+      nigeria_states_geojson.clearLayers();
+      nigeria_states_geojson.addData(nigeria_states_simplified);
   };
   if ((previous_level == "national" || previous_level == "state") && trigger == "button"){
-    //TODO: pick a random cluster among the large ones and display it
+    //pick a random cluster among the large ones and display it
     $.post({
-    url: "/filter-cluster",
-    dataType: "json",
-    data: {"state_name": selectedState},
-    success: function(data){
-        console.log(data);
-        random_og_cluster_geojson.addData(data);
-    },
-    }).done(function() {console.log("now done");});
-
-    //vt = ogClusterLayers[selectedState]._vectorTiles
-  }
+        url: "/filter-cluster",
+        dataType: "json",
+        data: {"state_name": selectedState},
+        success: function(data){
+            random_cluster = data
+            // this will trigger a fly to the point
+            random_og_cluster_geojson.addData(data);
+        }
+    });
+  };
 
   adapt_view_to_village_level();
+
 };
 
 // Triggered by the national and state views
