@@ -744,8 +744,13 @@ update_centroids();
 
 // function removes previous centroid layer
 function update_centroids_group(){
-  //TODO remove olf layers to avoid very large cache. need to check if layer exists, else map becomes unresponsive.
-  //centroidsGroup.removeLayer(centroids_layer_id);
+  //TODO remove old layers to avoid very large cache. need to check if layer exists, else map becomes unresponsive.
+  if (centroids_layer_id in centroidsGroup._layers){
+    centroidsGroup.removeLayer(centroids_layer_id);
+  }
+  else {
+  console.log("Not removing absent Layer");
+  }
   update_centroids();
 }
 
