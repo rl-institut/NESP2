@@ -60,18 +60,18 @@ L.control.zoom({
   position: "topright"
 }).addTo(map);
 
-var info = L.control({
+var infoBox = L.control({
   position: 'bottomleft'
 });
 
-info.onAdd = function(map) {
+infoBox.onAdd = function(map) {
   this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
   this.update();
   L.DomEvent.disableClickPropagation(this._div);
   return this._div;
 };
 
-info.update = function(props) {
+infoBox.update = function(props) {
   this._div.innerHTML = '<h4 class="selection_detail_header">State Availability</h4>' +
     '<table class="selection_detail">' +
     '<tr><td align="right"><b>Grid Tracking</b>:</td><td>' + "aaa" + '</td></tr>' +

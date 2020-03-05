@@ -4,14 +4,9 @@ var options = {
   zoom: 6.6,
   minZoom: 6,
   maxZoom: 19,
-  zoomControl: false,
-  maxBounds: [
-    [2, 17], // S, E
-    [15, 0] // N, W
-  ]
+  zoomControl: false
 };
 var map = L.map("map", options);
-map.fitBounds(L.latLngBounds(L.latLng(15, 17), L.latLng(2.4, 0.85)))
 var level = "national";
 var previous_level = level;
 var statesList = ["Abia", "Adamawa", "Akwa Ibom", "Anambra", "Bauchi", "Bayelsa", "Benue", "Borno", "Cross River", "Delta", "Ebonyi", "Edo", "Ekiti", "Enugu", "Federal Capital Territory", "Gombe", "Imo", "Jigawa", "Kaduna", "Kano", "Katsina", "Kebbi", "Kogi", "Kwara", "Lagos", "Nasarawa", "Niger", "Ogun", "Ondo", "Osun", "Oyo", "Plateau", "Rivers", "Sokoto", "Taraba", "Yobe", "Zamfara"];
@@ -20,6 +15,10 @@ var prevState = selectedState;
 var selectedStateOptions = {bounds: null};
 var selectedLGA = "";
 var thirtythreeKV = "33_kV_" + selectedState.toLowerCase();
+var centroids_layer_id = -1;
+var current_cluster_centroids = Object();
+var filtered_centroids_keys = [];
+var currently_featured_centroid_id = 0;
 var currentfilter = {
   minarea: 0.1,
   maxarea: 10,
@@ -120,7 +119,6 @@ function resetStateSelect() {
   var s = document.getElementById('stateSelect');
   s.options[0].selected = true;
 }
-
 
 var sliderOptions = {
   connect: true,
@@ -321,16 +319,17 @@ function adapt_sidebar_to_selection_level(selectionLevel) {
 };
 
 function adapt_view_to_national_level() {
-  map.options.minZoom = 6.6;
+
+  map.setMinZoom(6.5);
+  map.fitBounds(L.latLngBounds(L.latLng(14, 15), L.latLng(4, 2.5)))
+  // if the fitBound has smaller zoom level, update the min zoom level
+  map.setMinZoom(map.getZoom());
   map.options.maxZoom = 9;
   map.options.zoomSnap = 0.5;
-  map.fitBounds([
-    [2, 0],
-    [15, 17]
-  ]); // [[S, W]],[[N, E]]
 
   legend.addTo(map);
   gridLegend.remove();
+  clusterInfo.remove();
 
   // load the states boundaries
   document.getElementById("statesCheckbox").checked = true;
@@ -370,7 +369,7 @@ function adapt_view_to_state_level() {
 
 
   map.options.minZoom = 8;
-  map.options.maxZoom = 19;
+  map.options.maxZoom = 18;
   map.options.zoomSnap = 1,
 
   legend.remove();
@@ -405,7 +404,7 @@ function adapt_view_to_state_level() {
 function adapt_view_to_village_level() {
   console.log("adapt_view_to_village_level");
   remove_layer(osm_gray);
-  info.remove();
+  infoBox.remove();
   add_layer(hot);
 };
 
@@ -449,7 +448,12 @@ function state_button_fun(trigger="button") {
   };
   if (previous_level == "village" && trigger == "button") {
     zoomToSelectedState(newlySelected=false);
-  };
+  }
+  else{
+    clusterInfo.remove();
+  }
+};
+
 
 };
 
@@ -523,6 +527,8 @@ function state_dropdown_fun() {
     prevState = selectedState;
     //update the selected state
     selectedState = document.getElementById("stateSelect").value;
+    // update the centroids layer to the newly selected state
+    update_centroids_group();
     //Trigger the switch to state level
     state_button_fun(trigger="menu");
   }
@@ -702,6 +708,221 @@ function buildingDensity_cb_fun() {
   } else {
     remove_layer(buildingDensity)
   }
+}
+
+// The following functions allow to asynchronously call geojson files and create a layer with them
+// Handling is made somewhat difficult: due to asynchronous nature of the call the data cannot simply
+// be stored in a variable. Therefore the data are used to create a geojson-layer in a layergroup.
+// The layer can then be selected via it's _leaflet_id
+
+// Function asynchronously calls geojsons with centroids of selected state
+function update_centroids_data(handleData){
+  var centroids_file_key = selectedState
+  if (selectedState == "init"){
+    centroids_file_key = "Kano";
+  }
+  $.ajax({
+    url: "/static/data/centroids/nesp2_state_offgrid_clusters_centroids_" + title_to_snake(centroids_file_key) + ".geojson",
+    dataType: "json",
+    success: function(data) {
+      // handleData allows this function to be called in another function
+      handleData(data);
+    },
+    error: function (xhr) {
+      console.log(xhr.statusText);
+      console.log("loading of geojson failed");
+    }
+  })
+}
+
+// Function takes the data from update_centroids_data. Due to the asynchronous call they cannot simply be stored in a variable
+function update_centroids(){
+  update_centroids_data(function(output){
+    centroids = output;
+    // Creates a geojson-layer with the data
+    var centroids_layer = L.geoJSON(centroids, {
+    pointToLayer: function (feature, latlng) {
+        return L.circleMarker(latlng, {
+            interactive: false,
+            radius: 0,
+            weight: 5,
+            opacity: 0,
+            fillOpacity: 0,
+        });
+    }
+  });
+  // add geojson-layer to a group
+  centroids_layer.addTo(centroidsGroup);
+  // store the _leaflet_id of the centroids layer in a variable. The layer can be called with this id.
+  centroids_layer_id = centroids_layer._leaflet_id;
+  });
+}
+
+// initial call of this function upon map start is necessary
+update_centroids();
+
+// function removes previous centroid layer
+function update_centroids_group(){
+  //TODO remove old layers to avoid very large cache. need to check if layer exists, else map becomes unresponsive.
+  if (centroids_layer_id in centroidsGroup._layers){
+    centroidsGroup.removeLayer(centroids_layer_id);
+  }
+  else {
+  console.log("Not removing absent Layer");
+  }
+  update_centroids();
+}
+
+// End of functions for asynchronous call
+
+// functions takes in centroid from cluster-centroid-layer and returns its bounds from properties
+function get_bbox_from_cluster_centroid(centroid){
+  var north = centroid.feature.properties.bb_north;
+  var east = centroid.feature.properties.bb_east;
+  var south = centroid.feature.properties.bb_south;
+  var west = centroid.feature.properties.bb_west;
+  var bbox = [[south,west],[north,east]]
+  return(bbox);
+}
+
+
+function set_current_cluster_centroids(){
+  current_cluster_centroids = centroidsGroup._layers;
+}
+
+function get_current_centroids_from_layer(){
+  centroids = current_cluster_centroids[centroids_layer_id]._layers;
+  return(centroids);
+}
+
+function get_centroid_by_id(centroid_id){
+  centroid = current_cluster_centroids[centroids_layer_id]._layers[centroid_id];
+  return(centroid);
+}
+
+function get_centroid_info(centroid){
+  info = centroid.feature.properties;
+  return(info);
+}
+
+//function updates the list of cluster keys in filtered_centroids_keys
+function filter_centroid_keys(){
+  filtered_centroids_keys = [];
+  centroids = get_current_centroids_from_layer();
+  const keys = Object.keys(centroids);
+  // interates though cluster centroids and pushes keys of clusters that fal within filter settings
+  for (const key of keys) {
+    if (
+        centroids[key].feature.properties.area_km2 > currentfilter.ogminarea && 
+        centroids[key].feature.properties.area_km2 < currentfilter.ogmaxarea &&
+        centroids[key].feature.properties.grid_dist_km > currentfilter.ogmindtg && 
+        centroids[key].feature.properties.grid_dist_km < currentfilter.ogmaxdtg && 
+        centroids[key].feature.properties.building_count > currentfilter.ogminb && 
+        centroids[key].feature.properties.building_count < currentfilter.ogmaxb &&
+        centroids[key].feature.properties.percentage_building_area > currentfilter.ogminbfp && 
+        centroids[key].feature.properties.percentage_building_area < currentfilter.ogmaxbfp
+    ){
+      filtered_centroids_keys.push(key);
+    }
+  }
+  //console.log("filtered keys list:");
+  //console.log(filtered_centroids_keys);
+}
+
+function update_cluster_info(){
+      var centroid = get_centroid_by_id(currently_featured_centroid_id);
+      var centroid_info = get_centroid_info(centroid);
+      var control_content = ''
+
+      //if activated clusters are off-grid-clusters
+      if (centroid_info.hasOwnProperty('percentage_building_area')){
+      var control_content = '\
+      <div id="download_clusters" class="consecutive__btn">\
+        <button style="float:left" onclick="prev_selection_fun()"> < </button> \
+        ' + (filtered_centroids_keys.indexOf(currently_featured_centroid_id) + 1) + ' / ' + filtered_centroids_keys.length + ' \
+        <button style="float:right" onclick="next_selection_fun()"> > </button>\
+      </div>\
+      <table>\
+        <tr><td align="right"><b>Area</b>:</td><td>' + parseFloat(centroid_info.area_km2).toFixed(2) + ' km2</td></tr>\
+        <tr><td align="right"><b>Building Count</b>:</td><td>' + parseFloat(centroid_info.building_count).toFixed(0) + '</td></tr>\
+        <tr><td align="right"><b>Building Area in km²</b>:</td><td>' + parseFloat(centroid_info.building_area_km2).toFixed(3) + '</td></tr>\
+        <tr><td align="right"><b>Buildings per km²</b>:</td><td>' + parseFloat(centroid_info.building_count_density_perkm2).toFixed(0) + '</td></tr>\
+        <tr><td align="right"><b>Percentage Building Area</b>:</td><td>' + parseFloat(centroid_info.percentage_building_area).toFixed(2) + '</td></tr>\
+        <tr><td align="right"><b>Distance to Grid in km</b>:</td><td>' + parseFloat(centroid_info.grid_dist_km).toFixed(1) + '</td></tr>\
+      </table>';
+      }
+      //if activated clusters are all-clusters
+      else if (centroid_info.hasOwnProperty('cluster_all_id')){
+      var control_content = '\
+      <div id="download_clusters" class="consecutive__btn">\
+        <button style="float:left" onclick="prev_selection_fun()"> < </button> <button style="float:right" onclick="next_selection_fun()"> > </button>\
+      </div>\
+      <table>\
+        <tr><td align="right"><b>ID</b>:</td><td>' + centroid_info.cluster_all_id + '</td></tr>\
+        <tr><td align="right"><b>Area</b>:</td><td>' + centroid_info.area_km2 + '</td></tr>\
+        <tr><td align="right"><b>Distance to Grid</b>:</td><td>' + parseFloat(centroid_info.grid_dist_km).toFixed(2) + ' km2</td></tr>\
+      </table>';
+      }
+
+  clusterInfo.remove();
+  clusterInfo.update = function() {
+    this._div.innerHTML = control_content;
+    this._div.innerHTML;
+  };
+  clusterInfo.addTo(map);
+}
+
+function next_selection_fun(){
+
+  set_current_cluster_centroids();
+  var centroid = Object();
+  var target = [[0,0][0,0]];
+  filter_centroid_keys();
+  // select next cluster and to zoom to its bounds
+  // if currently no centroid has been selected, set the selection to the first cluster and fly there
+  if(filtered_centroids_keys.indexOf(currently_featured_centroid_id) == -1){
+    currently_featured_centroid_id = filtered_centroids_keys[0];
+    centroid = get_centroid_by_id(currently_featured_centroid_id);
+    target = get_bbox_from_cluster_centroid(centroid);
+    map.flyToBounds(target);
+  }
+  // else if the selected centroid is the last one, keep it selected
+  else if (filtered_centroids_keys.indexOf(currently_featured_centroid_id) == filtered_centroids_keys.length -1){
+    console.log("last element")
+  }
+  // else set the selected centroid to be the next one via index
+  else{currently_featured_centroid_id = filtered_centroids_keys[filtered_centroids_keys.indexOf(currently_featured_centroid_id) + 1 ];
+  centroid = (current_cluster_centroids[centroids_layer_id]._layers[currently_featured_centroid_id]);
+  target = get_bbox_from_cluster_centroid(centroid);
+  map.flyToBounds(target);}
+  update_cluster_info();
+}
+
+function prev_selection_fun(){
+  set_current_cluster_centroids();
+  var centroid = Object();
+  var target = [[0,0][0,0]];
+  filter_centroid_keys();
+  // if currently no centroid has been selected, set the selection to the first cluster
+  if(filtered_centroids_keys.indexOf(currently_featured_centroid_id) == -1){
+    currently_featured_centroid_id = filtered_centroids_keys[0];
+    centroid = get_centroid_by_id(currently_featured_centroid_id);
+    target = get_bbox_from_cluster_centroid(centroid);
+    map.flyToBounds(target);
+  }
+  // else if the selected centroid is the first one, keep it selected
+  else if (filtered_centroids_keys.indexOf(currently_featured_centroid_id) == 0){
+    currently_featured_centroid_id = filtered_centroids_keys[0];
+    //console.log("first element")
+  }
+  // else set the selected centroid to be the previous one via index
+  else{currently_featured_centroid_id = filtered_centroids_keys[filtered_centroids_keys.indexOf(currently_featured_centroid_id) - 1 ]; 
+    // select the next centroid and fly to its bounds
+    centroid = get_centroid_by_id(currently_featured_centroid_id);
+    target = get_bbox_from_cluster_centroid(centroid);
+    map.flyToBounds(target);
+  }
+  update_cluster_info();
 }
 
 function lga_cb_fun() {
