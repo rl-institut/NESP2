@@ -712,7 +712,8 @@ function update_centroids_data(handleData){
       handleData(data);
     },
     error: function (xhr) {
-      alert(xhr.statusText)
+      console.log(xhr.statusText);
+      console.log("loading of geojson failed");
     }
   })
 }
@@ -747,7 +748,8 @@ update_centroids();
 
 // function removes previous centroid layer
 function update_centroids_group(){
-  centroidsGroup.removeLayer(centroids_layer_id);
+  //TODO remove olf layers to avoid very large cache. need to check if layer exists, else map becomes unresponsive.
+  //centroidsGroup.removeLayer(centroids_layer_id);
   update_centroids();
 }
 
