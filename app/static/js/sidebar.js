@@ -327,6 +327,7 @@ function adapt_view_to_national_level() {
 
   legend.addTo(map);
   gridLegend.remove();
+  clusterInfo.remove();
 
   // load the states boundaries
   document.getElementById("statesCheckbox").checked = true;
@@ -414,7 +415,10 @@ function adapt_view_to_state_level(previous_level, trigger) {
   };
   if (previous_level == "village" && trigger == "button") {
     zoomToSelectedState(newlySelected=false);
-  };
+  }
+  else{
+    clusterInfo.remove();
+  }
 };
 
 function adapt_view_to_village_level(previous_level, trigger) {
