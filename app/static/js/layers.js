@@ -46,6 +46,8 @@ var welcome_view = L.tileLayer("https://tile.rl-institut.de/data/nesp2_national_
   attribution: ''
 });
 
+var centroidsGroup = L.layerGroup().addTo(map);
+
 function remove_layer(layer) {
   if (map.hasLayer(layer) == true) {
     map.removeLayer(layer);
@@ -57,19 +59,6 @@ function add_layer(layer) {
     map.addLayer(layer);
   }
 };
-
-// Convert "a_string_name" to "A String Name"
-function snake_to_title(fname){
-  var state_name = fname.split('_').map(w => w[0].toUpperCase() + w.substr(1).toLowerCase());
-  return state_name.join(' ');
-};
-
-// Convert "A String Name" to "a_string_name"
-function title_to_snake(fname){
-  var state_name = fname.split(' ').map(w => w.toLowerCase());
-  return state_name.join('_');
-};
-
 
 // Vector-tiles layer that has layer shapes and columns in its attribute table: id, name, source, type, wikidata, wikipedia, availability (int)
 var statesLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_states/{z}/{x}/{y}.pbf", {
@@ -223,10 +212,9 @@ function highlightStateBorders(e) {
   } else {
     highlightLayer.setStyle(statesStyleGeojsonTransparent);
   }
-  if (map.hasLayer(info)) {
-    info.remove();
-  };
-  info.update = function(props) {
+  infoBox.remove();
+
+  infoBox.update = function(props) {
     this._div.innerHTML = '<h4 class="selection_detail_header">' + e.target.feature.properties.name + '</h4>' +
       '<table class="selection_detail">' +
       '<tr><td align="right"><b>Grid Tracking</b>:</td><td>' + avail.gridTracking + '</td></tr>' +
@@ -235,13 +223,13 @@ function highlightStateBorders(e) {
       '</table>';
     this._div.innerHTML;
   };
-  info.addTo(map);
+  infoBox.addTo(map);
 }
 
 function lowlightStateBorders(e) {
   lowlightLayer = e.target;
   lowlightLayer.setStyle(statesStyleGeojsonTransparent);
-  info.remove();
+  infoBox.remove();
 }
 
 function highlight_state(feature, layer) {
@@ -256,6 +244,8 @@ function highlight_state(feature, layer) {
       remove_layer(ogClusterLayers[selectedState]);
       remove_layer(clusterLayer[selectedState]);
       selectedState = feature.properties["name"];
+      // Update the centroids layer to enable cluster click-through
+      update_centroids_group();
       // Update the dropdown menu for state selection
       document.getElementById("stateSelect").value = selectedState;
       // Trigger the switch to state level
@@ -335,14 +325,15 @@ function update_grid_layer() {
 // Adds functions for filters and styling to a defined input grid-cluster-Layer
 function addFunctionsToClusterLayer(layer) {
   layer.on("click", function(e) {
-    console.log('click')
     this.clearHighlight();
     let properties = e.layer.properties;
-    console.log(properties)
     if (properties.cluster_all_id !== undefined) {
       var type = "c";
       var ID = properties.cluster_all_id;
       var popup = '\
+      <div id="download_clusters" class="consecutive__btn">\
+        <button style="float:left" onclick="prev_selection_fun()"> < </button> <button style="float:right" onclick="next_selection_fun()"> > </button>\
+      </div>\
       <table>\
         <tr><td align="right"><b>ID</b>:</td><td>' + properties.cluster_all_id + '</td></tr>\
         <tr><td align="right"><b>Area</b>:</td><td>' + properties.area_km2 + '</td></tr>\
@@ -481,21 +472,22 @@ statesList.forEach(function(item){
 // Adds functions for filters and styling to a defined input off-grid-cluster-Layer
 function addFunctionsToOGClusterLayer(layer) {
   layer.on("click", function(e) {
-    console.log('click')
     this.clearHighlight();
     let properties = e.layer.properties;
-    console.log(properties)
     if (properties.cluster_offgrid_id !== undefined) {
       var type = "c";
       var ID = properties.cluster_offgrid_id;
       var popup = '\
+      <div id="download_clusters" class="consecutive__btn">\
+        <button style="float:left" onclick="prev_selection_fun()"> < </button> <button style="float:right" onclick="next_selection_fun()"> > </button>\
+      </div>\
       <table>\
         <tr><td align="right"><b>Area</b>:</td><td>' + parseFloat(properties.area_km2).toFixed(2) + ' km2</td></tr>\
         <tr><td align="right"><b>Building Count</b>:</td><td>' + parseFloat(properties.building_count).toFixed(0) + '</td></tr>\
-        <tr><td align="right"><b>Building Area in km²</b>:</td><td>' + parseFloat(properties.building_area_km2).toFixed(0) + '</td></tr>\
+        <tr><td align="right"><b>Building Area in km²</b>:</td><td>' + parseFloat(properties.building_area_km2).toFixed(3) + '</td></tr>\
         <tr><td align="right"><b>Buildings per km²</b>:</td><td>' + parseFloat(properties.building_count_density_perkm2).toFixed(0) + '</td></tr>\
-        <tr><td align="right"><b>Percentage Building Area</b>:</td><td>' + parseFloat(properties.percentage_building_area).toFixed(0) + '</td></tr>\
-        <tr><td align="right"><b>Distance to Grid in km</b>:</td><td>' + parseFloat(properties.grid_dist_km).toFixed(0) + '</td></tr>\
+        <tr><td align="right"><b>Percentage Building Area</b>:</td><td>' + parseFloat(properties.percentage_building_area).toFixed(2) + '</td></tr>\
+        <tr><td align="right"><b>Distance to Grid in km</b>:</td><td>' + parseFloat(properties.grid_dist_km).toFixed(1) + '</td></tr>\
       </table>';
     } else {
       var type = "r";
