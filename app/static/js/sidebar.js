@@ -454,9 +454,6 @@ function state_button_fun(trigger="button") {
   }
 };
 
-
-};
-
 function village_button_fun(trigger="button") {
   previous_level = level
   level = "village";
@@ -484,9 +481,15 @@ function village_button_fun(trigger="button") {
         dataType: "json",
         data: {"state_name": selectedState},
         success: function(data){
-            random_cluster = data
+
             // this will trigger a fly to the point
-            random_og_cluster_geojson.addData(data);
+            map.flyTo(L.latLng(data.lat, data.lng), 15);
+            var popup = '<div class="random-cluster__info">Click on the cluster to show its information</div>';
+            clusterInfo.update = function() {
+                this._div.innerHTML = popup;
+                this._div.innerHTML;
+            };
+            clusterInfo.addTo(map);
         }
     });
   };

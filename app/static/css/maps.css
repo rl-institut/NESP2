@@ -538,3 +538,10 @@ img.footer-maps-logos__giz {
     margin-left: 33%;
   }
 }
+
+/* Random Cluster selection */
+
+.random-cluster__info {
+    background-color: #fff;
+    height: 10rem;
+}
