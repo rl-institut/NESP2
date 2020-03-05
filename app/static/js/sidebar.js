@@ -719,8 +719,6 @@ function update_centroids(){
   });
   // add geojson-layer to a group
   centroids_layer.addTo(centroidsGroup);
-  console.log("leaflet_id:")
-  console.log(centroids_layer._leaflet_id)
   // store the _leaflet_id of the centroids layer in a variable. The layer can be called with this id.
   centroids_layer_id = centroids_layer._leaflet_id;
   });
@@ -793,14 +791,13 @@ function filter_centroid_keys(){
       filtered_centroids_keys.push(key);
     }
   }
-  console.log("filtered keys list:");
-  console.log(filtered_centroids_keys);
+  //console.log("filtered keys list:");
+  //console.log(filtered_centroids_keys);
 }
 
 function update_cluster_info(){
       var centroid = get_centroid_by_id(currently_featured_centroid_id);
       var centroid_info = get_centroid_info(centroid);
-      console.log(centroid_info);
       var control_content = ''
 
       //if activated clusters are off-grid-clusters
@@ -842,7 +839,7 @@ function update_cluster_info(){
 }
 
 function next_selection_fun(){
-  console.log("next");
+
   set_current_cluster_centroids();
   var centroid = Object();
   var target = [[0,0][0,0]];
@@ -868,7 +865,6 @@ function next_selection_fun(){
 }
 
 function prev_selection_fun(){
-  console.log("previous");
   set_current_cluster_centroids();
   var centroid = Object();
   var target = [[0,0][0,0]];
@@ -882,8 +878,8 @@ function prev_selection_fun(){
   }
   // else if the selected centroid is the first one, keep it selected
   else if (filtered_centroids_keys.indexOf(currently_featured_centroid_id) == 0){
-    currently_featured_centroid_id = filtered_centroids_keys[0]; 
-    console.log("first element")
+    currently_featured_centroid_id = filtered_centroids_keys[0];
+    //console.log("first element")
   }
   // else set the selected centroid to be the previous one via index
   else{currently_featured_centroid_id = filtered_centroids_keys[filtered_centroids_keys.indexOf(currently_featured_centroid_id) - 1 ]; 

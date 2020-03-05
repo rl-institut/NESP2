@@ -326,10 +326,8 @@ function update_grid_layer() {
 // Adds functions for filters and styling to a defined input grid-cluster-Layer
 function addFunctionsToClusterLayer(layer) {
   layer.on("click", function(e) {
-    console.log('click')
     this.clearHighlight();
     let properties = e.layer.properties;
-    console.log(properties)
     if (properties.cluster_all_id !== undefined) {
       var type = "c";
       var ID = properties.cluster_all_id;
@@ -475,10 +473,8 @@ statesList.forEach(function(item){
 // Adds functions for filters and styling to a defined input off-grid-cluster-Layer
 function addFunctionsToOGClusterLayer(layer) {
   layer.on("click", function(e) {
-    console.log('click')
     this.clearHighlight();
     let properties = e.layer.properties;
-    console.log(properties)
     if (properties.cluster_offgrid_id !== undefined) {
       var type = "c";
       var ID = properties.cluster_offgrid_id;
