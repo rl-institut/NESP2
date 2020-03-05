@@ -224,7 +224,7 @@ def get_random_og_cluster(engine, view_code, schema="web", limit=5):
     if schema is not None:
         view_name = "{}.cluster_offgrid_{}_mv".format(schema, view_code)
     cols = ", ".join(OG_CLUSTERS_COLUMNS[:-1])
-    cols = cols + ", ST_Centroid(ST_TRANSFORM(geom, 4326)) as geom"
+    cols = cols + ", ST_AsGeoJSON(ST_Centroid(ST_TRANSFORM(geom, 4326))) as geom"
     with engine.connect() as con:
         rs = con.execute('SELECT {} FROM {} ORDER BY area_km2 DESC LIMIT {};'.format(cols,
                                                                                      view_name, limit))
