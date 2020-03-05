@@ -24,10 +24,6 @@ a {
   margin-bottom: 0;
 }
 
-.leaflet-bottom.leaflet-left {
-  
-}
-
 .map-legend {
   padding: 1rem 1rem;
 }
@@ -129,7 +125,13 @@ body {
 }
 
 #map{
-    height: 100vh;
+  height: 100vh;
+}
+
+@media only screen and (min-width: 1024px) {
+  #map {
+    margin-left: 25%;
+  }
 }
 
 .map-legend {
@@ -184,6 +186,18 @@ body {
 display: flex;
 flex-direction: column;
 padding-top: 1rem;
+background-color: #fff;
+}
+
+@media only screen and (min-width: 1024px) {
+  #sidebar {
+    position: fixed;
+    top: 0;
+    margin: 0;
+    overflow-y: auto;
+    height: 100%;
+    z-index: 99999;
+  }
 }
 
 #sidebar .switch-paddle {
@@ -467,6 +481,7 @@ p.sidebar-panel-item-title {
     font-size: 14pt;
     line-height: 18pt;
     margin-top: auto;
+    padding-top: 1rem;
 }
 
 #footer-maps p {
@@ -499,4 +514,15 @@ img.footer-maps-logos__coop {
 
 img.footer-maps-logos__giz {
   width: 6.87rem; /* = 10rem * 0.687 w_coop (w_g = 0.687 w_coop) */
+}
+
+
+@media only screen and (min-width: 1024px) and (max-width: 1300px) {
+  #sidebar {
+    width: 33%;
+  }
+  #map {
+    width: 67%;
+    margin-left: 33%;
+  }
 }
