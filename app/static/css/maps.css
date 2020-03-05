@@ -1,4 +1,10 @@
 /* custom CSS */
+
+
+a {
+    outline: 0;
+}
+
 .leaflet-bottom.leaflet-left .leaflet-control {
   padding-left: 0;
   margin-left: 1rem;
@@ -81,6 +87,7 @@
 #stateSelect.dropdown-button:focus{
   color: #464646;
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' width='32' height='24' viewBox='0 0 32 24'><polygon points='0,0 32,0 16,24' style='fill: rgb%28138, 138, 138%29'></polygon></svg>");
+  outline: 0;
 }
 
 .sidebar-panel-item {
@@ -204,7 +211,7 @@ padding-top: 1rem;
 .sidebar__btn {
   padding: 0 .25rem 1rem;
 }
-
+.sidebar__btn button:focus,
 .sidebar__btn button {
   width: 100%;
   font-size: 10pt;
@@ -214,11 +221,13 @@ padding-top: 1rem;
   cursor: pointer;
   background-color: #eeeff1;
   color: #464646;
+  outline: 0;
 }
 
 .sidebar__btn.active button {
   background-color: #1DD069;
   color: #ffffff;
+  outline: 0;
 }
 .download__btn {
     display: flex;
@@ -235,7 +244,6 @@ padding-top: 1rem;
   cursor: pointer;
   background-color: #1DD069;
   color: #ffffff;
-
 }
 
 .filter {
