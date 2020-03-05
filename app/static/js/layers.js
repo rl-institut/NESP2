@@ -212,10 +212,9 @@ function highlightStateBorders(e) {
   } else {
     highlightLayer.setStyle(statesStyleGeojsonTransparent);
   }
-  if (map.hasLayer(info)) {
-    info.remove();
-  };
-  info.update = function(props) {
+  infoBox.remove();
+
+  infoBox.update = function(props) {
     this._div.innerHTML = '<h4 class="selection_detail_header">' + e.target.feature.properties.name + '</h4>' +
       '<table class="selection_detail">' +
       '<tr><td align="right"><b>Grid Tracking</b>:</td><td>' + avail.gridTracking + '</td></tr>' +
@@ -224,13 +223,13 @@ function highlightStateBorders(e) {
       '</table>';
     this._div.innerHTML;
   };
-  info.addTo(map);
+  infoBox.addTo(map);
 }
 
 function lowlightStateBorders(e) {
   lowlightLayer = e.target;
   lowlightLayer.setStyle(statesStyleGeojsonTransparent);
-  info.remove();
+  infoBox.remove();
 }
 
 function highlight_state(feature, layer) {

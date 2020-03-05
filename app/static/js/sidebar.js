@@ -440,7 +440,7 @@ function adapt_view_to_village_level(previous_level, trigger) {
      }).done(function() {console.log("now done");});
   }
   remove_layer(osm_gray);
-  info.remove();
+  infoBox.remove();
   add_layer(hot);
 }
 
