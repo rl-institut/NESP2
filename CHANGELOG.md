@@ -74,6 +74,7 @@ Here is a template for new release sections
 ### Removed
 - redundant accordion menu (#10)
 - redundant onclick function for nigeria_states_geojson layer (#108)
+- outline around components after being clicked on (#202)
 
 
 ## [0.0.1] 2019-11-11

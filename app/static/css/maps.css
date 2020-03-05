@@ -1,4 +1,10 @@
 /* custom CSS */
+
+
+a {
+    outline: 0;
+}
+
 .leaflet-bottom.leaflet-left .leaflet-control {
   padding-left: 0;
   margin-left: 1rem;
@@ -81,15 +87,20 @@
 #stateSelect.dropdown-button:focus{
   color: #464646;
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' width='32' height='24' viewBox='0 0 32 24'><polygon points='0,0 32,0 16,24' style='fill: rgb%28138, 138, 138%29'></polygon></svg>");
+  outline: 0;
 }
 
 .sidebar-panel-item {
+  padding-top: 1rem;
   padding-right: 1.5rem;
+  padding-bottom: 1rem;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .sidebar-panel-item-icon {
   width: 2rem;
-  float: right;
+  text-align: center;
 }
 
 .sidebar-panel-item-icon img {
@@ -200,21 +211,23 @@ padding-top: 1rem;
 .sidebar__btn {
   padding: 0 .25rem 1rem;
 }
-
+.sidebar__btn button:focus,
 .sidebar__btn button {
   width: 100%;
   font-size: 10pt;
   font-weight: bold;
-  padding: 12px 30px 12px 30px;
+  padding: .75rem .5rem;
   border-radius: 4px;
   cursor: pointer;
   background-color: #eeeff1;
   color: #464646;
+  outline: 0;
 }
 
 .sidebar__btn.active button {
   background-color: #1DD069;
   color: #ffffff;
+  outline: 0;
 }
 .download__btn {
     display: flex;
@@ -222,7 +235,8 @@ padding-top: 1rem;
 }
 
 .download__btn button {
-  width: 40%;
+  width: auto;
+  margin-left: 1rem;
   font-size: 10pt;
   font-weight: bold;
   padding: 12px 30px 12px 30px;
@@ -230,7 +244,6 @@ padding-top: 1rem;
   cursor: pointer;
   background-color: #1DD069;
   color: #ffffff;
-
 }
 
 .consecutive__btn button{
@@ -247,7 +260,7 @@ padding-top: 1rem;
 
 .filter {
   display: inline;
-  width: 15rem;
+  width: 45%;
   margin-top: .5rem;
   float: right;
   /*white-space: nowrap;
@@ -291,15 +304,13 @@ button {
   font-family: Helvetica, Arial, sans-serif;
 }
 
-.sidebar-panel-item {
-  height: 3rem;
-  padding-top: 1rem;
-}
-
 .sidebar-panel-item-title {
   padding-left: 2.75rem;
   color: #464646;
-  display: inline;
+}
+
+p.sidebar-panel-item-title {
+  margin-bottom: 0;
 }
 
 .sidebar-panel-item-title-filter {
@@ -316,7 +327,7 @@ button {
 }
 
 .sidebar-panel-item-filter {
-  height: 3.5rem;
+  height: auto;
   padding-top: 1rem;
 }
 
@@ -339,6 +350,7 @@ button {
 
 .sidebar-panel-item-button {
   float: right;
+  transform: translateY(3px);
 }
 
 .sidebar-panel-content {
@@ -420,8 +432,8 @@ button {
 #header-maps{
     background-color: #ffffff;
     width: 100%;
-    padding-top: .875rem;
-    padding-bottom: .875rem;
+    padding-top: 0;
+    padding-bottom: 3rem;
 }
 
 #header-maps div{
@@ -432,6 +444,7 @@ button {
 #header-maps h2{
     color: #ffbb00;
     font-size: 16pt;
+    font-family: Poppins, Arial, Helvetica, sans-serif;
     font-weight: bold;
     text-transform: uppercase;
     padding-top: .4rem;
@@ -451,15 +464,12 @@ button {
 
 #header-maps-logo-nigeria{
     align-items: center;
-
+    justify-content: flex-end;
+    padding-right: 1rem;
 }
 
 #header-maps-logo-nigeria img {
-    max-height: 6rem;
-    height:100%;
-    transform: translateY(-3px);
-     text-align: right;
-    //width: 3.25rem;
+    height: 3.25rem;
 }
 
 /* Footer */
@@ -477,12 +487,28 @@ button {
     line-height: 18pt;
 }
 
-#footer-maps-logos-eu-ger img{
-    text-align: left;
-    height: 7rem;
+#footer-maps-logos-eu-ger,
+#footer-maps-logos-giz {
+  text-align: center;
 }
 
-#footer-maps-logos-giz img{
-    text-align: right;
-    height: 4.09rem;
+#footer-maps .footer-maps__text {
+  text-align: center;
+}
+
+#footer-maps .footer-maps__text p {
+  font-size: 1rem;
+  padding-left: 0;
+}
+
+img.footer-maps-logos__eu {
+  width: 10rem;
+}
+
+img.footer-maps-logos__coop {
+  width: 10rem;
+}
+
+img.footer-maps-logos__giz {
+  width: 6.87rem; /* = 10rem * 0.687 w_coop (w_g = 0.687 w_coop) */
 }
