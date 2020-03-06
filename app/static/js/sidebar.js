@@ -406,7 +406,8 @@ function adapt_view_to_state_level(previous_level, trigger) {
   remove_basemaps_except_osm_gray();
 
   // When coming from village to state level it should not zoom out to the selected state
-  if (previous_level == "national" || previous_level == "state") {
+  if (previous_level == "national" || previous_level == "state" || (previous_level == "village" &&
+  trigger == "map-click")) {
     zoomToSelectedState();
 
     // Trigger the filter function so that the selected state geojson does not hide the clusters
