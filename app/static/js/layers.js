@@ -266,30 +266,6 @@ var nigeria_states_geojson = L.geoJSON(nigeria_states_simplified, {
 });
 
 
-function highlight_village(feature, layer) {
-    layer.on("click", function(e) {
-        var properties = e.target.feature.properties;
-        var popup = '\
-        <table>\
-        <tr><td align="right"><b>Area</b>:</td><td>' + parseFloat(properties.area_km2).toFixed(2) + ' km2</td></tr>\
-        <tr><td align="right"><b>Building Count</b>:</td><td>' + parseFloat(properties.building_count).toFixed(0) + '</td></tr>\
-        <tr><td align="right"><b>Building Area in km²</b>:</td><td>' + parseFloat(properties.building_area_km2).toFixed(0) + '</td></tr>\
-        <tr><td align="right"><b>Buildings per km²</b>:</td><td>' + parseFloat(properties.building_count_density_perkm2).toFixed(0) + '</td></tr>\
-        <tr><td align="right"><b>Percentage Building Area</b>:</td><td>' + parseFloat(properties.percentage_building_area).toFixed(0) + '</td></tr>\
-        <tr><td align="right"><b>Distance to Grid in km</b>:</td><td>' + parseFloat(properties.grid_dist_km).toFixed(0) + '</td></tr>\
-        </table>';
-        clusterInfo.update = function() {
-            this._div.innerHTML = popup;
-            this._div.innerHTML;
-        };
-        clusterInfo.addTo(map);
-        map.flyTo(e.target.getLatLng(), 17.5);
-    })
-    layer.fireEvent('click');
-}
-
-var random_og_cluster_geojson = L.geoJSON([], {onEachFeature: highlight_village});
-
 function zoomToSelectedState(newlySelected=true) {
   if (newlySelected == true) {
       nigeria_states_geojson.eachLayer(function(layer) {
