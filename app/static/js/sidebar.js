@@ -582,6 +582,8 @@ function clusters_cb_fun() {
     document.getElementById("clustersPanel").style.borderLeft = '.25rem solid #1DD069';
     document.getElementById("ogClustersCheckbox").checked = false;
     ogClusters_cb_fun();
+    // Update centroids for all_clusters
+    update_centroids();
     add_layer(clusterLayer[selectedState]);
   } else {
     document.getElementById("clustersPanel").style.borderLeft = '.25rem solid #eeeff1';
@@ -641,6 +643,8 @@ function ogClusters_cb_fun() {
     document.getElementById("ogClustersPanel").style.borderLeft = '.25rem solid #1DD069';
     document.getElementById("clustersCheckbox").checked = false;
     clusters_cb_fun();
+    // Update centroids for og_clusters
+    update_centroids();
     add_layer(ogClusterLayers[selectedState]);
 
   } else {
@@ -695,18 +699,34 @@ function update_centroids_data(handleData){
   if (selectedState == "init"){
     centroids_file_key = "Kano";
   }
-  $.ajax({
-    url: "/static/data/centroids/nesp2_state_offgrid_clusters_centroids_" + title_to_snake(centroids_file_key) + ".geojson",
-    dataType: "json",
-    success: function(data) {
-      // handleData allows this function to be called in another function
-      handleData(data);
-    },
-    error: function (xhr) {
-      console.log(xhr.statusText);
-      console.log("loading of geojson failed");
-    }
-  })
+  if (document.getElementById("clustersCheckbox").checked == false){
+    $.ajax({
+      url: "/static/data/centroids/nesp2_state_offgrid_clusters_centroids_" + title_to_snake(centroids_file_key) + ".geojson",
+      dataType: "json",
+      success: function(data) {
+        // handleData allows this function to be called in another function
+        handleData(data);
+      },
+      error: function (xhr) {
+        console.log(xhr.statusText);
+        console.log("loading of geojson failed");
+      }
+    })
+  }
+  else if (document.getElementById("clustersCheckbox").checked == true){
+    $.ajax({
+      url: "/static/data/centroids/nesp2_state_all_clusters_centroids_" + title_to_snake(centroids_file_key) + ".geojson",
+      dataType: "json",
+      success: function(data) {
+        // handleData allows this function to be called in another function
+        handleData(data);
+      },
+      error: function (xhr) {
+        console.log(xhr.statusText);
+        console.log("loading of geojson failed");
+      }
+    })
+  }
 }
 
 // Function takes the data from update_centroids_data. Due to the asynchronous call they cannot simply be stored in a variable
@@ -785,8 +805,11 @@ function filter_centroid_keys(){
   centroids = get_current_centroids_from_layer();
   const keys = Object.keys(centroids);
   // interates though cluster centroids and pushes keys of clusters that fal within filter settings
+  console.log("FILTERING STUFF NOW!!!!!!!!!");
   for (const key of keys) {
-    if (
+      //if activated clusters are off-grid-clusters
+    if (centroids[key].feature.properties.hasOwnProperty('percentage_building_area')){
+      if (
         centroids[key].feature.properties.area_km2 > currentfilter.ogminarea && 
         centroids[key].feature.properties.area_km2 < currentfilter.ogmaxarea &&
         centroids[key].feature.properties.grid_dist_km > currentfilter.ogmindtg && 
@@ -795,8 +818,20 @@ function filter_centroid_keys(){
         centroids[key].feature.properties.building_count < currentfilter.ogmaxb &&
         centroids[key].feature.properties.percentage_building_area > currentfilter.ogminbfp && 
         centroids[key].feature.properties.percentage_building_area < currentfilter.ogmaxbfp
-    ){
-      filtered_centroids_keys.push(key);
+      ){
+        filtered_centroids_keys.push(key);
+      }
+    }
+    else if (centroids[key].feature.properties.hasOwnProperty('cluster_all_id')){
+      console.log("CLUSTERS 4 ALLLLLLLLLL");
+      if (
+        centroids[key].feature.properties.area_km2 > currentfilter.minarea && 
+        centroids[key].feature.properties.area_km2 < currentfilter.maxarea &&
+        centroids[key].feature.properties.grid_dist_km > currentfilter.mindtg && 
+        centroids[key].feature.properties.grid_dist_km < currentfilter.maxdtg
+      ){
+        filtered_centroids_keys.push(key);
+      }
     }
   }
   //console.log("filtered keys list:");
@@ -829,7 +864,9 @@ function update_cluster_info(){
       else if (centroid_info.hasOwnProperty('cluster_all_id')){
       var control_content = '\
       <div id="download_clusters" class="consecutive__btn">\
-        <button style="float:left" onclick="prev_selection_fun()"> < </button> <button style="float:right" onclick="next_selection_fun()"> > </button>\
+        <button style="float:left" onclick="prev_selection_fun()"> < </button> \
+        ' + (filtered_centroids_keys.indexOf(currently_featured_centroid_id) + 1) + ' / ' + filtered_centroids_keys.length + ' \
+        <button style="float:right" onclick="next_selection_fun()"> > </button>\
       </div>\
       <table>\
         <tr><td align="right"><b>ID</b>:</td><td>' + centroid_info.cluster_all_id + '</td></tr>\
