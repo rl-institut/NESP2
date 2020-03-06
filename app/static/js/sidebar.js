@@ -319,9 +319,6 @@ function adapt_sidebar_to_selection_level(selectionLevel) {
 function adapt_view_to_national_level() {
 
   map.setMinZoom(6.5);
-  map.fitBounds(L.latLngBounds(L.latLng(14, 15), L.latLng(4, 2.5)))
-  // if the fitBound has smaller zoom level, update the min zoom level
-  map.setMinZoom(map.getZoom());
   map.options.maxZoom = 9;
   map.options.zoomSnap = 0.5;
 
@@ -357,6 +354,12 @@ function adapt_view_to_national_level() {
 
   // Linked to the checkbox Grid
   remove_layer(grid_layer);
+
+  // reactive fitting of Nigeria on the map
+  map.fitBounds(L.latLngBounds(L.latLng(14, 15), L.latLng(4, 2.5)))
+  // if the fitBound has smaller zoom level, update the min zoom level
+  map.setMinZoom(map.getZoom());
+
 };
 
 function adapt_view_to_state_level(previous_level, trigger) {
