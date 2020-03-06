@@ -462,7 +462,7 @@ function village_button_fun(trigger="button") {
   previous_level = level
   level = "village";
   adapt_sidebar_to_selection_level(level);
-  // click on the village level button from national level
+  // click on the village level button from national level, first select a random state
   if (previous_level == "national" && trigger == "button"){
       // select a random state which has off-grid clusters
       hasCluster = ""
@@ -478,24 +478,10 @@ function village_button_fun(trigger="button") {
       nigeria_states_geojson.clearLayers();
       nigeria_states_geojson.addData(nigeria_states_simplified);
   };
+  // click on the village level button from national or state level
   if ((previous_level == "national" || previous_level == "state") && trigger == "button"){
     //pick a random cluster among the large ones and display it
-    $.post({
-        url: "/filter-cluster",
-        dataType: "json",
-        data: {"state_name": selectedState},
-        success: function(data){
-
-            // this will trigger a fly to the point
-            map.flyTo(L.latLng(data.lat, data.lng), 15);
-            var popup = '<div class="random-cluster__info">Click on the cluster to show its information</div>';
-            clusterInfo.update = function() {
-                this._div.innerHTML = popup;
-                this._div.innerHTML;
-            };
-            clusterInfo.addTo(map);
-        }
-    });
+    get_random_ogCluster_fun()
   };
 
   adapt_view_to_village_level();
@@ -541,8 +527,6 @@ function state_dropdown_fun() {
   }
 };
 
-
-
 // Triggered by the checkbox Populated Areas
 function heatmap_cb_fun() {
   var checkBox = document.getElementById("heatmapCheckbox");
@@ -568,6 +552,25 @@ function nationalGrid_cb_fun() {
   }
 }
 
+//pick a random cluster among the large ones and display it
+function get_random_ogCluster_fun() {
+    $.post({
+            url: "/filter-cluster",
+            dataType: "json",
+            data: {"state_name": selectedState},
+            success: function(data){
+                console.log(data);
+                // this will trigger a fly to the point
+                map.flyTo(L.latLng(data.lat, data.lng), 14);
+                var popup = '<div class="random-cluster__info">Click on the cluster to show its information</div>';
+                clusterInfo.update = function() {
+                    this._div.innerHTML = popup;
+                    this._div.innerHTML;
+                };
+                clusterInfo.addTo(map);
+            }
+    });
+}
 function download_clusters_fun() {
   var export_csv_link = document.getElementById("export_csv")
 
