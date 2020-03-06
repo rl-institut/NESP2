@@ -543,5 +543,14 @@ img.footer-maps-logos__giz {
 
 .random-cluster__info {
     background-color: #fff;
-    height: 10rem;
+    color: #ffbb00;
+    height: 3rem;
+    font-size: 16px;
+    font-weight: 400;
+    display:inline;
+    vertical-align: center;
+    border: solid #1dd069;
+    border-radius: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
 }
