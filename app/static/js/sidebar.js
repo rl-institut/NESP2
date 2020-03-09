@@ -417,7 +417,7 @@ function adapt_view_to_state_level(previous_level, trigger) {
     nigeria_states_geojson.clearLayers();
     nigeria_states_geojson.addData(nigeria_states_simplified);
   };
-  if (previous_level == "village" && trigger == "button") {
+  if (previous_level == "village" && (trigger == "button" || trigger == "zoom")) {
     zoomToSelectedState(newlySelected=false);
   }
   else{
