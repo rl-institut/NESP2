@@ -265,20 +265,13 @@ var nigeria_states_geojson = L.geoJSON(nigeria_states_simplified, {
   }
 });
 
-
-function zoomToSelectedState(newlySelected=true) {
-  if (newlySelected == true) {
+function updateSelectedStateBounds() {
       nigeria_states_geojson.eachLayer(function(layer) {
         if (layer.feature.properties.name == selectedState) {
           // save the bounds of the selected state for later uses
-          selectedStateOptions.bounds = layer.getBounds();
-          // currently the geojson is not defined below zoom level 9
-          map.flyToBounds(layer.getBounds(), {maxZoom: 19});
-        }
-      });
-  }
-  else{
-    // currently the geojson is not defined below zoom level 9
+          selectedStateOptions.bounds = layer.getBounds();}
+      })
+};
     map.flyToBounds(selectedStateOptions.bounds, {maxZoom: 19});
   }
 };

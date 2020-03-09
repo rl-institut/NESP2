@@ -438,6 +438,8 @@ function state_button_fun(trigger="button") {
       document.getElementById("stateSelect").value = selectedState;
   };
 
+  // updates the bounds of the selected state's layer
+  updateSelectedStateBounds()
   // manages the layers for the state level
   adapt_view_to_state_level();
 
@@ -472,7 +474,7 @@ function village_button_fun(trigger="button") {
       };
       // Update the states menu list
       document.getElementById("stateSelect").value = selectedState;
-      adapt_view_to_state_level();
+      updateSelectedStateBounds()
 
       // Trigger the filter function so that the selected state geojson does not hide the clusters
       nigeria_states_geojson.clearLayers();
