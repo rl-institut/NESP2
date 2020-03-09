@@ -453,10 +453,14 @@ function state_button_fun(trigger="button") {
     nigeria_states_geojson.addData(nigeria_states_simplified);
   };
   if (previous_level == "village" && (trigger == "button" || trigger == "zoom")) {
-    zoomToSelectedState(newlySelected=false);
+    zoomToSelectedState();
+    randomClusterInfo.remove()
   }
   else{
-    clusterInfo.remove();
+    if (trigger != "random-cluster"){
+        clusterInfo.remove();
+    }
+
   }
 };
 
@@ -553,25 +557,25 @@ function nationalGrid_cb_fun() {
     remove_layer(national_grid);
   }
 }
-
+var random_cluster = false;
 //pick a random cluster among the large ones and display it
 function get_random_ogCluster_fun() {
+
     $.post({
             url: "/filter-cluster",
             dataType: "json",
             data: {"state_name": selectedState},
             success: function(data){
-                console.log(data);
-                // this will trigger a fly to the point
-                map.flyTo(L.latLng(data.lat, data.lng), 14);
-                var popup = '<div class="random-cluster__info">Click on the cluster to show its information</div>';
-                clusterInfo.update = function() {
-                    this._div.innerHTML = popup;
+                random_cluster = true;
+                randomClusterInfo.update = function() {
+                    this._div.innerHTML = '<div class="random-cluster__info">Click on the cluster to show its information</div>';
                     this._div.innerHTML;
                 };
-                clusterInfo.addTo(map);
+                randomClusterInfo.addTo(map);
+                //this will trigger a fly to the point
+                map.flyTo(L.latLng(data.lat, data.lng), 14);
             }
-    });
+    }).done(function (data) {random_cluster = false;});
 }
 function download_clusters_fun() {
   var export_csv_link = document.getElementById("export_csv")

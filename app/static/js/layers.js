@@ -272,8 +272,10 @@ function updateSelectedStateBounds() {
           selectedStateOptions.bounds = layer.getBounds();}
       })
 };
+
+
+function zoomToSelectedState() {
     map.flyToBounds(selectedStateOptions.bounds, {maxZoom: 19});
-  }
 };
 
 // Definitions and functions for the grid_layer

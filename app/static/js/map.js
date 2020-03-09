@@ -114,7 +114,12 @@ map.on("zoom", function(e) {
   }
   if (level == "village") {
     if (zoom < zoom_threshold) {
-      state_button_fun(trigger="zoom");
+        if (random_cluster == true) {
+            state_button_fun(trigger="random-cluster");
+        }
+        else {
+            state_button_fun(trigger="zoom");
+        }
     }
   }
 })
