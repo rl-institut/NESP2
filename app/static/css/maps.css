@@ -524,15 +524,18 @@ p.sidebar-panel-item-title {
 }
 
 img.footer-maps-logos__eu {
-  width: 10rem;
+  max-width: 10rem;
+  width: 35%;
 }
 
 img.footer-maps-logos__coop {
-  width: 10rem;
+  max-width: 10rem;
+  width: 35%;
 }
 
 img.footer-maps-logos__giz {
-  width: 6.87rem; /* = 10rem * 0.687 w_coop (w_g = 0.687 w_coop) */
+  width: 24.045%; /*(w_g = 0.687 w_coop) */
+  max-width: 6.87rem;
 }
 
 
