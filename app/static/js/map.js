@@ -13,7 +13,7 @@ legend.onAdd = function(map) {
 };
 
 legend.update = function(props) {
-  this._div.innerHTML = '<div class="grid-x"><div class="small-3 map-legend__text"><div class="legend-color legend-color--green"></div></div><div class="small-9">Datasets available</div><div class="small-3 map-legend__text"><div class="legend-color legend-color--gray"></div></div><div class="small-9">Datasets <span class="map-legend--highlight">not yet</span> available</div></div>'
+  this._div.innerHTML = '<div class="grid-x"><div class="small-3 map-legend__text"><div class="legend-color legend-color--green"></div></div><div class="small-9 map-legend__label"><p>Datasets available</p></div><div class="small-3 map-legend__text"><div class="legend-color legend-color--gray"></div></div><div class="small-9 map-legend__label"><p>Datasets <span class="map-legend--highlight">not yet</span> available</p></div></div>'
 };
 
 legend.addTo(map);
