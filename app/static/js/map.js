@@ -136,8 +136,8 @@ map.on("zoom", function(e) {
 })
 
 map.on("contextmenu", function (e) {
-var zoom = map.getZoom();
-    console.log(e.latlng)
+    console.log(map.getZoom());
+    console.log(e.latlng);
 });
 
 let logFormat = function(decimals) {
