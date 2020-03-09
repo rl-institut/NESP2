@@ -35,6 +35,13 @@ a {
 
 .map-legend__text {
   position: relative;
+  height: 1.5rem;
+}
+
+.map-legend__label {
+  font-size: 11pt;
+  height: 1.5rem;
+  vertical-align: middle;
 }
 
 .legend-color {
