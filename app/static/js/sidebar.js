@@ -21,6 +21,8 @@ var centroids_layer_id = -1;
 var current_cluster_centroids = Object();
 var filtered_centroids_keys = [];
 var currently_featured_centroid_id = 0;
+var statesWithOgClusters = [];
+
 var currentfilter = {
   minarea: 0.1,
   maxarea: 10,
@@ -115,6 +117,12 @@ var OGClusterLayers = {
   "Zamfara": "nesp2_state_offgrid_clusters_zamfara",
 }
 
+// fetch info about states which have og_clusters
+$.post({
+    url: "/states-with-og-clusters",
+    dataType: "json",
+    success: function(data){statesWithOgClusters=data.states_with_og_clusters;console.log(statesWithOgClusters);},
+})
 function resetStateSelect() {
   prevState = selectedState;
   selectedState = "init";

@@ -38,6 +38,18 @@ Base = declarative_base(metadata=MetaData(schema='se4all', bind=engine))
 class BoundaryAdmin(Base):
     __table__ = Table('boundary_adm1', Base.metadata, autoload=True, autoload_with=engine)
 
+
+class AdmStatus(Base):
+    __table__ = Table('boundary_adm1_status', Base.metadata, autoload=True, autoload_with=engine)
+
+
+def query_available_og_clusters():
+    """Look for state which have true set for both clusters and og_clusters"""
+    res = db_session.query(
+        AdmStatus.adm1_pcode
+    ).filter(AdmStatus.cluster_all & AdmStatus.cluster_offgrid).all()
+    return [r.adm1_pcode for r in res]
+
 def get_state_codes():
     res = db_session.query(
         BoundaryAdmin.adm1_pcode.label("code"),

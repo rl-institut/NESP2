@@ -8,11 +8,13 @@ from .database import (
     get_state_codes,
     query_random_og_cluster,
     query_filtered_clusters,
-    query_filtered_og_clusters
+    query_filtered_og_clusters,
+    query_available_og_clusters
 )
 
 
 STATE_CODES_DICT = get_state_codes()
+CODES_STATE_DICT = {v: k for k, v in STATE_CODES_DICT.items()}
 
 
 def create_app(test_config=None):
@@ -114,6 +116,15 @@ def create_app(test_config=None):
             mimetype="text/csv",
             headers={"Content-disposition": "attachment; filename={}.csv".format(fname)}
         )
+
+    @app.route('/states-with-og-clusters', methods=["POST"])
+    def available_clusters():
+
+        # query state codes for states with og clusters data
+        resp = query_available_og_clusters()
+        resp = jsonify({"states_with_og_clusters": [CODES_STATE_DICT[r.lower()] for r in resp]})
+        resp.status_code = 200
+        return resp
 
     @app.route('/random-cluster', methods=["POST"])
     def random_clusters():
