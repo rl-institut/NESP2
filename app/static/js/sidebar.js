@@ -292,14 +292,19 @@ function update_filter() {
                 url: "/filtered-cluster",
                 dataType: "json",
                 data: {"cluster_type": "all", "state_name": selectedState, ... currentfilter},
-                success: function(data){filteredClusters=data;},
+                success: function(data){console.log(data);filteredClusters=data;},
              }).done(
-            function(data) {
-                var filter_title = $("#n_clusters");
-                filter_title.text("(" + filteredClusters + " selected clusters)");
-                filter_title = $("#filtered-clusters-num");
-                filter_title.text(filteredOgClusters);
-            }
+                function(data) {
+                    console.log("THERE")
+                    var filter_title = $("#n_clusters");
+                    var new_text = "(" + filteredClusters + " selected settlements)";
+                    if (filteredClusters == 1){
+                        new_text = "(" + filteredClusters + " selected settlement)";
+                    };
+                    filter_title.text(new_text);
+                    filter_title = $("#filtered-clusters-num");
+                    filter_title.text(filteredClusters);
+                }
         );
     }
 };
@@ -314,7 +319,11 @@ function update_og_filter() {
         }).done(
             function(data) {
                 var filter_title = $("#n_ogclusters");
-                filter_title.text("(" + filteredOgClusters + " selected clusters)");
+                var new_text = "(" + filteredOgClusters + " selected settlements)";
+                if (filteredOgClusters > 1){
+                    new_text = "(" + filteredOgClusters + " selected settlement)"
+                };
+                filter_title.text(new_text);
                 filter_title = $("#filtered-clusters-num");
                 filter_title.text(filteredOgClusters);
             }
