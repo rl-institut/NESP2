@@ -550,7 +550,7 @@ function state_button_fun(trigger="button") {
   // When coming from village to state level it should not zoom out to the selected state
   if (previous_level == "national" || previous_level == "state" || (previous_level == "village" && trigger == "map-click")) {
     zoomToSelectedState();
-    var numSelectedClusters = 0;
+    var numSelectedClusters = null;
     if (document.getElementById("clustersCheckbox").checked == true){
         update_filter();
         numSelectedClusters = filteredClusters;
@@ -561,7 +561,9 @@ function state_button_fun(trigger="button") {
     }
     // Trigger the filter function so that the selected state geojson does not hide the clusters
     update_nigeria_states_geojson()
-    update_clusterInfo({}, numSelectedClusters)
+    if (numSelectedClusters !== null) {
+        update_clusterInfo({}, numSelectedClusters)
+    }
 
   };
   if (previous_level == "village" && (trigger == "button" || trigger == "zoom")) {
@@ -732,6 +734,11 @@ function clusters_cb_fun() {
         remove_layer(clusterLayer[prevState])
     }
     add_layer(clusterLayer[selectedState]);
+
+    // update the number of clusters available
+    update_filter()
+    update_clusterInfo({}, filteredClusters)
+
     // Update centroids for all_clusters
     update_centroids();
   } else {
@@ -806,6 +813,10 @@ function ogClusters_cb_fun() {
         remove_layer(ogClusterLayers[prevState])
     }
     add_layer(ogClusterLayers[selectedState]);
+
+    // update the number of clusters available
+    update_og_filter()
+    update_clusterInfo({}, filteredOgClusters)
     // Update centroids for og_clusters
     update_centroids();
   } else {
