@@ -727,6 +727,10 @@ function download_clusters_fun() {
 }
 
 function clusters_cb_fun() {
+
+  if (prevState != "init") {
+    remove_layer(clusterLayer[prevState])
+  }
   if (document.getElementById("clustersCheckbox").checked == true) {
     // set panel side to green
     document.getElementById("clustersPanel").style.borderLeft = '.25rem solid #1DD069';
@@ -734,9 +738,6 @@ function clusters_cb_fun() {
     set_og_clusters_toggle(false);
     ogClusters_cb_fun();
 
-    if (prevState != "init") {
-        remove_layer(clusterLayer[prevState])
-    }
     add_layer(clusterLayer[selectedState]);
 
     // update the number of clusters available
@@ -751,6 +752,10 @@ function clusters_cb_fun() {
     remove_layer(clusterLayer[selectedState]);
     // Close the filters if they were available
     clusters_filter_fun();
+    if(document.getElementById("ogClustersCheckbox").checked == false) {
+        clusterInfo.remove()
+    }
+
   }
 
   /*$.get({url: $SCRIPT_ROOT,
@@ -806,6 +811,9 @@ function clusters_filter_fun() {
 
 
 function ogClusters_cb_fun() {
+  if (prevState != "init") {
+    remove_layer(ogClusterLayers[prevState])
+  }
   var checkBox = document.getElementById("ogClustersCheckbox");
   if (checkBox.checked == true) {
     // set panel side to green
@@ -813,9 +821,7 @@ function ogClusters_cb_fun() {
     // deactivate clusters
     set_clusters_toggle(false);
     clusters_cb_fun();
-    if (prevState != "init") {
-        remove_layer(ogClusterLayers[prevState])
-    }
+
     add_layer(ogClusterLayers[selectedState]);
 
     // update the number of clusters available
@@ -829,6 +835,9 @@ function ogClusters_cb_fun() {
     remove_layer(ogClusterLayers[selectedState]);
     // Close the filters if they were available
     ogClusters_filter_fun();
+    if(document.getElementById("clustersCheckbox").checked == false) {
+        clusterInfo.remove()
+    }
   }
 }
 
