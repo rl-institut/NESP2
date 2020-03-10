@@ -309,10 +309,9 @@ function update_filter() {
                 url: "/filtered-cluster",
                 dataType: "json",
                 data: {"cluster_type": "all", "state_name": selectedState, ... currentfilter},
-                success: function(data){console.log(data);filteredClusters=data;},
+                success: function(data){filteredClusters=data;},
              }).done(
                 function(data) {
-                    console.log("THERE")
                     var filter_title = $("#n_clusters");
                     var new_text = "= " + filteredClusters + " settlements";
                     if (filteredClusters == 1){
@@ -490,12 +489,10 @@ function adapt_view_to_national_level() {
   map.fitBounds(L.latLngBounds(L.latLng(14, 15), L.latLng(4, 2.5)))
   // if the fitBound has smaller zoom level, update the min zoom level
   map.setMinZoom(map.getZoom());
-
 };
 
 function adapt_view_to_state_level() {
   give_status("adapt_view_to_state_level");
-
 
   map.options.minZoom = 8;
   map.options.maxZoom = 18;
@@ -564,6 +561,7 @@ function state_button_fun(trigger="button") {
       // select a random state which has off-grid clusters
       selectedState = statesWithOgClusters[Math.floor(Math.random()*statesWithOgClusters.length)]
       // Update the states menu list
+      selectedState = "Kano"
       document.getElementById("stateSelect").value = selectedState;
   };
 
@@ -613,7 +611,7 @@ function village_button_fun(trigger="button") {
   if (previous_level == "national" && trigger == "button"){
       // select a random state which has off-grid clusters
       selectedState = statesWithOgClusters[Math.floor(Math.random()*statesWithOgClusters.length)]
-
+      selectedState = "Kano"
       // Update the states menu list
       document.getElementById("stateSelect").value = selectedState;
       updateSelectedStateBounds()
@@ -902,6 +900,7 @@ function buildingDensity_cb_fun() {
 
 // Function asynchronously calls geojsons with centroids of selected state
 function update_centroids_data(handleData){
+   console.log("Update centroid")
   var centroids_file_key = selectedState
   if (selectedState == "init"){
     centroids_file_key = "Kano";
@@ -1001,10 +1000,6 @@ function get_centroid_by_id(centroid_id){
   return(centroid);
 }
 
-function get_centroid_info(centroid){
-  info = centroid.feature.properties;
-  return(info);
-}
 
 //function updates the list of cluster keys in filtered_centroids_keys
 function filter_centroid_keys(){
@@ -1046,12 +1041,10 @@ function filter_centroid_keys(){
 }
 
 function update_cluster_info(){
-      var centroid = get_centroid_by_id(currently_featured_centroid_id);
-      var centroid_info = get_centroid_info(centroid);
-
+    var centroid = get_centroid_by_id(currently_featured_centroid_id);
     const clusterNum = filtered_centroids_keys.indexOf(currently_featured_centroid_id) + 1;
     const selectedClustersNum = filtered_centroids_keys.length;
-    update_clusterInfo(centroid_info, selectedClustersNum, clusterNum);
+    update_clusterInfo(centroid.feature.properties, selectedClustersNum, clusterNum);
 
 }
 
@@ -1117,15 +1110,4 @@ function prev_selection_fun(){
     flyToClusterBounds(target);
   }
   update_cluster_info();
-}
-
-function lga_cb_fun() {
-  /*var checkBox = document.getElementById("lgaCheckbox");
-  if (checkBox.checked == true){
-    add_layer(lgas_pbf)
-  }
-  else {
-    remove_layer(lgas_pbf)
-  }
-  */
 }

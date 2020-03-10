@@ -142,51 +142,6 @@ var notnigerialayer = L.vectorGrid.slicer(not_nigeria, {
   minZoom: 5,
 }).addTo(map);
 
-// Vector-tiles layer that has LGA shapes in high resolution and columns in its attribute table: id, name, source, type, wikidata, wikipedia
-var lgas_pbf = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_lgas_hr/{z}/{x}/{y}.pbf", {
-  rendererFactory: L.canvas.tile,
-  vectorTileLayerStyles: {
-    lgas_hr: function(prop, zoom) {
-      if (prop.name == selectedLGA) {
-        return (NLlgaSelection)
-      }
-      return (NLlga)
-    }
-  }
-});
-
-function remove_lgas_pbf() {
-  if (map.hasLayer(lgas_pbf) == true) {
-    map.removeLayer(lgas_pbf);
-  }
-};
-
-function add_lgas_pbf() {
-  if (map.hasLayer(lgas_pbf) == false) {
-    map.addLayer(lgas_pbf);
-  }
-};
-
-function redefine_lgas_pbf() {
-  lgas_pbf = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_lgas_hr/{z}/{x}/{y}.pbf", {
-    rendererFactory: L.canvas.tile,
-    vectorTileLayerStyles: {
-      states: function(prop, zoom) {
-        if (prop.name == selectedLGA) {
-          return (NLlgaSelection)
-        }
-        return (NLlga)
-      }
-    }
-  });
-};
-
-function update_lgas_pbf() {
-  remove_lgas_pbf;
-  redefine_lgas_pbf();
-  add_lgas_pbf();
-};
-
 
 // State borders and state hover functions
 
