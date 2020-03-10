@@ -423,7 +423,9 @@ function adapt_view_to_national_level() {
   remove_layer(selected_state_pbf);
 
   // Trigger the filter function so that all geojson state are available again
-  update_nigeria_states_geojson()
+  if (selectedState == "init" && prevState != "init") {
+    update_nigeria_states_geojson();
+  }
 
   remove_basemaps();
 
