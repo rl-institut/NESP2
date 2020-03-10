@@ -287,31 +287,39 @@ ogBuildingsFootprintSlider.noUiSlider.on("end", update_og_filter);
 
 
 function update_filter() {
-if (selectedState != "init") {
-         $.post({
-            url: "/filtered-cluster",
-            dataType: "json",
-            data: {"cluster_type": "all", "state_name": selectedState, ... currentfilter},
-            success: function(data){consolefilteredClusters=data;},
-         }).done(
-        function(data) {var thing = $("#n_clusters");thing.text("(" + filteredClusters +
-        " selected clusters)");}
-    );
-     }
+    if (selectedState != "init") {
+        $.post({
+                url: "/filtered-cluster",
+                dataType: "json",
+                data: {"cluster_type": "all", "state_name": selectedState, ... currentfilter},
+                success: function(data){filteredClusters=data;},
+             }).done(
+            function(data) {
+                var filter_title = $("#n_clusters");
+                filter_title.text("(" + filteredClusters + " selected clusters)");
+                filter_title = $("#filtered-clusters-num");
+                filter_title.text(filteredOgClusters);
+            }
+        );
+    }
 };
 
 function update_og_filter() {
-if (selectedState != "init") {
-    $.post({
-        url: "/filtered-cluster",
-        dataType: "json",
-        data: {"cluster_type": "og", "state_name": selectedState, ... currentfilter},
-        success: function(data){filteredOgClusters=data;},
-    }).done(
-        function(data) {var thing = $("#n_ogclusters");thing.text("(" + filteredOgClusters +
-        " selected clusters)");}
-    );
- }
+    if (selectedState != "init") {
+        $.post({
+            url: "/filtered-cluster",
+            dataType: "json",
+            data: {"cluster_type": "og", "state_name": selectedState, ... currentfilter},
+            success: function(data){filteredOgClusters=data;},
+        }).done(
+            function(data) {
+                var filter_title = $("#n_ogclusters");
+                filter_title.text("(" + filteredOgClusters + " selected clusters)");
+                filter_title = $("#filtered-clusters-num");
+                filter_title.text(filteredOgClusters);
+            }
+        );
+    }
 };
 
 
@@ -518,12 +526,21 @@ function state_button_fun(trigger="button") {
   adapt_view_to_state_level();
 
   // When coming from village to state level it should not zoom out to the selected state
-  if (previous_level == "national" || previous_level == "state" || (previous_level == "village" &&
-  trigger == "map-click")) {
+  if (previous_level == "national" || previous_level == "state" || (previous_level == "village" && trigger == "map-click")) {
     zoomToSelectedState();
-
+    var numSelectedClusters = 0;
+    if (document.getElementById("clustersCheckbox").checked == true){
+        update_filter();
+        numSelectedClusters = filteredClusters;
+    }
+    if (document.getElementById("ogClustersCheckbox").checked == true) {
+        update_og_filter();
+        numSelectedClusters = filteredOgClusters;
+    }
     // Trigger the filter function so that the selected state geojson does not hide the clusters
     update_nigeria_states_geojson()
+    update_clusterInfo({}, numSelectedClusters)
+
   };
   if (previous_level == "village" && (trigger == "button" || trigger == "zoom")) {
     zoomToSelectedState();

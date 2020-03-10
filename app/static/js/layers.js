@@ -339,7 +339,7 @@ function addFunctionsToClusterLayer(layer) {
     }
     if (type != "r") {
       // Update clusterInfo based on the properties
-      update_clusterInfo(properties, "0")
+      update_clusterInfo(properties, "?")
       this.highlight = ID;
       let style = clusterSelectionStyle;
       this.setFeatureStyle(ID, style);
@@ -473,7 +473,7 @@ function addFunctionsToOGClusterLayer(layer) {
     }
     if (type != "r") {
       // Update clusterInfo based on the properties
-      update_clusterInfo(properties, "0")
+      update_clusterInfo(properties, "?")
       this.highlight = ID;
       let style = ogClusterSelectionStyle;
       this.setFeatureStyle(ID, style);
