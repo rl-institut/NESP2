@@ -103,6 +103,17 @@ clusterInfo.update = function(props) {
   this._div.innerHTML
 };
 
+var randomClusterInfo = L.control({
+  position: 'bottomleft'
+});
+
+randomClusterInfo.onAdd = function(map) {
+  this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+  this.update();
+  L.DomEvent.disableClickPropagation(this._div);
+  return this._div;
+};
+
 map.on("zoom", function(e) {
   // change level between village and state depending on the zoom
   var zoom = map.getZoom();
@@ -114,10 +125,20 @@ map.on("zoom", function(e) {
   }
   if (level == "village") {
     if (zoom < zoom_threshold) {
-      state_button_fun(trigger="zoom");
+        if (random_cluster == true) {
+            state_button_fun(trigger="random-cluster");
+        }
+        else {
+            state_button_fun(trigger="zoom");
+        }
     }
   }
 })
+
+map.on("contextmenu", function (e) {
+    console.log(map.getZoom());
+    console.log(e.latlng);
+});
 
 let logFormat = function(decimals) {
   return wNumb({

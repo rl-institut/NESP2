@@ -240,9 +240,8 @@ function highlight_state(feature, layer) {
   layer.on('click', function() {
     // Update the name of the selected state only if different from the currently selected
     if (selectedState != feature.properties["name"]) {
-      // Remove layers of old state selection
-      remove_layer(ogClusterLayers[selectedState]);
-      remove_layer(clusterLayer[selectedState]);
+      prevState = selectedState;
+      //update the selected state
       selectedState = feature.properties["name"];
       // Update the centroids layer to enable cluster click-through
       update_centroids_group();
@@ -266,22 +265,17 @@ var nigeria_states_geojson = L.geoJSON(nigeria_states_simplified, {
   }
 });
 
-
-function zoomToSelectedState(newlySelected=true) {
-  if (newlySelected == true) {
+function updateSelectedStateBounds() {
       nigeria_states_geojson.eachLayer(function(layer) {
         if (layer.feature.properties.name == selectedState) {
           // save the bounds of the selected state for later uses
-          selectedStateOptions.bounds = layer.getBounds();
-          // currently the geojson is not defined below zoom level 9
-          map.flyToBounds(layer.getBounds(), {maxZoom: 19});
-        }
-      });
-  }
-  else{
-    // currently the geojson is not defined below zoom level 9
+          selectedStateOptions.bounds = layer.getBounds();}
+      })
+};
+
+
+function zoomToSelectedState() {
     map.flyToBounds(selectedStateOptions.bounds, {maxZoom: 19});
-  }
 };
 
 // Definitions and functions for the grid_layer

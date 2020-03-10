@@ -1,4 +1,5 @@
 import os
+import json
 from flask import Flask, render_template, request, jsonify, url_for, redirect, Response
 from flask_wtf.csrf import CSRFProtect
 from .utils import define_function_jinja
@@ -118,7 +119,15 @@ def create_app(test_config=None):
     def random_clusters():
 
         state_name = request.form.get("state_name")
-        resp = jsonify(query_random_og_cluster(state_name, STATE_CODES_DICT))
+        # query centroid with geometry as geojson
+        resp = query_random_og_cluster(state_name, STATE_CODES_DICT)
+        geom = json.loads(resp.pop("geom"))
+        feature = dict(
+            lat=geom["coordinates"][1],
+            lng=geom["coordinates"][0],
+            properties=resp
+        )
+        resp = jsonify(feature)
         resp.status_code = 200
         return resp
 

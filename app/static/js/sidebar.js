@@ -11,6 +11,7 @@ var level = "national";
 var previous_level = level;
 var statesList = ["Abia", "Adamawa", "Akwa Ibom", "Anambra", "Bauchi", "Bayelsa", "Benue", "Borno", "Cross River", "Delta", "Ebonyi", "Edo", "Ekiti", "Enugu", "Federal Capital Territory", "Gombe", "Imo", "Jigawa", "Kaduna", "Kano", "Katsina", "Kebbi", "Kogi", "Kwara", "Lagos", "Nasarawa", "Niger", "Ogun", "Ondo", "Osun", "Oyo", "Plateau", "Rivers", "Sokoto", "Taraba", "Yobe", "Zamfara"];
 var selectedState = "init";
+var prevState = selectedState;
 var selectedStateOptions = {bounds: null};
 var filteredClusters = 0;
 var filteredOgClusters = 0;
@@ -115,8 +116,9 @@ var OGClusterLayers = {
 }
 
 function resetStateSelect() {
-  selectedState = "init"
-  var s = document.getElementById('stateSelect')
+  prevState = selectedState;
+  selectedState = "init";
+  var s = document.getElementById('stateSelect');
   s.options[0].selected = true;
 }
 
@@ -154,7 +156,7 @@ areaSlider.noUiSlider.on("end", update_filter);
 function changedtgSlider(str, h, values) {
   currentfilter.mindtg = values[0];
   currentfilter.maxdtg = values[1];
-  map.fireEvent("filterchange", update_filter);
+  map.fireEvent("filterchange", currentfilter);
 };
 
 
@@ -379,6 +381,9 @@ function adapt_view_to_national_level() {
   // load the medium voltage grid
   document.getElementById("nationalGridCheckbox").checked = true;
   nationalGrid_cb_fun();
+  // hide the remotely mapped villages clusters
+  document.getElementById("ogClustersCheckbox").checked = false;
+  ogClusters_cb_fun();
 
   // reset the selected state to "init"
   resetStateSelect()
@@ -406,19 +411,9 @@ function adapt_view_to_national_level() {
 
 };
 
-function adapt_view_to_state_level(previous_level, trigger) {
+function adapt_view_to_state_level() {
   console.log("adapt_view_to_state_level");
-  // click on the state level button from national level
-  if (previous_level == "national" && trigger == "button"){
-      // select a random state which has off-grid clusters
-      hasCluster = ""
-      while (hasCluster == ""){
-        selectedState = statesList[Math.floor(Math.random()*statesList.length)]
-        hasCluster = OGClusterLayers[selectedState];
-      };
-      // Update the states menu list
-      document.getElementById("stateSelect").value = selectedState;
-  };
+
 
   map.options.minZoom = 8;
   map.options.maxZoom = 18;
@@ -451,50 +446,14 @@ function adapt_view_to_state_level(previous_level, trigger) {
   remove_layer(hot);
 
   remove_basemaps_except_osm_gray();
-
-  // When coming from village to state level it should not zoom out to the selected state
-  if (previous_level == "national" || previous_level == "state" || (previous_level == "village" &&
-  trigger == "map-click")) {
-    zoomToSelectedState();
-
-    // Trigger the filter function so that the selected state geojson does not hide the clusters
-    nigeria_states_geojson.clearLayers();
-    nigeria_states_geojson.addData(nigeria_states_simplified);
-  };
-  if (previous_level == "village" && (trigger == "button" || trigger == "zoom")) {
-    zoomToSelectedState(newlySelected=false);
-  }
-  else{
-    clusterInfo.remove();
-  }
 };
 
-function adapt_view_to_village_level(previous_level, trigger) {
-
-  // click on the village level button from national level
-  if (previous_level == "national" && trigger == "button"){
-      // select a random state which has off-grid clusters
-      hasCluster = ""
-      while (hasCluster == ""){
-        selectedState = statesList[Math.floor(Math.random()*statesList.length)]
-        hasCluster = OGClusterLayers[selectedState];
-      };
-      // Update the states menu list
-      document.getElementById("stateSelect").value = selectedState;
-  };
-  if ((previous_level == "national" || previous_level == "state") && trigger == "button"){
-    //TODO: pick a random cluster among the large ones and display it
-     $.post({
-        url: "/random-cluster",
-        dataType: "json",
-        data: {"state_name": selectedState},
-        success: function(data){console.log(data);},
-     }).done(function() {console.log("now done");});
-  }
+function adapt_view_to_village_level() {
+  console.log("adapt_view_to_village_level");
   remove_layer(osm_gray);
   infoBox.remove();
   add_layer(hot);
-}
+};
 
 /*
  * triggered by the click on the level buttons
@@ -510,14 +469,73 @@ function state_button_fun(trigger="button") {
   previous_level = level
   level = "state";
   adapt_sidebar_to_selection_level(level);
-  adapt_view_to_state_level(previous_level, trigger);
+
+  // click on the state level button from national level
+  if (previous_level == "national" && trigger == "button"){
+      // select a random state which has off-grid clusters
+      hasCluster = ""
+      while (hasCluster == ""){
+        selectedState = statesList[Math.floor(Math.random()*statesList.length)]
+        hasCluster = OGClusterLayers[selectedState];
+      };
+      // Update the states menu list
+      document.getElementById("stateSelect").value = selectedState;
+  };
+
+  // updates the bounds of the selected state's layer
+  updateSelectedStateBounds()
+  // manages the layers for the state level
+  adapt_view_to_state_level();
+
+  // When coming from village to state level it should not zoom out to the selected state
+  if (previous_level == "national" || previous_level == "state" || (previous_level == "village" &&
+  trigger == "map-click")) {
+    zoomToSelectedState();
+
+    // Trigger the filter function so that the selected state geojson does not hide the clusters
+    nigeria_states_geojson.clearLayers();
+    nigeria_states_geojson.addData(nigeria_states_simplified);
+  };
+  if (previous_level == "village" && (trigger == "button" || trigger == "zoom")) {
+    zoomToSelectedState();
+    randomClusterInfo.remove()
+  }
+  else{
+    if (trigger != "random-cluster"){
+        clusterInfo.remove();
+    }
+
+  }
 };
 
 function village_button_fun(trigger="button") {
   previous_level = level
   level = "village";
   adapt_sidebar_to_selection_level(level);
-  adapt_view_to_village_level(previous_level, trigger);
+  // click on the village level button from national level, first select a random state
+  if (previous_level == "national" && trigger == "button"){
+      // select a random state which has off-grid clusters
+      hasCluster = ""
+      while (hasCluster == ""){
+        selectedState = statesList[Math.floor(Math.random()*statesList.length)]
+        hasCluster = OGClusterLayers[selectedState];
+      };
+      // Update the states menu list
+      document.getElementById("stateSelect").value = selectedState;
+      updateSelectedStateBounds()
+
+      // Trigger the filter function so that the selected state geojson does not hide the clusters
+      nigeria_states_geojson.clearLayers();
+      nigeria_states_geojson.addData(nigeria_states_simplified);
+  };
+  // click on the village level button from national or state level
+  if ((previous_level == "national" || previous_level == "state") && trigger == "button"){
+    //pick a random cluster among the large ones and display it
+    get_random_ogCluster_fun()
+  };
+
+  adapt_view_to_village_level();
+
 };
 
 // Triggered by the national and state views
@@ -549,9 +567,7 @@ function states_cb_fun() {
 function state_dropdown_fun() {
   // Work only if the selected state is different than the currenlty selected
   if (selectedState != document.getElementById("stateSelect").value) {
-    // remove layers of previously selected state
-    remove_layer(ogClusterLayers[selectedState]);
-    remove_layer(clusterLayer[selectedState]);
+    prevState = selectedState;
     //update the selected state
     selectedState = document.getElementById("stateSelect").value;
     // update the centroids layer to the newly selected state
@@ -560,8 +576,6 @@ function state_dropdown_fun() {
     state_button_fun(trigger="menu");
   }
 };
-
-
 
 // Triggered by the checkbox Populated Areas
 function heatmap_cb_fun() {
@@ -587,7 +601,26 @@ function nationalGrid_cb_fun() {
     remove_layer(national_grid);
   }
 }
+var random_cluster = false;
+//pick a random cluster among the large ones and display it
+function get_random_ogCluster_fun() {
 
+    $.post({
+            url: "/random-cluster",
+            dataType: "json",
+            data: {"state_name": selectedState},
+            success: function(data){
+                random_cluster = true;
+                randomClusterInfo.update = function() {
+                    this._div.innerHTML = '<div class="random-cluster__info">Click on the cluster to show its information</div>';
+                    this._div.innerHTML;
+                };
+                randomClusterInfo.addTo(map);
+                //this will trigger a fly to the point
+                map.flyTo(L.latLng(data.lat, data.lng), 14);
+            }
+    }).done(function (data) {random_cluster = false;});
+}
 function download_clusters_fun() {
   var export_csv_link = document.getElementById("export_csv")
 
@@ -623,11 +656,17 @@ function download_clusters_fun() {
 function clusters_cb_fun() {
   var checkBox = document.getElementById("clustersCheckbox");
   if (checkBox.checked == true) {
+    // deactivate og clusters
     document.getElementById("clustersPanel").style.borderLeft = '.25rem solid #1DD069';
     document.getElementById("ogClustersCheckbox").checked = false;
     ogClusters_cb_fun();
+
+    if (prevState != "init") {
+        remove_layer(clusterLayer[prevState])
+    }
     // Update centroids for all_clusters
     update_centroids();
+
     add_layer(clusterLayer[selectedState]);
   } else {
     document.getElementById("clustersPanel").style.borderLeft = '.25rem solid #eeeff1';
@@ -691,9 +730,13 @@ function clusters_filter_fun() {
 function ogClusters_cb_fun() {
   var checkBox = document.getElementById("ogClustersCheckbox");
   if (checkBox.checked == true) {
+    // deactivate clusters
     document.getElementById("ogClustersPanel").style.borderLeft = '.25rem solid #1DD069';
     document.getElementById("clustersCheckbox").checked = false;
     clusters_cb_fun();
+    if (prevState != "init") {
+        remove_layer(ogClusterLayers[prevState])
+    }
     // Update centroids for og_clusters
     update_centroids();
     add_layer(ogClusterLayers[selectedState]);
