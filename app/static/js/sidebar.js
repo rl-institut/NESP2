@@ -481,11 +481,7 @@ function state_button_fun(trigger="button") {
   // click on the state level button from national level
   if (previous_level == "national" && trigger == "button"){
       // select a random state which has off-grid clusters
-      hasCluster = ""
-      while (hasCluster == ""){
-        selectedState = statesList[Math.floor(Math.random()*statesList.length)]
-        hasCluster = OGClusterLayers[selectedState];
-      };
+      selectedState = statesWithOgClusters[Math.floor(Math.random()*statesWithOgClusters.length)]
       // Update the states menu list
       document.getElementById("stateSelect").value = selectedState;
   };
@@ -523,11 +519,8 @@ function village_button_fun(trigger="button") {
   // click on the village level button from national level, first select a random state
   if (previous_level == "national" && trigger == "button"){
       // select a random state which has off-grid clusters
-      hasCluster = ""
-      while (hasCluster == ""){
-        selectedState = statesList[Math.floor(Math.random()*statesList.length)]
-        hasCluster = OGClusterLayers[selectedState];
-      };
+      selectedState = statesWithOgClusters[Math.floor(Math.random()*statesWithOgClusters.length)]
+
       // Update the states menu list
       document.getElementById("stateSelect").value = selectedState;
       updateSelectedStateBounds()
