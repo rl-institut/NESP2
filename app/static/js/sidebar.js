@@ -21,7 +21,19 @@ var centroids_layer_id = -1;
 var current_cluster_centroids = Object();
 var filtered_centroids_keys = [];
 var currently_featured_centroid_id = 0;
-var statesWithOgClusters = [];
+var statesWithOgClusters = [
+    'Jigawa',
+     'Kano',
+     'Katsina',
+     'Sokoto',
+     'Kebbi',
+     'Nasarawa',
+     'Edo',
+     'Osun',
+     'Enugu',
+     'Kogi',
+     'Kwara'
+];
 
 var currentfilter = {
   minarea: 0.1,
