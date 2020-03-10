@@ -21,6 +21,8 @@ var centroids_layer_id = -1;
 var current_cluster_centroids = Object();
 var filtered_centroids_keys = [];
 var currently_featured_centroid_id = 0;
+var statesWithOgClusters = [];
+
 var currentfilter = {
   minarea: 0.1,
   maxarea: 10,
@@ -115,6 +117,12 @@ var OGClusterLayers = {
   "Zamfara": "nesp2_state_offgrid_clusters_zamfara",
 }
 
+// fetch info about states which have og_clusters
+$.post({
+    url: "/states-with-og-clusters",
+    dataType: "json",
+    success: function(data){statesWithOgClusters=data.states_with_og_clusters;console.log(statesWithOgClusters);},
+})
 function resetStateSelect() {
   prevState = selectedState;
   selectedState = "init";
@@ -473,11 +481,7 @@ function state_button_fun(trigger="button") {
   // click on the state level button from national level
   if (previous_level == "national" && trigger == "button"){
       // select a random state which has off-grid clusters
-      hasCluster = ""
-      while (hasCluster == ""){
-        selectedState = statesList[Math.floor(Math.random()*statesList.length)]
-        hasCluster = OGClusterLayers[selectedState];
-      };
+      selectedState = statesWithOgClusters[Math.floor(Math.random()*statesWithOgClusters.length)]
       // Update the states menu list
       document.getElementById("stateSelect").value = selectedState;
   };
@@ -515,11 +519,8 @@ function village_button_fun(trigger="button") {
   // click on the village level button from national level, first select a random state
   if (previous_level == "national" && trigger == "button"){
       // select a random state which has off-grid clusters
-      hasCluster = ""
-      while (hasCluster == ""){
-        selectedState = statesList[Math.floor(Math.random()*statesList.length)]
-        hasCluster = OGClusterLayers[selectedState];
-      };
+      selectedState = statesWithOgClusters[Math.floor(Math.random()*statesWithOgClusters.length)]
+
       // Update the states menu list
       document.getElementById("stateSelect").value = selectedState;
       updateSelectedStateBounds()
