@@ -543,7 +543,9 @@ function state_button_fun(trigger="button") {
 
   };
   if (previous_level == "village" && (trigger == "button" || trigger == "zoom")) {
-    zoomToSelectedState();
+    if (trigger != "zoom") {
+        zoomToSelectedState();
+    };
     randomClusterInfo.remove()
   }
   else{
