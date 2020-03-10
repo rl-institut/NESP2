@@ -548,7 +548,7 @@ function state_button_fun(trigger="button") {
   }
   else{
     if (trigger != "random-cluster"){
-        clusterInfo.remove();
+        randomClusterInfo.remove()
     }
 
   }
