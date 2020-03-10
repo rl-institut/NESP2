@@ -156,7 +156,7 @@ areaSlider.noUiSlider.on("end", update_filter);
 function changedtgSlider(str, h, values) {
   currentfilter.mindtg = values[0];
   currentfilter.maxdtg = values[1];
-  map.fireEvent("filterchange", update_filter);
+  map.fireEvent("filterchange", currentfilter);
 };
 
 
@@ -606,7 +606,7 @@ var random_cluster = false;
 function get_random_ogCluster_fun() {
 
     $.post({
-            url: "/filter-cluster",
+            url: "/random-cluster",
             dataType: "json",
             data: {"state_name": selectedState},
             success: function(data){
