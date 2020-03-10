@@ -331,7 +331,17 @@ function update_og_filter() {
     }
 };
 
+function set_toggle_value(toggle_id, value) {
+    document.getElementById(toggle_id).checked = value;
+};
 
+function set_clusters_toggle(value) {
+    set_toggle_value("clustersCheckbox", value)
+};
+
+function set_og_clusters_toggle(value) {
+    set_toggle_value("ogClustersCheckbox", value)
+};
 
 function disable_sidebar__btn(className) {
   let answer = className;
@@ -478,7 +488,10 @@ function adapt_view_to_state_level() {
   states_cb_fun();
   document.getElementById("gridCheckbox").checked = true;
   // Load the remotely mapped villages clusters
-  document.getElementById("ogClustersCheckbox").checked = true;
+  if (previous_level == "national" && prevState == "init") {
+    set_og_clusters_toggle(true);
+  }
+  clusters_cb_fun();
   ogClusters_cb_fun();
 
 
@@ -708,11 +721,11 @@ function download_clusters_fun() {
 }
 
 function clusters_cb_fun() {
-  var checkBox = document.getElementById("clustersCheckbox");
-  if (checkBox.checked == true) {
-    // deactivate og clusters
+  if (document.getElementById("clustersCheckbox").checked == true) {
+    // set panel side to green
     document.getElementById("clustersPanel").style.borderLeft = '.25rem solid #1DD069';
-    document.getElementById("ogClustersCheckbox").checked = false;
+    // deactivate og clusters
+    set_og_clusters_toggle(false);
     ogClusters_cb_fun();
 
     if (prevState != "init") {
@@ -722,6 +735,7 @@ function clusters_cb_fun() {
     // Update centroids for all_clusters
     update_centroids();
   } else {
+  // set panel side to grey
     document.getElementById("clustersPanel").style.borderLeft = '.25rem solid #eeeff1';
     remove_layer(clusterLayer[selectedState]);
     // Close the filters if they were available
@@ -783,9 +797,10 @@ function clusters_filter_fun() {
 function ogClusters_cb_fun() {
   var checkBox = document.getElementById("ogClustersCheckbox");
   if (checkBox.checked == true) {
-    // deactivate clusters
+    // set panel side to green
     document.getElementById("ogClustersPanel").style.borderLeft = '.25rem solid #1DD069';
-    document.getElementById("clustersCheckbox").checked = false;
+    // deactivate clusters
+    set_clusters_toggle(false);
     clusters_cb_fun();
     if (prevState != "init") {
         remove_layer(ogClusterLayers[prevState])
@@ -794,6 +809,7 @@ function ogClusters_cb_fun() {
     // Update centroids for og_clusters
     update_centroids();
   } else {
+  // set panel side to grey
     document.getElementById("ogClustersPanel").style.borderLeft = '.25rem solid #eeeff1';
     remove_layer(ogClusterLayers[selectedState]);
     // Close the filters if they were available
