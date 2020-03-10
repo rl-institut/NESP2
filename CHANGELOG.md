@@ -44,6 +44,7 @@ Here is a template for new release sections
 - clicking on state button will randomly select a state
 - ability to download the information about settlements clusters in a csv file (#156)
 - add next and previous buttons (#205)
+- number of selected clusters by the filter selection (#213)
 
 ### Changed
 - Filter slider get reasonable steps (#167)

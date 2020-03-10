@@ -12,6 +12,8 @@ var previous_level = level;
 var statesList = ["Abia", "Adamawa", "Akwa Ibom", "Anambra", "Bauchi", "Bayelsa", "Benue", "Borno", "Cross River", "Delta", "Ebonyi", "Edo", "Ekiti", "Enugu", "Federal Capital Territory", "Gombe", "Imo", "Jigawa", "Kaduna", "Kano", "Katsina", "Kebbi", "Kogi", "Kwara", "Lagos", "Nasarawa", "Niger", "Ogun", "Ondo", "Osun", "Oyo", "Plateau", "Rivers", "Sokoto", "Taraba", "Yobe", "Zamfara"];
 var selectedState = "init";
 var selectedStateOptions = {bounds: null};
+var filteredClusters = 0;
+var filteredOgClusters = 0;
 var selectedLGA = "";
 var thirtythreeKV = "33_kV_" + selectedState.toLowerCase();
 var centroids_layer_id = -1;
@@ -126,6 +128,8 @@ var sliderOptions = {
   }),
 };
 
+
+
 // TODO: maybe redundant could use the same function for all sliders
 function changeAreaSlider(str, h, values) {
   currentfilter.minarea = values[0];
@@ -145,12 +149,15 @@ noUiSlider.create(areaSlider, {
   },
 });
 areaSlider.noUiSlider.on("change", changeAreaSlider);
+areaSlider.noUiSlider.on("end", update_filter);
 
 function changedtgSlider(str, h, values) {
   currentfilter.mindtg = values[0];
   currentfilter.maxdtg = values[1];
-  map.fireEvent("filterchange", currentfilter);
+  map.fireEvent("filterchange", update_filter);
 };
+
+
 var dtgSlider = document.getElementById('dtgSlider');
 noUiSlider.create(dtgSlider, {
   ...sliderOptions,
@@ -163,6 +170,7 @@ noUiSlider.create(dtgSlider, {
   }
 });
 dtgSlider.noUiSlider.on("change", changedtgSlider);
+dtgSlider.noUiSlider.on("end", update_filter);
 
 function changeogAreaSlider(str, h, values) {
   currentfilter.ogminarea = values[0];
@@ -180,6 +188,8 @@ noUiSlider.create(ogAreaSlider, {
   }
 });
 ogAreaSlider.noUiSlider.on("change", changeogAreaSlider);
+ogAreaSlider.noUiSlider.on("end", update_og_filter);
+
 
 function changeogDistanceSlider(str, h, values) {
   currentfilter.ogmindtg = values[0];
@@ -198,6 +208,7 @@ noUiSlider.create(ogDistanceSlider, {
   }
 });
 ogDistanceSlider.noUiSlider.on("change", changeogDistanceSlider);
+ogDistanceSlider.noUiSlider.on("end", update_og_filter);
 
 function changeogBuildingsSlider(str, h, values) {
   currentfilter.ogminb = values[0];
@@ -217,6 +228,7 @@ noUiSlider.create(ogBuildingsSlider, {
   }
 });
 ogBuildingsSlider.noUiSlider.on("change", changeogBuildingsSlider);
+ogBuildingsSlider.noUiSlider.on("end", update_og_filter);
 
 function changeogBuildingsFootprintSlider(str, h, values) {
   currentfilter.ogminbfp = values[0];
@@ -235,6 +247,38 @@ noUiSlider.create(ogBuildingsFootprintSlider, {
   }
 });
 ogBuildingsFootprintSlider.noUiSlider.on("change", changeogBuildingsFootprintSlider);
+ogBuildingsFootprintSlider.noUiSlider.on("end", update_og_filter);
+
+
+
+function update_filter() {
+if (selectedState != "init") {
+         $.post({
+            url: "/filtered-cluster",
+            dataType: "json",
+            data: {"cluster_type": "all", "state_name": selectedState, ... currentfilter},
+            success: function(data){console.log(data); filteredClusters=data;},
+         }).done(
+        function(data) {var thing = $("#n_clusters");thing.text("(" + filteredClusters +
+        " selected clusters)");}
+    );
+     }
+};
+
+function update_og_filter() {
+if (selectedState != "init") {
+    $.post({
+        url: "/filtered-cluster",
+        dataType: "json",
+        data: {"cluster_type": "og", "state_name": selectedState, ... currentfilter},
+        success: function(data){console.log(data); filteredOgClusters=data;},
+    }).done(
+        function(data) {var thing = $("#n_ogclusters");thing.text("(" + filteredOgClusters +
+        " selected clusters)");}
+    );
+ }
+};
+
 
 
 function disable_sidebar__btn(className) {
@@ -441,7 +485,7 @@ function adapt_view_to_village_level(previous_level, trigger) {
   if ((previous_level == "national" || previous_level == "state") && trigger == "button"){
     //TODO: pick a random cluster among the large ones and display it
      $.post({
-        url: "/filter-cluster",
+        url: "/random-cluster",
         dataType: "json",
         data: {"state_name": selectedState},
         success: function(data){console.log(data);},
@@ -618,7 +662,14 @@ function template_filter_fun(id) {
         prevFilter[j].className = disable_sidebar_filter(prevFilter[j].className);
       }
     }
-    map.fireEvent("filterchange", currentfilter);
+    if (id == "clusters") {
+        map.fireEvent("filterchange", currentfilter);
+        update_filter();
+    }
+    else{
+        map.fireEvent("ogfilterchange", currentfilter);
+        update_og_filter();
+    }
   } else {
     var prevFilter = document.querySelectorAll(".content-filter");
     var j;

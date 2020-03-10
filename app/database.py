@@ -57,7 +57,7 @@ def filter_materialized_view(
         building=None,
         buildingfp=None,
         limit=None,
-        keys=None
+        keys=None,
 ):
     if schema is not None:
         view_name = "{}.{}".format(schema, view_name)
@@ -102,7 +102,10 @@ def filter_materialized_view(
     if keys is None:
         columns = "*"
     else:
-        columns = ", ".join(keys)
+        if not isinstance(keys, str):
+            columns = ", ".join(keys)
+        else:
+            columns = "COUNT({})".format(keys)
     with engine.connect() as con:
         query = 'SELECT {} FROM {}{}{};'.format(columns, view_name, filter_cond, limit)
         rs = con.execute(query)
