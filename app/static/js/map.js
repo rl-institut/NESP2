@@ -87,7 +87,7 @@ var clusterInfo = L.control({
 });
 
 clusterInfo.onAdd = function(map) {
-  this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+  this._div = L.DomUtil.create('div', 'cluster__info'); // create a div with a class "info"
   this.update();
   L.DomEvent.disableClickPropagation(this._div);
   return this._div;
@@ -106,13 +106,18 @@ clusterInfo.update = function(props) {
 // this function updates the content of the clusterInfo in a centralized way
 function update_clusterInfo(properties, selectedClustersNum, clusterNum="?") {
     console.log(properties)
-
+//
     var control_content = '\
-      <h3 title="this is not the final style"> Browse the settlements</h3>\
-      <div id="download_clusters" class="consecutive__btn">\
-        <button style="float:left" onclick="prev_selection_fun()"> < </button> \
-        ' + clusterNum + ' / ' + selectedClustersNum + ' \
-        <button style="float:right" onclick="next_selection_fun()"> > </button>\
+      <div class="grid-x ">\
+          <h4 title="this is not the final style" class="cell"> Browse the settlements</h4>\
+          <div id="download_clusters" class="cell  grid-x consecutive__btn">\
+            <button class="cell large-4" style="float:left" onclick="prev_selection_fun()"> < </button> \
+            <h5 class="cell large-4">\
+                <span>' + clusterNum + ' </span> / <span id="filtered-clusters-num">\
+                ' + selectedClustersNum + '</span> \
+            </h5>\
+            <button class="cell large-4" style="float:right" onclick="next_selection_fun()"> > </button>\
+          </div>\
       </div>';
 
     if(properties.cluster_all_id !== undefined){
