@@ -121,8 +121,21 @@ var OGClusterLayers = {
 $.post({
     url: "/states-with-og-clusters",
     dataType: "json",
-    success: function(data){statesWithOgClusters=data.states_with_og_clusters;console.log(statesWithOgClusters);},
+    success: function(data){statesWithOgClusters=data.states_with_og_clusters;},
 })
+
+function give_status(context=null) {
+    console.log("Status on");
+    if (context) {
+        console.log(context);
+    };
+    console.log("    " + level);
+    console.log("    " + previous_level);
+    console.log("    " + selectedState);
+    console.log("    " + prevState);
+    console.log("Status over");
+};
+
 function resetStateSelect() {
   prevState = selectedState;
   selectedState = "init";
@@ -267,7 +280,7 @@ if (selectedState != "init") {
             url: "/filtered-cluster",
             dataType: "json",
             data: {"cluster_type": "all", "state_name": selectedState, ... currentfilter},
-            success: function(data){console.log(data); filteredClusters=data;},
+            success: function(data){consolefilteredClusters=data;},
          }).done(
         function(data) {var thing = $("#n_clusters");thing.text("(" + filteredClusters +
         " selected clusters)");}
@@ -281,7 +294,7 @@ if (selectedState != "init") {
         url: "/filtered-cluster",
         dataType: "json",
         data: {"cluster_type": "og", "state_name": selectedState, ... currentfilter},
-        success: function(data){console.log(data); filteredOgClusters=data;},
+        success: function(data){filteredOgClusters=data;},
     }).done(
         function(data) {var thing = $("#n_ogclusters");thing.text("(" + filteredOgClusters +
         " selected clusters)");}
@@ -371,7 +384,7 @@ function adapt_sidebar_to_selection_level(selectionLevel) {
 };
 
 function adapt_view_to_national_level() {
-
+  give_status("adapt_view_to_national_level");
   map.setMinZoom(6.5);
   map.options.maxZoom = 9;
   map.options.zoomSnap = 0.5;
@@ -420,7 +433,7 @@ function adapt_view_to_national_level() {
 };
 
 function adapt_view_to_state_level() {
-  console.log("adapt_view_to_state_level");
+  give_status("adapt_view_to_state_level");
 
 
   map.options.minZoom = 8;
@@ -457,7 +470,7 @@ function adapt_view_to_state_level() {
 };
 
 function adapt_view_to_village_level() {
-  console.log("adapt_view_to_village_level");
+  give_status("adapt_view_to_village_level");
   remove_layer(osm_gray);
   infoBox.remove();
   add_layer(hot);
@@ -528,6 +541,7 @@ function village_button_fun(trigger="button") {
       // Trigger the filter function so that the selected state geojson does not hide the clusters
       nigeria_states_geojson.clearLayers();
       nigeria_states_geojson.addData(nigeria_states_simplified);
+
   };
   // click on the village level button from national or state level
   if ((previous_level == "national" || previous_level == "state") && trigger == "button"){
