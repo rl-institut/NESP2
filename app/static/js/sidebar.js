@@ -423,8 +423,7 @@ function adapt_view_to_national_level() {
   remove_layer(selected_state_pbf);
 
   // Trigger the filter function so that all geojson state are available again
-  nigeria_states_geojson.clearLayers();
-  nigeria_states_geojson.addData(nigeria_states_simplified);
+  update_nigeria_states_geojson()
 
   remove_basemaps();
 
@@ -522,8 +521,7 @@ function state_button_fun(trigger="button") {
     zoomToSelectedState();
 
     // Trigger the filter function so that the selected state geojson does not hide the clusters
-    nigeria_states_geojson.clearLayers();
-    nigeria_states_geojson.addData(nigeria_states_simplified);
+    update_nigeria_states_geojson()
   };
   if (previous_level == "village" && (trigger == "button" || trigger == "zoom")) {
     zoomToSelectedState();
@@ -551,8 +549,7 @@ function village_button_fun(trigger="button") {
       updateSelectedStateBounds()
 
       // Trigger the filter function so that the selected state geojson does not hide the clusters
-      nigeria_states_geojson.clearLayers();
-      nigeria_states_geojson.addData(nigeria_states_simplified);
+      update_nigeria_states_geojson()
 
   };
   // click on the village level button from national or state level

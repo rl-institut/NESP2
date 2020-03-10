@@ -265,6 +265,15 @@ var nigeria_states_geojson = L.geoJSON(nigeria_states_simplified, {
   }
 });
 
+// Make use of the filter function of the geoJSON layer
+function update_nigeria_states_geojson() {
+    give_status("update nigeria geojson")
+    //remove the features
+    nigeria_states_geojson.clearLayers();
+    //add the features which will trigger the filter
+    nigeria_states_geojson.addData(nigeria_states_simplified);
+};
+
 function updateSelectedStateBounds() {
       nigeria_states_geojson.eachLayer(function(layer) {
         if (layer.feature.properties.name == selectedState) {
