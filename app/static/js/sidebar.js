@@ -442,8 +442,15 @@ function adapt_view_to_national_level() {
   document.getElementById("nationalGridCheckbox").checked = true;
   nationalGrid_cb_fun();
   // hide the remotely mapped villages clusters
-  document.getElementById("ogClustersCheckbox").checked = false;
+  if (selectedState == "init" && prevState == "init") {
+    set_clusters_toggle(false);
+    set_og_clusters_toggle(false);
+  }
+  clusters_cb_fun();
   ogClusters_cb_fun();
+  // Remotely mapped villages layer
+  remove_layer(clusterLayer[selectedState]);
+  remove_layer(ogClusterLayers[selectedState]);
 
   // reset the selected state to "init"
   resetStateSelect()
@@ -458,9 +465,6 @@ function adapt_view_to_national_level() {
 
   map.addLayer(osm_gray);
   map.addLayer(national_background);
-
-  // Remotely mapped villages layer
-  remove_layer(ogClusterLayers[selectedState]);
 
   // Linked to the checkbox Grid
   remove_layer(grid_layer);
