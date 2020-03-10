@@ -45,7 +45,7 @@ Here is a template for new release sections
 - ability to download the information about settlements clusters in a csv file (#156)
 - add next and previous buttons (#205)
 - number of selected clusters by the filter selection (#213)
-
+- function to generate the control of clusters (#220)
 ### Changed
 - Filter slider get reasonable steps (#167)
 - availability info moved
@@ -71,6 +71,8 @@ Here is a template for new release sections
 - Styling of filtersubmenue (#137)
 - Replaced lines of static code with for loops (#155)
 - Split the filter events for og clusters and normal clusters (#155)
+- Make sure the clusters layers on a state are properly removed once the user select another state or national level (#220)
+
 
 ### Removed
 - redundant accordion menu (#10)

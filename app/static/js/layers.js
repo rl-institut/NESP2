@@ -265,6 +265,15 @@ var nigeria_states_geojson = L.geoJSON(nigeria_states_simplified, {
   }
 });
 
+// Make use of the filter function of the geoJSON layer
+function update_nigeria_states_geojson() {
+    give_status("update nigeria geojson")
+    //remove the features
+    nigeria_states_geojson.clearLayers();
+    //add the features which will trigger the filter
+    nigeria_states_geojson.addData(nigeria_states_simplified);
+};
+
 function updateSelectedStateBounds() {
       nigeria_states_geojson.eachLayer(function(layer) {
         if (layer.feature.properties.name == selectedState) {
@@ -324,26 +333,13 @@ function addFunctionsToClusterLayer(layer) {
     if (properties.cluster_all_id !== undefined) {
       var type = "c";
       var ID = properties.cluster_all_id;
-      var popup = '\
-      <div id="download_clusters" class="consecutive__btn">\
-        <button style="float:left" onclick="prev_selection_fun()"> < </button> <button style="float:right" onclick="next_selection_fun()"> > </button>\
-      </div>\
-      <table>\
-        <tr><td align="right"><b>ID</b>:</td><td>' + properties.cluster_all_id + '</td></tr>\
-        <tr><td align="right"><b>Area</b>:</td><td>' + properties.area_km2 + '</td></tr>\
-        <tr><td align="right"><b>Distance to Grid</b>:</td><td>' + parseFloat(properties.grid_dist_km).toFixed(2) + ' km2</td></tr>\
-      </table>';
     } else {
       var type = "r";
       var ID = "r" + properties.OBJECTID;
     }
     if (type != "r") {
-      clusterInfo.remove();
-      clusterInfo.update = function() {
-        this._div.innerHTML = popup;
-        this._div.innerHTML;
-      };
-      clusterInfo.addTo(map);
+      // Update clusterInfo based on the properties
+      update_clusterInfo(properties, "?")
       this.highlight = ID;
       let style = clusterSelectionStyle;
       this.setFeatureStyle(ID, style);
@@ -471,29 +467,13 @@ function addFunctionsToOGClusterLayer(layer) {
     if (properties.cluster_offgrid_id !== undefined) {
       var type = "c";
       var ID = properties.cluster_offgrid_id;
-      var popup = '\
-      <div id="download_clusters" class="consecutive__btn">\
-        <button style="float:left" onclick="prev_selection_fun()"> < </button> <button style="float:right" onclick="next_selection_fun()"> > </button>\
-      </div>\
-      <table>\
-        <tr><td align="right"><b>Area</b>:</td><td>' + parseFloat(properties.area_km2).toFixed(2) + ' km2</td></tr>\
-        <tr><td align="right"><b>Building Count</b>:</td><td>' + parseFloat(properties.building_count).toFixed(0) + '</td></tr>\
-        <tr><td align="right"><b>Building Area in km²</b>:</td><td>' + parseFloat(properties.building_area_km2).toFixed(3) + '</td></tr>\
-        <tr><td align="right"><b>Buildings per km²</b>:</td><td>' + parseFloat(properties.building_count_density_perkm2).toFixed(0) + '</td></tr>\
-        <tr><td align="right"><b>Percentage Building Area</b>:</td><td>' + parseFloat(properties.percentage_building_area).toFixed(2) + '</td></tr>\
-        <tr><td align="right"><b>Distance to Grid in km</b>:</td><td>' + parseFloat(properties.grid_dist_km).toFixed(1) + '</td></tr>\
-      </table>';
     } else {
       var type = "r";
       var ID = "r" + properties.OBJECTID;
     }
     if (type != "r") {
-      clusterInfo.remove();
-      clusterInfo.update = function() {
-        this._div.innerHTML = popup;
-        this._div.innerHTML;
-      };
-      clusterInfo.addTo(map);
+      // Update clusterInfo based on the properties
+      update_clusterInfo(properties, "?")
       this.highlight = ID;
       let style = ogClusterSelectionStyle;
       this.setFeatureStyle(ID, style);

@@ -21,7 +21,19 @@ var centroids_layer_id = -1;
 var current_cluster_centroids = Object();
 var filtered_centroids_keys = [];
 var currently_featured_centroid_id = 0;
-var statesWithOgClusters = [];
+var statesWithOgClusters = [
+    'Jigawa',
+     'Kano',
+     'Katsina',
+     'Sokoto',
+     'Kebbi',
+     'Nasarawa',
+     'Edo',
+     'Osun',
+     'Enugu',
+     'Kogi',
+     'Kwara'
+];
 
 var currentfilter = {
   minarea: 0.1,
@@ -121,8 +133,21 @@ var OGClusterLayers = {
 $.post({
     url: "/states-with-og-clusters",
     dataType: "json",
-    success: function(data){statesWithOgClusters=data.states_with_og_clusters;console.log(statesWithOgClusters);},
+    success: function(data){statesWithOgClusters=data.states_with_og_clusters;},
 })
+
+function give_status(context=null) {
+    console.log("Status on");
+    if (context) {
+        console.log(context);
+    };
+    console.log("    level " + level);
+    console.log("    prevLevel " + previous_level);
+    console.log("    State " + selectedState);
+    console.log("    prevState " + prevState);
+    console.log("Status over");
+};
+
 function resetStateSelect() {
   prevState = selectedState;
   selectedState = "init";
@@ -262,34 +287,61 @@ ogBuildingsFootprintSlider.noUiSlider.on("end", update_og_filter);
 
 
 function update_filter() {
-if (selectedState != "init") {
-         $.post({
-            url: "/filtered-cluster",
-            dataType: "json",
-            data: {"cluster_type": "all", "state_name": selectedState, ... currentfilter},
-            success: function(data){console.log(data); filteredClusters=data;},
-         }).done(
-        function(data) {var thing = $("#n_clusters");thing.text("(" + filteredClusters +
-        " selected clusters)");}
-    );
-     }
+    if (selectedState != "init") {
+        $.post({
+                url: "/filtered-cluster",
+                dataType: "json",
+                data: {"cluster_type": "all", "state_name": selectedState, ... currentfilter},
+                success: function(data){console.log(data);filteredClusters=data;},
+             }).done(
+                function(data) {
+                    console.log("THERE")
+                    var filter_title = $("#n_clusters");
+                    var new_text = "(" + filteredClusters + " selected settlements)";
+                    if (filteredClusters == 1){
+                        new_text = "(" + filteredClusters + " selected settlement)";
+                    };
+                    filter_title.text(new_text);
+                    filter_title = $("#filtered-clusters-num");
+                    filter_title.text(filteredClusters);
+                }
+        );
+    }
 };
 
 function update_og_filter() {
-if (selectedState != "init") {
-    $.post({
-        url: "/filtered-cluster",
-        dataType: "json",
-        data: {"cluster_type": "og", "state_name": selectedState, ... currentfilter},
-        success: function(data){console.log(data); filteredOgClusters=data;},
-    }).done(
-        function(data) {var thing = $("#n_ogclusters");thing.text("(" + filteredOgClusters +
-        " selected clusters)");}
-    );
- }
+    if (selectedState != "init") {
+        $.post({
+            url: "/filtered-cluster",
+            dataType: "json",
+            data: {"cluster_type": "og", "state_name": selectedState, ... currentfilter},
+            success: function(data){filteredOgClusters=data;},
+        }).done(
+            function(data) {
+                var filter_title = $("#n_ogclusters");
+                var new_text = "(" + filteredOgClusters + " selected settlements)";
+                if (filteredOgClusters > 1){
+                    new_text = "(" + filteredOgClusters + " selected settlement)"
+                };
+                filter_title.text(new_text);
+                filter_title = $("#filtered-clusters-num");
+                filter_title.text(filteredOgClusters);
+            }
+        );
+    }
 };
 
+function set_toggle_value(toggle_id, value) {
+    document.getElementById(toggle_id).checked = value;
+};
 
+function set_clusters_toggle(value) {
+    set_toggle_value("clustersCheckbox", value)
+};
+
+function set_og_clusters_toggle(value) {
+    set_toggle_value("ogClustersCheckbox", value)
+};
 
 function disable_sidebar__btn(className) {
   let answer = className;
@@ -371,7 +423,7 @@ function adapt_sidebar_to_selection_level(selectionLevel) {
 };
 
 function adapt_view_to_national_level() {
-
+  give_status("adapt_view_to_national_level");
   map.setMinZoom(6.5);
   map.options.maxZoom = 9;
   map.options.zoomSnap = 0.5;
@@ -390,24 +442,29 @@ function adapt_view_to_national_level() {
   document.getElementById("nationalGridCheckbox").checked = true;
   nationalGrid_cb_fun();
   // hide the remotely mapped villages clusters
-  document.getElementById("ogClustersCheckbox").checked = false;
+  if (selectedState == "init" && prevState == "init") {
+    set_clusters_toggle(false);
+    set_og_clusters_toggle(false);
+  }
+  clusters_cb_fun();
   ogClusters_cb_fun();
+  // Remotely mapped villages layer
+  remove_layer(clusterLayer[selectedState]);
+  remove_layer(ogClusterLayers[selectedState]);
 
   // reset the selected state to "init"
   resetStateSelect()
   remove_layer(selected_state_pbf);
 
   // Trigger the filter function so that all geojson state are available again
-  nigeria_states_geojson.clearLayers();
-  nigeria_states_geojson.addData(nigeria_states_simplified);
+  if (selectedState == "init" && prevState != "init") {
+    update_nigeria_states_geojson();
+  }
 
   remove_basemaps();
 
   map.addLayer(osm_gray);
   map.addLayer(national_background);
-
-  // Remotely mapped villages layer
-  remove_layer(ogClusterLayers[selectedState]);
 
   // Linked to the checkbox Grid
   remove_layer(grid_layer);
@@ -420,7 +477,7 @@ function adapt_view_to_national_level() {
 };
 
 function adapt_view_to_state_level() {
-  console.log("adapt_view_to_state_level");
+  give_status("adapt_view_to_state_level");
 
 
   map.options.minZoom = 8;
@@ -435,7 +492,10 @@ function adapt_view_to_state_level() {
   states_cb_fun();
   document.getElementById("gridCheckbox").checked = true;
   // Load the remotely mapped villages clusters
-  document.getElementById("ogClustersCheckbox").checked = true;
+  if (previous_level == "national" && prevState == "init") {
+    set_og_clusters_toggle(true);
+  }
+  clusters_cb_fun();
   ogClusters_cb_fun();
 
 
@@ -457,7 +517,7 @@ function adapt_view_to_state_level() {
 };
 
 function adapt_view_to_village_level() {
-  console.log("adapt_view_to_village_level");
+  give_status("adapt_view_to_village_level");
   remove_layer(osm_gray);
   infoBox.remove();
   add_layer(hot);
@@ -492,21 +552,33 @@ function state_button_fun(trigger="button") {
   adapt_view_to_state_level();
 
   // When coming from village to state level it should not zoom out to the selected state
-  if (previous_level == "national" || previous_level == "state" || (previous_level == "village" &&
-  trigger == "map-click")) {
+  if (previous_level == "national" || previous_level == "state" || (previous_level == "village" && trigger == "map-click")) {
     zoomToSelectedState();
-
+    var numSelectedClusters = null;
+    if (document.getElementById("clustersCheckbox").checked == true){
+        update_filter();
+        numSelectedClusters = filteredClusters;
+    }
+    if (document.getElementById("ogClustersCheckbox").checked == true) {
+        update_og_filter();
+        numSelectedClusters = filteredOgClusters;
+    }
     // Trigger the filter function so that the selected state geojson does not hide the clusters
-    nigeria_states_geojson.clearLayers();
-    nigeria_states_geojson.addData(nigeria_states_simplified);
+    update_nigeria_states_geojson()
+    if (numSelectedClusters !== null) {
+        update_clusterInfo({}, numSelectedClusters)
+    }
+
   };
   if (previous_level == "village" && (trigger == "button" || trigger == "zoom")) {
-    zoomToSelectedState();
+    if (trigger != "zoom") {
+        zoomToSelectedState();
+    };
     randomClusterInfo.remove()
   }
   else{
     if (trigger != "random-cluster"){
-        clusterInfo.remove();
+        randomClusterInfo.remove()
     }
 
   }
@@ -526,8 +598,8 @@ function village_button_fun(trigger="button") {
       updateSelectedStateBounds()
 
       // Trigger the filter function so that the selected state geojson does not hide the clusters
-      nigeria_states_geojson.clearLayers();
-      nigeria_states_geojson.addData(nigeria_states_simplified);
+      update_nigeria_states_geojson()
+
   };
   // click on the village level button from national or state level
   if ((previous_level == "national" || previous_level == "state") && trigger == "button"){
@@ -655,25 +727,35 @@ function download_clusters_fun() {
 }
 
 function clusters_cb_fun() {
-  var checkBox = document.getElementById("clustersCheckbox");
-  if (checkBox.checked == true) {
-    // deactivate og clusters
+
+  if (prevState != "init") {
+    remove_layer(clusterLayer[prevState])
+  }
+  if (document.getElementById("clustersCheckbox").checked == true) {
+    // set panel side to green
     document.getElementById("clustersPanel").style.borderLeft = '.25rem solid #1DD069';
-    document.getElementById("ogClustersCheckbox").checked = false;
+    // deactivate og clusters
+    set_og_clusters_toggle(false);
     ogClusters_cb_fun();
 
-    if (prevState != "init") {
-        remove_layer(clusterLayer[prevState])
-    }
+    add_layer(clusterLayer[selectedState]);
+
+    // update the number of clusters available
+    update_filter()
+    update_clusterInfo({}, filteredClusters)
+
     // Update centroids for all_clusters
     update_centroids();
-
-    add_layer(clusterLayer[selectedState]);
   } else {
+  // set panel side to grey
     document.getElementById("clustersPanel").style.borderLeft = '.25rem solid #eeeff1';
     remove_layer(clusterLayer[selectedState]);
     // Close the filters if they were available
     clusters_filter_fun();
+    if(document.getElementById("ogClustersCheckbox").checked == false) {
+        clusterInfo.remove()
+    }
+
   }
 
   /*$.get({url: $SCRIPT_ROOT,
@@ -729,24 +811,33 @@ function clusters_filter_fun() {
 
 
 function ogClusters_cb_fun() {
+  if (prevState != "init") {
+    remove_layer(ogClusterLayers[prevState])
+  }
   var checkBox = document.getElementById("ogClustersCheckbox");
   if (checkBox.checked == true) {
-    // deactivate clusters
+    // set panel side to green
     document.getElementById("ogClustersPanel").style.borderLeft = '.25rem solid #1DD069';
-    document.getElementById("clustersCheckbox").checked = false;
+    // deactivate clusters
+    set_clusters_toggle(false);
     clusters_cb_fun();
-    if (prevState != "init") {
-        remove_layer(ogClusterLayers[prevState])
-    }
-    // Update centroids for og_clusters
-    update_centroids();
+
     add_layer(ogClusterLayers[selectedState]);
 
+    // update the number of clusters available
+    update_og_filter()
+    update_clusterInfo({}, filteredOgClusters)
+    // Update centroids for og_clusters
+    update_centroids();
   } else {
+  // set panel side to grey
     document.getElementById("ogClustersPanel").style.borderLeft = '.25rem solid #eeeff1';
     remove_layer(ogClusterLayers[selectedState]);
     // Close the filters if they were available
     ogClusters_filter_fun();
+    if(document.getElementById("clustersCheckbox").checked == false) {
+        clusterInfo.remove()
+    }
   }
 }
 
@@ -936,46 +1027,11 @@ function filter_centroid_keys(){
 function update_cluster_info(){
       var centroid = get_centroid_by_id(currently_featured_centroid_id);
       var centroid_info = get_centroid_info(centroid);
-      var control_content = ''
 
-      //if activated clusters are off-grid-clusters
-      if (centroid_info.hasOwnProperty('percentage_building_area')){
-      var control_content = '\
-      <div id="download_clusters" class="consecutive__btn">\
-        <button style="float:left" onclick="prev_selection_fun()"> < </button> \
-        ' + (filtered_centroids_keys.indexOf(currently_featured_centroid_id) + 1) + ' / ' + filtered_centroids_keys.length + ' \
-        <button style="float:right" onclick="next_selection_fun()"> > </button>\
-      </div>\
-      <table>\
-        <tr><td align="right"><b>Area</b>:</td><td>' + parseFloat(centroid_info.area_km2).toFixed(2) + ' km2</td></tr>\
-        <tr><td align="right"><b>Building Count</b>:</td><td>' + parseFloat(centroid_info.building_count).toFixed(0) + '</td></tr>\
-        <tr><td align="right"><b>Building Area in km²</b>:</td><td>' + parseFloat(centroid_info.building_area_km2).toFixed(3) + '</td></tr>\
-        <tr><td align="right"><b>Buildings per km²</b>:</td><td>' + parseFloat(centroid_info.building_count_density_perkm2).toFixed(0) + '</td></tr>\
-        <tr><td align="right"><b>Percentage Building Area</b>:</td><td>' + parseFloat(centroid_info.percentage_building_area).toFixed(2) + '</td></tr>\
-        <tr><td align="right"><b>Distance to Grid in km</b>:</td><td>' + parseFloat(centroid_info.grid_dist_km).toFixed(1) + '</td></tr>\
-      </table>';
-      }
-      //if activated clusters are all-clusters
-      else if (centroid_info.hasOwnProperty('cluster_all_id')){
-      var control_content = '\
-      <div id="download_clusters" class="consecutive__btn">\
-        <button style="float:left" onclick="prev_selection_fun()"> < </button> \
-        ' + (filtered_centroids_keys.indexOf(currently_featured_centroid_id) + 1) + ' / ' + filtered_centroids_keys.length + ' \
-        <button style="float:right" onclick="next_selection_fun()"> > </button>\
-      </div>\
-      <table>\
-        <tr><td align="right"><b>ID</b>:</td><td>' + centroid_info.cluster_all_id + '</td></tr>\
-        <tr><td align="right"><b>Area</b>:</td><td>' + centroid_info.area_km2 + '</td></tr>\
-        <tr><td align="right"><b>Distance to Grid</b>:</td><td>' + parseFloat(centroid_info.grid_dist_km).toFixed(2) + ' km2</td></tr>\
-      </table>';
-      }
+    const clusterNum = filtered_centroids_keys.indexOf(currently_featured_centroid_id) + 1;
+    const selectedClustersNum = filtered_centroids_keys.length;
+    update_clusterInfo(centroid_info, selectedClustersNum, clusterNum);
 
-  clusterInfo.remove();
-  clusterInfo.update = function() {
-    this._div.innerHTML = control_content;
-    this._div.innerHTML;
-  };
-  clusterInfo.addTo(map);
 }
 
 function next_selection_fun(){
