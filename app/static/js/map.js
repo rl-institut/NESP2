@@ -111,12 +111,12 @@ function update_clusterInfo(properties, selectedClustersNum, clusterNum="?") {
       <div class="grid-x ">\
           <h4 title="this is not the final style" class="cell"> Browse the settlements</h4>\
           <div id="download_clusters" class="cell  grid-x consecutive__btn">\
-            <button class="cell large-4" style="float:left" onclick="prev_selection_fun()"> < </button> \
-            <h5 class="cell large-4">\
+            <button class="cell large-3" style="float:left" onclick="prev_selection_fun()"> < </button> \
+            <h5 class="cell large-6">\
                 <span>' + clusterNum + ' </span> / <span id="filtered-clusters-num">\
                 ' + selectedClustersNum + '</span> \
             </h5>\
-            <button class="cell large-4" style="float:right" onclick="next_selection_fun()"> > </button>\
+            <button class="cell large-3" style="float:right" onclick="next_selection_fun()"> > </button>\
           </div>\
       </div>';
 
