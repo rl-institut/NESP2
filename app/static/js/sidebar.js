@@ -141,10 +141,10 @@ function give_status(context=null) {
     if (context) {
         console.log(context);
     };
-    console.log("    " + level);
-    console.log("    " + previous_level);
-    console.log("    " + selectedState);
-    console.log("    " + prevState);
+    console.log("    level " + level);
+    console.log("    prevLevel " + previous_level);
+    console.log("    State " + selectedState);
+    console.log("    prevState " + prevState);
     console.log("Status over");
 };
 
