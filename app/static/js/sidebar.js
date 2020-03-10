@@ -707,10 +707,9 @@ function clusters_cb_fun() {
     if (prevState != "init") {
         remove_layer(clusterLayer[prevState])
     }
+    add_layer(clusterLayer[selectedState]);
     // Update centroids for all_clusters
     update_centroids();
-
-    add_layer(clusterLayer[selectedState]);
   } else {
     document.getElementById("clustersPanel").style.borderLeft = '.25rem solid #eeeff1';
     remove_layer(clusterLayer[selectedState]);
@@ -780,10 +779,9 @@ function ogClusters_cb_fun() {
     if (prevState != "init") {
         remove_layer(ogClusterLayers[prevState])
     }
+    add_layer(ogClusterLayers[selectedState]);
     // Update centroids for og_clusters
     update_centroids();
-    add_layer(ogClusterLayers[selectedState]);
-
   } else {
     document.getElementById("ogClustersPanel").style.borderLeft = '.25rem solid #eeeff1';
     remove_layer(ogClusterLayers[selectedState]);
