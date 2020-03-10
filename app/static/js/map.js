@@ -103,6 +103,55 @@ clusterInfo.update = function(props) {
   this._div.innerHTML
 };
 
+// this function updates the content of the clusterInfo in a centralized way
+function update_clusterInfo(properties, selectedClustersNum, clusterNum="?") {
+    console.log(properties)
+
+    var control_content = '\
+      <h3 title="this is not the final style"> Browse the settlements</h3>\
+      <div id="download_clusters" class="consecutive__btn">\
+        <button style="float:left" onclick="prev_selection_fun()"> < </button> \
+        ' + clusterNum + ' / ' + selectedClustersNum + ' \
+        <button style="float:right" onclick="next_selection_fun()"> > </button>\
+      </div>';
+
+    if(properties.cluster_all_id !== undefined){
+        // all
+        control_content = control_content +
+          '<table>\
+            <tr><td align="right"><b>ID</b>:</td><td>' + properties.cluster_all_id + '</td></tr>\
+            <tr><td align="right"><b>Area</b>:</td><td>' + properties.area_km2 + '</td></tr>\
+            <tr><td align="right"><b>Distance to Grid</b>:</td><td>' + parseFloat(properties.grid_dist_km).toFixed(2) + ' km2</td></tr>\
+          </table>';
+
+          randomClusterInfo.remove();
+    };
+
+    if (properties.cluster_offgrid_id !== undefined) {
+    // og
+        control_content = control_content +
+          '<table>\
+            <tr><td align="right"><b>Area</b>:</td><td>' + parseFloat(properties.area_km2).toFixed(2) + ' km2</td></tr>\
+            <tr><td align="right"><b>Building Count</b>:</td><td>' + parseFloat(properties.building_count).toFixed(0) + '</td></tr>\
+            <tr><td align="right"><b>Building Area in km²</b>:</td><td>' + parseFloat(properties.building_area_km2).toFixed(3) + '</td></tr>\
+            <tr><td align="right"><b>Buildings per km²</b>:</td><td>' + parseFloat(properties.building_count_density_perkm2).toFixed(0) + '</td></tr>\
+            <tr><td align="right"><b>Percentage Building Area</b>:</td><td>' + parseFloat(properties.percentage_building_area).toFixed(2) + '</td></tr>\
+            <tr><td align="right"><b>Distance to Grid in km</b>:</td><td>' + parseFloat(properties.grid_dist_km).toFixed(1) + '</td></tr>\
+          </table>';
+
+          randomClusterInfo.remove();
+    };
+
+    clusterInfo.remove();
+    clusterInfo.update = function() {
+        this._div.innerHTML = control_content;
+        this._div.innerHTML;
+    };
+    // the addTo function will trigger the update() function
+    clusterInfo.addTo(map);
+};
+
+
 var randomClusterInfo = L.control({
   position: 'bottomleft'
 });

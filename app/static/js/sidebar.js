@@ -961,46 +961,11 @@ function filter_centroid_keys(){
 function update_cluster_info(){
       var centroid = get_centroid_by_id(currently_featured_centroid_id);
       var centroid_info = get_centroid_info(centroid);
-      var control_content = ''
 
-      //if activated clusters are off-grid-clusters
-      if (centroid_info.hasOwnProperty('percentage_building_area')){
-      var control_content = '\
-      <div id="download_clusters" class="consecutive__btn">\
-        <button style="float:left" onclick="prev_selection_fun()"> < </button> \
-        ' + (filtered_centroids_keys.indexOf(currently_featured_centroid_id) + 1) + ' / ' + filtered_centroids_keys.length + ' \
-        <button style="float:right" onclick="next_selection_fun()"> > </button>\
-      </div>\
-      <table>\
-        <tr><td align="right"><b>Area</b>:</td><td>' + parseFloat(centroid_info.area_km2).toFixed(2) + ' km2</td></tr>\
-        <tr><td align="right"><b>Building Count</b>:</td><td>' + parseFloat(centroid_info.building_count).toFixed(0) + '</td></tr>\
-        <tr><td align="right"><b>Building Area in km²</b>:</td><td>' + parseFloat(centroid_info.building_area_km2).toFixed(3) + '</td></tr>\
-        <tr><td align="right"><b>Buildings per km²</b>:</td><td>' + parseFloat(centroid_info.building_count_density_perkm2).toFixed(0) + '</td></tr>\
-        <tr><td align="right"><b>Percentage Building Area</b>:</td><td>' + parseFloat(centroid_info.percentage_building_area).toFixed(2) + '</td></tr>\
-        <tr><td align="right"><b>Distance to Grid in km</b>:</td><td>' + parseFloat(centroid_info.grid_dist_km).toFixed(1) + '</td></tr>\
-      </table>';
-      }
-      //if activated clusters are all-clusters
-      else if (centroid_info.hasOwnProperty('cluster_all_id')){
-      var control_content = '\
-      <div id="download_clusters" class="consecutive__btn">\
-        <button style="float:left" onclick="prev_selection_fun()"> < </button> \
-        ' + (filtered_centroids_keys.indexOf(currently_featured_centroid_id) + 1) + ' / ' + filtered_centroids_keys.length + ' \
-        <button style="float:right" onclick="next_selection_fun()"> > </button>\
-      </div>\
-      <table>\
-        <tr><td align="right"><b>ID</b>:</td><td>' + centroid_info.cluster_all_id + '</td></tr>\
-        <tr><td align="right"><b>Area</b>:</td><td>' + centroid_info.area_km2 + '</td></tr>\
-        <tr><td align="right"><b>Distance to Grid</b>:</td><td>' + parseFloat(centroid_info.grid_dist_km).toFixed(2) + ' km2</td></tr>\
-      </table>';
-      }
+    const clusterNum = filtered_centroids_keys.indexOf(currently_featured_centroid_id) + 1;
+    const selectedClustersNum = filtered_centroids_keys.length;
+    update_clusterInfo(centroid_info, selectedClustersNum, clusterNum);
 
-  clusterInfo.remove();
-  clusterInfo.update = function() {
-    this._div.innerHTML = control_content;
-    this._div.innerHTML;
-  };
-  clusterInfo.addTo(map);
 }
 
 function next_selection_fun(){
