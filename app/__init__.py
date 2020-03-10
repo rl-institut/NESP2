@@ -62,7 +62,7 @@ def create_app(test_config=None):
         args = request.args
         state = args.get("state")
         cluster_type = args.get("cluster_type")
-        fname = args.get("state")
+        fname = state
 
         if os.environ.get("POSTGRES_URL", None) is not None:
             if "og" in cluster_type:
@@ -114,13 +114,50 @@ def create_app(test_config=None):
             headers={"Content-disposition": "attachment; filename={}.csv".format(fname)}
         )
 
-    @app.route('/filter-cluster', methods=["POST"])
-    def filter_clusters():
+    @app.route('/random-cluster', methods=["POST"])
+    def random_clusters():
 
         state_name = request.form.get("state_name")
         resp = jsonify(query_random_og_cluster(state_name, STATE_CODES_DICT))
         resp.status_code = 200
         return resp
+
+    @app.route('/filtered-cluster', methods=["POST"])
+    def filtered_clusters():
+        state = request.form.get("state_name")
+        cluster_type = request.form.get("cluster_type")
+
+        if os.environ.get("POSTGRES_URL", None) is not None:
+            if "og" in cluster_type:
+                keys = 'cluster_offgrid_id'
+
+                records = query_filtered_og_clusters(
+                    state,
+                    STATE_CODES_DICT,
+                    area=[request.form.get("ogminarea"), request.form.get("ogmaxarea")],
+                    distance_grid=[request.form.get("ogmindtg"), request.form.get("ogmaxdtg")],
+                    building=[request.form.get("ogminb"), request.form.get("ogmaxb")],
+                    buildingfp=[request.form.get("ogminbfp"), request.form.get("ogmaxbfp")],
+                    keys=keys
+                )
+            else:
+
+                keys = 'cluster_all_id'
+                records = query_filtered_clusters(
+                    state,
+                    STATE_CODES_DICT,
+                    area=[request.form.get("minarea"), request.form.get("maxarea")],
+                    distance_grid=[request.form.get("mindtg"), request.form.get("maxdtg")],
+                    keys=keys
+                )
+
+
+        resp = jsonify(records[0].count)
+        resp.status_code = 200
+        return resp
+
+
+
 
     define_function_jinja(app)
     return app
