@@ -297,9 +297,9 @@ function update_filter() {
                 function(data) {
                     console.log("THERE")
                     var filter_title = $("#n_clusters");
-                    var new_text = "(" + filteredClusters + " selected settlements)";
+                    var new_text = "= " + filteredClusters + " settlements";
                     if (filteredClusters == 1){
-                        new_text = "(" + filteredClusters + " selected settlement)";
+                        new_text = "= " + filteredClusters + " settlement";
                     };
                     filter_title.text(new_text);
                     filter_title = $("#filtered-clusters-num");
@@ -319,9 +319,9 @@ function update_og_filter() {
         }).done(
             function(data) {
                 var filter_title = $("#n_ogclusters");
-                var new_text = "(" + filteredOgClusters + " selected settlements)";
+                var new_text = "= " + filteredOgClusters + " settlements";
                 if (filteredOgClusters > 1){
-                    new_text = "(" + filteredOgClusters + " selected settlement)"
+                    new_text = "= " + filteredOgClusters + " settlement"
                 };
                 filter_title.text(new_text);
                 filter_title = $("#filtered-clusters-num");
