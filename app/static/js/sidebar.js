@@ -215,7 +215,7 @@ function changeogAreaSlider(str, h, values) {
 var ogAreaSlider = document.getElementById('ogAreaSlider');
 noUiSlider.create(ogAreaSlider, {
   ...sliderOptions,
-  start: [0, 1000],
+  start: [0, 1000000],
   range: {
     'min': [0, 0.01],
     '70%': [0.5, 0.05],
