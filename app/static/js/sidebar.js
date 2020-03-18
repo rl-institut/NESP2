@@ -39,7 +39,7 @@ var currentfilter = {
   minarea: 0.1,
   maxarea: 10,
   mindtg: 0,
-  maxdtg: 100,
+  maxdtg: 50,
   ogminarea: 0.1,
   ogmaxarea: 10,
   ogmindtg: 0,
