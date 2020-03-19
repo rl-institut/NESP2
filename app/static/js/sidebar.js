@@ -21,6 +21,7 @@ var centroids_layer_id = -1;
 var current_cluster_centroids = Object();
 var filtered_centroids_keys = [];
 var currently_featured_centroid_id = 0;
+var flying_to_next_cluster = false;
 var statesWithOgClusters = [
     'Jigawa',
      'Kano',
@@ -1034,8 +1035,16 @@ function update_cluster_info(){
 
 }
 
-function next_selection_fun(){
+// flyTo-function including a with reset of 'flying_to_next_cluster' to false in order to allow level change via manual zoom afterwards
+function flyToClusterBounds(target){
+  flying_to_next_cluster = true;
+  map.flyToBounds(target);
+    map.once('moveend', function() {
+      flying_to_next_cluster = false;
+    });
+}
 
+function next_selection_fun(){
   set_current_cluster_centroids();
   var centroid = Object();
   var target = [[0,0][0,0]];
@@ -1046,17 +1055,20 @@ function next_selection_fun(){
     currently_featured_centroid_id = filtered_centroids_keys[0];
     centroid = get_centroid_by_id(currently_featured_centroid_id);
     target = get_bbox_from_cluster_centroid(centroid);
-    map.flyToBounds(target);
+    flyToClusterBounds(target);
   }
   // else if the selected centroid is the last one, keep it selected
   else if (filtered_centroids_keys.indexOf(currently_featured_centroid_id) == filtered_centroids_keys.length -1){
     console.log("last element")
   }
   // else set the selected centroid to be the next one via index
-  else{currently_featured_centroid_id = filtered_centroids_keys[filtered_centroids_keys.indexOf(currently_featured_centroid_id) + 1 ];
-  centroid = (current_cluster_centroids[centroids_layer_id]._layers[currently_featured_centroid_id]);
-  target = get_bbox_from_cluster_centroid(centroid);
-  map.flyToBounds(target);}
+  else{
+    currently_featured_centroid_id = filtered_centroids_keys[filtered_centroids_keys.indexOf(currently_featured_centroid_id) + 1 ];
+    centroid = (current_cluster_centroids[centroids_layer_id]._layers[currently_featured_centroid_id]);
+    target = get_bbox_from_cluster_centroid(centroid);
+    flying_to_next_cluster = true;
+    flyToClusterBounds(target);
+  }
   update_cluster_info();
 }
 
@@ -1070,7 +1082,7 @@ function prev_selection_fun(){
     currently_featured_centroid_id = filtered_centroids_keys[0];
     centroid = get_centroid_by_id(currently_featured_centroid_id);
     target = get_bbox_from_cluster_centroid(centroid);
-    map.flyToBounds(target);
+    flyToClusterBounds(target);
   }
   // else if the selected centroid is the first one, keep it selected
   else if (filtered_centroids_keys.indexOf(currently_featured_centroid_id) == 0){
@@ -1082,7 +1094,7 @@ function prev_selection_fun(){
     // select the next centroid and fly to its bounds
     centroid = get_centroid_by_id(currently_featured_centroid_id);
     target = get_bbox_from_cluster_centroid(centroid);
-    map.flyToBounds(target);
+    flyToClusterBounds(target);
   }
   update_cluster_info();
 }

@@ -72,6 +72,7 @@ Here is a template for new release sections
 - Replaced lines of static code with for loops (#155)
 - Split the filter events for og clusters and normal clusters (#155)
 - Make sure the clusters layers on a state are properly removed once the user select another state or national level (#220)
+- Make sure to remember selected cluster when flyto zooms out too far (#68)
 
 
 ### Removed
