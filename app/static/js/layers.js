@@ -290,28 +290,35 @@ function zoomToSelectedState() {
 // Definitions and functions for the grid_layer
 
 // Vector tiles layer that is adapted (URL) depending on the chosen state. Contains layers '11kV' and '33kV' Columns: several, but of no interest to the map
-var grid_layer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/" + gridLayers[selectedState] + "/{z}/{x}/{y}.pbf", {
+//var grid_layer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/" + gridLayers[selectedState] + "/{z}/{x}/{y}.pbf", {
+
+//Always Using the entire Grid
+var grid_layer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_state_grid/{z}/{x}/{y}.pbf", {
   rendererFactory: L.canvas.tile,
   vectorTileLayerStyles: {
-    '11_kV': function(prop, zoom) {
-      return gridStyle11kv
-    },
     '33_kV': function(prop, zoom) {
       return gridStyle33kv
+    },
+    '11_kV': function(prop, zoom) {
+      return gridStyle11kv
     },
   }
 });
 
 // Assign the selected state grid tile to the grid_layer
 function redefine_grid_layer() {
-  grid_layer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/" + gridLayers[selectedState] + "/{z}/{x}/{y}.pbf", {
+// Vector tiles layer that is adapted (URL) depending on the chosen state. Contains layers '11kV' and '33kV' Columns: several, but of no interest to the map
+//  grid_layer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/" + gridLayers[selectedState] + "/{z}/{x}/{y}.pbf", {
+
+//Always Using the entire Grid
+  grid_layer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_state_grid/{z}/{x}/{y}.pbf", {
     rendererFactory: L.canvas.tile,
     vectorTileLayerStyles: {
-      '11_kV': function(prop, zoom) {
-        return gridStyle11kv
-      },
       '33_kV': function(prop, zoom) {
         return gridStyle33kv
+      },
+      '11_kV': function(prop, zoom) {
+        return gridStyle11kv
       },
     }
   });
@@ -319,8 +326,8 @@ function redefine_grid_layer() {
 
 // Update the state level grid layer with tiles
 function update_grid_layer() {
-  remove_layer(grid_layer);
-  redefine_grid_layer();
+  //remove_layer(grid_layer);
+  //redefine_grid_layer();
   // Add the grid layer depending on grid checkbox value
   grid_cb_fun();
 };
