@@ -164,8 +164,6 @@ var sliderOptions = {
   }),
 };
 
-
-
 // TODO: maybe redundant could use the same function for all sliders
 function changeAreaSlider(str, h, values) {
   currentfilter.minarea = values[0];
@@ -176,8 +174,9 @@ var areaSlider = document.getElementById('areaSlider');
 noUiSlider.create(areaSlider, {
   ...sliderOptions,
   start: [0.1, 10],
+  tooltips: [wNumb({decimals: 1, suffix: ' km²',}), wNumb({decimals: 0, suffix: ' km²',})],
   range: {
-    'min': [0, 0.05],
+    'min': [0, 0.1],
     '40%': [1, 0.5],
     '70%': [10, 1],
     '90%': [100, 100],
@@ -193,16 +192,24 @@ function changedtgSlider(str, h, values) {
   map.fireEvent("filterchange", currentfilter);
 };
 
+var dtgSliderMaxFormat = wNumb({
+    decimals: 0,
+    suffix: ' km',
+    // show plus after value if it's 50
+	edit: function( value ){
+		return (value == '50 km') ? '50+ km' : value;
+	},
+});
 
 var dtgSlider = document.getElementById('dtgSlider');
 noUiSlider.create(dtgSlider, {
   ...sliderOptions,
-  start: [0, 100],
+  tooltips: [wNumb({decimals: 0, suffix: ' km',}), dtgSliderMaxFormat ],
+  start: [0, 50],
   range: {
-    'min': [0, 0.1],
-    '20%': [1, 0.5],
+    'min': [0, 1],
     '50%': [10, 1],
-    'max': 50,
+    'max': [50, 1]
   }
 });
 dtgSlider.noUiSlider.on("change", changedtgSlider);
@@ -234,8 +241,9 @@ function changeogDistanceSlider(str, h, values) {
 };
 var ogDistanceSlider = document.getElementById('ogDistanceSlider');
 noUiSlider.create(ogDistanceSlider, {
-  start: [5, 1000],
   ...sliderOptions,
+  tooltips: [wNumb({decimals: 0, suffix: ' km',}), dtgSliderMaxFormat ],
+  start: [5, 1000],
   range: {
     'min': [0, 0.1],
     '25%': [5, 0.5],
@@ -253,8 +261,9 @@ function changeogBuildingsSlider(str, h, values) {
 };
 var ogBuildingsSlider = document.getElementById('ogBuildingsSlider');
 noUiSlider.create(ogBuildingsSlider, {
-  start: [0, 5000],
   ...sliderOptions,
+  tooltips: [wNumb({decimals: 0}), wNumb({decimals: 0})],
+  start: [0, 5000],
   range: {
     'min': [0, 1],
     '10%': [10, 1],
@@ -273,8 +282,9 @@ function changeogBuildingsFootprintSlider(str, h, values) {
 };
 var ogBuildingsFootprintSlider = document.getElementById('ogBuildingsFootprintSlider');
 noUiSlider.create(ogBuildingsFootprintSlider, {
-  start: [0, 0.8],
   ...sliderOptions,
+  tooltips: [wNumb({suffix: ' %',}), wNumb({suffix: ' %',})],
+  start: [0, 0.8],
   range: {
     'min': [0, 0.01],
     '50%': [0.1, 0.01],
