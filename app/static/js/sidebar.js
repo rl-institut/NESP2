@@ -223,6 +223,7 @@ function changeogAreaSlider(str, h, values) {
 var ogAreaSlider = document.getElementById('ogAreaSlider');
 noUiSlider.create(ogAreaSlider, {
   ...sliderOptions,
+  //tooltips: [wNumb({decimals: 1, suffix: ' km²',}), wNumb({decimals: 0, suffix: ' km²',})],
   start: [0, 1000000],
   range: {
     'min': [0, 0.01],
