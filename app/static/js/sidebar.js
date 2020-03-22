@@ -129,6 +129,11 @@ var OGClusterLayers = {
   "Yobe": "nesp2_state_offgrid_clusters_yobe",
   "Zamfara": "nesp2_state_offgrid_clusters_zamfara",
 }
+// define dictionary with availability status of states
+var statesAvailability = {};
+for(const key of Object.keys(nigeria_states_simplified.features)){
+  statesAvailability[nigeria_states_simplified.features[key].properties.name] = nigeria_states_simplified.features[key].properties.availability;
+}
 
 // fetch info about states which have og_clusters
 $.post({
@@ -503,8 +508,12 @@ function adapt_view_to_state_level() {
   document.getElementById("statesCheckbox").checked = true;
   states_cb_fun();
   document.getElementById("gridCheckbox").checked = true;
+  // In States where there is no Grid, All Clusters should be shown instead of mapped village clusters
+  if (statesAvailability[selectedState] / 4 < 1) {
+    set_clusters_toggle(true);
+  }
   // Load the remotely mapped villages clusters
-  if (previous_level == "national" && prevState == "init") {
+  else if (previous_level == "national" && prevState == "init") {
     set_og_clusters_toggle(true);
   }
   clusters_cb_fun();
