@@ -265,8 +265,8 @@
       <div class="grid-x">
         <div class="cell footer-about">
           <div class="helper"></div>
-          <a href="">
-            <img src="../static/img/icons/i_info.svg">
+          <a href="{{ url_for('about-map.about') }}">
+            <img src="{{ url_for('static', filename='img/icons/i_info.svg') }}">
             <span>About this map</span>
           </a>
         </div>
