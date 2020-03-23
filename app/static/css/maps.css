@@ -522,12 +522,14 @@ p.sidebar-panel-item-title {
 }
 
 #footer-maps .footer-maps__text {
-  text-align: center;
+  text-align: left;
 }
 
 #footer-maps .footer-maps__text p {
-  font-size: 1rem;
-  padding-left: 0;
+  font-size: 14pt;
+  line-height: 18pt;
+  font-weight: 400;
+  padding-left: 1rem;
 }
 
 img.footer-maps-logos__eu {
