@@ -280,15 +280,20 @@ def get_random_og_cluster(engine, view_code, schema="web", limit=5):
     """
 
     if schema is not None:
-        view_name = "{}.cluster_offgrid_{}_mv".format(schema, view_code)
+        view_name = "{}.cluster_offgrid_mv".format(schema, view_code)
     cols = ", ".join(OG_CLUSTERS_COLUMNS[:-1])
-    cols = cols + ", ST_AsGeoJSON(ST_Centroid(ST_TRANSFORM(geom, 4326))) as geom"
+    cols = cols + ", ST_AsGeoJSON(bounding_box) as geom, ST_AsGeoJSON(centroid) as lnglat"
     with engine.connect() as con:
-        rs = con.execute('SELECT {} FROM {} ORDER BY area_km2 DESC LIMIT {};'.format(cols,
-                                                                                     view_name, limit))
+        rs = con.execute("SELECT {} FROM {} WHERE adm1_pcode='{}' ORDER BY area_km2 DESC LIMIT {};".format(
+                cols,
+                view_name,
+                view_code,
+                limit
+            )
+        )
         data = rs.fetchall()
     single_cluster = data[random.randint(0, min([int(limit), len(data)])-1)]
-    return {key: str(single_cluster[key]) for key in OG_CLUSTERS_COLUMNS}
+    return {key: str(single_cluster[key]) for key in OG_CLUSTERS_COLUMNS + ("geom", "lnglat")}
 
 
 def query_random_og_cluster(state_name, state_codes_dict):
