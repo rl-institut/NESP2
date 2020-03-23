@@ -924,6 +924,64 @@ function update_centroids_data(handleData){
     };
 };
 
+/*
+    Parse what is essentially a matrix in a jsonified lightweight format. The keys are the state
+    code, the number of row ("length" = N), the M column names and the values of the matrix.
+        the values are in a single array of size N * M
+    By looping from 1 --> N the matrix is rebuilt by assigning the values to the correct columns.
+    First column property will get values at index 0 -> N, while the ith column will get the values
+    at index 0 + i*N -> (i + 1)*N
+*/
+function convert_light_json_to_geojson(data, cluster_type) {
+    var geojson_features = [];
+    var N = data.length;
+
+    if(cluster_type == "og") {
+        for (j = 0; j < N; j++) {
+            geojson_features[j] = {
+                "type": "Feature", "properties": {
+                    "adm1_pcode": data.adm1_pcode,
+                    "cluster_offgrid_id": data.values[j],
+                    "area_km2": data.values[N + j],
+                    "grid_dist_km": data.values[2 * N + j],
+                    "building_count": data.values[3 * N + j],
+                    "percentage_building_area": data.values[4 * N + j],
+                    "bb_east": data.values[5 * N + j],
+                    "bb_north": data.values[6 * N + j],
+                    "bb_south": data.values[7 * N + j],
+                    "bb_west": data.values[8 * N + j],
+                },
+                "geometry": { "type": "Point", "coordinates": [ data.values[9 * N + j], data.values[10 * N + j] ] },
+            };
+        };
+    }
+    else {
+        for (j = 0; j < N; j++) {
+            geojson_features[j] = {
+                "type": "Feature", "properties": {
+                    "adm1_pcode": data.adm1_pcode,
+                    "cluster_all_id": data.values[j],
+                    "area_km2": data.values[N + j],
+                    "grid_dist_km": data.values[2 * N + j],
+                    "fid": data.values[3 * N + j],
+                    "bb_east": data.values[4 * N + j],
+                    "bb_north": data.values[5 * N + j],
+                    "bb_south": data.values[6 * N + j],
+                    "bb_west": data.values[7 * N + j],
+                },
+                "geometry": { "type": "Point", "coordinates": [ data.values[8 * N + j], data.values[9 * N + j] ] },
+            };
+        };
+
+    };
+    geojson_features = {
+    "type": "FeatureCollection",
+    "name": "adm1_pcode_" + data.adm1_pcode,
+    "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+    "features": geojson_features}
+    return geojson_features
+};
+
 // Function takes the data from update_centroids_data. Due to the asynchronous call they cannot simply be stored in a variable
 function update_centroids(){
   update_centroids_data(function(output){
