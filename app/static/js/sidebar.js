@@ -2,7 +2,7 @@ var options = {
   center: [9, 7],
   zoomSnap: 0.5,
   zoom: 6.6,
-  minZoom: 6,
+  minZoom: 5,
   maxZoom: 19,
   zoomControl: false
 };
@@ -441,7 +441,8 @@ function adapt_sidebar_to_selection_level(selectionLevel) {
 
 function adapt_view_to_national_level() {
   give_status("adapt_view_to_national_level");
-  map.setMinZoom(6.5);
+  map.setMinZoom(5);
+  map.setZoom(6.5);
   map.options.maxZoom = 9;
   map.options.zoomSnap = 0.5;
 
