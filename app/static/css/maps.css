@@ -1,6 +1,6 @@
 /* custom CSS */
 
-body, p {
+body, p, a, li {
   font-family: 'Source Sans Pro', sans-serif;
 }
 
@@ -625,6 +625,35 @@ img.footer-maps-logos__giz {
   max-width: 6.87rem;
 }
 
+.footer-about {
+  height: 3.75rem;
+  background-color: #c4c5cf;
+  text-align: center;
+}
+
+.footer-about .helper {
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+}
+
+.footer.about a {
+  vertical-align: middle;
+}
+
+.footer-about a,
+.footer-about a:hover,
+.footer-about a:link
+.footer-about a:active,
+.footer-about a:visited {
+  color: #464646;
+  font-size: 13pt;
+}
+
+.footer-about span {
+  vertical-align: middle;
+  padding-left: .25rem;
+}
 
 @media only screen and (min-width: 1024px) and (max-width: 1300px) {
   #sidebar {

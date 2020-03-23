@@ -74,6 +74,7 @@ Here is a template for new release sections
 - Make sure the clusters layers on a state are properly removed once the user select another state or national level (#220)
 - Make sure to remember selected cluster when flyto zooms out too far (#68)
 - Adapt minZoom in national Level so user can zoom out again (#240)
+- About this map link (#247)
 
 
 ### Removed
