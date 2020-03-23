@@ -1,6 +1,6 @@
 /* custom CSS */
 
-body, p {
+body, p, a, li {
   font-family: 'Source Sans Pro', sans-serif;
 }
 
@@ -623,6 +623,21 @@ img.footer-maps-logos__coop {
 img.footer-maps-logos__giz {
   width: 24.045%; /*(w_g = 0.687 w_coop) */
   max-width: 6.87rem;
+}
+
+.footer-about {
+  height: 3.75rem;
+  background-color: #c4c5cf;
+  text-align: center;
+}
+
+.footer-about a,
+.footer-about a:hover,
+.footer-about a:link
+.footer-about a:active,
+.footer-about a:visited {
+  color: #464646;
+  font-size: 13pt;
 }
 
 
