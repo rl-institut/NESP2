@@ -142,6 +142,12 @@ $.post({
     success: function(data){statesWithOgClusters=data.states_with_og_clusters;},
 })
 
+function get_cluster_type() {
+    if (document.getElementById("ogClustersCheckbox").checked == true) {answer = "og";}
+    else {answer = "all";}
+    return answer
+}
+
 function give_status(context=null) {
     console.log("Status on");
     if (context) {
