@@ -468,6 +468,10 @@ function adapt_view_to_national_level() {
     set_clusters_toggle(false);
     set_og_clusters_toggle(false);
   }
+  if (previous_level == "state" || previous_level == "village") {
+    document.getElementById("heatmapCheckbox").checked = document.getElementById("clustersCheckbox").checked;
+    document.getElementById("nationalGridCheckbox").checked = document.getElementById("gridCheckbox").checked;
+  }
   // load the populated areas
   heatmap_cb_fun();
   // load the medium voltage grid
