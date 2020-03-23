@@ -308,7 +308,8 @@ ogBuildingsFootprintSlider.noUiSlider.on("change", changeogBuildingsFootprintSli
 ogBuildingsFootprintSlider.noUiSlider.on("end", update_og_filter);
 
 
-
+// TODO: check if a POST to db is needed at all as info to clusters is available for each state
+// locally now
 function update_filter() {
     if (selectedState != "init") {
         $.post({
@@ -899,47 +900,29 @@ function buildingDensity_cb_fun() {
   }
 }
 
-// The following functions allow to asynchronously call geojson files and create a layer with them
+// The following functions allow to asynchronously query cluster data and create a layer with them
 // Handling is made somewhat difficult: due to asynchronous nature of the call the data cannot simply
 // be stored in a variable. Therefore the data are used to create a geojson-layer in a layergroup.
 // The layer can then be selected via it's _leaflet_id
 
 // Function asynchronously calls geojsons with centroids of selected state
 function update_centroids_data(handleData){
-   console.log("Update centroid")
-  var centroids_file_key = selectedState
-  if (selectedState == "init"){
-    centroids_file_key = "Kano";
-  }
-  if (document.getElementById("clustersCheckbox").checked == false){
-    $.ajax({
-      url: "/static/data/centroids/nesp2_state_offgrid_clusters_centroids_" + title_to_snake(centroids_file_key) + ".geojson",
-      dataType: "json",
-      success: function(data) {
-        // handleData allows this function to be called in another function
-        handleData(data);
-      },
-      error: function (xhr) {
-        console.log(xhr.statusText);
-        console.log("loading of geojson failed");
-      }
-    })
-  }
-  else if (document.getElementById("clustersCheckbox").checked == true){
-    $.ajax({
-      url: "/static/data/centroids/nesp2_state_all_clusters_centroids_" + title_to_snake(centroids_file_key) + ".geojson",
-      dataType: "json",
-      success: function(data) {
-        // handleData allows this function to be called in another function
-        handleData(data);
-      },
-      error: function (xhr) {
-        console.log(xhr.statusText);
-        console.log("loading of geojson failed");
-      }
-    })
-  }
-}
+    if(level != "national"){
+        var cluster_type = get_cluster_type();
+        var centroids_file_key = selectedState
+        if (selectedState == "init"){
+        centroids_file_key = "Kano";
+        }
+        $.get({
+            url: "/centroids",
+            dataType: "json",
+            data: {"cluster_type": cluster_type, "state": centroids_file_key},
+            success: function(data){
+                handleData(data, centroids_file_key, cluster_type);
+                }
+        });
+    };
+};
 
 // Function takes the data from update_centroids_data. Due to the asynchronous call they cannot simply be stored in a variable
 function update_centroids(){
