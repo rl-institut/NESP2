@@ -210,9 +210,17 @@ def create_app(test_config=None):
         # query centroid with geometry as geojson
         resp = query_random_og_cluster(state_name, STATE_CODES_DICT)
         geom = json.loads(resp.pop("geom"))
+        lnglat = json.loads(resp.pop("lnglat"))
+        resp.update({
+            'bNorth': geom["coordinates"][0][2][1],
+            'bSouth': geom["coordinates"][0][0][1],
+            'bEast': geom["coordinates"][0][2][0],
+            'bWest': geom["coordinates"][0][0][0]
+        })
+
         feature = dict(
-            lat=geom["coordinates"][1],
-            lng=geom["coordinates"][0],
+            lng=lnglat["coordinates"][0],
+            lat=lnglat["coordinates"][1],
             properties=resp
         )
         resp = jsonify(feature)
