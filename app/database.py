@@ -1,4 +1,6 @@
 import os
+import json
+import pandas as pd
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 import geoalchemy2
@@ -132,6 +134,32 @@ def filter_materialized_view(
         rs = con.execute(query)
         data = rs.fetchall()
     return data
+
+
+def convert_web_mat_view_to_light_json(records, cols):
+    df = pd.DataFrame()
+
+    for l in records:
+        l = dict(l)
+        geom = json.loads(l.pop("geom"))
+        lnglat = json.loads(l.pop("lnglat"))
+
+        l.update({
+            'lat': lnglat["coordinates"][1],
+            'lng': lnglat["coordinates"][0],
+            'bNorth': geom["coordinates"][0][2][1],
+            'bSouth': geom["coordinates"][0][0][1],
+            'bEast': geom["coordinates"][0][2][0],
+            'bWest': geom["coordinates"][0][0][0]
+        })
+        df = df.append(l, ignore_index=True)
+
+    value_list = []
+    for c in cols:
+        value_list = value_list + df[c].to_list()
+
+    return {'adm1_pcode': df['adm1_pcode'].unique()[0], "length": len(df.index), "columns": cols,
+            "values": value_list}
 
 
 def query_filtered_clusters(
