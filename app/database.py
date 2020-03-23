@@ -63,7 +63,8 @@ OG_CLUSTERS_COLUMNS = ('adm1_pcode', 'cluster_offgrid_id', 'area_km2',
 def filter_materialized_view(
         engine,
         view_name,
-        schema=None,
+        schema="web",
+        state_code=None,
         area=None,
         distance_grid=None,
         building=None,
@@ -80,9 +81,17 @@ def filter_materialized_view(
 
     filter_cond = ""
 
+    if state_code is not None:
+        key = "adm1_pcode"
+        filter_cond = f" WHERE {view_name}.{key}='{state_code}'"
+
     if area is not None:
         key = "area_km2"
-        filter_cond = f" WHERE {view_name}.{key} > {area[0]} AND {view_name}.{key} < {area[1]}"
+        if "WHERE" in filter_cond:
+            filter_cond = filter_cond + f" AND {view_name}.{key} > {area[0]} AND" \
+                                        f" {view_name}.{key} < {area[1]}"
+        else:
+            filter_cond = f" WHERE {view_name}.{key} > {area[0]} AND {view_name}.{key} < {area[1]}"
 
     if distance_grid is not None:
         key = "grid_dist_km"
@@ -99,7 +108,7 @@ def filter_materialized_view(
             filter_cond = filter_cond + f" AND {view_name}.{key} > {building[0]} AND" \
                                         f" {view_name}.{key} < {building[1]}"
         else:
-            filter_cond = f" WHERE {view_name}.{key} > {building[0]} AND"\
+            filter_cond = f" WHERE {view_name}.{key} > {building[0]} AND" \
                           f" {view_name}.{key} < {building[1]}"
 
     if buildingfp is not None:
