@@ -46,6 +46,8 @@ Here is a template for new release sections
 - add next and previous buttons (#205)
 - number of selected clusters by the filter selection (#213)
 - function to generate the control of clusters (#220)
+- endpoint for querying clusters info in the database (#221)
+
 ### Changed
 - Filter slider get reasonable steps (#167)
 - availability info moved
@@ -75,13 +77,14 @@ Here is a template for new release sections
 - Make sure to remember selected cluster when flyto zooms out too far (#68)
 - Adapt minZoom in national Level so user can zoom out again (#240)
 - About this map link (#247)
+- The clusters info for a state are now downloaded stored into a variable client side as the user select the state (#221)
 
 
 ### Removed
 - redundant accordion menu (#10)
 - redundant onclick function for nigeria_states_geojson layer (#108)
 - outline around components after being clicked on (#202)
-
+- lgas layers and options (#221)
 
 ## [0.0.1] 2019-11-11
 
