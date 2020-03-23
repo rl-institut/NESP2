@@ -181,10 +181,11 @@ map.on("zoom", function(e) {
         if (random_cluster == true) {
             state_button_fun(trigger="random-cluster");
         }
-        // Don't change to state level if just flying to next village
-        if (flying_to_next_cluster == true) {}
         else {
-            state_button_fun(trigger="zoom");
+            // Don't change to state level if just flying to next village
+            if (flying_to_next_cluster == false) {
+                state_button_fun(trigger="zoom");
+            }
         }
     }
   }
