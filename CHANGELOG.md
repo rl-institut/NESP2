@@ -75,10 +75,10 @@ Here is a template for new release sections
 - Split the filter events for og clusters and normal clusters (#155)
 - Make sure the clusters layers on a state are properly removed once the user select another state or national level (#220)
 - Make sure to remember selected cluster when flyto zooms out too far (#68)
-- Adapt minZoom in national Level so user can zoom out again (#240)
+- Adapt minZoom in national Level so user can zoom out again (#240, #250)
 - About this map link (#247)
 - The clusters info for a state are now downloaded stored into a variable client side as the user select the state (#221)
-
+- Made toggle buttons keep the on/off state the user provided them (#250)
 
 ### Removed
 - redundant accordion menu (#10)

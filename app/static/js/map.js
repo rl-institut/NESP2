@@ -147,10 +147,16 @@ function update_clusterInfo(properties, selectedClustersNum, clusterNum="?") {
     };
 
     clusterInfo.remove();
-    clusterInfo.update = function() {
-        this._div.innerHTML = control_content;
-        this._div.innerHTML;
-    };
+    if(level != "national") {
+        clusterInfo.update = function() {
+            this._div.innerHTML = control_content;
+        };
+    }
+    else{
+        clusterInfo.update = function() {
+            this._div.innerHTML = "";
+        };
+    }
     // the addTo function will trigger the update() function
     clusterInfo.addTo(map);
 };

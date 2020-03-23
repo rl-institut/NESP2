@@ -460,19 +460,23 @@ function adapt_view_to_national_level() {
   // load the states boundaries
   document.getElementById("statesCheckbox").checked = true;
   states_cb_fun();
-  // load the populated areas
-  document.getElementById("heatmapCheckbox").checked = true;
-  heatmap_cb_fun();
-  // load the medium voltage grid
-  document.getElementById("nationalGridCheckbox").checked = true;
-  nationalGrid_cb_fun();
-  // hide the remotely mapped villages clusters
+
+  // Apply only at first landing
   if (selectedState == "init" && prevState == "init") {
+    document.getElementById("heatmapCheckbox").checked = true;
+    document.getElementById("nationalGridCheckbox").checked = true;
     set_clusters_toggle(false);
     set_og_clusters_toggle(false);
   }
-  clusters_cb_fun();
-  ogClusters_cb_fun();
+  if (previous_level == "state" || previous_level == "village") {
+    document.getElementById("heatmapCheckbox").checked = document.getElementById("clustersCheckbox").checked;
+    document.getElementById("nationalGridCheckbox").checked = document.getElementById("gridCheckbox").checked;
+  }
+  // load the populated areas
+  heatmap_cb_fun();
+  // load the medium voltage grid
+  nationalGrid_cb_fun();
+
   // Remotely mapped villages layer
   remove_layer(clusterLayer[selectedState]);
   remove_layer(ogClusterLayers[selectedState]);
@@ -497,7 +501,8 @@ function adapt_view_to_national_level() {
   // reactive fitting of Nigeria on the map
   map.fitBounds(L.latLngBounds(L.latLng(14, 15), L.latLng(4, 2.5)))
   // if the fitBound has smaller zoom level, update the min zoom level
-  map.setMinZoom(map.getZoom());
+  map.setMinZoom(map.getZoom() - map.options.zoomSnap);
+
 };
 
 function adapt_view_to_state_level() {
@@ -513,14 +518,20 @@ function adapt_view_to_state_level() {
   // load the states boundaries
   document.getElementById("statesCheckbox").checked = true;
   states_cb_fun();
-  document.getElementById("gridCheckbox").checked = true;
-  // In States where there is no Grid, All Clusters should be shown instead of mapped village clusters
-  if (statesAvailability[selectedState] / 4 < 1) {
-    set_clusters_toggle(true);
-  }
-  // Load the remotely mapped villages clusters
-  else if (previous_level == "national" && prevState == "init") {
-    set_og_clusters_toggle(true);
+
+  document.getElementById("gridCheckbox").checked = document.getElementById("nationalGridCheckbox").checked ;
+
+  // Apply only when choosing state right after landing, otherwise keep user options
+  if (previous_level == "national" && prevState == "init") {
+
+      // In States where there is no Grid, All Clusters should be shown instead of mapped village clusters
+      if (statesAvailability[selectedState] / 4 < 1) {
+        set_clusters_toggle(true);
+      }
+      else {
+      // Load the remotely mapped villages clusters
+        set_og_clusters_toggle(true);
+      }
   }
   clusters_cb_fun();
   ogClusters_cb_fun();
@@ -555,13 +566,14 @@ function adapt_view_to_village_level() {
  */
 
 function national_button_fun(trigger="button") {
+  previous_level = level;
   level = "national";
   adapt_sidebar_to_selection_level(level);
   adapt_view_to_national_level()
 }
 
 function state_button_fun(trigger="button") {
-  previous_level = level
+  previous_level = level;
   level = "state";
   adapt_sidebar_to_selection_level(level);
 
@@ -613,7 +625,7 @@ function state_button_fun(trigger="button") {
 };
 
 function village_button_fun(trigger="button") {
-  previous_level = level
+  previous_level = level;
   level = "village";
   adapt_sidebar_to_selection_level(level);
   // click on the village level button from national level, first select a random state
