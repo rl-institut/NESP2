@@ -560,6 +560,11 @@ p.sidebar-panel-item-title {
     height: 3.25rem;
     transform: translateY(0px);
     padding-left: .75rem;
+    margin-right: 1rem;
+}
+
+#header-maps-blitz-div h2{
+  padding-left: 0;
 }
 
 #header-maps-logo-nigeria{
