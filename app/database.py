@@ -62,6 +62,7 @@ def get_state_codes():
 OG_CLUSTERS_COLUMNS = ('adm1_pcode', 'cluster_offgrid_id', 'area_km2',
     'building_count', 'percentage_building_area', 'grid_dist_km', 'geom')
 
+
 def filter_materialized_view(
         engine,
         view_name,
@@ -180,12 +181,14 @@ def query_filtered_clusters(
     :param keys:
     :return:
     """
+
     if state_name in state_codes_dict:
-        view_name = "cluster_all_{}_mv".format(state_codes_dict[state_name])
+        view_name = "cluster_all_mv"
         answer = filter_materialized_view(
             engine,
             view_name,
             schema="web",
+            state_code=state_codes_dict[state_name],
             area=area,
             distance_grid=distance_grid,
             limit=limit,
@@ -219,12 +222,14 @@ def query_filtered_og_clusters(
     :param keys:
     :return:
     """
+
     if state_name in state_codes_dict:
-        view_name = "cluster_offgrid_{}_mv".format(state_codes_dict[state_name])
+        view_name = "cluster_offgrid_mv"
         answer = filter_materialized_view(
             engine,
             view_name,
             schema="web",
+            state_code=state_codes_dict[state_name],
             area=area,
             distance_grid=distance_grid,
             building=building,
@@ -236,6 +241,7 @@ def query_filtered_og_clusters(
         print("Non existent state name: {}".format(state_name))
         answer = []
     return answer
+
 
 def get_number_of_entries(engine, view_code, schema="web", table_name="cluster_offgrid"):
     """
