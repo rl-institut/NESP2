@@ -631,6 +631,16 @@ img.footer-maps-logos__giz {
   text-align: center;
 }
 
+.footer-about .helper {
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+}
+
+.footer.about a {
+  vertical-align: middle;
+}
+
 .footer-about a,
 .footer-about a:hover,
 .footer-about a:link
@@ -640,6 +650,10 @@ img.footer-maps-logos__giz {
   font-size: 13pt;
 }
 
+.footer-about span {
+  vertical-align: middle;
+  padding-left: .25rem;
+}
 
 @media only screen and (min-width: 1024px) and (max-width: 1300px) {
   #sidebar {
