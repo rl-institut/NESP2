@@ -471,8 +471,6 @@ function adapt_view_to_national_level() {
     set_clusters_toggle(false);
     set_og_clusters_toggle(false);
   }
-  clusters_cb_fun();
-  ogClusters_cb_fun();
   // Remotely mapped villages layer
   remove_layer(clusterLayer[selectedState]);
   remove_layer(ogClusterLayers[selectedState]);
@@ -514,13 +512,17 @@ function adapt_view_to_state_level() {
   document.getElementById("statesCheckbox").checked = true;
   states_cb_fun();
   document.getElementById("gridCheckbox").checked = true;
-  // In States where there is no Grid, All Clusters should be shown instead of mapped village clusters
-  if (statesAvailability[selectedState] / 4 < 1) {
-    set_clusters_toggle(true);
-  }
-  // Load the remotely mapped villages clusters
-  else if (previous_level == "national" && prevState == "init") {
-    set_og_clusters_toggle(true);
+
+  // Apply only when choosing state right after landing, otherwise keep user options
+  if (previous_level == "national" && prevState == "init") {
+      // In States where there is no Grid, All Clusters should be shown instead of mapped village clusters
+      if (statesAvailability[selectedState] / 4 < 1) {
+        set_clusters_toggle(true);
+      }
+      else {
+      // Load the remotely mapped villages clusters
+        set_og_clusters_toggle(true);
+      }
   }
   clusters_cb_fun();
   ogClusters_cb_fun();
