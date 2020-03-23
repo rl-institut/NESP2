@@ -460,17 +460,19 @@ function adapt_view_to_national_level() {
   // load the states boundaries
   document.getElementById("statesCheckbox").checked = true;
   states_cb_fun();
-  // load the populated areas
-  document.getElementById("heatmapCheckbox").checked = true;
-  heatmap_cb_fun();
-  // load the medium voltage grid
-  document.getElementById("nationalGridCheckbox").checked = true;
-  nationalGrid_cb_fun();
-  // hide the remotely mapped villages clusters
+
+  // Apply only at first landing
   if (selectedState == "init" && prevState == "init") {
+    document.getElementById("heatmapCheckbox").checked = true;
+    document.getElementById("nationalGridCheckbox").checked = true;
     set_clusters_toggle(false);
     set_og_clusters_toggle(false);
   }
+  // load the populated areas
+  heatmap_cb_fun();
+  // load the medium voltage grid
+  nationalGrid_cb_fun();
+
   // Remotely mapped villages layer
   remove_layer(clusterLayer[selectedState]);
   remove_layer(ogClusterLayers[selectedState]);
@@ -511,10 +513,12 @@ function adapt_view_to_state_level() {
   // load the states boundaries
   document.getElementById("statesCheckbox").checked = true;
   states_cb_fun();
-  document.getElementById("gridCheckbox").checked = true;
+
+  document.getElementById("gridCheckbox").checked = document.getElementById("nationalGridCheckbox").checked ;
 
   // Apply only when choosing state right after landing, otherwise keep user options
   if (previous_level == "national" && prevState == "init") {
+
       // In States where there is no Grid, All Clusters should be shown instead of mapped village clusters
       if (statesAvailability[selectedState] / 4 < 1) {
         set_clusters_toggle(true);
