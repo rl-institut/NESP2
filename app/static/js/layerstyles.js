@@ -50,24 +50,6 @@ var SLstateSelection = {
   fillOpacity: 0,
 };
 
-var NLlga = {
-  color: "#000000",
-  weight: 0.5,
-  opacity: 1,
-  fill: false,
-  fillColor: "#ffffff",
-  fillOpacity: 0,
-};
-
-var NLlgaSelection = {
-  color: "#000000",
-  weight: 0.5,
-  opacity: 1,
-  fill: false,
-  fillColor: "#ffffff",
-  fillOpacity: 0,
-};
-
 var gridStyle33kv = {
   color: "#f54a2b",
   weight: 2

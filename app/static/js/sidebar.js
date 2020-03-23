@@ -18,6 +18,7 @@ var filteredOgClusters = 0;
 var selectedLGA = "";
 var thirtythreeKV = "33_kV_" + selectedState.toLowerCase();
 var centroids_layer_id = -1;
+var centroids_layer_ids = {};
 var current_cluster_centroids = Object();
 var filtered_centroids_keys = [];
 var currently_featured_centroid_id = 0;
@@ -141,6 +142,12 @@ $.post({
     dataType: "json",
     success: function(data){statesWithOgClusters=data.states_with_og_clusters;},
 })
+
+function get_cluster_type() {
+    if (document.getElementById("ogClustersCheckbox").checked == true) {answer = "og";}
+    else {answer = "all";}
+    return answer
+}
 
 function give_status(context=null) {
     console.log("Status on");
@@ -302,17 +309,17 @@ ogBuildingsFootprintSlider.noUiSlider.on("change", changeogBuildingsFootprintSli
 ogBuildingsFootprintSlider.noUiSlider.on("end", update_og_filter);
 
 
-
+// TODO: check if a POST to db is needed at all as info to clusters is available for each state
+// locally now
 function update_filter() {
     if (selectedState != "init") {
         $.post({
                 url: "/filtered-cluster",
                 dataType: "json",
                 data: {"cluster_type": "all", "state_name": selectedState, ... currentfilter},
-                success: function(data){console.log(data);filteredClusters=data;},
+                success: function(data){filteredClusters=data;},
              }).done(
                 function(data) {
-                    console.log("THERE")
                     var filter_title = $("#n_clusters");
                     var new_text = "= " + filteredClusters + " settlements";
                     if (filteredClusters == 1){
@@ -491,12 +498,10 @@ function adapt_view_to_national_level() {
   map.fitBounds(L.latLngBounds(L.latLng(14, 15), L.latLng(4, 2.5)))
   // if the fitBound has smaller zoom level, update the min zoom level
   map.setMinZoom(map.getZoom());
-
 };
 
 function adapt_view_to_state_level() {
   give_status("adapt_view_to_state_level");
-
 
   map.options.minZoom = 8;
   map.options.maxZoom = 18;
@@ -565,6 +570,7 @@ function state_button_fun(trigger="button") {
       // select a random state which has off-grid clusters
       selectedState = statesWithOgClusters[Math.floor(Math.random()*statesWithOgClusters.length)]
       // Update the states menu list
+      selectedState = "Kano"
       document.getElementById("stateSelect").value = selectedState;
   };
 
@@ -614,7 +620,7 @@ function village_button_fun(trigger="button") {
   if (previous_level == "national" && trigger == "button"){
       // select a random state which has off-grid clusters
       selectedState = statesWithOgClusters[Math.floor(Math.random()*statesWithOgClusters.length)]
-
+      selectedState = "Kano"
       // Update the states menu list
       document.getElementById("stateSelect").value = selectedState;
       updateSelectedStateBounds()
@@ -896,69 +902,124 @@ function buildingDensity_cb_fun() {
   }
 }
 
-// The following functions allow to asynchronously call geojson files and create a layer with them
+// The following functions allow to asynchronously query cluster data and create a layer with them
 // Handling is made somewhat difficult: due to asynchronous nature of the call the data cannot simply
 // be stored in a variable. Therefore the data are used to create a geojson-layer in a layergroup.
 // The layer can then be selected via it's _leaflet_id
 
 // Function asynchronously calls geojsons with centroids of selected state
 function update_centroids_data(handleData){
-  var centroids_file_key = selectedState
-  if (selectedState == "init"){
-    centroids_file_key = "Kano";
-  }
-  if (document.getElementById("clustersCheckbox").checked == false){
-    $.ajax({
-      url: "/static/data/centroids/nesp2_state_offgrid_clusters_centroids_" + title_to_snake(centroids_file_key) + ".geojson",
-      dataType: "json",
-      success: function(data) {
-        // handleData allows this function to be called in another function
-        handleData(data);
-      },
-      error: function (xhr) {
-        console.log(xhr.statusText);
-        console.log("loading of geojson failed");
-      }
-    })
-  }
-  else if (document.getElementById("clustersCheckbox").checked == true){
-    $.ajax({
-      url: "/static/data/centroids/nesp2_state_all_clusters_centroids_" + title_to_snake(centroids_file_key) + ".geojson",
-      dataType: "json",
-      success: function(data) {
-        // handleData allows this function to be called in another function
-        handleData(data);
-      },
-      error: function (xhr) {
-        console.log(xhr.statusText);
-        console.log("loading of geojson failed");
-      }
-    })
-  }
-}
+    if(level != "national"){
+        var cluster_type = get_cluster_type();
+        var centroids_file_key = selectedState
+        if (selectedState == "init"){
+        centroids_file_key = "Kano";
+        }
+        $.get({
+            url: "/centroids",
+            dataType: "json",
+            data: {"cluster_type": cluster_type, "state": centroids_file_key},
+            success: function(data){
+                handleData(data, centroids_file_key, cluster_type);
+                }
+        });
+    };
+};
+
+/*
+    Parse what is essentially a matrix in a jsonified lightweight format. The keys are the state
+    code, the number of row ("length" = N), the M column names and the values of the matrix.
+        the values are in a single array of size N * M
+    By looping from 1 --> N the matrix is rebuilt by assigning the values to the correct columns.
+    First column property will get values at index 0 -> N, while the ith column will get the values
+    at index 0 + i*N -> (i + 1)*N
+*/
+function convert_light_json_to_geojson(data, cluster_type) {
+    var geojson_features = [];
+    var N = data.length;
+
+    if(cluster_type == "og") {
+        for (j = 0; j < N; j++) {
+            geojson_features[j] = {
+                "type": "Feature", "properties": {
+                    "adm1_pcode": data.adm1_pcode,
+                    "cluster_offgrid_id": data.values[j],
+                    "area_km2": data.values[N + j],
+                    "grid_dist_km": data.values[2 * N + j],
+                    "building_count": data.values[3 * N + j],
+                    "percentage_building_area": data.values[4 * N + j],
+                    "bb_east": data.values[5 * N + j],
+                    "bb_north": data.values[6 * N + j],
+                    "bb_south": data.values[7 * N + j],
+                    "bb_west": data.values[8 * N + j],
+                },
+                "geometry": { "type": "Point", "coordinates": [ data.values[9 * N + j], data.values[10 * N + j] ] },
+            };
+        };
+    }
+    else {
+        for (j = 0; j < N; j++) {
+            geojson_features[j] = {
+                "type": "Feature", "properties": {
+                    "adm1_pcode": data.adm1_pcode,
+                    "cluster_all_id": data.values[j],
+                    "area_km2": data.values[N + j],
+                    "grid_dist_km": data.values[2 * N + j],
+                    "fid": data.values[3 * N + j],
+                    "bb_east": data.values[4 * N + j],
+                    "bb_north": data.values[5 * N + j],
+                    "bb_south": data.values[6 * N + j],
+                    "bb_west": data.values[7 * N + j],
+                },
+                "geometry": { "type": "Point", "coordinates": [ data.values[8 * N + j], data.values[9 * N + j] ] },
+            };
+        };
+
+    };
+    geojson_features = {
+    "type": "FeatureCollection",
+    "name": "adm1_pcode_" + data.adm1_pcode,
+    "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+    "features": geojson_features}
+    return geojson_features
+};
 
 // Function takes the data from update_centroids_data. Due to the asynchronous call they cannot simply be stored in a variable
 function update_centroids(){
-  update_centroids_data(function(output){
-    centroids = output;
-    // Creates a geojson-layer with the data
-    var centroids_layer = L.geoJSON(centroids, {
-    pointToLayer: function (feature, latlng) {
-        return L.circleMarker(latlng, {
-            interactive: false,
-            radius: 0,
-            weight: 5,
-            opacity: 0,
-            fillOpacity: 0,
+  // only fetch the data if it does not exist yet
+  var cluster_type = get_cluster_type();
+  if (centroids_layer_ids[selectedState] === undefined) {
+    centroids_layer_ids[selectedState] = {};
+  }
+
+  if (centroids_layer_ids[selectedState][cluster_type] === undefined){
+        update_centroids_data(function(data, centroids_file_key, cluster_type){
+            var centroids = convert_light_json_to_geojson(data, cluster_type)
+            // Creates a geojson-layer with the data
+            var centroids_layer = L.geoJSON(centroids, {
+                pointToLayer: function (feature, latlng) {
+                    return L.circleMarker(latlng, {
+                        interactive: false,
+                        radius: 0,
+                        weight: 5,
+                        opacity: 0,
+                        fillOpacity: 0,
+                    });
+                }
+            });
+            // add geojson-layer to a group
+            centroidsGroup.addLayer(centroids_layer);
+            // store the _leaflet_id of the centroids layer in a variable. The layer can be called with this id.
+            centroids_layer_id = centroidsGroup.getLayerId(centroids_layer)
+            // TODO duplicate this for all_clusters as well
+            // store this id in a dict with state name as keys
+            centroids_layer_ids[centroids_file_key][cluster_type] = centroids_layer_id
         });
-    }
-  });
-  // add geojson-layer to a group
-  centroids_layer.addTo(centroidsGroup);
-  // store the _leaflet_id of the centroids layer in a variable. The layer can be called with this id.
-  centroids_layer_id = centroids_layer._leaflet_id;
-  });
-}
+  }
+  else{
+    centroids_layer_id = centroids_layer_ids[selectedState][cluster_type]
+  }
+};
 
 // initial call of this function upon map start is necessary
 update_centroids();
@@ -967,7 +1028,7 @@ update_centroids();
 function update_centroids_group(){
   //TODO remove old layers to avoid very large cache. need to check if layer exists, else map becomes unresponsive.
   if (centroids_layer_id in centroidsGroup._layers){
-    centroidsGroup.removeLayer(centroids_layer_id);
+    //centroidsGroup.removeLayer(centroids_layer_id);
   }
   else {
   console.log("Not removing absent Layer");
@@ -1002,10 +1063,6 @@ function get_centroid_by_id(centroid_id){
   return(centroid);
 }
 
-function get_centroid_info(centroid){
-  info = centroid.feature.properties;
-  return(info);
-}
 
 //function updates the list of cluster keys in filtered_centroids_keys
 function filter_centroid_keys(){
@@ -1047,12 +1104,10 @@ function filter_centroid_keys(){
 }
 
 function update_cluster_info(){
-      var centroid = get_centroid_by_id(currently_featured_centroid_id);
-      var centroid_info = get_centroid_info(centroid);
-
+    var centroid = get_centroid_by_id(currently_featured_centroid_id);
     const clusterNum = filtered_centroids_keys.indexOf(currently_featured_centroid_id) + 1;
     const selectedClustersNum = filtered_centroids_keys.length;
-    update_clusterInfo(centroid_info, selectedClustersNum, clusterNum);
+    update_clusterInfo(centroid.feature.properties, selectedClustersNum, clusterNum);
 
 }
 
@@ -1118,15 +1173,4 @@ function prev_selection_fun(){
     flyToClusterBounds(target);
   }
   update_cluster_info();
-}
-
-function lga_cb_fun() {
-  /*var checkBox = document.getElementById("lgaCheckbox");
-  if (checkBox.checked == true){
-    add_layer(lgas_pbf)
-  }
-  else {
-    remove_layer(lgas_pbf)
-  }
-  */
 }

@@ -1,6 +1,6 @@
 import os
 import json
-from flask import Flask, render_template, request, jsonify, url_for, redirect, Response
+from flask import Flask, render_template, request, jsonify, url_for, safe_join, redirect, Response
 from flask_wtf.csrf import CSRFProtect
 from .utils import define_function_jinja
 from .blueprints import about_map
@@ -9,7 +9,8 @@ from .database import (
     query_random_og_cluster,
     query_filtered_clusters,
     query_filtered_og_clusters,
-    query_available_og_clusters
+    query_available_og_clusters,
+    convert_web_mat_view_to_light_json
 )
 
 
@@ -124,7 +125,81 @@ def create_app(test_config=None):
 
         # query state codes for states with og clusters data
         resp = query_available_og_clusters()
-        resp = jsonify({"states_with_og_clusters": [CODES_STATE_DICT[r.lower()] for r in resp]})
+        resp = jsonify({"states_with_og_clusters": [CODES_STATE_DICT[r] for r in resp]})
+        resp.status_code = 200
+        return resp
+
+    @app.route('/centroids', methods=["get"])
+    def fetch_centroids():
+        state = request.args.get("state")
+        cluster_type = request.args.get("cluster_type")
+        if "og" in cluster_type:
+            keys = (
+                'adm1_pcode',
+                'cluster_offgrid_id',
+                'grid_dist_km',
+                'area_km2',
+                'building_count',
+                'percentage_building_area',
+                'ST_AsGeoJSON(bounding_box) as geom',
+                'ST_AsGeoJSON(centroid) as lnglat'
+            )
+            COLS = (
+                'cluster_offgrid_id',
+                'area_km2',
+                'grid_dist_km',
+                'building_count',
+                'percentage_building_area',
+                'bEast',
+                'bNorth',
+                'bSouth',
+                'bWest',
+                'lat',
+                'lng'
+            )
+            records = query_filtered_og_clusters(
+                state,
+                STATE_CODES_DICT,
+                keys=keys,
+            )
+        else:
+            keys = (
+                'adm1_pcode',
+                'cluster_all_id',
+                'fid',
+                'area_km2',
+                'grid_dist_km',
+                'ST_AsGeoJSON(bounding_box) as geom',
+                'ST_AsGeoJSON(centroid) as lnglat'
+            )
+            COLS = (
+                'cluster_all_id',
+                'area_km2',
+                'grid_dist_km',
+                'fid',
+                'bEast',
+                'bNorth',
+                'bSouth',
+                'bWest',
+                'lat',
+                'lng'
+            )
+            records = query_filtered_clusters(
+                state,
+                STATE_CODES_DICT,
+                keys=keys,
+            )
+
+        if records:
+            answer = convert_web_mat_view_to_light_json(records, COLS)
+        else:
+            answer = {
+                "adm1_pcode": STATE_CODES_DICT[state],
+                "length": 0,
+                "columns": COLS,
+                "values": []
+            }
+        resp = jsonify(answer)
         resp.status_code = 200
         return resp
 
@@ -143,6 +218,7 @@ def create_app(test_config=None):
         resp = jsonify(feature)
         resp.status_code = 200
         return resp
+
 
     @app.route('/filtered-cluster', methods=["POST"])
     def filtered_clusters():
@@ -172,14 +248,9 @@ def create_app(test_config=None):
                     distance_grid=[request.form.get("mindtg"), request.form.get("maxdtg")],
                     keys=keys
                 )
-
-
         resp = jsonify(records[0].count)
         resp.status_code = 200
         return resp
-
-
-
 
     define_function_jinja(app)
     return app

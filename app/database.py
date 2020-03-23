@@ -1,4 +1,6 @@
 import os
+import json
+import pandas as pd
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 import geoalchemy2
@@ -55,15 +57,17 @@ def get_state_codes():
         BoundaryAdmin.adm1_pcode.label("code"),
         BoundaryAdmin.adm1_en.label("name")
     )
-    return {r.name:r.code.lower() for r in res}
+    return {r.name:r.code for r in res}
 
 OG_CLUSTERS_COLUMNS = ('adm1_pcode', 'cluster_offgrid_id', 'area_km2',
     'building_count', 'percentage_building_area', 'grid_dist_km', 'geom')
 
+
 def filter_materialized_view(
         engine,
         view_name,
-        schema=None,
+        schema="web",
+        state_code=None,
         area=None,
         distance_grid=None,
         building=None,
@@ -80,9 +84,17 @@ def filter_materialized_view(
 
     filter_cond = ""
 
+    if state_code is not None:
+        key = "adm1_pcode"
+        filter_cond = f" WHERE {view_name}.{key}='{state_code}'"
+
     if area is not None:
         key = "area_km2"
-        filter_cond = f" WHERE {view_name}.{key} > {area[0]} AND {view_name}.{key} < {area[1]}"
+        if "WHERE" in filter_cond:
+            filter_cond = filter_cond + f" AND {view_name}.{key} > {area[0]} AND" \
+                                        f" {view_name}.{key} < {area[1]}"
+        else:
+            filter_cond = f" WHERE {view_name}.{key} > {area[0]} AND {view_name}.{key} < {area[1]}"
 
     if distance_grid is not None:
         key = "grid_dist_km"
@@ -99,7 +111,7 @@ def filter_materialized_view(
             filter_cond = filter_cond + f" AND {view_name}.{key} > {building[0]} AND" \
                                         f" {view_name}.{key} < {building[1]}"
         else:
-            filter_cond = f" WHERE {view_name}.{key} > {building[0]} AND"\
+            filter_cond = f" WHERE {view_name}.{key} > {building[0]} AND" \
                           f" {view_name}.{key} < {building[1]}"
 
     if buildingfp is not None:
@@ -125,6 +137,32 @@ def filter_materialized_view(
     return data
 
 
+def convert_web_mat_view_to_light_json(records, cols):
+    df = pd.DataFrame()
+
+    for l in records:
+        l = dict(l)
+        geom = json.loads(l.pop("geom"))
+        lnglat = json.loads(l.pop("lnglat"))
+
+        l.update({
+            'lat': lnglat["coordinates"][1],
+            'lng': lnglat["coordinates"][0],
+            'bNorth': geom["coordinates"][0][2][1],
+            'bSouth': geom["coordinates"][0][0][1],
+            'bEast': geom["coordinates"][0][2][0],
+            'bWest': geom["coordinates"][0][0][0]
+        })
+        df = df.append(l, ignore_index=True)
+
+    value_list = []
+    for c in cols:
+        value_list = value_list + df[c].to_list()
+
+    return {'adm1_pcode': df['adm1_pcode'].unique()[0], "length": len(df.index), "columns": cols,
+            "values": value_list}
+
+
 def query_filtered_clusters(
         state_name,
         state_codes_dict,
@@ -143,12 +181,14 @@ def query_filtered_clusters(
     :param keys:
     :return:
     """
+
     if state_name in state_codes_dict:
-        view_name = "cluster_all_{}_mv".format(state_codes_dict[state_name])
+        view_name = "cluster_all_mv"
         answer = filter_materialized_view(
             engine,
             view_name,
             schema="web",
+            state_code=state_codes_dict[state_name],
             area=area,
             distance_grid=distance_grid,
             limit=limit,
@@ -182,12 +222,14 @@ def query_filtered_og_clusters(
     :param keys:
     :return:
     """
+
     if state_name in state_codes_dict:
-        view_name = "cluster_offgrid_{}_mv".format(state_codes_dict[state_name])
+        view_name = "cluster_offgrid_mv"
         answer = filter_materialized_view(
             engine,
             view_name,
             schema="web",
+            state_code=state_codes_dict[state_name],
             area=area,
             distance_grid=distance_grid,
             building=building,
@@ -199,6 +241,7 @@ def query_filtered_og_clusters(
         print("Non existent state name: {}".format(state_name))
         answer = []
     return answer
+
 
 def get_number_of_entries(engine, view_code, schema="web", table_name="cluster_offgrid"):
     """
