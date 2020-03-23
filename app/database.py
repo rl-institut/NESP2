@@ -57,7 +57,7 @@ def get_state_codes():
         BoundaryAdmin.adm1_pcode.label("code"),
         BoundaryAdmin.adm1_en.label("name")
     )
-    return {r.name:r.code.lower() for r in res}
+    return {r.name:r.code for r in res}
 
 OG_CLUSTERS_COLUMNS = ('adm1_pcode', 'cluster_offgrid_id', 'area_km2',
     'building_count', 'percentage_building_area', 'grid_dist_km', 'geom')

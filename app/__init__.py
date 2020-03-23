@@ -122,7 +122,7 @@ def create_app(test_config=None):
 
         # query state codes for states with og clusters data
         resp = query_available_og_clusters()
-        resp = jsonify({"states_with_og_clusters": [CODES_STATE_DICT[r.lower()] for r in resp]})
+        resp = jsonify({"states_with_og_clusters": [CODES_STATE_DICT[r] for r in resp]})
         resp.status_code = 200
         return resp
 
