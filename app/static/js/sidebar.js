@@ -501,7 +501,8 @@ function adapt_view_to_national_level() {
   // reactive fitting of Nigeria on the map
   map.fitBounds(L.latLngBounds(L.latLng(14, 15), L.latLng(4, 2.5)))
   // if the fitBound has smaller zoom level, update the min zoom level
-  map.setMinZoom(map.getZoom());
+  map.setMinZoom(map.getZoom() - map.options.zoomSnap);
+
 };
 
 function adapt_view_to_state_level() {
