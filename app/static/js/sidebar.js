@@ -561,13 +561,14 @@ function adapt_view_to_village_level() {
  */
 
 function national_button_fun(trigger="button") {
+  previous_level = level;
   level = "national";
   adapt_sidebar_to_selection_level(level);
   adapt_view_to_national_level()
 }
 
 function state_button_fun(trigger="button") {
-  previous_level = level
+  previous_level = level;
   level = "state";
   adapt_sidebar_to_selection_level(level);
 
@@ -619,7 +620,7 @@ function state_button_fun(trigger="button") {
 };
 
 function village_button_fun(trigger="button") {
-  previous_level = level
+  previous_level = level;
   level = "village";
   adapt_sidebar_to_selection_level(level);
   // click on the village level button from national level, first select a random state
