@@ -105,8 +105,7 @@ clusterInfo.update = function(props) {
 
 // this function updates the content of the clusterInfo in a centralized way
 function update_clusterInfo(properties, selectedClustersNum, clusterNum="?") {
-    console.log(properties)
-//
+
     var control_content = '\
       <div class="grid-x ">\
           <h4 title="this is not the final style" class="cell"> Browse the settlements</h4>\

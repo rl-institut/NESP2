@@ -48,6 +48,7 @@ var welcome_view = L.tileLayer("https://tile.rl-institut.de/data/nesp2_national_
 
 var centroidsGroup = L.layerGroup().addTo(map);
 
+
 function remove_layer(layer) {
   if (map.hasLayer(layer) == true) {
     map.removeLayer(layer);
