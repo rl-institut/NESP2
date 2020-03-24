@@ -5,7 +5,8 @@
 	<meta charset=utf-8 />
     <title>{% block title %}{% endblock %}</title>
 
-	<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
         <script type=text/javascript>
            $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
         </script>
