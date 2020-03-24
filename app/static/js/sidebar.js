@@ -519,8 +519,9 @@ function adapt_view_to_state_level() {
   document.getElementById("statesCheckbox").checked = true;
   states_cb_fun();
 
-  document.getElementById("gridCheckbox").checked = document.getElementById("nationalGridCheckbox").checked ;
-
+  if(previous_level == "national") {
+    document.getElementById("gridCheckbox").checked = document.getElementById("nationalGridCheckbox").checked ;
+  }
   // Apply only when choosing state right after landing, otherwise keep user options
   if (previous_level == "national" && prevState == "init") {
 
