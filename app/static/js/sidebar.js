@@ -530,7 +530,7 @@ function adapt_view_to_state_level() {
         set_clusters_toggle(true);
       }
       else {
-      // Load the remotely mapped villages clusters
+        // Load the remotely mapped villages clusters
         set_og_clusters_toggle(true);
       }
   }
@@ -583,7 +583,6 @@ function state_button_fun(trigger="button") {
       // select a random state which has off-grid clusters
       selectedState = statesWithOgClusters[Math.floor(Math.random()*statesWithOgClusters.length)]
       // Update the states menu list
-      selectedState = "Kano"
       document.getElementById("stateSelect").value = selectedState;
   };
 
@@ -633,9 +632,11 @@ function village_button_fun(trigger="button") {
   if (previous_level == "national" && trigger == "button"){
       // select a random state which has off-grid clusters
       selectedState = statesWithOgClusters[Math.floor(Math.random()*statesWithOgClusters.length)]
-      selectedState = "Kano"
       // Update the states menu list
       document.getElementById("stateSelect").value = selectedState;
+      // Load the remotely mapped villages clusters
+      set_og_clusters_toggle(true);
+      ogClusters_cb_fun()
       updateSelectedStateBounds()
 
       // Trigger the filter function so that the selected state geojson does not hide the clusters
