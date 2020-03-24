@@ -34,11 +34,8 @@ gridLegend.update = function(props) {
 };
 
 var baseMaps = {
-  "hot": hot,
+  "Humanitarian OSM": hot,
   "esri": esri,
-  "OpenStreetMap": osm,
-  "osm_gray": osm_gray,
-  "national_background": national_background,
 };
 
 function remove_basemaps() {
