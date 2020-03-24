@@ -78,8 +78,9 @@ Here is a template for new release sections
 - Adapt minZoom in national Level so user can zoom out again (#240, #250)
 - About this map link (#247)
 - The clusters info for a state are now downloaded stored into a variable client side as the user select the state (#221)
-- Made toggle buttons keep the on/off state the user provided them (#250)
+- Made toggle buttons keep the on/off state the user provided them (#250, #252)
 - Adapt maximum Native Zooms (#210)
+- Kano is no longer the only randomly selected state (#252)
 
 ### Removed
 - redundant accordion menu (#10)
