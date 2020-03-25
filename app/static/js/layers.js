@@ -181,6 +181,8 @@ function highlight_state(feature, layer) {
       update_centroids_group();
       // Update the dropdown menu for state selection
       document.getElementById("stateSelect").value = selectedState;
+      // Update the infoBox for the selected state
+      update_infoBox(selectedState, feature.properties.availability, defineSelectedState = true)
       // Trigger the switch to state level
       state_button_fun(trigger="map-click");
     }
