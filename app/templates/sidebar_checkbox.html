@@ -7,7 +7,7 @@
           </div>
           {% if filter_func %}
           <div class="cell small-2 sidebar-panel-item-icon">
-            <img onclick="{{ id }}_filter_fun()" id="{{ id }}_filter" title="Click on the funnel to expand filters" src="{{ url_for('static', filename='img/icons/i_funnel_gray.svg') }}">
+            <img onclick="{{ id }}_filter_fun()" class="filter_icon" id="{{ id }}_filter" title="Click on the funnel to expand filters" src="{{ url_for('static', filename='img/icons/i_funnel_gray.svg') }}">
           </div>
           {% endif %}
           <div class="cell small-2">
