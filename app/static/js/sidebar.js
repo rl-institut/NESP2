@@ -503,6 +503,9 @@ function adapt_view_to_national_level() {
   // if the fitBound has smaller zoom level, update the min zoom level
   map.setMinZoom(map.getZoom() - map.options.zoomSnap);
 
+  // update the info box on the top left
+  update_infoBox()
+
 };
 
 function adapt_view_to_state_level() {

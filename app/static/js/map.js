@@ -71,7 +71,7 @@ infoBox.onAdd = function(map) {
 selectedStateInfoBoxContent = null;
 
 // this function updates the content of the clusterInfo in a centralized way
-function update_infoBox(stateName, availability=0, defineSelectedState=false) {
+function update_infoBox(stateName=null, availability=0, defineSelectedState=false) {
 
     // show the availability of grid, remote mapping and surveying data for the state
     var avail = {
@@ -100,6 +100,16 @@ function update_infoBox(stateName, availability=0, defineSelectedState=false) {
     }
     if(stateName == selectedState) {
         control_content = selectedStateInfoBoxContent;
+    }
+
+    if(stateName == undefined) {
+     control_content='<h4 class="selection_detail_header"> SELECT A STATE </h4>' +
+      '<table class="selection_detail">' +
+      '<tr><td align="right"><b>Grid Tracking</b>:</td><td></td></tr>' +
+      '<tr><td align="right"><b>Remote Mapping</b>:</td><td></td></tr>' +
+      '<tr><td align="right"><b>Field Surveys</b>:</td><td></td></tr>' +
+      '</table>';
+      selectedStateInfoBoxContent = control_content;
     }
 
     infoBox.remove();
