@@ -3,7 +3,6 @@ import json
 from flask import Flask, render_template, request, jsonify, url_for, safe_join, redirect, Response
 from flask_wtf.csrf import CSRFProtect
 from .utils import define_function_jinja
-from .blueprints import about_map
 from .database import (
     get_state_codes,
     query_random_og_cluster,
@@ -45,8 +44,6 @@ def create_app(test_config=None):
     # register blueprints (like views in django)
 
     csrf = CSRFProtect(app)
-
-    app.register_blueprint(about_map.bp)
 
     @app.route('/')
     def index():
