@@ -68,14 +68,46 @@ infoBox.onAdd = function(map) {
   return this._div;
 };
 
-infoBox.update = function(props) {
-  this._div.innerHTML = '<h4 class="selection_detail_header">State Availability</h4>' +
-    '<table class="selection_detail">' +
-    '<tr><td align="right"><b>Grid Tracking</b>:</td><td>' + "aaa" + '</td></tr>' +
-    '<tr><td align="right"><b>Remote Mapping</b>:</td><td>' + "bbb" + '</td></tr>' +
-    '<tr><td align="right"><b>Field Surveys</b>:</td><td>' + "ccc" + '</td></tr>' +
-    '</table>';
-  this._div.innerHTML
+selectedStateInfoBoxContent = null;
+
+// this function updates the content of the clusterInfo in a centralized way
+function update_infoBox(stateName, availability=0, defineSelectedState=false) {
+
+
+    var avail = {
+        gridTracking: "<b>✕</b>",
+        remoteMapping: "<b>✕</b>",
+        Surveying: "<b>✕</b>",
+    }
+    if (availability >= 4) {
+        avail.gridTracking = "<b>✓</b>";
+    }
+    if (availability % 4 >= 2) {
+        avail.remoteMapping = "<b>✓</b>";
+    }
+    if (availability % 2 === 1) {
+        avail.Surveying = "<b>✓</b>";
+    }
+
+    var control_content = '<h4 class="selection_detail_header">' + stateName + '</h4>' +
+      '<table class="selection_detail">' +
+      '<tr><td align="right"><b>Grid Tracking</b>:</td><td>' + avail.gridTracking + '</td></tr>' +
+      '<tr><td align="right"><b>Remote Mapping</b>:</td><td>' + avail.remoteMapping + '</td></tr>' +
+      '<tr><td align="right"><b>Field Surveys</b>:</td><td>' + avail.Surveying + '</td></tr>' +
+      '</table>';
+    if(defineSelectedState == true) {
+        selectedStateInfoBoxContent = control_content;
+    }
+    if(stateName == selectedState) {
+        control_content = selectedStateInfoBoxContent;
+    }
+
+    infoBox.remove();
+    infoBox.update = function() {
+        this._div.innerHTML = control_content;
+    };
+    // the addTo function will trigger the update() function
+    infoBox.addTo(map);
 };
 
 
