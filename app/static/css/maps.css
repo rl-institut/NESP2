@@ -182,6 +182,10 @@ a {
   width: 1rem;
 }
 
+.sidebar-panel-item-icon img:hover {
+  cursor: pointer;
+}
+
 .sidebar-panel-item-hidden{
     display: none;
 }

@@ -383,6 +383,23 @@ function enable_sidebar__btn(className) {
   return className;
 };
 
+function disable_sidebar__filter(className) {
+  let answer = className;
+  if (className.includes(" is-disabled")) {} else {
+    className = className + " is-disabled";
+  }
+  return className;
+};
+
+function enable_sidebar__filter(className) {
+  let answer = className;
+  if (className.includes(" is-disabled")) {
+    className = className.replace(" is-disabled", "");
+  }
+  return className;
+};
+
+
 function hide_sidebar__btn(className) {
   let answer = className;
   if (className.includes(" is-hidden")) {} else {
@@ -773,6 +790,8 @@ function download_clusters_fun() {
 
 function clusters_cb_fun() {
 
+  var filter_icon = document.getElementById("clusters_filter");
+
   if (prevState != "init") {
     remove_layer(clusterLayer[prevState])
   }
@@ -788,6 +807,8 @@ function clusters_cb_fun() {
     // update the number of clusters available
     update_filter()
     update_clusterInfo({}, filteredClusters)
+    // enable actions with filter icon
+    filter_icon.className = enable_sidebar__filter(filter_icon.className);
 
     // Update centroids for all_clusters
     update_centroids();
@@ -797,6 +818,9 @@ function clusters_cb_fun() {
     remove_layer(clusterLayer[selectedState]);
     // Close the filters if they were available
     clusters_filter_fun();
+    // disable actions with filter icon
+    filter_icon.className = disable_sidebar__filter(filter_icon.className);
+
     if(document.getElementById("ogClustersCheckbox").checked == false) {
         clusterInfo.remove()
     }
@@ -856,6 +880,9 @@ function clusters_filter_fun() {
 
 
 function ogClusters_cb_fun() {
+
+  var filter_icon = document.getElementById("ogClusters_filter");
+
   if (prevState != "init") {
     remove_layer(ogClusterLayers[prevState])
   }
@@ -872,6 +899,8 @@ function ogClusters_cb_fun() {
     // update the number of clusters available
     update_og_filter()
     update_clusterInfo({}, filteredOgClusters)
+    // enable actions with filter icon
+    filter_icon.className = enable_sidebar__filter(filter_icon.className);
     // Update centroids for og_clusters
     update_centroids();
   } else {
@@ -880,6 +909,8 @@ function ogClusters_cb_fun() {
     remove_layer(ogClusterLayers[selectedState]);
     // Close the filters if they were available
     ogClusters_filter_fun();
+    // disable actions with filter icon
+    filter_icon.className = disable_sidebar__filter(filter_icon.className);
     if(document.getElementById("clustersCheckbox").checked == false) {
         clusterInfo.remove()
     }

@@ -1,13 +1,19 @@
  {% macro input(id, label, visible=['national', 'state', 'village'],filter_func=False, help_text="") -%}
-    <div class="grid-x" title="{{ label if help_text == '' else help_text }}">
+    <div class="grid-x">
       <div class="cell sidebar-panel {{ assign_visibility(visible) }}">
         <div class="grid-x sidebar-panel-item is-active" id="{{ id }}Panel" data-accordion-item>
-          <div class="cell small-8">
+          <div class="cell small-8" title="{{ label if help_text == '' else help_text }}">
             <p href="#" class="sidebar-panel-item-title">{{ label }}</p>
           </div>
           {% if filter_func %}
           <div class="cell small-2 sidebar-panel-item-icon">
-            <img onclick="{{ id }}_filter_fun()" id="{{ id }}_filter" src="{{ url_for('static', filename='img/icons/i_funnel_gray.svg') }}">
+            <img
+                    id="{{ id }}_filter"
+                    class="filter_icon"
+                    src="{{ url_for('static', filename='img/icons/i_funnel_gray.svg') }}"
+                    onclick="{{ id }}_filter_fun()"
+                    title="Click on the funnel to expand filters"
+            >
           </div>
           {% endif %}
           <div class="cell small-2">

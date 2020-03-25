@@ -328,6 +328,20 @@
           gCheckBox.click()
       }
 
+  $(document).ready(function(){
+
+      $('.filter_icon').on("mouseenter", function(){
+          // Change src attribute of image
+          $(this).attr("src", "../static/img/icons/i_funnel_dark_gray.svg");
+
+      });
+      $('.filter_icon').on("mouseleave", function(){
+          // Change src attribute of image
+          $(this).attr("src", "../static/img/icons/i_funnel_gray.svg");
+
+      });
+  });
+
     </script>
   </div>
 {% endblock %}
