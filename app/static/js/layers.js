@@ -145,47 +145,25 @@ var notnigerialayer = L.vectorGrid.slicer(not_nigeria, {
 
 
 // State borders and state hover functions
-
 function highlightStateBorders(e) {
-  var tooltipContent = "<b>" + e.target.feature.properties.name + "</b> Availability:<br>";
-  var avail = {
-    gridTracking: "<b>✕</b>",
-    remoteMapping: "<b>✕</b>",
-    Surveying: "<b>✕</b>",
-  }
-  if (e.target.feature.properties.availability >= 4) {
-    avail.gridTracking = "<b>✓</b>";
-  }
-  if (e.target.feature.properties.availability % 4 >= 2) {
-    avail.remoteMapping = "<b>✓</b>";
-  }
-  if (e.target.feature.properties.availability % 2 === 1) {
-    avail.Surveying = "<b>✓</b>";
-  }
+  var stateName = e.target.feature.properties.name;
+  var tooltipContent = "<b>" + stateName + "</b> Availability:<br>";
+
   highlightLayer = e.target;
-  if (highlightLayer.feature.properties.name != selectedState) {
+  if (stateName != selectedState) {
     highlightLayer.setStyle(statesStyleGeojsonHighlight);
   } else {
     highlightLayer.setStyle(statesStyleGeojsonTransparent);
   }
-  infoBox.remove();
-
-  infoBox.update = function(props) {
-    this._div.innerHTML = '<h4 class="selection_detail_header">' + e.target.feature.properties.name + '</h4>' +
-      '<table class="selection_detail">' +
-      '<tr><td align="right"><b>Grid Tracking</b>:</td><td>' + avail.gridTracking + '</td></tr>' +
-      '<tr><td align="right"><b>Remote Mapping</b>:</td><td>' + avail.remoteMapping + '</td></tr>' +
-      '<tr><td align="right"><b>Field Surveys</b>:</td><td>' + avail.Surveying + '</td></tr>' +
-      '</table>';
-    this._div.innerHTML;
-  };
-  infoBox.addTo(map);
+  // upate infoBox to the highlighted state
+  update_infoBox(stateName, e.target.feature.properties.availability)
 }
 
 function lowlightStateBorders(e) {
   lowlightLayer = e.target;
   lowlightLayer.setStyle(statesStyleGeojsonTransparent);
-  infoBox.remove();
+  // update infoBox to the currently selectedState by default
+  update_infoBox(selectedState)
 }
 
 function highlight_state(feature, layer) {
@@ -203,6 +181,8 @@ function highlight_state(feature, layer) {
       update_centroids_group();
       // Update the dropdown menu for state selection
       document.getElementById("stateSelect").value = selectedState;
+      // Update the infoBox for the selected state
+      update_infoBox(selectedState, feature.properties.availability, defineSelectedState = true)
       // Trigger the switch to state level
       state_button_fun(trigger="map-click");
     }
