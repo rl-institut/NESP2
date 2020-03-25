@@ -58,7 +58,7 @@ L.control.zoom({
 }).addTo(map);
 
 var infoBox = L.control({
-  position: 'bottomleft'
+  position: 'topleft'
 });
 
 infoBox.onAdd = function(map) {
