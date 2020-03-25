@@ -73,20 +73,20 @@ selectedStateInfoBoxContent = null;
 // this function updates the content of the clusterInfo in a centralized way
 function update_infoBox(stateName, availability=0, defineSelectedState=false) {
 
-
+    // show the availability of grid, remote mapping and surveying data for the state
     var avail = {
-        gridTracking: "<b>✕</b>",
-        remoteMapping: "<b>✕</b>",
-        Surveying: "<b>✕</b>",
+        gridTracking: '<img class="state_info__img" src="../static/img/icons/i_cross_square.svg">',
+        remoteMapping: '<img class="state_info__img" src="../static/img/icons/i_cross_square.svg">',
+        Surveying: '<img class="state_info__img" src="../static/img/icons/i_cross_square.svg">',
     }
     if (availability >= 4) {
-        avail.gridTracking = "<b>✓</b>";
+        avail.gridTracking = '<img class="state_info__img" src="../static/img/icons/i_tick_square.svg">'
     }
     if (availability % 4 >= 2) {
-        avail.remoteMapping = "<b>✓</b>";
+        avail.remoteMapping = '<img class="state_info__img" src="../static/img/icons/i_tick_square.svg">'
     }
     if (availability % 2 === 1) {
-        avail.Surveying = "<b>✓</b>";
+        avail.Surveying = '<img class="state_info__img" src="../static/img/icons/i_tick_square.svg">'
     }
 
     var control_content = '<h4 class="selection_detail_header">' + stateName + '</h4>' +
