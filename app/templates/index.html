@@ -3,7 +3,7 @@
 {% else %}
 {% extends 'base.html' %}
 {% endif %}
-{% block title %}Population cluster for electrification in Nigeria{% endblock %}
+{% block title %}NIGERIA SE4ALL Webmap{% endblock %}
 
 {% block head %}
 
@@ -29,7 +29,11 @@
     <div id="sidebar" class="cell large-3" data-sticky-container>
       <div id="header-maps" class="grid-x">
         <div id="header-maps-blitz-div" class="cell small-9">
+          {% if nesp2_website is defined %}
+          <a href="{{ url_for('maps.index')}}">
+          {% else %}
           <a href="{{ url_for('landing')}}">
+          {% endif %}
             <img src="{{ url_for('static', filename='logos/logo-5-blitz.png') }}">
             <h2>Nigeria Se4All</h2>
           </a>

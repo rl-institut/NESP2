@@ -47,6 +47,8 @@ Here is a template for new release sections
 - number of selected clusters by the filter selection (#213)
 - function to generate the control of clusters (#220)
 - endpoint for querying clusters info in the database (#221)
+- Favicon (#258)
+- Link to refresh page when clicking on blitz logo (#258)
 
 ### Changed
 - Filter slider get reasonable steps (#167)
@@ -82,11 +84,13 @@ Here is a template for new release sections
 - Adapt maximum Native Zooms (#210)
 - Kano is no longer the only randomly selected state (#252)
 
+
 ### Removed
 - redundant accordion menu (#10)
 - redundant onclick function for nigeria_states_geojson layer (#108)
 - outline around components after being clicked on (#202)
 - lgas layers and options (#221)
+- unused map layers in map control (#258)
 
 ## [0.0.1] 2019-11-11
 
