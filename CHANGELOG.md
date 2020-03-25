@@ -83,7 +83,8 @@ Here is a template for new release sections
 - Made toggle buttons keep the on/off state the user provided them (#250, #252)
 - Adapt maximum Native Zooms (#210)
 - Kano is no longer the only randomly selected state (#252)
-
+- Info box for state is displayed on top left (#261)
+- Info box has also info for selected state when mouse over over it or outside Nigeria (#261)
 
 ### Removed
 - redundant accordion menu (#10)
