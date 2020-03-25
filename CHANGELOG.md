@@ -49,6 +49,7 @@ Here is a template for new release sections
 - endpoint for querying clusters info in the database (#221)
 - Favicon (#258)
 - Link to refresh page when clicking on blitz logo (#258)
+- Hover on filter icon highlights it + tooltip (#263)
 
 ### Changed
 - Filter slider get reasonable steps (#167)
