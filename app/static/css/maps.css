@@ -218,7 +218,7 @@ body {
 
 .map-legend {
     background-color: white;
-    border-radius: 1rem;
+    border-radius: 8px;
 }
 
 .map-legend-grid {
