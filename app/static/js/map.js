@@ -160,26 +160,28 @@ clusterInfo.update = function(props) {
 function update_clusterInfo(properties, selectedClustersNum, clusterNum="?") {
 
     var control_content = '\
-      <div class="grid-x ">\
-          <h4 title="this is not the final style" class="cell"> Browse the settlements</h4>\
-          <div id="download_clusters" class="cell  grid-x consecutive__btn">\
-            <button class="cell large-3" style="float:left" onclick="prev_selection_fun()"> < </button> \
-            <h5 class="cell large-6">\
+      <div class="grid-x browse-box">\
+        <div class="cell browse-box__header">Browse the settlements</div>\
+        <div id="download_clusters" class="cell browse-box__btn consecutive__btn">\
+          <div class="grid-x">\
+            <button class="cell large-3 btn--left" style="float:left" onclick="prev_selection_fun()"> < </button> \
+            <p class="cell large-6 browse-box__number">\
                 <span>' + clusterNum + ' </span> / <span id="filtered-clusters-num">\
                 ' + selectedClustersNum + '</span> \
-            </h5>\
-            <button class="cell large-3" style="float:right" onclick="next_selection_fun()"> > </button>\
+            </p>\
+            <button class="cell large-3 btn--right" style="float:right" onclick="next_selection_fun()"> > </button>\
           </div>\
+        </div>\
       </div>';
 
     if(properties.cluster_all_id !== undefined){
         // all
         control_content = control_content +
-          '<table>\
-            <tr><td align="right"><b>ID</b>:</td><td>' + properties.cluster_all_id + '</td></tr>\
-            <tr><td align="right"><b>Area</b>:</td><td>' + properties.area_km2 + '</td></tr>\
-            <tr><td align="right"><b>Distance to Grid</b>:</td><td>' + parseFloat(properties.grid_dist_km).toFixed(2) + ' km2</td></tr>\
-          </table>';
+          '<div class="grid-x browse-box browse-box__items">\
+            <div class="cell small-6">ID</div><div class="cell small-6">' + properties.cluster_all_id + '</div>\
+            <div class="cell small-6">Area</div><div class="cell small-6">' + properties.area_km2 + '</div>\
+            <div class="cell small-6">Distance to Grid</div><div class="cell small-6">' + parseFloat(properties.grid_dist_km).toFixed(2) + 'km²</div>\
+          </div>';
 
           randomClusterInfo.remove();
     };
@@ -187,12 +189,12 @@ function update_clusterInfo(properties, selectedClustersNum, clusterNum="?") {
     if (properties.cluster_offgrid_id !== undefined) {
     // og
         control_content = control_content +
-          '<table>\
-            <tr><td align="right"><b>Area in km²</b>:</td><td>' + parseFloat(properties.area_km2).toFixed(2) + '</td></tr>\
-            <tr><td align="right"><b>Distance to Grid in km</b>:</td><td>' + parseFloat(properties.grid_dist_km).toFixed(1) + '</td></tr>\
-            <tr><td align="right"><b>Buildings</b>:</td><td>' + parseFloat(properties.building_count).toFixed(0) + '</td></tr>\
-            <tr><td align="right"><b>Building Density</b>:</td><td>' + parseFloat(properties.percentage_building_area).toFixed(2) + '</td></tr>\
-          </table>';
+        '<div class="grid-x browse-box browse-box__items">\
+          <div class="browse-box--left">Area (km²)</div><div class="browse-box--right">' + parseFloat(properties.area_km2).toFixed(2) + 'km²</div>\
+          <div class="browse-box--left">Distance to Grid in km</div><div class="browse-box--right">' + parseFloat(properties.grid_dist_km).toFixed(1) + '</div>\
+          <div class="browse-box--left">Buildings</div><div class="browse-box--right">' + parseFloat(properties.building_count).toFixed(0) + '</div>\
+          <div class="browse-box--left">Built-up density (%)</div><div class="browse-box--right">' +parseFloat(properties.percentage_building_area).toFixed(2) + '</div>\
+        </div>';
 
           randomClusterInfo.remove();
     };

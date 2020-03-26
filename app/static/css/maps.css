@@ -80,7 +80,6 @@ a {
 .leaflet-bottom.leaflet-left .leaflet-control {
   padding-left: 0;
   margin-left: 1rem;
-  background-color: #eeeff1;
 }
 
 .leaflet-bottom.leaflet-left .leaflet-control h4 {
@@ -670,6 +669,10 @@ img.footer-maps-logos__giz {
 }
 
 /* Legends */
+.cluster__info {
+  border-top-left-radius: 8px;
+}
+
 .legend-box {
   border-radius: 8px;
   background-color: #fff;
@@ -684,7 +687,8 @@ img.footer-maps-logos__giz {
   margin-bottom: .5rem;
 }
 
-.legend-box .legend-box__header {
+.legend-box .legend-box__header,
+.browse-box .browse-box__header  {
   width: 100%;
   background-color: #EEEFF1;
   border-top-left-radius: 8px;
@@ -702,6 +706,66 @@ img.footer-maps-logos__giz {
 
 .legend-box .legend-box__icon {
   padding: .5rem;
+}
+
+.browse-box {
+  width: 18rem;
+  background-color: #fff;
+  border-radius: 8px;
+}
+
+.browse-box__items {
+  margin-top: .5rem;
+  padding-bottom: .5rem;
+  padding-top: .5rem;
+}
+
+.browse-box .browse-box__header {
+  padding-top: .5rem;
+  padding-bottom: .5rem;
+  color: #93939F;
+  font-weight: 700;
+  font-size: 13pt;
+}
+
+.browse-box .browse-box__number {
+  font-size: 13pt;
+  font-weight: 700;
+  transform: translateY(8px);
+}
+
+.browse-box .browse-box__btn {
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  background-color: #EEEFF1;
+}
+
+.browse-box .browse-box__btn button {
+  border-radius: 0;
+}
+
+.browse-box .browse-box__btn .btn--left {
+  border-bottom-left-radius: 8px;
+}
+
+.browse-box .browse-box__btn .btn--right {
+  border-bottom-right-radius: 8px;
+}
+
+.browse-box .browse-box--left {
+  width: 70%;
+  padding-right: 1rem;
+  text-align: right;
+  color: #93939F;
+  padding-top: .25rem;
+  padding-bottom: .25rem;
+}
+
+.browse-box .browse-box--right {
+  width: 30%;
+  text-align: left;
+  padding-top: .25rem;
+  padding-bottom: .25rem;
 }
 
 
