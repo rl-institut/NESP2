@@ -691,6 +691,10 @@ img.footer-maps-logos__giz {
   border-top-right-radius: 8px;
 }
 
+.legend-box .selection_detail_header--light {
+  color: #93939F;
+}
+
 .legend-box .legend-box__item {
   padding: .5rem;
   text-align: right;
