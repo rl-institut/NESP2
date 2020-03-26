@@ -89,12 +89,19 @@ function update_infoBox(stateName=null, availability=0, defineSelectedState=fals
         avail.Surveying = '<img class="state_info__img" src="../static/img/icons/i_tick_square.svg">'
     }
 
-    var control_content = '<h4 class="selection_detail_header">' + stateName + '</h4>' +
-      '<table class="selection_detail">' +
-      '<tr><td align="right"><b>Grid Tracking</b>:</td><td>' + avail.gridTracking + '</td></tr>' +
-      '<tr><td align="right"><b>Remote Mapping</b>:</td><td>' + avail.remoteMapping + '</td></tr>' +
-      '<tr><td align="right"><b>Field Surveys</b>:</td><td>' + avail.Surveying + '</td></tr>' +
-      '</table>';
+    var control_content = 
+      '<div class="grid-x legend-box">' +
+        '<div class="cell legend-box__header">' +
+          '<p class="selection_detail_header">' + stateName + '</p>' +
+        '</div>' +
+        '<div class="cell legend-box__content">' +
+          '<div class="grid-x">' +
+            '<div class="cell small-9 legend-box__item">Grid Tracking</div><div class="cell small-3 legend-box__icon">' + avail.gridTracking + '</div>' +
+            '<div class="cell small-9 legend-box__item">Remote Mapping</div><div class="cell small-3 legend-box__icon">' + avail.remoteMapping + '</div>' +
+            '<div class="cell small-9 legend-box__item">Field Surveys</div><div class="cell small-3 legend-box__icon">' + avail.Surveying + '</div>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
     if(defineSelectedState == true) {
         selectedStateInfoBoxContent = control_content;
     }

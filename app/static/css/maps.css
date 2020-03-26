@@ -669,7 +669,36 @@ img.footer-maps-logos__giz {
   }
 }
 
+/* Legends */
+.legend-box {
+  border-radius: 8px;
+  background-color: #fff;
+  width: 13rem;
+  text-align: center;
+}
 
+.legend-box p {
+  font-size: 13pt;
+  font-weight: 700;
+  padding-top: .5rem;
+  margin-bottom: .5rem;
+}
+
+.legend-box .legend-box__header {
+  width: 100%;
+  background-color: #EEEFF1;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.legend-box .legend-box__item {
+  padding: .5rem;
+  text-align: right;
+}
+
+.legend-box .legend-box__icon {
+  padding: .5rem;
+}
 
 
 /* Random Cluster selection */
