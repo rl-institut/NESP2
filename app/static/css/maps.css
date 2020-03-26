@@ -97,6 +97,9 @@ a {
 
 .map-legend {
   padding: 1rem 1rem;
+  -webkit-box-shadow: 2px 2px 7px 0px rgba(0,0,0,0.16);
+-moz-box-shadow: 2px 2px 7px 0px rgba(0,0,0,0.16);
+box-shadow: 2px 2px 7px 0px rgba(0,0,0,0.16);
 }
 
 .map-legend--highlight {
@@ -678,6 +681,9 @@ img.footer-maps-logos__giz {
   background-color: #fff;
   width: 13rem;
   text-align: center;
+  -webkit-box-shadow: 2px 2px 7px 0px rgba(0,0,0,0.16);
+-moz-box-shadow: 2px 2px 7px 0px rgba(0,0,0,0.16);
+box-shadow: 2px 2px 7px 0px rgba(0,0,0,0.16);
 }
 
 .legend-box p {
@@ -712,6 +718,9 @@ img.footer-maps-logos__giz {
   width: 18rem;
   background-color: #fff;
   border-radius: 8px;
+  -webkit-box-shadow: 2px 2px 7px 0px rgba(0,0,0,0.16);
+-moz-box-shadow: 2px 2px 7px 0px rgba(0,0,0,0.16);
+box-shadow: 2px 2px 7px 0px rgba(0,0,0,0.16);
 }
 
 .browse-box__items {
