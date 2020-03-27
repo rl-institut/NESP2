@@ -225,6 +225,13 @@ function addFunctionsToClusterLayer(layer) {
     if (type != "r") {
       // Update clusterInfo based on the properties
       update_clusterInfo(properties, "?")
+      // if selected cluster within list of filtered clusters, update info with number/length
+      if (ID in all_centroids_dict){
+        const clusterNum = filtered_centroids_keys.indexOf(all_centroids_dict[ID]) + 1;
+        currently_featured_centroid_id = og_centroids_dict[ID];
+        update_clusterInfo(properties, filtered_centroids_keys.length, clusterNum);
+      }
+
       this.highlight = ID;
       let style = clusterSelectionStyle;
       this.setFeatureStyle(ID, style);
@@ -368,6 +375,13 @@ function addFunctionsToOGClusterLayer(layer) {
       let style = ogClusterSelectionStyle;
       this.setFeatureStyle(ID, style);
       L.DomEvent.stop(e);
+      var cluster_type = get_cluster_type();
+      // if selected cluster within list of filtered clusters, update info with number/length
+      if (ID in og_centroids_dict){
+        const clusterNum = filtered_centroids_keys.indexOf(og_centroids_dict[ID]) + 1;
+        currently_featured_centroid_id = og_centroids_dict[ID];
+        update_clusterInfo(properties, filtered_centroids_keys.length, clusterNum);
+      }
     }
     map.on("click", function() {
       clusterInfo.remove();
