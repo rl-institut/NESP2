@@ -22,26 +22,26 @@ var osm_gray = L.tileLayer("https://tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png"
   attribution: '&copy; Tiles style from OpenStreetMap, hosted by wmflabs. <a href="https://wmflabs.org"></a>'
 });
 
-// Basic png-tile layer for background taken from rl-institute tile server serves zoom levels 5-9
-var national_background = L.tileLayer("https://tile.rl-institut.de/data/nesp2_national_background/{z}/{x}/{y}.png", {
+// Basic png-tile layer for background taken from tile server serves zoom levels 5-9
+var national_background = L.tileLayer(tileserver + "nesp2_national_background/{z}/{x}/{y}.png", {
   maxZoom: 19,
   attribution: '☮'
 });
 
-// Basic png-tile layer for overlays taken from rl-institute tile server serves zoom levels 5-9
-var national_heatmap = L.tileLayer("https://tile.rl-institut.de/data/nesp2_national_heatmap/{z}/{x}/{y}.png", {
+// Basic png-tile layer for overlays taken from tile server serves zoom levels 5-9
+var national_heatmap = L.tileLayer(tileserver + "nesp2_national_heatmap/{z}/{x}/{y}.png", {
   maxZoom: 19,
   attribution: ''
 });
 
-// Basic png-tile layer for overlays taken from rl-institute tile server serves zoom levels 5-9
-var national_grid = L.tileLayer("https://tile.rl-institut.de/data/nesp2_national_grid/{z}/{x}/{y}.png", {
+// Basic png-tile layer for overlays taken from tile server serves zoom levels 5-9
+var national_grid = L.tileLayer(tileserver + "nesp2_national_grid/{z}/{x}/{y}.png", {
   maxZoom: 19,
   attribution: ''
 });
 
 // Basic png-tile layer combines national grid, heatmap and background. Redundant. Serves Levels 5-9
-var welcome_view = L.tileLayer("https://tile.rl-institut.de/data/nesp2_national_welcome-view/{z}/{x}/{y}.png", {
+var welcome_view = L.tileLayer(tileserver + "nesp2_national_welcome-view/{z}/{x}/{y}.png", {
   maxZoom: 19,
   attribution: ''
 });
@@ -170,10 +170,9 @@ function zoomToSelectedState() {
 // Definitions and functions for the grid_layer
 
 // Vector tiles layer that is adapted (URL) depending on the chosen state. Contains layers '11kV' and '33kV' Columns: several, but of no interest to the map
-//var grid_layer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/" + gridLayers[selectedState] + "/{z}/{x}/{y}.pbf", {
 
 //Always Using the entire Grid
-var grid_layer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_state_grid/{z}/{x}/{y}.pbf", {
+var grid_layer = L.vectorGrid.protobuf(tileserver + "nesp2_state_grid/{z}/{x}/{y}.pbf", {
   rendererFactory: L.canvas.tile,
   vectorTileLayerStyles: {
     '33_kV': function(prop, zoom) {
@@ -188,10 +187,9 @@ var grid_layer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_s
 // Assign the selected state grid tile to the grid_layer
 function redefine_grid_layer() {
 // Vector tiles layer that is adapted (URL) depending on the chosen state. Contains layers '11kV' and '33kV' Columns: several, but of no interest to the map
-//  grid_layer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/" + gridLayers[selectedState] + "/{z}/{x}/{y}.pbf", {
 
 //Always Using the entire Grid
-  grid_layer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_state_grid/{z}/{x}/{y}.pbf", {
+  grid_layer = L.vectorGrid.protobuf(tileserver + "nesp2_state_grid/{z}/{x}/{y}.pbf", {
     rendererFactory: L.canvas.tile,
     vectorTileLayerStyles: {
       '33_kV': function(prop, zoom) {
@@ -311,7 +309,7 @@ function addFunctionsToClusterLayer(layer) {
 }
 
 function createNewClusterLayer(clusterString) {
-  var layer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_state_clusters_" + clusterString + "/{z}/{x}/{y}.pbf", {
+  var layer = L.vectorGrid.protobuf(tileserver + "nesp2_state_clusters_" + clusterString + "/{z}/{x}/{y}.pbf", {
     rendererFactory: L.canvas.tile,
     vectorTileLayerStyles: {
       regions: function(prop, zoom) {
@@ -442,7 +440,7 @@ function addFunctionsToOGClusterLayer(layer) {
 }
 
 function createNewOGClusterLayer(ogClusterString) {
-  var layer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_state_offgrid_clusters_" + ogClusterString + "/{z}/{x}/{y}.pbf", {
+  var layer = L.vectorGrid.protobuf(tileserver + "nesp2_state_offgrid_clusters_" + ogClusterString + "/{z}/{x}/{y}.pbf", {
     rendererFactory: L.canvas.tile,
     vectorTileLayerStyles: {
       OGClusters: function(prop, zoom) {
