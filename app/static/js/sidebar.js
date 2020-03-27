@@ -19,6 +19,8 @@ var filteredOgClusters = 0;
 var selectedLGA = "";
 var thirtythreeKV = "33_kV_" + selectedState.toLowerCase();
 var centroids_layer_id = -1;
+var og_centroids_dict = {};
+var all_centroids_dict = {};
 var centroids_layer_ids = {};
 var current_cluster_centroids = Object();
 var filtered_centroids_keys = [];
@@ -1128,8 +1130,6 @@ function filter_centroid_keys(){
       //if activated clusters are off-grid-clusters
     if (centroids[key].feature.properties.hasOwnProperty('percentage_building_area')){
       if (
-        centroids[key].feature.properties.area_km2 > currentfilter.ogminarea && 
-        centroids[key].feature.properties.area_km2 < currentfilter.ogmaxarea &&
         centroids[key].feature.properties.grid_dist_km > currentfilter.ogmindtg && 
         centroids[key].feature.properties.grid_dist_km < currentfilter.ogmaxdtg && 
         centroids[key].feature.properties.building_count > currentfilter.ogminb && 
@@ -1138,6 +1138,7 @@ function filter_centroid_keys(){
         centroids[key].feature.properties.percentage_building_area < currentfilter.ogmaxbfp
       ){
         filtered_centroids_keys.push(key);
+        og_centroids_dict[centroids[key].feature.properties.cluster_offgrid_id] = key;
       }
     }
     else if (centroids[key].feature.properties.hasOwnProperty('cluster_all_id')){
@@ -1149,6 +1150,7 @@ function filter_centroid_keys(){
         centroids[key].feature.properties.grid_dist_km < currentfilter.maxdtg
       ){
         filtered_centroids_keys.push(key);
+        all_centroids_dict[centroids[key].feature.properties.cluster_all_id] = key;
       }
     }
   }
