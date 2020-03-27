@@ -221,7 +221,7 @@ body {
 
 .map-legend {
     background-color: white;
-    border-radius: 8px;
+    border-radius: 15px;
 }
 
 .map-legend-grid {
@@ -677,7 +677,7 @@ img.footer-maps-logos__giz {
 }
 
 .legend-box {
-  border-radius: 8px;
+  border-radius: 15px;
   background-color: #fff;
   width: 13rem;
   text-align: center;
@@ -696,9 +696,9 @@ box-shadow: 4px 4px 14px 0px rgba(0,0,0,0.16);
 .legend-box .legend-box__header,
 .browse-box .browse-box__header  {
   width: 100%;
-  background-color: #EEEFF1;
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
+  background-color: #fff; //#EEEFF1;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
 }
 
 .legend-box .selection_detail_header--light {
@@ -733,7 +733,7 @@ box-shadow: 2px 2px 7px 0px rgba(0,0,0,0.16);
 .browse-box .browse-box__header {
   padding-top: .5rem;
   padding-bottom: .5rem;
-  color: #93939F;
+  color: #8ff0b7; //#93939F;
   font-weight: 700;
   font-size: 13pt;
 }
