@@ -262,7 +262,7 @@ map.on("layeradd", function() {
   //vecTileLayer.bringToFront();
   national_heatmap.bringToFront();
   national_grid.bringToFront();
-  selected_state_pbf.bringToFront();
+  //selected_state_pbf.bringToFront();
   national_background.bringToBack();
   esri.bringToBack();
   hot.bringToBack();
