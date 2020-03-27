@@ -88,6 +88,7 @@ Here is a template for new release sections
 - Info box for state is displayed on top left (#261)
 - Info box has also info for selected state when mouse over over it or outside Nigeria (#261)
 - Draw tiles from azure tileserver (#269)
+- Drop two elements in info box (#271)
 
 ### Removed
 - redundant accordion menu (#10)
