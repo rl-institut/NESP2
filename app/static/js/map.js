@@ -174,12 +174,10 @@ function update_clusterInfo(properties, selectedClustersNum, clusterNum="?") {
     // og
         control_content = control_content +
           '<table>\
-            <tr><td align="right"><b>Area</b>:</td><td>' + parseFloat(properties.area_km2).toFixed(2) + ' km2</td></tr>\
-            <tr><td align="right"><b>Building Count</b>:</td><td>' + parseFloat(properties.building_count).toFixed(0) + '</td></tr>\
-            <tr><td align="right"><b>Building Area in km²</b>:</td><td>' + parseFloat(properties.building_area_km2).toFixed(3) + '</td></tr>\
-            <tr><td align="right"><b>Buildings per km²</b>:</td><td>' + parseFloat(properties.building_count_density_perkm2).toFixed(0) + '</td></tr>\
-            <tr><td align="right"><b>Percentage Building Area</b>:</td><td>' + parseFloat(properties.percentage_building_area).toFixed(2) + '</td></tr>\
+            <tr><td align="right"><b>Area in km²</b>:</td><td>' + parseFloat(properties.area_km2).toFixed(2) + '</td></tr>\
             <tr><td align="right"><b>Distance to Grid in km</b>:</td><td>' + parseFloat(properties.grid_dist_km).toFixed(1) + '</td></tr>\
+            <tr><td align="right"><b>Buildings</b>:</td><td>' + parseFloat(properties.building_count).toFixed(0) + '</td></tr>\
+            <tr><td align="right"><b>Building Density</b>:</td><td>' + parseFloat(properties.percentage_building_area).toFixed(2) + '</td></tr>\
           </table>';
 
           randomClusterInfo.remove();
