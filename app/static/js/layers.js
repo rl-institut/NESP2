@@ -61,78 +61,6 @@ function add_layer(layer) {
   }
 };
 
-// Vector-tiles layer that has layer shapes and columns in its attribute table: id, name, source, type, wikidata, wikipedia, availability (int)
-var statesLayer = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_states/{z}/{x}/{y}.pbf", {
-  rendererFactory: L.canvas.tile,
-  vectorTileLayerStyles: {
-    states: function(prop, zoom) {
-      var col = "#ffff00";
-      if (prop.availability === 7) {
-        col = stateAvailabilityColor.green;
-      }
-      if (prop.availability === 6 || prop.availability === 5 || prop.availability === 3) {
-        col = stateAvailabilityColor.yellow;
-      }
-      if (prop.availability === 4 || prop.availability === 2 || prop.availability === 1) {
-        col = stateAvailabilityColor.orange;
-      }
-      if (prop.availability === 0) {
-        col = stateAvailabilityColor.red;
-      }
-      return {
-        weight: 1,
-        color: "#000000",
-        opacity: 0,
-        fill: true,
-        fillColor: col,
-        fillOpacity: 0,
-      }
-    }
-  }
-});
-
-// Vector-tiles layer that has higher resolution shapes and columns in its attribute table: id, name, source, type, wikidata, wikipedia, availability (int)
-var selected_state_pbf = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_states_hr/{z}/{x}/{y}.pbf", {
-  rendererFactory: L.canvas.tile,
-  vectorTileLayerStyles: {
-    states_hr: function(prop, zoom) {
-      var col = "#ffff00";
-      if (prop.name == selectedState) {
-        return (SLstateSelection)
-      }
-      return (SLstates)
-    }
-  },
-  maxZoom: 19,
-  maxNativeZoom: 14,
-  minZoom: 5,
-});
-
-
-function redefine_selected_state_pbf() {
-  selected_state_pbf = L.vectorGrid.protobuf("https://tile.rl-institut.de/data/nesp2_states/{z}/{x}/{y}.pbf", {
-    rendererFactory: L.canvas.tile,
-    vectorTileLayerStyles: {
-      states: function(prop, zoom) {
-        var col = "#ffff00";
-        if (prop.name == selectedState) {
-          return (SLstateSelection)
-        }
-        return (SLstates)
-      }
-    },
-  maxZoom: 19,
-  maxNativeZoom: 14,
-  minZoom: 5,
-  });
-};
-
-function update_selected_state_pbf() {
-  remove_layer(selected_state_pbf);
-  redefine_selected_state_pbf();
-  add_layer(selected_state_pbf);
-};
-
 var notnigerialayer = L.vectorGrid.slicer(not_nigeria, {
     vectorTileLayerStyles: {
       'sliced': function(prop, zoom) {
@@ -218,6 +146,22 @@ function updateSelectedStateBounds() {
       })
 };
 
+var nigeria_states_borders_geojson = L.geoJSON(nigeria_states_simplified, {
+  style: function(feature) {
+    return (SLstates);
+  },
+  filter: function(feature) {
+    return (selectedState != feature.properties["name"])
+  }
+});
+
+function update_nigeria_states_borders_geojson() {
+    give_status("update nigeria border geojson")
+    //remove the features
+    nigeria_states_borders_geojson.clearLayers();
+    //add the features which will trigger the filter
+    nigeria_states_borders_geojson.addData(nigeria_states_simplified);
+};
 
 function zoomToSelectedState() {
     map.flyToBounds(selectedStateOptions.bounds, {maxZoom: 19});

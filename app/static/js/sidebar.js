@@ -499,11 +499,11 @@ function adapt_view_to_national_level() {
   remove_layer(ogClusterLayers[selectedState]);
 
   // reset the selected state to "init"
-  resetStateSelect()
-  remove_layer(selected_state_pbf);
+  resetStateSelect();
 
   // Trigger the filter function so that all geojson state are available again
   if (selectedState == "init" && prevState != "init") {
+    update_nigeria_states_borders_geojson();
     update_nigeria_states_geojson();
   }
 
@@ -558,7 +558,7 @@ function adapt_view_to_state_level() {
   ogClusters_cb_fun();
 
 
-  update_selected_state_pbf()
+  add_layer(nigeria_states_borders_geojson);
   update_grid_layer();
   //update_ogclustersTileLayer();
   add_layer(osm_gray);
@@ -624,7 +624,8 @@ function state_button_fun(trigger="button") {
         numSelectedClusters = filteredOgClusters;
     }
     // Trigger the filter function so that the selected state geojson does not hide the clusters
-    update_nigeria_states_geojson()
+    update_nigeria_states_borders_geojson();
+    update_nigeria_states_geojson();
     if (numSelectedClusters !== null) {
         update_clusterInfo({}, numSelectedClusters)
     }
@@ -660,7 +661,9 @@ function village_button_fun(trigger="button") {
       updateSelectedStateBounds()
 
       // Trigger the filter function so that the selected state geojson does not hide the clusters
-      update_nigeria_states_geojson()
+      update_nigeria_states_borders_geojson();
+      update_nigeria_states_geojson();
+
 
   };
   // click on the village level button from national or state level
@@ -677,11 +680,12 @@ function village_button_fun(trigger="button") {
 function states_cb_fun() {
   var sCheckBox = document.getElementById("statesCheckbox")
   if (sCheckBox.checked == true) {
-    add_layer(statesLayer)
-    add_layer(nigeria_states_geojson)
+    if (level != "national"){add_layer(nigeria_states_borders_geojson)}
+    if (level == "national"){remove_layer(nigeria_states_borders_geojson)}
+    add_layer(nigeria_states_geojson);
   } else {
-    remove_layer(statesLayer)
-    remove_layer(nigeria_states_geojson)
+    remove_layer(nigeria_states_borders_geojson);
+    remove_layer(nigeria_states_geojson);
   }
 
 
