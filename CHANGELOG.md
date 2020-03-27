@@ -51,6 +51,7 @@ Here is a template for new release sections
 - Link to refresh page when clicking on blitz logo (#258)
 - Hover on filter icon highlights it + tooltip (#263)
 - Replace tilelayer for borders with geojson (#267)
+- Show Number of selected cluster (#239)
 
 ### Changed
 - Filter slider get reasonable steps (#167)
