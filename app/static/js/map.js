@@ -6,7 +6,7 @@ var legend = L.control({
 });
 
 legend.onAdd = function(map) {
-  this._div = L.DomUtil.create('div', 'map-legend'); // create a div with a class "map-legend"
+  this._div = L.DomUtil.create('div', 'legend-box map-legend'); // create a div with classes
   this.update();
 
   return this._div;
@@ -23,7 +23,7 @@ var gridLegend = L.control({
 });
 
 gridLegend.onAdd = function(map) {
-  this._div = L.DomUtil.create('div', 'map-legend map-legend-grid'); // create a div with a class "map-legend"
+  this._div = L.DomUtil.create('div', 'legend-box map-legend map-legend-grid'); // create a div with classes
   this.update();
 
   return this._div;
@@ -161,7 +161,7 @@ function update_clusterInfo(properties, selectedClustersNum, clusterNum="?") {
 
     var control_content = '\
       <div class="grid-x browse-box">\
-        <div class="cell browse-box__header">Browse the settlements</div>\
+        <div class="cell browse-box__header">BROWSE THE SETTLEMENTS</div>\
         <div id="download_clusters" class="cell browse-box__btn consecutive__btn">\
           <div class="grid-x">\
             <button class="cell large-3 btn--left" style="float:left" onclick="prev_selection_fun()"> < </button> \
