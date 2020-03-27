@@ -706,8 +706,9 @@ box-shadow: 4px 4px 14px 0px rgba(0,0,0,0.16);
 }
 
 .legend-box .legend-box__item {
-  padding: .5rem;
-  text-align: right;
+  padding: 0.5rem;
+  padding-left: 1rem;
+  text-align: left;
 }
 
 .legend-box .legend-box__icon {
@@ -764,7 +765,7 @@ box-shadow: 2px 2px 7px 0px rgba(0,0,0,0.16);
 .browse-box .browse-box--left {
   width: 70%;
   padding-right: 1rem;
-  text-align: right;
+  text-align: left;
   color: #93939F;
   padding-top: .25rem;
   padding-bottom: .25rem;
