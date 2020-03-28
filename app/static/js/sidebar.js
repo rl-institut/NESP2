@@ -630,7 +630,8 @@ function state_button_fun(trigger="button") {
     update_nigeria_states_borders_geojson();
     update_nigeria_states_geojson();
     if (numSelectedClusters !== null) {
-        update_clusterInfo({}, numSelectedClusters)
+        update_clusterInfo(get_cluster_type(), numSelectedClusters)
+
     }
 
   };
@@ -638,13 +639,6 @@ function state_button_fun(trigger="button") {
     if (trigger != "zoom") {
         zoomToSelectedState();
     };
-    randomClusterInfo.remove()
-  }
-  else{
-    if (trigger != "random-cluster"){
-        randomClusterInfo.remove()
-    }
-
   }
 };
 
@@ -753,11 +747,6 @@ function get_random_ogCluster_fun() {
             data: {"state_name": selectedState},
             success: function(data){
                 random_cluster = true;
-                randomClusterInfo.update = function() {
-                    this._div.innerHTML = '<div class="random-cluster__info">Click on the cluster to show its information</div>';
-                    this._div.innerHTML;
-                };
-                randomClusterInfo.addTo(map);
                 //this will trigger a fly to the point
                 map.flyTo(L.latLng(data.lat, data.lng), 14);
             }
@@ -813,10 +802,9 @@ function clusters_cb_fun() {
 
     // update the number of clusters available
     update_filter()
-    update_clusterInfo({}, filteredClusters)
+    update_clusterInfo("all", filteredClusters)
     // enable actions with filter icon
     filter_icon.className = enable_sidebar__filter(filter_icon.className);
-
     // Update centroids for all_clusters
     update_centroids();
   } else {
@@ -905,7 +893,7 @@ function ogClusters_cb_fun() {
 
     // update the number of clusters available
     update_og_filter()
-    update_clusterInfo({}, filteredOgClusters)
+    update_clusterInfo("og", filteredOgClusters)
     // enable actions with filter icon
     filter_icon.className = enable_sidebar__filter(filter_icon.className);
     // Update centroids for og_clusters

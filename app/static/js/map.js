@@ -1,36 +1,36 @@
 map.addLayer(national_background);
 map.addLayer(osm_gray);
 
+// legend located at the lower right for datasets on national level
 var legend = L.control({
   position: 'bottomright'
 });
-
 legend.onAdd = function(map) {
-  this._div = L.DomUtil.create('div', 'map-legend'); // create a div with a class "map-legend"
+  this._div = L.DomUtil.create('div', 'legend-box map-legend'); // create a div with classes
   this.update();
 
   return this._div;
 };
-
 legend.update = function(props) {
-  this._div.innerHTML = '<div class="grid-x"><div class="small-3 map-legend__text"><div class="legend-color legend-color--green"></div></div><div class="small-9 map-legend__label"><p>Datasets available</p></div><div class="small-3 map-legend__text"><div class="legend-color legend-color--gray"></div></div><div class="small-9 map-legend__label"><p>Datasets <span class="map-legend--highlight">not yet</span> available</p></div></div>'
+  this._div.innerHTML = '<div class="grid-x"><div class="small-3 map-legend__text legend_text"><div class="legend-color legend-color--green"></div></div><div class="small-9 map-legend__label"><p>Datasets available</p></div><div class="small-3 map-legend__text legend_text"><div class="legend-color legend-color--gray"></div></div><div class="small-9 map-legend__label"><p>Datasets <span class="map-legend--highlight">not yet</span> available</p></div></div>'
 };
-
 legend.addTo(map);
 
+
+// legend located at the lower right for grid on state and village level
 var gridLegend = L.control({
   position: 'bottomright'
 });
 
 gridLegend.onAdd = function(map) {
-  this._div = L.DomUtil.create('div', 'map-legend map-legend-grid'); // create a div with a class "map-legend"
+  this._div = L.DomUtil.create('div', 'legend-box map-legend map-legend-grid'); // create a div with classes
   this.update();
 
   return this._div;
 };
 
 gridLegend.update = function(props) {
-  this._div.innerHTML = '<div class="grid-x"><div class="small-3 map-legend__text"><div class="legend-color-grid legend-color--brown"></div></div><div class="small-9">11kV Grid</div><div class="small-3 map-legend__text"><div class="legend-color legend-color-grid legend-color--red"></div></div><div class="small-9">33kV Grid</div></div>'
+  this._div.innerHTML = '<div class="grid-x"><div class="small-3 map-legend__text legend-text"><div class="legend-color-grid legend-color--brown"></div></div><div class="small-9">11kV Grid</div><div class="small-3 map-legend__text legend-text"><div class="legend-color legend-color-grid legend-color--red"></div></div><div class="small-9">33kV Grid</div></div>'
 };
 
 var baseMaps = {
@@ -88,13 +88,21 @@ function update_infoBox(stateName=null, availability=0, defineSelectedState=fals
     if (availability % 2 === 1) {
         avail.Surveying = '<img class="state_info__img" src="../static/img/icons/i_tick_square.svg">'
     }
-
-    var control_content = '<h4 class="selection_detail_header">' + stateName + '</h4>' +
-      '<table class="selection_detail">' +
-      '<tr><td align="right"><b>Grid Tracking</b>:</td><td>' + avail.gridTracking + '</td></tr>' +
-      '<tr><td align="right"><b>Remote Mapping</b>:</td><td>' + avail.remoteMapping + '</td></tr>' +
-      '<tr><td align="right"><b>Field Surveys</b>:</td><td>' + avail.Surveying + '</td></tr>' +
-      '</table>';
+    if(stateName != undefined) {
+        var control_content =
+          '<div class="grid-x info-box legend-box">' +
+            '<div class="cell info-box__header">' +
+              '<p class="selection_detail_header">' + stateName.toUpperCase() + '</p>' +
+            '</div>' +
+            '<div class="cell info-box__content">' +
+              '<div class="grid-x">' +
+                '<div class="cell small-9 info-box__item">Grid Tracking</div><div class="cell small-3 info-box__icon">' + avail.gridTracking + '</div>' +
+                '<div class="cell small-9 info-box__item">Remote Mapping</div><div class="cell small-3 info-box__icon">' + avail.remoteMapping + '</div>' +
+                '<div class="cell small-9 info-box__item">Field Surveys</div><div class="cell small-3 info-box__icon">' + avail.Surveying + '</div>' +
+              '</div>' +
+            '</div>' +
+          '</div>';
+    }
     if(defineSelectedState == true) {
         selectedStateInfoBoxContent = control_content;
     }
@@ -103,12 +111,19 @@ function update_infoBox(stateName=null, availability=0, defineSelectedState=fals
     }
 
     if(stateName == undefined) {
-     control_content='<h4 class="selection_detail_header"> SELECT A STATE </h4>' +
-      '<table class="selection_detail">' +
-      '<tr><td align="right"><b>Grid Tracking</b>:</td><td></td></tr>' +
-      '<tr><td align="right"><b>Remote Mapping</b>:</td><td></td></tr>' +
-      '<tr><td align="right"><b>Field Surveys</b>:</td><td></td></tr>' +
-      '</table>';
+     control_content=
+     '<div class="grid-x info-box legend-box">' +
+        '<div class="cell info-box__header">' +
+          '<p class="selection_detail_header selection_detail_header--light">SELECT A STATE</p>' +
+        '</div>' +
+        '<div class="cell info-box__content">' +
+          '<div class="grid-x">' +
+            '<div class="cell small-9 info-box__item">Grid Tracking</div><div class="cell small-3"></div>' +
+            '<div class="cell small-9 info-box__item">Remote Mapping</div><div class="cell small-3"></div>' +
+            '<div class="cell small-9 info-box__item">Field Surveys</div><div class="cell small-3"></div>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
       selectedStateInfoBoxContent = control_content;
     }
 
@@ -132,56 +147,74 @@ clusterInfo.onAdd = function(map) {
   return this._div;
 };
 
-clusterInfo.update = function(props) {
-  this._div.innerHTML = '<h4 class="selection_detail_header">State Availability</h4>' +
-    '<table class="selection_detail">' +
-    '<tr><td align="right"><b>Grid Tracking</b>:</td><td>' + "aaa" + '</td></tr>' +
-    '<tr><td align="right"><b>Remote Mapping</b>:</td><td>' + "bbb" + '</td></tr>' +
-    '<tr><td align="right"><b>Field Surveys</b>:</td><td>' + "ccc" + '</td></tr>' +
-    '</table>';
-  this._div.innerHTML
-};
-
 // this function updates the content of the clusterInfo in a centralized way
 function update_clusterInfo(properties, selectedClustersNum, clusterNum="?") {
 
-    var control_content = '\
-      <div class="grid-x ">\
-          <h4 title="this is not the final style" class="cell"> Browse the settlements</h4>\
-          <div id="download_clusters" class="cell  grid-x consecutive__btn">\
-            <button class="cell large-3" style="float:left" onclick="prev_selection_fun()"> < </button> \
-            <h5 class="cell large-6">\
-                <span>' + clusterNum + ' </span> / <span id="filtered-clusters-num">\
-                ' + selectedClustersNum + '</span> \
-            </h5>\
-            <button class="cell large-3" style="float:right" onclick="next_selection_fun()"> > </button>\
-          </div>\
-      </div>';
+    var control_content = ''
+
+    var settlements_content = '<span>Click on a settlement</span>'
+
+    if (properties == "all"){
+        control_content =
+          '<div class="grid-x browse-box__items">\
+            <div class="browse-box--left">ID:</div><div class="browse-box--right"></div>\
+            <div class="browse-box--left">Area (km²):</div><div class="browse-box--right"></div>\
+            <div class="browse-box--left">Distance to Grid (km):</div><div class="browse-box--right"></div>\
+          </div>';
+    }
 
     if(properties.cluster_all_id !== undefined){
         // all
-        control_content = control_content +
-          '<table>\
-            <tr><td align="right"><b>ID</b>:</td><td>' + properties.cluster_all_id + '</td></tr>\
-            <tr><td align="right"><b>Area</b>:</td><td>' + properties.area_km2 + '</td></tr>\
-            <tr><td align="right"><b>Distance to Grid</b>:</td><td>' + parseFloat(properties.grid_dist_km).toFixed(2) + ' km2</td></tr>\
-          </table>';
+        control_content =
+          '<div class="grid-x browse-box__items">\
+            <div class="browse-box--left">ID:</div><div class="browse-box--right">' + properties.cluster_all_id + '</div>\
+            <div class="browse-box--left">Area (km²):</div><div class="browse-box--right">' + parseFloat(properties.area_km2).toFixed(2) + '</div>\
+            <div class="browse-box--left">Distance to Grid (km):</div><div class="browse-box--right">' + parseFloat(properties.grid_dist_km).toFixed(1) + '</div>\
+          </div>';
+          settlements_content = '<span>' + clusterNum + ' </span> of <span id="filtered-clusters-num">' + selectedClustersNum + '</span>'
+    };
 
-          randomClusterInfo.remove();
+    if (properties == "og"){
+        control_content =
+        '<div class="grid-x browse-box__items">\
+          <div class="browse-box--left">Area (km²):</div><div class="browse-box--right"></div>\
+          <div class="browse-box--left">Building count:</div><div class="browse-box--right"></div>\
+          <div class="browse-box--left">Built-up density (%):</div><div class="browse-box--right"></div>\
+          <div class="browse-box--left">Distance to Grid (km):</div><div class="browse-box--right"></div>\
+        </div>';
     };
 
     if (properties.cluster_offgrid_id !== undefined) {
     // og
-        control_content = control_content +
-          '<table>\
-            <tr><td align="right"><b>Area in km²</b>:</td><td>' + parseFloat(properties.area_km2).toFixed(2) + '</td></tr>\
-            <tr><td align="right"><b>Distance to Grid in km</b>:</td><td>' + parseFloat(properties.grid_dist_km).toFixed(1) + '</td></tr>\
-            <tr><td align="right"><b>Buildings</b>:</td><td>' + parseFloat(properties.building_count).toFixed(0) + '</td></tr>\
-            <tr><td align="right"><b>Building Density</b>:</td><td>' + parseFloat(properties.percentage_building_area).toFixed(2) + '</td></tr>\
-          </table>';
+        control_content =
+        '<div class="grid-x browse-box__items">\
+          <div class="browse-box--left">Area (km²):</div><div class="browse-box--right">' + parseFloat(properties.area_km2).toFixed(2) + '</div>\
+          <div class="browse-box--left">Building count:</div><div class="browse-box--right">' + parseFloat(properties.building_count).toFixed(0) + '</div>\
+          <div class="browse-box--left">Built-up density (%):</div><div class="browse-box--right">' +parseFloat(properties.percentage_building_area).toFixed(2) + '</div>\
+          <div class="browse-box--left">Distance to Grid (km):</div><div class="browse-box--right">' + parseFloat(properties.grid_dist_km).toFixed(1) + '</div>\
+        </div>';
+        settlements_content = '<span>' + clusterNum + ' </span> of <span id="filtered-clusters-num">' + selectedClustersNum + '</span>'
 
-          randomClusterInfo.remove();
     };
+
+    control_content = '\
+      <div class="grid-x browse-box legend-box">\
+        <div class="cell browse-box__header">BROWSE THE SETTLEMENTS</div>\
+        <div id="download_clusters" class="cell browse-box__btn consecutive__btn">\
+          <div class="grid-x">\
+            <a class="cell large-offset-1 large-2 btn--left" onclick="prev_selection_fun()">\
+              <img class="state_info__img" src="../static/img/icons/i_arrow_left_g.svg">\
+            </a>\
+            <p class="cell large-6 browse-box__number">'
+             + settlements_content +
+            '</p>\
+            <a class="cell large-2 btn--right" onclick="next_selection_fun()">\
+              <img class="state_info__img" src="../static/img/icons/i_arrow_right_g.svg">\
+            </a>\
+          </div>\
+        </div>'
+       + control_content +
+      '</div>';
 
     clusterInfo.remove();
     if(level != "national") {
@@ -198,17 +231,6 @@ function update_clusterInfo(properties, selectedClustersNum, clusterNum="?") {
     clusterInfo.addTo(map);
 };
 
-
-var randomClusterInfo = L.control({
-  position: 'bottomleft'
-});
-
-randomClusterInfo.onAdd = function(map) {
-  this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
-  this.update();
-  L.DomEvent.disableClickPropagation(this._div);
-  return this._div;
-};
 
 map.on("zoom", function(e) {
   // change level between village and state depending on the zoom
