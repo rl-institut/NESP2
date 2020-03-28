@@ -180,7 +180,7 @@ function update_clusterInfo(properties, selectedClustersNum, clusterNum="?") {
     // og
         control_content =
         '<div class="grid-x browse-box__items">\
-          <div class="browse-box--left">Area (km²):</div><div class="browse-box--right">' + parseFloat(properties.area_km2).toFixed(2) + 'km²</div>\
+          <div class="browse-box--left">Area (km²):</div><div class="browse-box--right">' + parseFloat(properties.area_km2).toFixed(2) + '</div>\
           <div class="browse-box--left">Buiding count:</div><div class="browse-box--right">' + parseFloat(properties.building_count).toFixed(0) + '</div>\
           <div class="browse-box--left">Built-up density (%):</div><div class="browse-box--right">' +parseFloat(properties.percentage_building_area).toFixed(2) + '</div>\
           <div class="browse-box--left">Distance to Grid (km):</div><div class="browse-box--right">' + parseFloat(properties.grid_dist_km).toFixed(1) + '</div>\
@@ -190,16 +190,20 @@ function update_clusterInfo(properties, selectedClustersNum, clusterNum="?") {
     };
 
     control_content = '\
-      <div class="grid-x browse-box">\
+      <div class="grid-x browse-box legend-box">\
         <div class="cell browse-box__header">BROWSE THE SETTLEMENTS</div>\
         <div id="download_clusters" class="cell browse-box__btn consecutive__btn">\
           <div class="grid-x">\
-            <button class="cell large-3 btn--left" style="float:left" onclick="prev_selection_fun()"> < </button> \
+            <a class="cell large-offset-1 large-2 btn--left" onclick="prev_selection_fun()">\
+              <img class="state_info__img" src="../static/img/icons/i_arrow_left_g.svg">\
+            </a>\
             <p class="cell large-6 browse-box__number">\
-                <span>' + clusterNum + ' </span> / <span id="filtered-clusters-num">\
+                <span>' + clusterNum + ' </span> of <span id="filtered-clusters-num">\
                 ' + selectedClustersNum + '</span> \
             </p>\
-            <button class="cell large-3 btn--right" style="float:right" onclick="next_selection_fun()"> > </button>\
+            <a class="cell large-2 btn--right" onclick="next_selection_fun()">\
+              <img class="state_info__img" src="../static/img/icons/i_arrow_right_g.svg">\
+            </a>\
           </div>\
         </div>'
        + control_content +
