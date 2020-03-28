@@ -208,9 +208,9 @@ body {
 }
  html,body, #map {
      height: 100%;
-     font: Helvetica, Arial,  sans-serif;
+     font: 'Source Sans Pro', sans-serif;
+     font-family: 'Source Sans Pro', sans-serif;
      font-size: 10pt;
-     font-family: Helvetica, Arial, sans-serif;
      line-height: 150%;
 }
 
