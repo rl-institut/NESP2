@@ -679,7 +679,7 @@ img.footer-maps-logos__giz {
 }
 
 .info-box {
-  width: 13rem;
+  width: 11rem;
   text-align: center;
 }
 
@@ -700,13 +700,25 @@ img.footer-maps-logos__giz {
   border-top-right-radius: 25px;
 }
 
+.info-box__header p{
+    font-size: 12pt;
+}
+
+
 .info-box .selection_detail_header--light {
-  color: #93939F;
+  //color: #93939F;
+  font-style: italic;
+  font-weight: bold;
+}
+
+.info-box__content {
+  padding-bottom: 0.75rem;
 }
 
 .info-box .info-box__item {
   color: #464646;
   padding: 0.5rem;
+  padding-bottom: 0.75rem;
   padding-left: 1rem;
   text-align: left;
 }

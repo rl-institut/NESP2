@@ -88,20 +88,21 @@ function update_infoBox(stateName=null, availability=0, defineSelectedState=fals
     if (availability % 2 === 1) {
         avail.Surveying = '<img class="state_info__img" src="../static/img/icons/i_tick_square.svg">'
     }
-
-    var control_content = 
-      '<div class="grid-x info-box legend-box">' +
-        '<div class="cell info-box__header">' +
-          '<p class="selection_detail_header">' + stateName + '</p>' +
-        '</div>' +
-        '<div class="cell info-box__content">' +
-          '<div class="grid-x">' +
-            '<div class="cell small-9 info-box__item">Grid Tracking</div><div class="cell small-3 info-box__icon">' + avail.gridTracking + '</div>' +
-            '<div class="cell small-9 info-box__item">Remote Mapping</div><div class="cell small-3 info-box__icon">' + avail.remoteMapping + '</div>' +
-            '<div class="cell small-9 info-box__item">Field Surveys</div><div class="cell small-3 info-box__icon">' + avail.Surveying + '</div>' +
-          '</div>' +
-        '</div>' +
-      '</div>';
+    if(stateName != undefined) {
+        var control_content =
+          '<div class="grid-x info-box legend-box">' +
+            '<div class="cell info-box__header">' +
+              '<p class="selection_detail_header">' + stateName.toUpperCase() + '</p>' +
+            '</div>' +
+            '<div class="cell info-box__content">' +
+              '<div class="grid-x">' +
+                '<div class="cell small-9 info-box__item">Grid Tracking</div><div class="cell small-3 info-box__icon">' + avail.gridTracking + '</div>' +
+                '<div class="cell small-9 info-box__item">Remote Mapping</div><div class="cell small-3 info-box__icon">' + avail.remoteMapping + '</div>' +
+                '<div class="cell small-9 info-box__item">Field Surveys</div><div class="cell small-3 info-box__icon">' + avail.Surveying + '</div>' +
+              '</div>' +
+            '</div>' +
+          '</div>';
+    }
     if(defineSelectedState == true) {
         selectedStateInfoBoxContent = control_content;
     }
@@ -113,7 +114,7 @@ function update_infoBox(stateName=null, availability=0, defineSelectedState=fals
      control_content=
      '<div class="grid-x info-box legend-box">' +
         '<div class="cell info-box__header">' +
-          '<p class="selection_detail_header selection_detail_header--light">Select a state...</p>' +
+          '<p class="selection_detail_header selection_detail_header--light">SELECT A STATE</p>' +
         '</div>' +
         '<div class="cell info-box__content">' +
           '<div class="grid-x">' +
