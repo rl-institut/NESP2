@@ -630,7 +630,8 @@ function state_button_fun(trigger="button") {
     update_nigeria_states_borders_geojson();
     update_nigeria_states_geojson();
     if (numSelectedClusters !== null) {
-        update_clusterInfo({}, numSelectedClusters)
+        update_clusterInfo(get_cluster_type(), numSelectedClusters)
+
     }
 
   };
@@ -813,10 +814,9 @@ function clusters_cb_fun() {
 
     // update the number of clusters available
     update_filter()
-    update_clusterInfo({}, filteredClusters)
+    update_clusterInfo("all", filteredClusters)
     // enable actions with filter icon
     filter_icon.className = enable_sidebar__filter(filter_icon.className);
-
     // Update centroids for all_clusters
     update_centroids();
   } else {
@@ -905,7 +905,7 @@ function ogClusters_cb_fun() {
 
     // update the number of clusters available
     update_og_filter()
-    update_clusterInfo({}, filteredOgClusters)
+    update_clusterInfo("og", filteredOgClusters)
     // enable actions with filter icon
     filter_icon.className = enable_sidebar__filter(filter_icon.className);
     // Update centroids for og_clusters
