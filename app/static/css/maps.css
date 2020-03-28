@@ -728,12 +728,8 @@ img.footer-maps-logos__giz {
 }
 
 .browse-box {
-  width: 18rem;
+  width: 16rem;
   background-color: #fff;
-  border-radius: 8px;
-  -webkit-box-shadow: 2px 2px 7px 0px rgba(0,0,0,0.16);
--moz-box-shadow: 2px 2px 7px 0px rgba(0,0,0,0.16);
-box-shadow: 2px 2px 7px 0px rgba(0,0,0,0.16);
 }
 
 .browse-box__items {
