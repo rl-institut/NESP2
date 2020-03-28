@@ -1,36 +1,36 @@
 map.addLayer(national_background);
 map.addLayer(osm_gray);
 
+// legend located at the lower right for datasets on national level
 var legend = L.control({
   position: 'bottomright'
 });
-
 legend.onAdd = function(map) {
   this._div = L.DomUtil.create('div', 'legend-box map-legend'); // create a div with classes
   this.update();
 
   return this._div;
 };
-
 legend.update = function(props) {
-  this._div.innerHTML = '<div class="grid-x"><div class="small-3 map-legend__text"><div class="legend-color legend-color--green"></div></div><div class="small-9 map-legend__label"><p>Datasets available</p></div><div class="small-3 map-legend__text"><div class="legend-color legend-color--gray"></div></div><div class="small-9 map-legend__label"><p>Datasets <span class="map-legend--highlight">not yet</span> available</p></div></div>'
+  this._div.innerHTML = '<div class="grid-x"><div class="small-3 map-legend__text legend_text"><div class="legend-color legend-color--green"></div></div><div class="small-9 map-legend__label"><p>Datasets available</p></div><div class="small-3 map-legend__text legend_text"><div class="legend-color legend-color--gray"></div></div><div class="small-9 map-legend__label"><p>Datasets <span class="map-legend--highlight">not yet</span> available</p></div></div>'
 };
-
 legend.addTo(map);
 
+
+// legend located at the lower right for grid on state and village level
 var gridLegend = L.control({
   position: 'bottomright'
 });
 
 gridLegend.onAdd = function(map) {
-  this._div = L.DomUtil.create('div', 'info-box map-legend map-legend-grid'); // create a div with classes
+  this._div = L.DomUtil.create('div', 'legend-box map-legend map-legend-grid'); // create a div with classes
   this.update();
 
   return this._div;
 };
 
 gridLegend.update = function(props) {
-  this._div.innerHTML = '<div class="grid-x"><div class="small-3 map-legend__text"><div class="legend-color-grid legend-color--brown"></div></div><div class="small-9">11kV Grid</div><div class="small-3 map-legend__text"><div class="legend-color legend-color-grid legend-color--red"></div></div><div class="small-9">33kV Grid</div></div>'
+  this._div.innerHTML = '<div class="grid-x"><div class="small-3 map-legend__text legend-text"><div class="legend-color-grid legend-color--brown"></div></div><div class="small-9">11kV Grid</div><div class="small-3 map-legend__text legend-text"><div class="legend-color legend-color-grid legend-color--red"></div></div><div class="small-9">33kV Grid</div></div>'
 };
 
 var baseMaps = {
