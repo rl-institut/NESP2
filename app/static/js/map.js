@@ -168,8 +168,8 @@ function update_clusterInfo(properties, selectedClustersNum, clusterNum="?") {
         control_content =
           '<div class="grid-x browse-box__items">\
             <div class="browse-box--left">ID:</div><div class="browse-box--right">' + properties.cluster_all_id + '</div>\
-            <div class="browse-box--left">Area (km²):</div><div class="browse-box--right">' + properties.area_km2 + '</div>\
-            <div class="browse-box--left">Distance to Grid (km):</div><div class="browse-box--right">' + parseFloat(properties.grid_dist_km).toFixed(2) + '</div>\
+            <div class="browse-box--left">Area (km²):</div><div class="browse-box--right">' + parseFloat(properties.area_km2).toFixed(2) + '</div>\
+            <div class="browse-box--left">Distance to Grid (km):</div><div class="browse-box--right">' + parseFloat(properties.grid_dist_km).toFixed(1) + '</div>\
           </div>';
           settlements_content = '<span>' + clusterNum + ' </span> of <span id="filtered-clusters-num">' + selectedClustersNum + '</span>'
     };
