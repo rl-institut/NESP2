@@ -147,18 +147,6 @@ clusterInfo.onAdd = function(map) {
   return this._div;
 };
 
-/*
-clusterInfo.update = function(props) {
-  this._div.innerHTML = '<h4 class="selection_detail_header">State Availability</h4>' +
-    '<table class="selection_detail">' +
-    '<tr><td align="right"><b>Grid Tracking</b>:</td><td>' + "aaa" + '</td></tr>' +
-    '<tr><td align="right"><b>Remote Mapping</b>:</td><td>' + "bbb" + '</td></tr>' +
-    '<tr><td align="right"><b>Field Surveys</b>:</td><td>' + "ccc" + '</td></tr>' +
-    '</table>';
-  this._div.innerHTML
-};
-*/
-
 // this function updates the content of the clusterInfo in a centralized way
 function update_clusterInfo(properties, selectedClustersNum, clusterNum="?") {
 
