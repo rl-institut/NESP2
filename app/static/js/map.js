@@ -172,7 +172,6 @@ function update_clusterInfo(properties, selectedClustersNum, clusterNum="?") {
             <div class="browse-box--left">Distance to Grid (km):</div><div class="browse-box--right">' + parseFloat(properties.grid_dist_km).toFixed(2) + '</div>\
           </div>';
           settlements_content = '<span>' + clusterNum + ' </span> of <span id="filtered-clusters-num">' + selectedClustersNum + '</span>'
-          randomClusterInfo.remove();
     };
 
     if (properties == "og"){
@@ -196,7 +195,6 @@ function update_clusterInfo(properties, selectedClustersNum, clusterNum="?") {
         </div>';
         settlements_content = '<span>' + clusterNum + ' </span> of <span id="filtered-clusters-num">' + selectedClustersNum + '</span>'
 
-          randomClusterInfo.remove();
     };
 
     control_content = '\
@@ -233,17 +231,6 @@ function update_clusterInfo(properties, selectedClustersNum, clusterNum="?") {
     clusterInfo.addTo(map);
 };
 
-
-var randomClusterInfo = L.control({
-  position: 'bottomleft'
-});
-
-randomClusterInfo.onAdd = function(map) {
-  this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
-  this.update();
-  L.DomEvent.disableClickPropagation(this._div);
-  return this._div;
-};
 
 map.on("zoom", function(e) {
   // change level between village and state depending on the zoom

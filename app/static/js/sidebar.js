@@ -639,13 +639,6 @@ function state_button_fun(trigger="button") {
     if (trigger != "zoom") {
         zoomToSelectedState();
     };
-    randomClusterInfo.remove()
-  }
-  else{
-    if (trigger != "random-cluster"){
-        randomClusterInfo.remove()
-    }
-
   }
 };
 
@@ -754,11 +747,6 @@ function get_random_ogCluster_fun() {
             data: {"state_name": selectedState},
             success: function(data){
                 random_cluster = true;
-                randomClusterInfo.update = function() {
-                    this._div.innerHTML = '<div class="random-cluster__info">Click on the cluster to show its information</div>';
-                    this._div.innerHTML;
-                };
-                randomClusterInfo.addTo(map);
                 //this will trigger a fly to the point
                 map.flyTo(L.latLng(data.lat, data.lng), 14);
             }
