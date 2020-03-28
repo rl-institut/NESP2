@@ -90,7 +90,7 @@ function update_infoBox(stateName=null, availability=0, defineSelectedState=fals
     }
 
     var control_content = 
-      '<div class="grid-x info-box">' +
+      '<div class="grid-x info-box legend-box">' +
         '<div class="cell info-box__header">' +
           '<p class="selection_detail_header">' + stateName + '</p>' +
         '</div>' +
@@ -111,7 +111,7 @@ function update_infoBox(stateName=null, availability=0, defineSelectedState=fals
 
     if(stateName == undefined) {
      control_content=
-     '<div class="grid-x info-box">' +
+     '<div class="grid-x info-box legend-box">' +
         '<div class="cell info-box__header">' +
           '<p class="selection_detail_header selection_detail_header--light">Select a state...</p>' +
         '</div>' +

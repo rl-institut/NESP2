@@ -679,13 +679,8 @@ img.footer-maps-logos__giz {
 }
 
 .info-box {
-  border-radius: 15px;
-  background-color: #fff;
   width: 13rem;
   text-align: center;
-  -webkit-box-shadow: 4px 4px 14px 0px rgba(0,0,0,0.16);
--moz-box-shadow: 4px 4px 14px 0px rgba(0,0,0,0.16);
-box-shadow: 4px 4px 14px 0px rgba(0,0,0,0.16);
 }
 
 .info-box p {
