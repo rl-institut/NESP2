@@ -684,9 +684,8 @@ img.footer-maps-logos__giz {
 }
 
 .info-box p {
-  font-size: 10pt;
+
   color: #464646;
-  font-weight: 700;
   padding-top: .5rem;
   margin-bottom: .5rem;
 }
@@ -702,13 +701,13 @@ img.footer-maps-logos__giz {
 
 .info-box__header p{
     font-size: 12pt;
+    font-weight: bold;
 }
 
 
 .info-box .selection_detail_header--light {
-  //color: #93939F;
+  font-size: 12pt;
   font-style: italic;
-  font-weight: bold;
 }
 
 .info-box__content {
@@ -717,6 +716,7 @@ img.footer-maps-logos__giz {
 
 .info-box .info-box__item {
   color: #464646;
+  font-size: 10pt;
   padding: 0.5rem;
   padding-bottom: 0.75rem;
   padding-left: 1rem;
@@ -735,8 +735,8 @@ img.footer-maps-logos__giz {
 .browse-box__items {
   margin-top: .5rem;
   padding: 0.5rem;
-  padding-bottom: .5rem;
-  padding-top: .5rem;
+  padding-bottom: .75rem;
+  padding-left: 1rem;
   color: #464646;
 }
 
@@ -749,7 +749,9 @@ img.footer-maps-logos__giz {
 }
 
 .browse-box .browse-box__number {
-  font-size: 13pt;
+  font-size: 10pt;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
   font-weight: 700;
   transform: translateY(8px);
 }
@@ -764,14 +766,6 @@ img.footer-maps-logos__giz {
 
 .browse-box .browse-box__btn img {
     height: 1.2rem;
-}
-
-.browse-box .browse-box__btn .btn--left {
-  border-bottom-left-radius: 8px;
-}
-
-.browse-box .browse-box__btn .btn--right {
-  border-bottom-right-radius: 8px;
 }
 
 .browse-box .browse-box--left {
