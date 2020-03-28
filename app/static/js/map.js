@@ -23,7 +23,7 @@ var gridLegend = L.control({
 });
 
 gridLegend.onAdd = function(map) {
-  this._div = L.DomUtil.create('div', 'legend-box map-legend map-legend-grid'); // create a div with classes
+  this._div = L.DomUtil.create('div', 'info-box map-legend map-legend-grid'); // create a div with classes
   this.update();
 
   return this._div;
@@ -90,15 +90,15 @@ function update_infoBox(stateName=null, availability=0, defineSelectedState=fals
     }
 
     var control_content = 
-      '<div class="grid-x legend-box">' +
-        '<div class="cell legend-box__header">' +
+      '<div class="grid-x info-box">' +
+        '<div class="cell info-box__header">' +
           '<p class="selection_detail_header">' + stateName + '</p>' +
         '</div>' +
-        '<div class="cell legend-box__content">' +
+        '<div class="cell info-box__content">' +
           '<div class="grid-x">' +
-            '<div class="cell small-9 legend-box__item">Grid Tracking</div><div class="cell small-3 legend-box__icon">' + avail.gridTracking + '</div>' +
-            '<div class="cell small-9 legend-box__item">Remote Mapping</div><div class="cell small-3 legend-box__icon">' + avail.remoteMapping + '</div>' +
-            '<div class="cell small-9 legend-box__item">Field Surveys</div><div class="cell small-3 legend-box__icon">' + avail.Surveying + '</div>' +
+            '<div class="cell small-9 info-box__item">Grid Tracking</div><div class="cell small-3 info-box__icon">' + avail.gridTracking + '</div>' +
+            '<div class="cell small-9 info-box__item">Remote Mapping</div><div class="cell small-3 info-box__icon">' + avail.remoteMapping + '</div>' +
+            '<div class="cell small-9 info-box__item">Field Surveys</div><div class="cell small-3 info-box__icon">' + avail.Surveying + '</div>' +
           '</div>' +
         '</div>' +
       '</div>';
@@ -111,15 +111,15 @@ function update_infoBox(stateName=null, availability=0, defineSelectedState=fals
 
     if(stateName == undefined) {
      control_content=
-     '<div class="grid-x legend-box">' +
-        '<div class="cell legend-box__header">' +
+     '<div class="grid-x info-box">' +
+        '<div class="cell info-box__header">' +
           '<p class="selection_detail_header selection_detail_header--light">Select a state...</p>' +
         '</div>' +
-        '<div class="cell legend-box__content">' +
+        '<div class="cell info-box__content">' +
           '<div class="grid-x">' +
-            '<div class="cell small-9 legend-box__item">Grid Tracking</div><div class="cell small-3"></div>' +
-            '<div class="cell small-9 legend-box__item">Remote Mapping</div><div class="cell small-3"></div>' +
-            '<div class="cell small-9 legend-box__item">Field Surveys</div><div class="cell small-3"></div>' +
+            '<div class="cell small-9 info-box__item">Grid Tracking</div><div class="cell small-3"></div>' +
+            '<div class="cell small-9 info-box__item">Remote Mapping</div><div class="cell small-3"></div>' +
+            '<div class="cell small-9 info-box__item">Field Surveys</div><div class="cell small-3"></div>' +
           '</div>' +
         '</div>' +
       '</div>';
