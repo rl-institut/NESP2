@@ -152,16 +152,37 @@ function update_clusterInfo(properties, selectedClustersNum, clusterNum="?") {
 
     var control_content = ''
 
+    var settlements_content = '<span>Click on a settlement</span>'
+
+    if (properties == "all"){
+        control_content =
+          '<div class="grid-x browse-box__items">\
+            <div class="browse-box--left">ID:</div><div class="browse-box--right"></div>\
+            <div class="browse-box--left">Area (km²):</div><div class="browse-box--right"></div>\
+            <div class="browse-box--left">Distance to Grid (km):</div><div class="browse-box--right"></div>\
+          </div>';
+    }
+
     if(properties.cluster_all_id !== undefined){
         // all
         control_content =
           '<div class="grid-x browse-box__items">\
-            <div class="cell small-6">ID</div><div class="cell small-6">' + properties.cluster_all_id + '</div>\
-            <div class="cell small-6">Area (km²):</div><div class="cell small-6">' + properties.area_km2 + '</div>\
-            <div class="cell small-6">Distance to Grid (km):</div><div class="cell small-6">' + parseFloat(properties.grid_dist_km).toFixed(2) + 'km²</div>\
+            <div class="browse-box--left">ID:</div><div class="browse-box--right">' + properties.cluster_all_id + '</div>\
+            <div class="browse-box--left">Area (km²):</div><div class="browse-box--right">' + properties.area_km2 + '</div>\
+            <div class="browse-box--left">Distance to Grid (km):</div><div class="browse-box--right">' + parseFloat(properties.grid_dist_km).toFixed(2) + '</div>\
           </div>';
-
+          settlements_content = '<span>' + clusterNum + ' </span> of <span id="filtered-clusters-num">' + selectedClustersNum + '</span>'
           randomClusterInfo.remove();
+    };
+
+    if (properties == "og"){
+        control_content =
+        '<div class="grid-x browse-box__items">\
+          <div class="browse-box--left">Area (km²):</div><div class="browse-box--right"></div>\
+          <div class="browse-box--left">Building count:</div><div class="browse-box--right"></div>\
+          <div class="browse-box--left">Built-up density (%):</div><div class="browse-box--right"></div>\
+          <div class="browse-box--left">Distance to Grid (km):</div><div class="browse-box--right"></div>\
+        </div>';
     };
 
     if (properties.cluster_offgrid_id !== undefined) {
@@ -169,10 +190,11 @@ function update_clusterInfo(properties, selectedClustersNum, clusterNum="?") {
         control_content =
         '<div class="grid-x browse-box__items">\
           <div class="browse-box--left">Area (km²):</div><div class="browse-box--right">' + parseFloat(properties.area_km2).toFixed(2) + '</div>\
-          <div class="browse-box--left">Buiding count:</div><div class="browse-box--right">' + parseFloat(properties.building_count).toFixed(0) + '</div>\
+          <div class="browse-box--left">Building count:</div><div class="browse-box--right">' + parseFloat(properties.building_count).toFixed(0) + '</div>\
           <div class="browse-box--left">Built-up density (%):</div><div class="browse-box--right">' +parseFloat(properties.percentage_building_area).toFixed(2) + '</div>\
           <div class="browse-box--left">Distance to Grid (km):</div><div class="browse-box--right">' + parseFloat(properties.grid_dist_km).toFixed(1) + '</div>\
         </div>';
+        settlements_content = '<span>' + clusterNum + ' </span> of <span id="filtered-clusters-num">' + selectedClustersNum + '</span>'
 
           randomClusterInfo.remove();
     };
@@ -185,10 +207,9 @@ function update_clusterInfo(properties, selectedClustersNum, clusterNum="?") {
             <a class="cell large-offset-1 large-2 btn--left" onclick="prev_selection_fun()">\
               <img class="state_info__img" src="../static/img/icons/i_arrow_left_g.svg">\
             </a>\
-            <p class="cell large-6 browse-box__number">\
-                <span>' + clusterNum + ' </span> of <span id="filtered-clusters-num">\
-                ' + selectedClustersNum + '</span> \
-            </p>\
+            <p class="cell large-6 browse-box__number">'
+             + settlements_content +
+            '</p>\
             <a class="cell large-2 btn--right" onclick="next_selection_fun()">\
               <img class="state_info__img" src="../static/img/icons/i_arrow_right_g.svg">\
             </a>\
