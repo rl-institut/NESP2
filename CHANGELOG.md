@@ -90,6 +90,7 @@ Here is a template for new release sections
 - Info box has also info for selected state when mouse over over it or outside Nigeria (#261)
 - Draw tiles from azure tileserver (#269)
 - Drop two elements in info box (#271)
+- Change to clusterInfo legend box to match required design (#266)
 
 ### Removed
 - redundant accordion menu (#10)
@@ -97,6 +98,7 @@ Here is a template for new release sections
 - outline around components after being clicked on (#202)
 - lgas layers and options (#221)
 - unused map layers in map control (#258)
+- Remove the randomCluster info box (#266)
 
 ## [0.0.1] 2019-11-11
 
