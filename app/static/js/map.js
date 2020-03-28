@@ -147,6 +147,7 @@ clusterInfo.onAdd = function(map) {
   return this._div;
 };
 
+/*
 clusterInfo.update = function(props) {
   this._div.innerHTML = '<h4 class="selection_detail_header">State Availability</h4>' +
     '<table class="selection_detail">' +
@@ -156,11 +157,39 @@ clusterInfo.update = function(props) {
     '</table>';
   this._div.innerHTML
 };
+*/
 
 // this function updates the content of the clusterInfo in a centralized way
 function update_clusterInfo(properties, selectedClustersNum, clusterNum="?") {
 
-    var control_content = '\
+    var control_content = ''
+
+    if(properties.cluster_all_id !== undefined){
+        // all
+        control_content =
+          '<div class="grid-x browse-box__items">\
+            <div class="cell small-6">ID</div><div class="cell small-6">' + properties.cluster_all_id + '</div>\
+            <div class="cell small-6">Area (km²):</div><div class="cell small-6">' + properties.area_km2 + '</div>\
+            <div class="cell small-6">Distance to Grid (km):</div><div class="cell small-6">' + parseFloat(properties.grid_dist_km).toFixed(2) + 'km²</div>\
+          </div>';
+
+          randomClusterInfo.remove();
+    };
+
+    if (properties.cluster_offgrid_id !== undefined) {
+    // og
+        control_content =
+        '<div class="grid-x browse-box__items">\
+          <div class="browse-box--left">Area (km²):</div><div class="browse-box--right">' + parseFloat(properties.area_km2).toFixed(2) + 'km²</div>\
+          <div class="browse-box--left">Buiding count:</div><div class="browse-box--right">' + parseFloat(properties.building_count).toFixed(0) + '</div>\
+          <div class="browse-box--left">Built-up density (%):</div><div class="browse-box--right">' +parseFloat(properties.percentage_building_area).toFixed(2) + '</div>\
+          <div class="browse-box--left">Distance to Grid (km):</div><div class="browse-box--right">' + parseFloat(properties.grid_dist_km).toFixed(1) + '</div>\
+        </div>';
+
+          randomClusterInfo.remove();
+    };
+
+    control_content = '\
       <div class="grid-x browse-box">\
         <div class="cell browse-box__header">BROWSE THE SETTLEMENTS</div>\
         <div id="download_clusters" class="cell browse-box__btn consecutive__btn">\
@@ -172,33 +201,9 @@ function update_clusterInfo(properties, selectedClustersNum, clusterNum="?") {
             </p>\
             <button class="cell large-3 btn--right" style="float:right" onclick="next_selection_fun()"> > </button>\
           </div>\
-        </div>\
-      </div>';
-
-    if(properties.cluster_all_id !== undefined){
-        // all
-        control_content = control_content +
-          '<div class="grid-x browse-box browse-box__items">\
-            <div class="cell small-6">ID</div><div class="cell small-6">' + properties.cluster_all_id + '</div>\
-            <div class="cell small-6">Area</div><div class="cell small-6">' + properties.area_km2 + '</div>\
-            <div class="cell small-6">Distance to Grid</div><div class="cell small-6">' + parseFloat(properties.grid_dist_km).toFixed(2) + 'km²</div>\
-          </div>';
-
-          randomClusterInfo.remove();
-    };
-
-    if (properties.cluster_offgrid_id !== undefined) {
-    // og
-        control_content = control_content +
-        '<div class="grid-x browse-box browse-box__items">\
-          <div class="browse-box--left">Area (km²)</div><div class="browse-box--right">' + parseFloat(properties.area_km2).toFixed(2) + 'km²</div>\
-          <div class="browse-box--left">Distance to Grid in km</div><div class="browse-box--right">' + parseFloat(properties.grid_dist_km).toFixed(1) + '</div>\
-          <div class="browse-box--left">Buildings</div><div class="browse-box--right">' + parseFloat(properties.building_count).toFixed(0) + '</div>\
-          <div class="browse-box--left">Built-up density (%)</div><div class="browse-box--right">' +parseFloat(properties.percentage_building_area).toFixed(2) + '</div>\
-        </div>';
-
-          randomClusterInfo.remove();
-    };
+        </div>'
+       + control_content +
+      '</div>';
 
     clusterInfo.remove();
     if(level != "national") {
