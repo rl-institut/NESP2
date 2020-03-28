@@ -117,7 +117,8 @@ a {
 }
 
 .map-legend__label {
-  font-size: 11pt;
+  font-size: 10pt;
+  color: #464646;
   height: 1.5rem;
   vertical-align: middle;
 }
@@ -610,7 +611,7 @@ p.sidebar-panel-item-title {
 }
 
 #footer-maps .footer-maps__text p {
-  font-size: 14pt;
+  font-size: 10pt;
   line-height: 18pt;
   font-weight: 400;
   padding-left: 1rem;
@@ -633,8 +634,8 @@ img.footer-maps-logos__giz {
 }
 
 .footer-about {
-  height: 3.75rem;
-  background-color: #c4c5cf;
+  height: 3rem;
+  background-color: #eeeff1;
   text-align: center;
 }
 
@@ -654,7 +655,7 @@ img.footer-maps-logos__giz {
 .footer-about a:active,
 .footer-about a:visited {
   color: #464646;
-  font-size: 13pt;
+  font-size: 10pt;
 }
 
 .footer-about span {
