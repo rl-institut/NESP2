@@ -96,10 +96,14 @@ a {
 }
 
 .map-legend {
-  padding: 1rem 1rem;
-  -webkit-box-shadow: 4px 4px 14px 0px rgba(0,0,0,0.16);
--moz-box-shadow: 4px 4px 14px 0px rgba(0,0,0,0.16);
-box-shadow: 4px 4px 14px 0px rgba(0,0,0,0.16);
+    padding: 1rem 1rem;
+    -webkit-box-shadow: 4px 4px 14px 0px rgba(0,0,0,0.16);
+    -moz-box-shadow: 4px 4px 14px 0px rgba(0,0,0,0.16);
+    box-shadow: 4px 4px 14px 0px rgba(0,0,0,0.16);
+    background-color: white;
+    color: #464646
+    border-radius: 15px;
+
 }
 
 .map-legend--highlight {
