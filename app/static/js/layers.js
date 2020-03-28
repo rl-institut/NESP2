@@ -125,6 +125,9 @@ var nigeria_states_geojson = L.geoJSON(nigeria_states_simplified, {
   onEachFeature: highlight_state,
   // Avoid adding the selected state, to not cover the clusters
   filter: function(feature) {
+    if(selectedState == feature.properties["name"]){
+        update_infoBox(selectedState, feature.properties.availability, defineSelectedState = true)
+    }
     return (selectedState != feature.properties["name"])
   }
 });
