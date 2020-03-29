@@ -617,22 +617,11 @@ function state_button_fun(trigger="button") {
   // When coming from village to state level it should not zoom out to the selected state
   if (previous_level == "national" || previous_level == "state" || (previous_level == "village" && trigger == "map-click")) {
     zoomToSelectedState();
-    var numSelectedClusters = null;
-    if (document.getElementById("clustersCheckbox").checked == true){
-        update_filter();
-        numSelectedClusters = filteredClusters;
-    }
-    if (document.getElementById("ogClustersCheckbox").checked == true) {
-        update_og_filter();
-        numSelectedClusters = filteredOgClusters;
-    }
     // Trigger the filter function so that the selected state geojson does not hide the clusters
     update_nigeria_states_borders_geojson();
     update_nigeria_states_geojson();
-    if (numSelectedClusters !== null) {
-        update_clusterInfo(get_cluster_type(), numSelectedClusters)
 
-    }
+    update_clusterInfo(get_cluster_type())
 
   };
   if (previous_level == "village" && (trigger == "button" || trigger == "zoom")) {
@@ -799,14 +788,11 @@ function clusters_cb_fun() {
     ogClusters_cb_fun();
 
     add_layer(clusterLayer[selectedState]);
-
     // update the number of clusters available
-    update_filter()
-    update_clusterInfo("all", filteredClusters)
+    // var numSelectedClusters = update_filter();
+    update_clusterInfo("all");
     // enable actions with filter icon
     filter_icon.className = enable_sidebar__filter(filter_icon.className);
-    // Update centroids for all_clusters
-    update_centroids();
   } else {
   // set panel side to grey
     document.getElementById("clustersPanel").style.borderLeft = '.25rem solid #eeeff1';
@@ -890,14 +876,12 @@ function ogClusters_cb_fun() {
     clusters_cb_fun();
 
     add_layer(ogClusterLayers[selectedState]);
-
     // update the number of clusters available
-    update_og_filter()
-    update_clusterInfo("og", filteredOgClusters)
+    // var numSelectedClusters = update_og_filter();
+    update_clusterInfo("og");
     // enable actions with filter icon
     filter_icon.className = enable_sidebar__filter(filter_icon.className);
-    // Update centroids for og_clusters
-    update_centroids();
+
   } else {
   // set panel side to grey
     document.getElementById("ogClustersPanel").style.borderLeft = '.25rem solid #eeeff1';
