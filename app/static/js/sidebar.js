@@ -19,6 +19,7 @@ var filteredOgClusters = 0;
 var selectedLGA = "";
 var thirtythreeKV = "33_kV_" + selectedState.toLowerCase();
 var centroids_layer_id = -1;
+var browse_centroids_keys = [];
 var og_centroids_dict = {};
 var all_centroids_dict = {};
 var centroids_layer_ids = {};
@@ -161,6 +162,13 @@ function give_status(context=null) {
     console.log("    State " + selectedState);
     console.log("    prevState " + prevState);
     console.log("Status over");
+function get_filtered_centroids_keys() {
+    return browse_centroids_keys;
+}
+function set_filtered_centroids_keys(value) {
+    browse_centroids_keys = value;
+}
+
 };
 
 function resetStateSelect() {
@@ -320,6 +328,7 @@ function update_filter(msg) {
     if (selectedState != "init") {
 
         var filtered_centroids_keys = filter_centroid_keys();
+        set_filtered_centroids_keys(filtered_centroids_keys)
         num_filtered_clusters = filtered_centroids_keys.length;
         if (get_cluster_type() == "og"){
             var filter_title = $("#n_ogclusters");
@@ -1126,7 +1135,7 @@ function next_selection_fun(){
   set_current_cluster_centroids();
   var centroid = Object();
   var target = [[0,0][0,0]];
-  var filtered_centroids_keys = filter_centroid_keys();
+  var filtered_centroids_keys = get_filtered_centroids_keys();
   // select next cluster and to zoom to its bounds
   // if currently no centroid has been selected, set the selection to the first cluster and fly there
   if(filtered_centroids_keys.indexOf(currently_featured_centroid_id) == -1){
@@ -1154,7 +1163,7 @@ function prev_selection_fun(){
   set_current_cluster_centroids();
   var centroid = Object();
   var target = [[0,0][0,0]];
-  var filtered_centroids_keys = filter_centroid_keys();
+  var filtered_centroids_keys = get_filtered_centroids_keys();
   // if currently no centroid has been selected, set the selection to the first cluster
   if(filtered_centroids_keys.indexOf(currently_featured_centroid_id) == -1){
     currently_featured_centroid_id = filtered_centroids_keys[0];
