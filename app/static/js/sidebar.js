@@ -23,7 +23,6 @@ var og_centroids_dict = {};
 var all_centroids_dict = {};
 var centroids_layer_ids = {};
 var current_cluster_centroids = Object();
-var filtered_centroids_keys = [];
 var currently_featured_centroid_id = 0;
 var flying_to_next_cluster = false;
 var statesWithOgClusters = [
@@ -1093,7 +1092,7 @@ function get_centroid_by_id(centroid_id){
 
 //function updates the list of cluster keys in filtered_centroids_keys
 function filter_centroid_keys(){
-  filtered_centroids_keys = [];
+  var filtered_centroids_keys = [];
   centroids = get_current_centroids_from_layer();
   const keys = Object.keys(centroids);
   // interates though cluster centroids and pushes keys of clusters that fal within filter settings
@@ -1109,7 +1108,7 @@ function filter_centroid_keys(){
         centroids[key].feature.properties.percentage_building_area > currentfilter.ogminbfp && 
         centroids[key].feature.properties.percentage_building_area < currentfilter.ogmaxbfp
       ){
-        filtered_centroids_keys.push(key);
+        filtered_centroids_keys.push({"key": key, "area": centroids[key].feature.properties.area_km2});
         og_centroids_dict[centroids[key].feature.properties.cluster_offgrid_id] = key;
       }
     }
@@ -1121,13 +1120,21 @@ function filter_centroid_keys(){
         centroids[key].feature.properties.grid_dist_km > currentfilter.mindtg && 
         centroids[key].feature.properties.grid_dist_km < currentfilter.maxdtg
       ){
-        filtered_centroids_keys.push(key);
+        filtered_centroids_keys.push({"key": key, "area": centroids[key].feature.properties.area_km2});
         all_centroids_dict[centroids[key].feature.properties.cluster_all_id] = key;
       }
     }
   }
-  //console.log("filtered keys list:");
-  //console.log(filtered_centroids_keys);
+  // sort the keys according to area
+  filtered_centroids_keys.sort(function(a, b) {
+      return a.area < b.area;
+  });
+  // only keep the sorted keys
+  var answer = [];
+  for (var i = 0; i<filtered_centroids_keys.length; i++) {
+      answer[i] = filtered_centroids_keys[i].key;
+  }
+  return answer;
 }
 
 function update_cluster_info(){
@@ -1151,7 +1158,7 @@ function next_selection_fun(){
   set_current_cluster_centroids();
   var centroid = Object();
   var target = [[0,0][0,0]];
-  filter_centroid_keys();
+  var filtered_centroids_keys = filter_centroid_keys();
   // select next cluster and to zoom to its bounds
   // if currently no centroid has been selected, set the selection to the first cluster and fly there
   if(filtered_centroids_keys.indexOf(currently_featured_centroid_id) == -1){
@@ -1179,7 +1186,7 @@ function prev_selection_fun(){
   set_current_cluster_centroids();
   var centroid = Object();
   var target = [[0,0][0,0]];
-  filter_centroid_keys();
+  var filtered_centroids_keys = filter_centroid_keys();
   // if currently no centroid has been selected, set the selection to the first cluster
   if(filtered_centroids_keys.indexOf(currently_featured_centroid_id) == -1){
     currently_featured_centroid_id = filtered_centroids_keys[0];
