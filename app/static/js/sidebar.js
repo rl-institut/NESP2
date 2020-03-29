@@ -694,8 +694,6 @@ function state_dropdown_fun() {
     prevState = selectedState;
     //update the selected state
     selectedState = document.getElementById("stateSelect").value;
-    // update the centroids layer to the newly selected state
-    update_centroids_group();
     //Trigger the switch to state level
     state_button_fun(trigger="menu");
   }
@@ -1048,19 +1046,6 @@ function update_centroids(){
 };
 
 // initial call of this function upon map start is necessary
-update_centroids();
-
-// function removes previous centroid layer
-function update_centroids_group(){
-  //TODO remove old layers to avoid very large cache. need to check if layer exists, else map becomes unresponsive.
-  if (centroids_layer_id in centroidsGroup._layers){
-    //centroidsGroup.removeLayer(centroids_layer_id);
-  }
-  else {
-  console.log("Not removing absent Layer");
-  }
-  update_centroids();
-}
 
 // End of functions for asynchronous call
 

@@ -105,8 +105,6 @@ function highlight_state(feature, layer) {
       prevState = selectedState;
       //update the selected state
       selectedState = feature.properties["name"];
-      // Update the centroids layer to enable cluster click-through
-      update_centroids_group();
       // Update the dropdown menu for state selection
       document.getElementById("stateSelect").value = selectedState;
       // Update the infoBox for the selected state
