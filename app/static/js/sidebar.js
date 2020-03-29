@@ -246,7 +246,7 @@ noUiSlider.create(ogAreaSlider, {
   }
 });
 ogAreaSlider.noUiSlider.on("change", changeogAreaSlider);
-ogAreaSlider.noUiSlider.on("end", update_og_filter);
+ogAreaSlider.noUiSlider.on("end", update_filter);
 
 
 function changeogDistanceSlider(str, h, values) {
@@ -267,7 +267,7 @@ noUiSlider.create(ogDistanceSlider, {
   }
 });
 ogDistanceSlider.noUiSlider.on("change", changeogDistanceSlider);
-ogDistanceSlider.noUiSlider.on("end", update_og_filter);
+ogDistanceSlider.noUiSlider.on("end", update_filter);
 
 function changeogBuildingsSlider(str, h, values) {
   currentfilter.ogminb = values[0];
@@ -288,7 +288,7 @@ noUiSlider.create(ogBuildingsSlider, {
   }
 });
 ogBuildingsSlider.noUiSlider.on("change", changeogBuildingsSlider);
-ogBuildingsSlider.noUiSlider.on("end", update_og_filter);
+ogBuildingsSlider.noUiSlider.on("end", update_filter);
 
 function changeogBuildingsFootprintSlider(str, h, values) {
   currentfilter.ogminbfp = values[0];
@@ -308,54 +308,36 @@ noUiSlider.create(ogBuildingsFootprintSlider, {
   }
 });
 ogBuildingsFootprintSlider.noUiSlider.on("change", changeogBuildingsFootprintSlider);
-ogBuildingsFootprintSlider.noUiSlider.on("end", update_og_filter);
+ogBuildingsFootprintSlider.noUiSlider.on("end", update_filter);
 
 
 // TODO: check if a POST to db is needed at all as info to clusters is available for each state
 // locally now
-function update_filter() {
+function update_filter(msg) {
+    console.log("update filters: " + msg);
+    console.log(selectedState);
+    var num_filtered_clusters = 0;
     if (selectedState != "init") {
-        $.post({
-                url: "/filtered-cluster",
-                dataType: "json",
-                data: {"cluster_type": "all", "state_name": selectedState, ... currentfilter},
-                success: function(data){filteredClusters=data;},
-             }).done(
-                function(data) {
-                    var filter_title = $("#n_clusters");
-                    var new_text = "= " + filteredClusters + " settlements";
-                    if (filteredClusters == 1){
-                        new_text = "= " + filteredClusters + " settlement";
-                    };
-                    filter_title.text(new_text);
-                    filter_title = $("#filtered-clusters-num");
-                    filter_title.text(filteredClusters);
-                }
-        );
+
+        var filtered_centroids_keys = filter_centroid_keys();
+        num_filtered_clusters = filtered_centroids_keys.length;
+        if (get_cluster_type() == "og"){
+            var filter_title = $("#n_ogclusters");
+        }
+        else{
+            var filter_title = $("#n_clusters");
+        }
+        var new_text = "= " + num_filtered_clusters + " settlements";
+        if (num_filtered_clusters == 1){
+            new_text = "= " + num_filtered_clusters + " settlement";
+        };
+        filter_title.text(new_text);
+        filter_title = $("#filtered-clusters-num");
+        filter_title.text(num_filtered_clusters);
     }
+    return num_filtered_clusters;
 };
 
-function update_og_filter() {
-    if (selectedState != "init") {
-        $.post({
-            url: "/filtered-cluster",
-            dataType: "json",
-            data: {"cluster_type": "og", "state_name": selectedState, ... currentfilter},
-            success: function(data){filteredOgClusters=data;},
-        }).done(
-            function(data) {
-                var filter_title = $("#n_ogclusters");
-                var new_text = "= " + filteredOgClusters + " settlements";
-                if (filteredOgClusters > 1){
-                    new_text = "= " + filteredOgClusters + " settlement"
-                };
-                filter_title.text(new_text);
-                filter_title = $("#filtered-clusters-num");
-                filter_title.text(filteredOgClusters);
-            }
-        );
-    }
-};
 
 function set_toggle_value(toggle_id, value) {
     document.getElementById(toggle_id).checked = value;
