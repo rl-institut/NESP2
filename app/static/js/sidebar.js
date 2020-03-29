@@ -1017,13 +1017,16 @@ function update_centroids(){
             centroidsGroup.addLayer(centroids_layer);
             // store the _leaflet_id of the centroids layer in a variable. The layer can be called with this id.
             centroids_layer_id = centroidsGroup.getLayerId(centroids_layer)
-            // TODO duplicate this for all_clusters as well
             // store this id in a dict with state name as keys
             centroids_layer_ids[centroids_file_key][cluster_type] = centroids_layer_id
+            //update the filters
+            update_filter()
         });
   }
   else{
     centroids_layer_id = centroids_layer_ids[selectedState][cluster_type]
+    //update the filters
+    update_filter()
   }
 };
 
@@ -1060,10 +1063,10 @@ function get_centroid_by_id(centroid_id){
 //function updates the list of cluster keys in filtered_centroids_keys
 function filter_centroid_keys(){
   var filtered_centroids_keys = [];
+  set_current_cluster_centroids();
   centroids = get_current_centroids_from_layer();
   const keys = Object.keys(centroids);
-  // interates though cluster centroids and pushes keys of clusters that fal within filter settings
-  console.log("FILTERING STUFF NOW!!!!!!!!!");
+  // interates though cluster centroids and pushes keys of clusters that fall within filter settings
   for (const key of keys) {
       //if activated clusters are off-grid-clusters
     if (centroids[key].feature.properties.hasOwnProperty('percentage_building_area')){
