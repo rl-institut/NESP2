@@ -152,16 +152,6 @@ function get_cluster_type() {
     return answer
 }
 
-function give_status(context=null) {
-    console.log("Status on");
-    if (context) {
-        console.log(context);
-    };
-    console.log("    level " + level);
-    console.log("    prevLevel " + previous_level);
-    console.log("    State " + selectedState);
-    console.log("    prevState " + prevState);
-    console.log("Status over");
 function get_filtered_centroids_keys() {
     return browse_centroids_keys;
 }
@@ -169,6 +159,18 @@ function set_filtered_centroids_keys(value) {
     browse_centroids_keys = value;
 }
 
+function give_status(context=null, display=false) {
+    if (display == true) {
+        console.log("Status on");
+        if (context) {
+            console.log(context);
+        };
+        console.log("    level " + level);
+        console.log("    prevLevel " + previous_level);
+        console.log("    State " + selectedState);
+        console.log("    prevState " + prevState);
+        console.log("Status over");
+    }
 };
 
 function resetStateSelect() {
@@ -604,6 +606,8 @@ function state_button_fun(trigger="button") {
   // manages the layers for the state level
   adapt_view_to_state_level();
 
+  update_centroids("state_button_615");
+
   // When coming from village to state level it should not zoom out to the selected state
   if (previous_level == "national" || previous_level == "state" || (previous_level == "village" && trigger == "map-click")) {
     zoomToSelectedState();
@@ -1000,7 +1004,8 @@ function convert_light_json_to_geojson(data, cluster_type) {
 };
 
 // Function takes the data from update_centroids_data. Due to the asynchronous call they cannot simply be stored in a variable
-function update_centroids(){
+function update_centroids(msg){
+  console.log("update centroid: " + msg);
   // only fetch the data if it does not exist yet
   var cluster_type = get_cluster_type();
   if (centroids_layer_ids[selectedState] === undefined) {
@@ -1011,6 +1016,8 @@ function update_centroids(){
         update_centroids_data(function(data, centroids_file_key, cluster_type){
             var centroids = convert_light_json_to_geojson(data, cluster_type)
             // Creates a geojson-layer with the data
+
+            console.log(centroids);
             var centroids_layer = L.geoJSON(centroids, {
                 pointToLayer: function (feature, latlng) {
                     return L.circleMarker(latlng, {
@@ -1040,6 +1047,7 @@ function update_centroids(){
 };
 
 // initial call of this function upon map start is necessary
+update_centroids("initial_1072");
 
 // End of functions for asynchronous call
 
