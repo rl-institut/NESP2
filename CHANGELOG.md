@@ -52,6 +52,7 @@ Here is a template for new release sections
 - Hover on filter icon highlights it + tooltip (#263)
 - Replace tilelayer for borders with geojson (#267)
 - Show Number of selected cluster (#239)
+- Filter the cluster by area (#274)
 
 ### Changed
 - Filter slider get reasonable steps (#167)
@@ -91,6 +92,10 @@ Here is a template for new release sections
 - Draw tiles from azure tileserver (#269)
 - Drop two elements in info box (#271)
 - Change to clusterInfo legend box to match required design (#266)
+- The `filter_centroid_keys` function is only called in `update_filter` (#274)
+- The `filtered_centroids_keys` variable is only accessed via get and set functions (#274)
+- Endpoint `/filtered-cluster` is not used anymore to get filter info, rather it is the `filtered_centroids_keys` function (#274) 
+
 
 ### Removed
 - redundant accordion menu (#10)
@@ -99,6 +104,8 @@ Here is a template for new release sections
 - lgas layers and options (#221)
 - unused map layers in map control (#258)
 - Remove the randomCluster info box (#266)
+- Function `update_centroids_group` (#274)
+
 
 ## [0.0.1] 2019-11-11
 
