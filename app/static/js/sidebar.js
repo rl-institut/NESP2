@@ -1083,7 +1083,6 @@ function filter_centroid_keys(){
       }
     }
     else if (centroids[key].feature.properties.hasOwnProperty('cluster_all_id')){
-      console.log("CLUSTERS 4 ALLLLLLLLLL");
       if (
         centroids[key].feature.properties.area_km2 > currentfilter.minarea && 
         centroids[key].feature.properties.area_km2 < currentfilter.maxarea &&
@@ -1107,12 +1106,11 @@ function filter_centroid_keys(){
   return answer;
 }
 
-function update_cluster_info(){
+function update_cluster_info(filtered_centroids_keys){
     var centroid = get_centroid_by_id(currently_featured_centroid_id);
     const clusterNum = filtered_centroids_keys.indexOf(currently_featured_centroid_id) + 1;
     const selectedClustersNum = filtered_centroids_keys.length;
     update_clusterInfo(centroid.feature.properties, selectedClustersNum, clusterNum);
-
 }
 
 // flyTo-function including a with reset of 'flying_to_next_cluster' to false in order to allow level change via manual zoom afterwards
@@ -1149,7 +1147,7 @@ function next_selection_fun(){
     flying_to_next_cluster = true;
     flyToClusterBounds(target);
   }
-  update_cluster_info();
+  update_cluster_info(filtered_centroids_keys);
 }
 
 function prev_selection_fun(){
@@ -1176,5 +1174,5 @@ function prev_selection_fun(){
     target = get_bbox_from_cluster_centroid(centroid);
     flyToClusterBounds(target);
   }
-  update_cluster_info();
+  update_cluster_info(filtered_centroids_keys);
 }
