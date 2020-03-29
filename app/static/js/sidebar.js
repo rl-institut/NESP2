@@ -555,7 +555,6 @@ function adapt_view_to_state_level() {
 
   add_layer(nigeria_states_borders_geojson);
   update_grid_layer();
-  //update_ogclustersTileLayer();
   add_layer(osm_gray);
 
   // remove the medium voltage grid
@@ -781,7 +780,6 @@ function clusters_cb_fun() {
 
     add_layer(clusterLayer[selectedState]);
     // update the number of clusters available
-    // var numSelectedClusters = update_filter();
     update_clusterInfo("all");
     // enable actions with filter icon
     filter_icon.className = enable_sidebar__filter(filter_icon.className);
@@ -869,7 +867,6 @@ function ogClusters_cb_fun() {
 
     add_layer(ogClusterLayers[selectedState]);
     // update the number of clusters available
-    // var numSelectedClusters = update_og_filter();
     update_clusterInfo("og");
     // enable actions with filter icon
     filter_icon.className = enable_sidebar__filter(filter_icon.className);
@@ -1182,7 +1179,7 @@ function prev_selection_fun(){
   // else if the selected centroid is the first one, keep it selected
   else if (filtered_centroids_keys.indexOf(currently_featured_centroid_id) == 0){
     currently_featured_centroid_id = filtered_centroids_keys[0];
-    //console.log("first element")
+    console.log("first element")
   }
   // else set the selected centroid to be the previous one via index
   else{currently_featured_centroid_id = filtered_centroids_keys[filtered_centroids_keys.indexOf(currently_featured_centroid_id) - 1 ]; 
