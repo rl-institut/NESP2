@@ -19,11 +19,11 @@ var filteredOgClusters = 0;
 var selectedLGA = "";
 var thirtythreeKV = "33_kV_" + selectedState.toLowerCase();
 var centroids_layer_id = -1;
+var browse_centroids_keys = [];
 var og_centroids_dict = {};
 var all_centroids_dict = {};
 var centroids_layer_ids = {};
 var current_cluster_centroids = Object();
-var filtered_centroids_keys = [];
 var currently_featured_centroid_id = 0;
 var flying_to_next_cluster = false;
 var statesWithOgClusters = [
@@ -152,16 +152,25 @@ function get_cluster_type() {
     return answer
 }
 
-function give_status(context=null) {
-    console.log("Status on");
-    if (context) {
-        console.log(context);
-    };
-    console.log("    level " + level);
-    console.log("    prevLevel " + previous_level);
-    console.log("    State " + selectedState);
-    console.log("    prevState " + prevState);
-    console.log("Status over");
+function get_filtered_centroids_keys() {
+    return browse_centroids_keys;
+}
+function set_filtered_centroids_keys(value) {
+    browse_centroids_keys = value;
+}
+
+function give_status(context=null, display=false) {
+    if (display == true) {
+        console.log("Status on");
+        if (context) {
+            console.log(context);
+        };
+        console.log("    level " + level);
+        console.log("    prevLevel " + previous_level);
+        console.log("    State " + selectedState);
+        console.log("    prevState " + prevState);
+        console.log("Status over");
+    }
 };
 
 function resetStateSelect() {
@@ -247,7 +256,7 @@ noUiSlider.create(ogAreaSlider, {
   }
 });
 ogAreaSlider.noUiSlider.on("change", changeogAreaSlider);
-ogAreaSlider.noUiSlider.on("end", update_og_filter);
+ogAreaSlider.noUiSlider.on("end", update_filter);
 
 
 function changeogDistanceSlider(str, h, values) {
@@ -268,7 +277,7 @@ noUiSlider.create(ogDistanceSlider, {
   }
 });
 ogDistanceSlider.noUiSlider.on("change", changeogDistanceSlider);
-ogDistanceSlider.noUiSlider.on("end", update_og_filter);
+ogDistanceSlider.noUiSlider.on("end", update_filter);
 
 function changeogBuildingsSlider(str, h, values) {
   currentfilter.ogminb = values[0];
@@ -289,7 +298,7 @@ noUiSlider.create(ogBuildingsSlider, {
   }
 });
 ogBuildingsSlider.noUiSlider.on("change", changeogBuildingsSlider);
-ogBuildingsSlider.noUiSlider.on("end", update_og_filter);
+ogBuildingsSlider.noUiSlider.on("end", update_filter);
 
 function changeogBuildingsFootprintSlider(str, h, values) {
   currentfilter.ogminbfp = values[0];
@@ -309,54 +318,37 @@ noUiSlider.create(ogBuildingsFootprintSlider, {
   }
 });
 ogBuildingsFootprintSlider.noUiSlider.on("change", changeogBuildingsFootprintSlider);
-ogBuildingsFootprintSlider.noUiSlider.on("end", update_og_filter);
+ogBuildingsFootprintSlider.noUiSlider.on("end", update_filter);
 
 
 // TODO: check if a POST to db is needed at all as info to clusters is available for each state
 // locally now
-function update_filter() {
+function update_filter(msg) {
+    console.log("update filters: " + msg);
+    console.log(selectedState);
+    var num_filtered_clusters = 0;
     if (selectedState != "init") {
-        $.post({
-                url: "/filtered-cluster",
-                dataType: "json",
-                data: {"cluster_type": "all", "state_name": selectedState, ... currentfilter},
-                success: function(data){filteredClusters=data;},
-             }).done(
-                function(data) {
-                    var filter_title = $("#n_clusters");
-                    var new_text = "= " + filteredClusters + " settlements";
-                    if (filteredClusters == 1){
-                        new_text = "= " + filteredClusters + " settlement";
-                    };
-                    filter_title.text(new_text);
-                    filter_title = $("#filtered-clusters-num");
-                    filter_title.text(filteredClusters);
-                }
-        );
+
+        var filtered_centroids_keys = filter_centroid_keys();
+        set_filtered_centroids_keys(filtered_centroids_keys)
+        num_filtered_clusters = filtered_centroids_keys.length;
+        if (get_cluster_type() == "og"){
+            var filter_title = $("#n_ogclusters");
+        }
+        else{
+            var filter_title = $("#n_clusters");
+        }
+        var new_text = "= " + num_filtered_clusters + " settlements";
+        if (num_filtered_clusters == 1){
+            new_text = "= " + num_filtered_clusters + " settlement";
+        };
+        filter_title.text(new_text);
+        filter_title = $("#filtered-clusters-num");
+        filter_title.text(num_filtered_clusters);
     }
+    return num_filtered_clusters;
 };
 
-function update_og_filter() {
-    if (selectedState != "init") {
-        $.post({
-            url: "/filtered-cluster",
-            dataType: "json",
-            data: {"cluster_type": "og", "state_name": selectedState, ... currentfilter},
-            success: function(data){filteredOgClusters=data;},
-        }).done(
-            function(data) {
-                var filter_title = $("#n_ogclusters");
-                var new_text = "= " + filteredOgClusters + " settlements";
-                if (filteredOgClusters > 1){
-                    new_text = "= " + filteredOgClusters + " settlement"
-                };
-                filter_title.text(new_text);
-                filter_title = $("#filtered-clusters-num");
-                filter_title.text(filteredOgClusters);
-            }
-        );
-    }
-};
 
 function set_toggle_value(toggle_id, value) {
     document.getElementById(toggle_id).checked = value;
@@ -563,7 +555,6 @@ function adapt_view_to_state_level() {
 
   add_layer(nigeria_states_borders_geojson);
   update_grid_layer();
-  //update_ogclustersTileLayer();
   add_layer(osm_gray);
 
   // remove the medium voltage grid
@@ -614,25 +605,16 @@ function state_button_fun(trigger="button") {
   // manages the layers for the state level
   adapt_view_to_state_level();
 
+  update_centroids("state_button_615");
+
   // When coming from village to state level it should not zoom out to the selected state
   if (previous_level == "national" || previous_level == "state" || (previous_level == "village" && trigger == "map-click")) {
     zoomToSelectedState();
-    var numSelectedClusters = null;
-    if (document.getElementById("clustersCheckbox").checked == true){
-        update_filter();
-        numSelectedClusters = filteredClusters;
-    }
-    if (document.getElementById("ogClustersCheckbox").checked == true) {
-        update_og_filter();
-        numSelectedClusters = filteredOgClusters;
-    }
     // Trigger the filter function so that the selected state geojson does not hide the clusters
     update_nigeria_states_borders_geojson();
     update_nigeria_states_geojson();
-    if (numSelectedClusters !== null) {
-        update_clusterInfo(get_cluster_type(), numSelectedClusters)
 
-    }
+    update_clusterInfo(get_cluster_type())
 
   };
   if (previous_level == "village" && (trigger == "button" || trigger == "zoom")) {
@@ -706,8 +688,6 @@ function state_dropdown_fun() {
     prevState = selectedState;
     //update the selected state
     selectedState = document.getElementById("stateSelect").value;
-    // update the centroids layer to the newly selected state
-    update_centroids_group();
     //Trigger the switch to state level
     state_button_fun(trigger="menu");
   }
@@ -799,14 +779,10 @@ function clusters_cb_fun() {
     ogClusters_cb_fun();
 
     add_layer(clusterLayer[selectedState]);
-
     // update the number of clusters available
-    update_filter()
-    update_clusterInfo("all", filteredClusters)
+    update_clusterInfo("all");
     // enable actions with filter icon
     filter_icon.className = enable_sidebar__filter(filter_icon.className);
-    // Update centroids for all_clusters
-    update_centroids();
   } else {
   // set panel side to grey
     document.getElementById("clustersPanel").style.borderLeft = '.25rem solid #eeeff1';
@@ -890,14 +866,11 @@ function ogClusters_cb_fun() {
     clusters_cb_fun();
 
     add_layer(ogClusterLayers[selectedState]);
-
     // update the number of clusters available
-    update_og_filter()
-    update_clusterInfo("og", filteredOgClusters)
+    update_clusterInfo("og");
     // enable actions with filter icon
     filter_icon.className = enable_sidebar__filter(filter_icon.className);
-    // Update centroids for og_clusters
-    update_centroids();
+
   } else {
   // set panel side to grey
     document.getElementById("ogClustersPanel").style.borderLeft = '.25rem solid #eeeff1';
@@ -1028,7 +1001,8 @@ function convert_light_json_to_geojson(data, cluster_type) {
 };
 
 // Function takes the data from update_centroids_data. Due to the asynchronous call they cannot simply be stored in a variable
-function update_centroids(){
+function update_centroids(msg){
+  console.log("update centroid: " + msg);
   // only fetch the data if it does not exist yet
   var cluster_type = get_cluster_type();
   if (centroids_layer_ids[selectedState] === undefined) {
@@ -1039,6 +1013,8 @@ function update_centroids(){
         update_centroids_data(function(data, centroids_file_key, cluster_type){
             var centroids = convert_light_json_to_geojson(data, cluster_type)
             // Creates a geojson-layer with the data
+
+            console.log(centroids);
             var centroids_layer = L.geoJSON(centroids, {
                 pointToLayer: function (feature, latlng) {
                     return L.circleMarker(latlng, {
@@ -1054,30 +1030,21 @@ function update_centroids(){
             centroidsGroup.addLayer(centroids_layer);
             // store the _leaflet_id of the centroids layer in a variable. The layer can be called with this id.
             centroids_layer_id = centroidsGroup.getLayerId(centroids_layer)
-            // TODO duplicate this for all_clusters as well
             // store this id in a dict with state name as keys
             centroids_layer_ids[centroids_file_key][cluster_type] = centroids_layer_id
+            //update the filters
+            update_filter()
         });
   }
   else{
     centroids_layer_id = centroids_layer_ids[selectedState][cluster_type]
+    //update the filters
+    update_filter()
   }
 };
 
 // initial call of this function upon map start is necessary
-update_centroids();
-
-// function removes previous centroid layer
-function update_centroids_group(){
-  //TODO remove old layers to avoid very large cache. need to check if layer exists, else map becomes unresponsive.
-  if (centroids_layer_id in centroidsGroup._layers){
-    //centroidsGroup.removeLayer(centroids_layer_id);
-  }
-  else {
-  console.log("Not removing absent Layer");
-  }
-  update_centroids();
-}
+update_centroids("initial_1072");
 
 // End of functions for asynchronous call
 
@@ -1109,11 +1076,11 @@ function get_centroid_by_id(centroid_id){
 
 //function updates the list of cluster keys in filtered_centroids_keys
 function filter_centroid_keys(){
-  filtered_centroids_keys = [];
+  var filtered_centroids_keys = [];
+  set_current_cluster_centroids();
   centroids = get_current_centroids_from_layer();
   const keys = Object.keys(centroids);
-  // interates though cluster centroids and pushes keys of clusters that fal within filter settings
-  console.log("FILTERING STUFF NOW!!!!!!!!!");
+  // interates though cluster centroids and pushes keys of clusters that fall within filter settings
   for (const key of keys) {
       //if activated clusters are off-grid-clusters
     if (centroids[key].feature.properties.hasOwnProperty('percentage_building_area')){
@@ -1125,33 +1092,39 @@ function filter_centroid_keys(){
         centroids[key].feature.properties.percentage_building_area > currentfilter.ogminbfp && 
         centroids[key].feature.properties.percentage_building_area < currentfilter.ogmaxbfp
       ){
-        filtered_centroids_keys.push(key);
+        filtered_centroids_keys.push({"key": key, "area": centroids[key].feature.properties.area_km2});
         og_centroids_dict[centroids[key].feature.properties.cluster_offgrid_id] = key;
       }
     }
     else if (centroids[key].feature.properties.hasOwnProperty('cluster_all_id')){
-      console.log("CLUSTERS 4 ALLLLLLLLLL");
       if (
         centroids[key].feature.properties.area_km2 > currentfilter.minarea && 
         centroids[key].feature.properties.area_km2 < currentfilter.maxarea &&
         centroids[key].feature.properties.grid_dist_km > currentfilter.mindtg && 
         centroids[key].feature.properties.grid_dist_km < currentfilter.maxdtg
       ){
-        filtered_centroids_keys.push(key);
+        filtered_centroids_keys.push({"key": key, "area": centroids[key].feature.properties.area_km2});
         all_centroids_dict[centroids[key].feature.properties.cluster_all_id] = key;
       }
     }
   }
-  //console.log("filtered keys list:");
-  //console.log(filtered_centroids_keys);
+  // sort the keys according to area
+  filtered_centroids_keys.sort(function(a, b) {
+      return a.area < b.area;
+  });
+  // only keep the sorted keys
+  var answer = [];
+  for (var i = 0; i<filtered_centroids_keys.length; i++) {
+      answer[i] = filtered_centroids_keys[i].key;
+  }
+  return answer;
 }
 
-function update_cluster_info(){
+function update_cluster_info(filtered_centroids_keys){
     var centroid = get_centroid_by_id(currently_featured_centroid_id);
     const clusterNum = filtered_centroids_keys.indexOf(currently_featured_centroid_id) + 1;
     const selectedClustersNum = filtered_centroids_keys.length;
     update_clusterInfo(centroid.feature.properties, selectedClustersNum, clusterNum);
-
 }
 
 // flyTo-function including a with reset of 'flying_to_next_cluster' to false in order to allow level change via manual zoom afterwards
@@ -1167,7 +1140,7 @@ function next_selection_fun(){
   set_current_cluster_centroids();
   var centroid = Object();
   var target = [[0,0][0,0]];
-  filter_centroid_keys();
+  var filtered_centroids_keys = get_filtered_centroids_keys();
   // select next cluster and to zoom to its bounds
   // if currently no centroid has been selected, set the selection to the first cluster and fly there
   if(filtered_centroids_keys.indexOf(currently_featured_centroid_id) == -1){
@@ -1188,14 +1161,14 @@ function next_selection_fun(){
     flying_to_next_cluster = true;
     flyToClusterBounds(target);
   }
-  update_cluster_info();
+  update_cluster_info(filtered_centroids_keys);
 }
 
 function prev_selection_fun(){
   set_current_cluster_centroids();
   var centroid = Object();
   var target = [[0,0][0,0]];
-  filter_centroid_keys();
+  var filtered_centroids_keys = get_filtered_centroids_keys();
   // if currently no centroid has been selected, set the selection to the first cluster
   if(filtered_centroids_keys.indexOf(currently_featured_centroid_id) == -1){
     currently_featured_centroid_id = filtered_centroids_keys[0];
@@ -1206,7 +1179,7 @@ function prev_selection_fun(){
   // else if the selected centroid is the first one, keep it selected
   else if (filtered_centroids_keys.indexOf(currently_featured_centroid_id) == 0){
     currently_featured_centroid_id = filtered_centroids_keys[0];
-    //console.log("first element")
+    console.log("first element")
   }
   // else set the selected centroid to be the previous one via index
   else{currently_featured_centroid_id = filtered_centroids_keys[filtered_centroids_keys.indexOf(currently_featured_centroid_id) - 1 ]; 
@@ -1215,5 +1188,5 @@ function prev_selection_fun(){
     target = get_bbox_from_cluster_centroid(centroid);
     flyToClusterBounds(target);
   }
-  update_cluster_info();
+  update_cluster_info(filtered_centroids_keys);
 }

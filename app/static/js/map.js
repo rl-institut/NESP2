@@ -148,7 +148,7 @@ clusterInfo.onAdd = function(map) {
 };
 
 // this function updates the content of the clusterInfo in a centralized way
-function update_clusterInfo(properties, selectedClustersNum, clusterNum="?") {
+function update_clusterInfo(properties, selectedClustersNum=0, clusterNum="?") {
 
     var control_content = ''
 

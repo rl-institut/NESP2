@@ -105,8 +105,6 @@ function highlight_state(feature, layer) {
       prevState = selectedState;
       //update the selected state
       selectedState = feature.properties["name"];
-      // Update the centroids layer to enable cluster click-through
-      update_centroids_group();
       // Update the dropdown menu for state selection
       document.getElementById("stateSelect").value = selectedState;
       // Update the infoBox for the selected state
@@ -230,8 +228,9 @@ function addFunctionsToClusterLayer(layer) {
       update_clusterInfo(properties, "?")
       // if selected cluster within list of filtered clusters, update info with number/length
       if (ID in all_centroids_dict){
+        var filtered_centroids_keys = get_filtered_centroids_keys();
         const clusterNum = filtered_centroids_keys.indexOf(all_centroids_dict[ID]) + 1;
-        currently_featured_centroid_id = og_centroids_dict[ID];
+        currently_featured_centroid_id = all_centroids_dict[ID];
         update_clusterInfo(properties, filtered_centroids_keys.length, clusterNum);
       }
 
@@ -381,6 +380,7 @@ function addFunctionsToOGClusterLayer(layer) {
       var cluster_type = get_cluster_type();
       // if selected cluster within list of filtered clusters, update info with number/length
       if (ID in og_centroids_dict){
+        var filtered_centroids_keys = get_filtered_centroids_keys();
         const clusterNum = filtered_centroids_keys.indexOf(og_centroids_dict[ID]) + 1;
         currently_featured_centroid_id = og_centroids_dict[ID];
         update_clusterInfo(properties, filtered_centroids_keys.length, clusterNum);
