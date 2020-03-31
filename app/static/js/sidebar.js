@@ -415,6 +415,18 @@ function show_sidebar__btn(className) {
 };
 
 
+function show_loading_cluster(){
+    console.log("#" + get_cluster_type() + "-spin")
+    spinId = $("#" + get_cluster_type() + "-spin")[0];
+    console.log(spinId)
+    spinId.className = show_sidebar__btn(spinId.className);
+}
+
+function hide_loading_cluster(){
+    spinId = $("#" + get_cluster_type() + "-spin")[0];
+    spinId.className = hide_sidebar__btn(spinId.className);
+}
+
 function disable_sidebar_filter(className) {
   return className.replace(" active-filter", " hidden-filter");
 };
