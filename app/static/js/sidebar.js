@@ -153,6 +153,10 @@ function get_cluster_type() {
     return answer
 }
 
+function is_currently_loading_clusters(){
+    return downloadingClusters;
+};
+
 function get_filtered_centroids_keys() {
     return browse_centroids_keys;
 }
@@ -791,8 +795,7 @@ function download_clusters_fun() {
   export_csv_link.click()
 }
 
-function clusters_cb_fun() {
-
+function clusters_cb_fun(trigger=null) {
   var filter_icon = document.getElementById("clusters_filter");
 
   if (prevState != "init") {
@@ -804,6 +807,10 @@ function clusters_cb_fun() {
     // deactivate og clusters
     set_og_clusters_toggle(false);
     ogClusters_cb_fun();
+
+    if(trigger == "user"){
+        update_centroids("line 782")
+    };
 
     add_layer(clusterLayer[selectedState]);
     // update the number of clusters available
@@ -857,7 +864,7 @@ function template_filter_fun(id) {
     }
     else{
         map.fireEvent("ogfilterchange", currentfilter);
-        update_og_filter();
+        update_filter();
     }
   } else {
     var prevFilter = document.querySelectorAll(".content-filter");
@@ -877,8 +884,7 @@ function clusters_filter_fun() {
 }
 
 
-function ogClusters_cb_fun() {
-
+function ogClusters_cb_fun(trigger=null) {
   var filter_icon = document.getElementById("ogClusters_filter");
 
   if (prevState != "init") {
@@ -892,6 +898,9 @@ function ogClusters_cb_fun() {
     set_clusters_toggle(false);
     clusters_cb_fun();
 
+    if(trigger == "user"){
+        update_centroids("line 872")
+    };
     add_layer(ogClusterLayers[selectedState]);
     // update the number of clusters available
     update_clusterInfo("og");
@@ -1075,6 +1084,7 @@ function update_centroids(msg){
             hide_loading_cluster();
             //update the filters
             update_filter()
+            update_clusterInfo(get_cluster_type())
         });
   }
   else{
