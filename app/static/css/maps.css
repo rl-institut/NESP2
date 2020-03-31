@@ -317,6 +317,7 @@ background-color: #fff;
   width: 100%;
   font-size: 10pt;
   font-weight: bold;
+  font-family: 'Source Sans Pro', sans-serif;
   padding: .75rem .5rem;
   border-radius: 4px;
   cursor: pointer;
@@ -389,6 +390,7 @@ button {
   color: #464646;
   font-size: 10pt;
   font-weight: bold;
+  font-family: 'Source Sans Pro', sans-serif;
 }
 
 .select-items {
