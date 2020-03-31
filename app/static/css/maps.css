@@ -42,6 +42,14 @@ h1, h2, h3 {
 }
 
 @font-face {
+  font-family: 'Source Sans Pro';
+  src: url('../fonts/SourceSansPro-Bold-Italic.woff2') format('woff2'),
+    url('../fonts/Poppins-Bold-Italic.woff') format('woff');
+  font-weight: bold;
+  font-style: italic;
+}
+
+@font-face {
   font-family: 'Poppins';
   src: url('../fonts/Poppins-Bold.woff2') format('woff2'),
       url('../fonts/Poppins-Bold.woff') format('woff');
