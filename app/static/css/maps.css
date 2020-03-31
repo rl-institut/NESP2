@@ -362,6 +362,13 @@ background-color: #fff;
   outline: 0;
 }
 
+.sidebar__btn.inert button {
+  background-color: #F8F9F9;
+  color: #B4B4B4;
+  outline: 0;
+  pointer-events: none;
+}
+
 .sidebar__btn.active button {
   background-color: #1DD069;
   color: #ffffff;

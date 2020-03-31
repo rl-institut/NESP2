@@ -153,6 +153,10 @@ function get_cluster_type() {
     return answer
 }
 
+function is_currently_loading_clusters(){
+    return downloadingClusters;
+};
+
 function get_filtered_centroids_keys() {
     return browse_centroids_keys;
 }
@@ -285,15 +289,23 @@ function changeogBuildingsSlider(str, h, values) {
   currentfilter.ogmaxb = values[1];
   map.fireEvent("ogfilterchange", currentfilter);
 };
+
+
+var ogBuildingsSliderMinFormat = wNumb({
+    decimals: 0,
+    // show < before value if it's 300
+	edit: function( value ){
+		return (value == '300') ? '< 300' : value;
+	},
+});
+
 var ogBuildingsSlider = document.getElementById('ogBuildingsSlider');
 noUiSlider.create(ogBuildingsSlider, {
   ...sliderOptions,
-  tooltips: [wNumb({decimals: 0}), wNumb({decimals: 0})],
-  start: [0, 5000],
+  tooltips: [ogBuildingsSliderMinFormat, wNumb({decimals: 0})],
+  start: [300, 5000],
   range: {
-    'min': [0, 1],
-    '10%': [10, 1],
-    '30%': [100, 10],
+    'min': [300, 10],
     '80%': [1000, 100],
     'max': 11000,
   }
@@ -309,7 +321,7 @@ function changeogBuildingsFootprintSlider(str, h, values) {
 var ogBuildingsFootprintSlider = document.getElementById('ogBuildingsFootprintSlider');
 noUiSlider.create(ogBuildingsFootprintSlider, {
   ...sliderOptions,
-  tooltips: [wNumb({decimals: 2, suffix: ' %'}), wNumb({decimals: 2, suffix: ' %'})],
+  tooltips: [wNumb({suffix: ' %', decimals: 2}) , wNumb({suffix: ' %', decimals: 2})],
   start: [0, 0.8],
   range: {
     'min': [0, 0.01],
@@ -469,6 +481,10 @@ function adapt_sidebar_to_selection_level(selectionLevel) {
   document.getElementById("national").className = "cell small-6 level sidebar__btn";
   document.getElementById("state").className = "cell small-6 level sidebar__btn";
   document.getElementById("village").className = "cell small-6 level sidebar__btn";
+
+  if (selectionLevel == "national"){ 
+    document.getElementById("village").className = "cell small-6 level sidebar__btn inert disabled";
+  }
 
   document.getElementById(selectionLevel).className = "cell small-6 level sidebar__btn active";
 };
@@ -779,8 +795,7 @@ function download_clusters_fun() {
   export_csv_link.click()
 }
 
-function clusters_cb_fun() {
-
+function clusters_cb_fun(trigger=null) {
   var filter_icon = document.getElementById("clusters_filter");
 
   if (prevState != "init") {
@@ -792,6 +807,10 @@ function clusters_cb_fun() {
     // deactivate og clusters
     set_og_clusters_toggle(false);
     ogClusters_cb_fun();
+
+    if(trigger == "user"){
+        update_centroids("line 782")
+    };
 
     add_layer(clusterLayer[selectedState]);
     // update the number of clusters available
@@ -845,7 +864,7 @@ function template_filter_fun(id) {
     }
     else{
         map.fireEvent("ogfilterchange", currentfilter);
-        update_og_filter();
+        update_filter();
     }
   } else {
     var prevFilter = document.querySelectorAll(".content-filter");
@@ -865,8 +884,7 @@ function clusters_filter_fun() {
 }
 
 
-function ogClusters_cb_fun() {
-
+function ogClusters_cb_fun(trigger=null) {
   var filter_icon = document.getElementById("ogClusters_filter");
 
   if (prevState != "init") {
@@ -880,6 +898,9 @@ function ogClusters_cb_fun() {
     set_clusters_toggle(false);
     clusters_cb_fun();
 
+    if(trigger == "user"){
+        update_centroids("line 872")
+    };
     add_layer(ogClusterLayers[selectedState]);
     // update the number of clusters available
     update_clusterInfo("og");
@@ -1063,6 +1084,7 @@ function update_centroids(msg){
             hide_loading_cluster();
             //update the filters
             update_filter()
+            update_clusterInfo(get_cluster_type())
         });
   }
   else{

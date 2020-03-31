@@ -96,9 +96,9 @@ function update_infoBox(stateName=null, availability=0, defineSelectedState=fals
             '</div>' +
             '<div class="cell info-box__content">' +
               '<div class="grid-x">' +
-                '<div class="cell small-9 info-box__item">Grid Tracking</div><div class="cell small-3 info-box__icon">' + avail.gridTracking + '</div>' +
-                '<div class="cell small-9 info-box__item">Remote Mapping</div><div class="cell small-3 info-box__icon">' + avail.remoteMapping + '</div>' +
-                '<div class="cell small-9 info-box__item">Field Surveys</div><div class="cell small-3 info-box__icon">' + avail.Surveying + '</div>' +
+                '<div class="cell small-9 info-box__item">Grid tracking</div><div class="cell small-3 info-box__icon">' + avail.gridTracking + '</div>' +
+                '<div class="cell small-9 info-box__item">Remote mapping</div><div class="cell small-3 info-box__icon">' + avail.remoteMapping + '</div>' +
+                '<div class="cell small-9 info-box__item">Field surveys</div><div class="cell small-3 info-box__icon">' + avail.Surveying + '</div>' +
               '</div>' +
             '</div>' +
           '</div>';
@@ -118,9 +118,9 @@ function update_infoBox(stateName=null, availability=0, defineSelectedState=fals
         '</div>' +
         '<div class="cell info-box__content">' +
           '<div class="grid-x">' +
-            '<div class="cell small-9 info-box__item">Grid Tracking</div><div class="cell small-3"></div>' +
-            '<div class="cell small-9 info-box__item">Remote Mapping</div><div class="cell small-3"></div>' +
-            '<div class="cell small-9 info-box__item">Field Surveys</div><div class="cell small-3"></div>' +
+            '<div class="cell small-9 info-box__item">Grid tracking</div><div class="cell small-3"></div>' +
+            '<div class="cell small-9 info-box__item">Remote mapping</div><div class="cell small-3"></div>' +
+            '<div class="cell small-9 info-box__item">Field surveys</div><div class="cell small-3"></div>' +
           '</div>' +
         '</div>' +
       '</div>';
@@ -158,7 +158,7 @@ function update_clusterInfo(properties, selectedClustersNum=0, clusterNum="?") {
         control_content =
           '<div class="grid-x browse-box__items">\
             <div class="browse-box--left">Area (km²):</div><div class="browse-box--right"></div>\
-            <div class="browse-box--left">Distance to Grid (km):</div><div class="browse-box--right"></div>\
+            <div class="browse-box--left">Distance to grid (km):</div><div class="browse-box--right"></div>\
           </div>';
     }
 
@@ -167,7 +167,7 @@ function update_clusterInfo(properties, selectedClustersNum=0, clusterNum="?") {
         control_content =
           '<div class="grid-x browse-box__items">\
             <div class="browse-box--left">Area (km²):</div><div class="browse-box--right">' + parseFloat(properties.area_km2).toFixed(2) + '</div>\
-            <div class="browse-box--left">Distance to Grid (km):</div><div class="browse-box--right">' + parseFloat(properties.grid_dist_km).toFixed(1) + '</div>\
+            <div class="browse-box--left">Distance to grid (km):</div><div class="browse-box--right">' + parseFloat(properties.grid_dist_km).toFixed(1) + '</div>\
           </div>';
           settlements_content = '<div class="browse-box__clusters"><div><span>' + clusterNum + ' </span> of <span id="filtered-clusters-num">' + selectedClustersNum + '</span></div></div>'
     };
@@ -178,7 +178,7 @@ function update_clusterInfo(properties, selectedClustersNum=0, clusterNum="?") {
           <div class="browse-box--left">Area (km²):</div><div class="browse-box--right"></div>\
           <div class="browse-box--left">Building count:</div><div class="browse-box--right"></div>\
           <div class="browse-box--left">Built-up density (%):</div><div class="browse-box--right"></div>\
-          <div class="browse-box--left">Distance to Grid (km):</div><div class="browse-box--right"></div>\
+          <div class="browse-box--left">Distance to grid (km):</div><div class="browse-box--right"></div>\
         </div>';
     };
 
@@ -189,7 +189,7 @@ function update_clusterInfo(properties, selectedClustersNum=0, clusterNum="?") {
           <div class="browse-box--left">Area (km²):</div><div class="browse-box--right">' + parseFloat(properties.area_km2).toFixed(2) + '</div>\
           <div class="browse-box--left">Building count:</div><div class="browse-box--right">' + parseFloat(properties.building_count).toFixed(0) + '</div>\
           <div class="browse-box--left">Built-up density (%):</div><div class="browse-box--right">' +parseFloat(properties.percentage_building_area).toFixed(2) + '</div>\
-          <div class="browse-box--left">Distance to Grid (km):</div><div class="browse-box--right">' + parseFloat(properties.grid_dist_km).toFixed(1) + '</div>\
+          <div class="browse-box--left">Distance to grid (km):</div><div class="browse-box--right">' + parseFloat(properties.grid_dist_km).toFixed(1) + '</div>\
         </div>';
         settlements_content = '<div class="browse-box__clusters"><div><span>' + clusterNum + ' </span> of <span id="filtered-clusters-num">' + selectedClustersNum + '</span></div></div>'
 
