@@ -285,15 +285,23 @@ function changeogBuildingsSlider(str, h, values) {
   currentfilter.ogmaxb = values[1];
   map.fireEvent("ogfilterchange", currentfilter);
 };
+
+
+var ogBuildingsSliderMinFormat = wNumb({
+    decimals: 0,
+    // show < before value if it's 300
+	edit: function( value ){
+		return (value == '300') ? '< 300' : value;
+	},
+});
+
 var ogBuildingsSlider = document.getElementById('ogBuildingsSlider');
 noUiSlider.create(ogBuildingsSlider, {
   ...sliderOptions,
-  tooltips: [wNumb({decimals: 0}), wNumb({decimals: 0})],
-  start: [0, 5000],
+  tooltips: [ogBuildingsSliderMinFormat, wNumb({decimals: 0})],
+  start: [300, 5000],
   range: {
-    'min': [0, 1],
-    '10%': [10, 1],
-    '30%': [100, 10],
+    'min': [300, 10],
     '80%': [1000, 100],
     'max': 11000,
   }
@@ -309,7 +317,7 @@ function changeogBuildingsFootprintSlider(str, h, values) {
 var ogBuildingsFootprintSlider = document.getElementById('ogBuildingsFootprintSlider');
 noUiSlider.create(ogBuildingsFootprintSlider, {
   ...sliderOptions,
-  tooltips: [wNumb({decimals: 2, suffix: ' %'}), wNumb({decimals: 2, suffix: ' %'})],
+  tooltips: [wNumb({suffix: ' %', decimals: 2}) , wNumb({suffix: ' %', decimals: 2})],
   start: [0, 0.8],
   range: {
     'min': [0, 0.01],
