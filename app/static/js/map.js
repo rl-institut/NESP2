@@ -35,7 +35,7 @@ gridLegend.update = function(props) {
 
 var baseMaps = {
   "Humanitarian OSM": hot,
-  "esri": esri,
+  "Esri World Imagery": esri,
 };
 
 function remove_basemaps() {
