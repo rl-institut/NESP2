@@ -244,7 +244,7 @@ body {
 	//margin: 20px auto;
 }
 .sp-circle {
-	border: 4px #fff solid;
+	border: 4px #eeeff1 solid;
 	border-top: 4px rgb(70,70,70) solid;
 	border-radius: 50%;
 	-webkit-animation: spCircRot .6s infinite linear;
@@ -792,7 +792,7 @@ img.footer-maps-logos__giz {
   padding-left: 0.5rem;
   padding-right: 0.5rem;
   font-weight: 700;
-  transform: translateY(8px);
+  text-align: center;
 }
 
 .browse-box .browse-box__btn a {
@@ -801,6 +801,22 @@ img.footer-maps-logos__giz {
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 40px;
+}
+
+.browse-box__number {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.browse-box__clusters {
+  display: inline;
+  vertical-align: middle;
+}
+
+#browse-spin {
+    padding-left:0.5rem;
 }
 
 .browse-box .browse-box__btn img {

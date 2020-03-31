@@ -152,7 +152,7 @@ function update_clusterInfo(properties, selectedClustersNum=0, clusterNum="?") {
 
     var control_content = ''
 
-    var settlements_content = '<span>Click on a settlement</span>'
+    var settlements_content = '<div class="browse-box__clusters"><div><span>Click on a settlement</span></div></div>'
 
     if (properties == "all"){
         control_content =
@@ -169,7 +169,7 @@ function update_clusterInfo(properties, selectedClustersNum=0, clusterNum="?") {
             <div class="browse-box--left">Area (km²):</div><div class="browse-box--right">' + parseFloat(properties.area_km2).toFixed(2) + '</div>\
             <div class="browse-box--left">Distance to Grid (km):</div><div class="browse-box--right">' + parseFloat(properties.grid_dist_km).toFixed(1) + '</div>\
           </div>';
-          settlements_content = '<span>' + clusterNum + ' </span> of <span id="filtered-clusters-num">' + selectedClustersNum + '</span>'
+          settlements_content = '<div class="browse-box__clusters"><div><span>' + clusterNum + ' </span> of <span id="filtered-clusters-num">' + selectedClustersNum + '</span></div></div>'
     };
 
     if (properties == "og"){
@@ -191,8 +191,13 @@ function update_clusterInfo(properties, selectedClustersNum=0, clusterNum="?") {
           <div class="browse-box--left">Built-up density (%):</div><div class="browse-box--right">' +parseFloat(properties.percentage_building_area).toFixed(2) + '</div>\
           <div class="browse-box--left">Distance to Grid (km):</div><div class="browse-box--right">' + parseFloat(properties.grid_dist_km).toFixed(1) + '</div>\
         </div>';
-        settlements_content = '<span>' + clusterNum + ' </span> of <span id="filtered-clusters-num">' + selectedClustersNum + '</span>'
+        settlements_content = '<div class="browse-box__clusters"><div><span>' + clusterNum + ' </span> of <span id="filtered-clusters-num">' + selectedClustersNum + '</span></div></div>'
 
+    };
+
+    // display a loading wheel when the
+    if(is_currently_loading_clusters() == true){
+        settlements_content = '<div>Updating</div> <div id="browse-spin" class="sp sp-circle"></div>';
     };
 
     control_content = '\
@@ -203,9 +208,9 @@ function update_clusterInfo(properties, selectedClustersNum=0, clusterNum="?") {
             <a class="cell large-offset-1 large-2 btn--left" onclick="prev_selection_fun()">\
               <img class="state_info__img" src="../static/img/icons/i_arrow_left_g.svg">\
             </a>\
-            <p class="cell large-6 browse-box__number">'
+            <div class="cell large-6 browse-box__number">'
              + settlements_content +
-            '</p>\
+            '</div>\
             <a class="cell large-2 btn--right" onclick="next_selection_fun()">\
               <img class="state_info__img" src="../static/img/icons/i_arrow_right_g.svg">\
             </a>\
