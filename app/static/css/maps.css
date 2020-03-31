@@ -42,6 +42,14 @@ h1, h2, h3 {
 }
 
 @font-face {
+  font-family: 'Source Sans Pro';
+  src: url('../fonts/SourceSansPro-Bold-Italic.woff2') format('woff2'),
+    url('../fonts/Poppins-Bold-Italic.woff') format('woff');
+  font-weight: bold;
+  font-style: italic;
+}
+
+@font-face {
   font-family: 'Poppins';
   src: url('../fonts/Poppins-Bold.woff2') format('woff2'),
       url('../fonts/Poppins-Bold.woff') format('woff');
@@ -122,6 +130,10 @@ a {
   height: 1.5rem;
   vertical-align: middle;
 }
+.map-legend__label p {
+    text-align: left;
+}
+
 
 .legend-color {
   height: .5rem;
@@ -224,10 +236,34 @@ body {
   }
 }
 
+/* Spinner Circle Rotation */
+.sp {
+	width: 25px;
+	height: 25px;
+	//clear: both;
+	//margin: 20px auto;
+}
+.sp-circle {
+	border: 4px #eeeff1 solid;
+	border-top: 4px rgb(70,70,70) solid;
+	border-radius: 50%;
+	-webkit-animation: spCircRot .6s infinite linear;
+	animation: spCircRot .6s infinite linear;
+}
+@-webkit-keyframes spCircRot {
+	from { -webkit-transform: rotate(0deg); }
+	to { -webkit-transform: rotate(359deg); }
+}
+@keyframes spCircRot {
+	from { transform: rotate(0deg); }
+	to { transform: rotate(359deg); }
+}
+
+
 
 
 .map-legend-grid {
-    padding-left: 5rem;
+    padding-left: 3rem;
 }
 
 .split {
@@ -317,6 +353,7 @@ background-color: #fff;
   width: 100%;
   font-size: 10pt;
   font-weight: bold;
+  font-family: 'Source Sans Pro', sans-serif;
   padding: .75rem .5rem;
   border-radius: 4px;
   cursor: pointer;
@@ -389,6 +426,7 @@ button {
   color: #464646;
   font-size: 10pt;
   font-weight: bold;
+  font-family: 'Source Sans Pro', sans-serif;
 }
 
 .select-items {
@@ -725,6 +763,7 @@ img.footer-maps-logos__giz {
 
 .info-box .info-box__icon {
   padding: .5rem;
+  text-align: left;
 }
 
 .browse-box {
@@ -753,7 +792,7 @@ img.footer-maps-logos__giz {
   padding-left: 0.5rem;
   padding-right: 0.5rem;
   font-weight: 700;
-  transform: translateY(8px);
+  text-align: center;
 }
 
 .browse-box .browse-box__btn a {
@@ -762,6 +801,22 @@ img.footer-maps-logos__giz {
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 40px;
+}
+
+.browse-box__number {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.browse-box__clusters {
+  display: inline;
+  vertical-align: middle;
+}
+
+#browse-spin {
+    padding-left:0.5rem;
 }
 
 .browse-box .browse-box__btn img {

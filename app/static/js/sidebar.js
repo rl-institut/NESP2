@@ -26,6 +26,7 @@ var centroids_layer_ids = {};
 var current_cluster_centroids = Object();
 var currently_featured_centroid_id = 0;
 var flying_to_next_cluster = false;
+var downloadingClusters = false;
 var statesWithOgClusters = [
     'Jigawa',
      'Kano',
@@ -308,7 +309,7 @@ function changeogBuildingsFootprintSlider(str, h, values) {
 var ogBuildingsFootprintSlider = document.getElementById('ogBuildingsFootprintSlider');
 noUiSlider.create(ogBuildingsFootprintSlider, {
   ...sliderOptions,
-  tooltips: [wNumb({suffix: ' %',}), wNumb({suffix: ' %',})],
+  tooltips: [wNumb({decimals: 2, suffix: ' %'}), wNumb({decimals: 2, suffix: ' %'})],
   start: [0, 0.8],
   range: {
     'min': [0, 0.01],
@@ -342,9 +343,11 @@ function update_filter(msg) {
         if (num_filtered_clusters == 1){
             new_text = "= " + num_filtered_clusters + " settlement";
         };
-        filter_title.text(new_text);
-        filter_title = $("#filtered-clusters-num");
-        filter_title.text(num_filtered_clusters);
+        if (downloadingClusters == false){
+            filter_title.text(new_text);
+            filter_title = $("#filtered-clusters-num");
+            filter_title.text(num_filtered_clusters);
+        };
     }
     return num_filtered_clusters;
 };
@@ -414,6 +417,18 @@ function show_sidebar__btn(className) {
   return className;
 };
 
+
+function show_loading_cluster(){
+    console.log("#" + get_cluster_type() + "-spin")
+    spinId = $("#" + get_cluster_type() + "-spin")[0];
+    console.log(spinId)
+    spinId.className = show_sidebar__btn(spinId.className);
+}
+
+function hide_loading_cluster(){
+    spinId = $("#" + get_cluster_type() + "-spin")[0];
+    spinId.className = hide_sidebar__btn(spinId.className);
+}
 
 function disable_sidebar_filter(className) {
   return className.replace(" active-filter", " hidden-filter");
@@ -1003,13 +1018,24 @@ function convert_light_json_to_geojson(data, cluster_type) {
 // Function takes the data from update_centroids_data. Due to the asynchronous call they cannot simply be stored in a variable
 function update_centroids(msg){
   console.log("update centroid: " + msg);
-  // only fetch the data if it does not exist yet
   var cluster_type = get_cluster_type();
+  if (get_cluster_type() == "og"){
+    var filter_title = $("#n_ogclusters");
+  }
+  else{
+      var filter_title = $("#n_clusters");
+  }
+  var new_text = "= ... loading clusters info ...";
+  filter_title.text(new_text);
+
   if (centroids_layer_ids[selectedState] === undefined) {
     centroids_layer_ids[selectedState] = {};
   }
-
+  // only fetch the data if it does not exist yet
   if (centroids_layer_ids[selectedState][cluster_type] === undefined){
+        // to prevent filter to update while downloading
+        downloadingClusters = true;
+        show_loading_cluster();
         update_centroids_data(function(data, centroids_file_key, cluster_type){
             var centroids = convert_light_json_to_geojson(data, cluster_type)
             // Creates a geojson-layer with the data
@@ -1032,6 +1058,9 @@ function update_centroids(msg){
             centroids_layer_id = centroidsGroup.getLayerId(centroids_layer)
             // store this id in a dict with state name as keys
             centroids_layer_ids[centroids_file_key][cluster_type] = centroids_layer_id
+            // reset the download flag to false
+            downloadingClusters = false;
+            hide_loading_cluster();
             //update the filters
             update_filter()
         });
