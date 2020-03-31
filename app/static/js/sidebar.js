@@ -470,6 +470,10 @@ function adapt_sidebar_to_selection_level(selectionLevel) {
   document.getElementById("state").className = "cell small-6 level sidebar__btn";
   document.getElementById("village").className = "cell small-6 level sidebar__btn";
 
+  if (selectionLevel == "national"){ 
+    document.getElementById("village").className = "cell small-6 level sidebar__btn inert disabled";
+  }
+
   document.getElementById(selectionLevel).className = "cell small-6 level sidebar__btn active";
 };
 
