@@ -85,9 +85,9 @@ var ogClusterSelectionStyle = {
   fillOpacity: 0,
   stroke: true,
   fill: true,
-  color: "#1dd069",
+  color: "#00cbdb",
   opacity: 1,
-  weight: 3,
+  weight: 3.5,
 };
 
 var ogClustersStyle = {
@@ -95,9 +95,9 @@ var ogClustersStyle = {
   fillOpacity: 0,
   stroke: true,
   fill: true,
-  color: "#1dd069",
+  color: "#00cbdb",
   opacity: 1,
-  weight: 2,
+  weight: 3.5,
 };
 
 var notNigeriaStyle = {
