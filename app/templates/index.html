@@ -48,7 +48,7 @@
       <div class="sidebar-accordion">
         <div class="grid-x sidebar-levels">
           <div id="national" class="cell small-2 level sidebar__btn active" title="national level">
-            <button onclick="national_button_fun()">National <br> Overview</button>
+            <button onclick="national_button_fun()">National <br> overview</button>
           </div>
           <div id="state" class="cell small-2 level sidebar__btn" title="state level">
             <button onclick="state_button_fun()">State <br> level</button>
@@ -114,9 +114,9 @@
         {{ checkbox.input(id="states", label="States (availability)", visible={}) }}
         {{ checkbox.input(id="buildingDensity", label="Buildings", visible={}) }}
         <!-- grid layer on national level only -->
-        {{ checkbox.input(id="nationalGrid", label="Medium Voltage Grid", visible={'national': 'show'}) }}
+        {{ checkbox.input(id="nationalGrid", label="Medium voltage grid", visible={'national': 'show'}) }}
         <!-- grid layer on state and village level only -->
-        {{ checkbox.input(id="grid", label="Medium Voltage Grid", visible={'state': 'show', 'village': 'show'}) }}
+        {{ checkbox.input(id="grid", label="Medium voltage grid", visible={'state': 'show', 'village': 'show'}) }}
 
         {{ checkbox.input(id="heatmap", label="Identified settlements by satellite imagery", visible={'national': 'show'}) }}
 
@@ -139,7 +139,7 @@
           <div class="cell n_hide s_show v_show">
             <div class="sidebar-panel sidebar-panel-content content-filter hidden-filter" name="clustersContent">
               <div class="sidebar-panel-item">
-                <p href="#" class="sidebar-panel-item-title-filterlabel">Distance to Grid</p>
+                <p href="#" class="sidebar-panel-item-title-filterlabel">Distance to grid</p>
                 <div class="filter">
                   <div class="filter__slider" id="dtgSlider"></div>
                 </div>
@@ -205,7 +205,7 @@
           <div class="cell n_hide s_show v_show">
             <div class="sidebar-panel sidebar-panel-content content-filter hidden-filter" name="ogClustersContent">
               <div class="sidebar-panel-item sidebar-panel-item-filter">
-                <p href="#" class="sidebar-panel-item-title-filterlabel">Distance to Grid</p>
+                <p href="#" class="sidebar-panel-item-title-filterlabel">Distance to grid</p>
                 <div class="filter">
                   <div class="filter__slider" id="ogDistanceSlider"></div>
                 </div>
@@ -231,7 +231,7 @@
           <div class="cell n_hide s_show v_show">
             <div class="sidebar-panel sidebar-panel-content content-filter hidden-filter" name="ogClustersContent">
               <div class="sidebar-panel-item">
-                <p href="#" class="sidebar-panel-item-title-filterlabel">Building Density</p>
+                <p href="#" class="sidebar-panel-item-title-filterlabel">Building density</p>
                 <div class="filter">
                   <div class="filter__slider" id="ogBuildingsFootprintSlider"></div>
                 </div>
