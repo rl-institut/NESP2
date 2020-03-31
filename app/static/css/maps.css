@@ -236,6 +236,30 @@ body {
   }
 }
 
+/* Spinner Circle Rotation */
+.sp {
+	width: 25px;
+	height: 25px;
+	//clear: both;
+	//margin: 20px auto;
+}
+.sp-circle {
+	border: 4px #fff solid;
+	border-top: 4px rgb(70,70,70) solid;
+	border-radius: 50%;
+	-webkit-animation: spCircRot .6s infinite linear;
+	animation: spCircRot .6s infinite linear;
+}
+@-webkit-keyframes spCircRot {
+	from { -webkit-transform: rotate(0deg); }
+	to { -webkit-transform: rotate(359deg); }
+}
+@keyframes spCircRot {
+	from { transform: rotate(0deg); }
+	to { transform: rotate(359deg); }
+}
+
+
 
 
 .map-legend-grid {
