@@ -12,7 +12,7 @@ legend.onAdd = function(map) {
   return this._div;
 };
 legend.update = function(props) {
-  this._div.innerHTML = '<div class="grid-x"><div class="small-3 map-legend__text legend_text"><div class="legend-color legend-color--green"></div></div><div class="small-9 map-legend__label"><p>Datasets available</p></div><div class="small-3 map-legend__text legend_text"><div class="legend-color legend-color--gray"></div></div><div class="small-9 map-legend__label"><p>Datasets <span class="map-legend--highlight">not yet</span> available</p></div></div>'
+  this._div.innerHTML = '<div class="grid-x"><div class="small-3 map-legend__text"><div class="legend-color-grid legend-color--green"></div></div><div class="small-9 map-legend__label"><p>Datasets available</p></div><div class="small-3 map-legend__text"><div class="legend-color-grid legend-color--gray"></div></div><div class="small-9 map-legend__label"><p>Datasets <span class="map-legend--highlight">not yet</span> available</p></div></div>'
 };
 legend.addTo(map);
 
@@ -30,8 +30,8 @@ gridLegend.onAdd = function(map) {
 };
 
 gridLegend.update = function(props) {
-  this._div.innerHTML = '<div class="grid-x"><div class="small-3 map-legend__text"><div class="legend-color-grid legend-color--brown"></div></div><div class="small-9 legend-text">11kV Grid</div><div class="small-3 map-legend__text"><div class="legend-color legend-color-grid legend-color--red"></div></div><div class="small-9 legend-text">33kV Grid</div></div>'
-};
+  this._div.innerHTML = '<div class="grid-x"><div class="small-3 map-legend__text"><div class="legend-color-grid legend-color--brown"></div></div><div class="small-9 map-legend__label">11 kV Grid</div><div class="small-3 map-legend__text"><div class="legend-color legend-color-grid legend-color--red"></div></div><div class="small-9 map-legend__label">33 kV Grid</div></div>'
+  };
 
 var baseMaps = {
   "Humanitarian OSM": hot,
@@ -157,7 +157,6 @@ function update_clusterInfo(properties, selectedClustersNum=0, clusterNum="?") {
     if (properties == "all"){
         control_content =
           '<div class="grid-x browse-box__items">\
-            <div class="browse-box--left">ID:</div><div class="browse-box--right"></div>\
             <div class="browse-box--left">Area (km²):</div><div class="browse-box--right"></div>\
             <div class="browse-box--left">Distance to Grid (km):</div><div class="browse-box--right"></div>\
           </div>';
@@ -167,7 +166,6 @@ function update_clusterInfo(properties, selectedClustersNum=0, clusterNum="?") {
         // all
         control_content =
           '<div class="grid-x browse-box__items">\
-            <div class="browse-box--left">ID:</div><div class="browse-box--right">' + properties.cluster_all_id + '</div>\
             <div class="browse-box--left">Area (km²):</div><div class="browse-box--right">' + parseFloat(properties.area_km2).toFixed(2) + '</div>\
             <div class="browse-box--left">Distance to Grid (km):</div><div class="browse-box--right">' + parseFloat(properties.grid_dist_km).toFixed(1) + '</div>\
           </div>';

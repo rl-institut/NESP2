@@ -122,6 +122,10 @@ a {
   height: 1.5rem;
   vertical-align: middle;
 }
+.map-legend__label p {
+    text-align: left;
+}
+
 
 .legend-color {
   height: .5rem;
@@ -227,7 +231,7 @@ body {
 
 
 .map-legend-grid {
-    padding-left: 5rem;
+    padding-left: 3rem;
 }
 
 .split {
