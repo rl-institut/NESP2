@@ -308,7 +308,7 @@ function changeogBuildingsFootprintSlider(str, h, values) {
 var ogBuildingsFootprintSlider = document.getElementById('ogBuildingsFootprintSlider');
 noUiSlider.create(ogBuildingsFootprintSlider, {
   ...sliderOptions,
-  tooltips: [wNumb({suffix: ' %',}), wNumb({suffix: ' %',})],
+  tooltips: [wNumb({decimals: 2, suffix: ' %'}), wNumb({decimals: 2, suffix: ' %'})],
   start: [0, 0.8],
   range: {
     'min': [0, 0.01],
