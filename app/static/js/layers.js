@@ -258,9 +258,9 @@ function addFunctionsToClusterLayer(layer) {
         if (typeof prop.area_km2 !== 'undefined') {
           // check if numbers are filtered correctly
           //if (prop.grid_dist_km == null){alert("NULLAROO!");}
-          if (!(prop.area_km2 > filter.minarea && 
+          if (!(prop.area_km2 >= filter.minarea && 
                 prop.area_km2 < filter.maxarea && 
-                ((prop.grid_dist_km > filter.mindtg && prop.grid_dist_km < filter.maxdtg ) || (filter.maxdtg == 50 && prop.grid_dist_km == null) )
+                ((prop.grid_dist_km >= filter.mindtg && prop.grid_dist_km < filter.maxdtg ) || (filter.maxdtg == 50 && prop.grid_dist_km == null) )
              )) {
             newhiddenIDs.push(prop.cluster_all_id);
             if (this.hiddenIDs.indexOf(prop.cluster_all_id) == -1) {
@@ -403,7 +403,7 @@ function addFunctionsToOGClusterLayer(layer) {
 
         let prop = f[fkey].feature.properties;
         if (typeof prop.area_km2 !== 'undefined') {
-          if (!(prop.area_km2 > filter.ogminarea && prop.area_km2 < filter.ogmaxarea && prop.grid_dist_km > filter.ogmindtg && prop.grid_dist_km < filter.ogmaxdtg && prop.building_count > filter.ogminb && prop.building_count < filter.ogmaxb && prop.percentage_building_area > filter.ogminbfp && prop.percentage_building_area < filter.ogmaxbfp)) {
+          if (!(prop.area_km2 >= filter.ogminarea && prop.area_km2 < filter.ogmaxarea && prop.grid_dist_km >= filter.ogmindtg && prop.grid_dist_km < filter.ogmaxdtg && prop.building_count >= filter.ogminb && prop.building_count < filter.ogmaxb && prop.percentage_building_area >= filter.ogminbfp && prop.percentage_building_area < filter.ogmaxbfp)) {
             newhiddenIDs.push(prop.cluster_offgrid_id);
             if (this.hiddenIDs.indexOf(prop.cluster_offgrid_id) == -1) {
               this.setFeatureStyle(prop.cluster_offgrid_id, this.hiddenstyle);
