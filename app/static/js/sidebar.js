@@ -337,8 +337,7 @@ ogBuildingsFootprintSlider.noUiSlider.on("end", update_filter);
 // TODO: check if a POST to db is needed at all as info to clusters is available for each state
 // locally now
 function update_filter(msg) {
-    console.log("update filters: " + msg);
-    console.log(selectedState);
+    //console.log("update filters: " + msg);
     var num_filtered_clusters = 0;
     if (selectedState != "init") {
 
@@ -431,9 +430,7 @@ function show_sidebar__btn(className) {
 
 
 function show_loading_cluster(){
-    console.log("#" + get_cluster_type() + "-spin")
     spinId = $("#" + get_cluster_type() + "-spin")[0];
-    console.log(spinId)
     spinId.className = show_sidebar__btn(spinId.className);
 }
 
@@ -1203,7 +1200,7 @@ function next_selection_fun(){
   }
   // else if the selected centroid is the last one, keep it selected
   else if (filtered_centroids_keys.indexOf(currently_featured_centroid_id) == filtered_centroids_keys.length -1){
-    console.log("last element")
+    //console.log("last element")
   }
   // else set the selected centroid to be the next one via index
   else{
@@ -1231,7 +1228,7 @@ function prev_selection_fun(){
   // else if the selected centroid is the first one, keep it selected
   else if (filtered_centroids_keys.indexOf(currently_featured_centroid_id) == 0){
     currently_featured_centroid_id = filtered_centroids_keys[0];
-    console.log("first element")
+    //console.log("first element")
   }
   // else set the selected centroid to be the previous one via index
   else{currently_featured_centroid_id = filtered_centroids_keys[filtered_centroids_keys.indexOf(currently_featured_centroid_id) - 1 ]; 
