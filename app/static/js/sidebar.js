@@ -337,8 +337,7 @@ ogBuildingsFootprintSlider.noUiSlider.on("end", update_filter);
 // TODO: check if a POST to db is needed at all as info to clusters is available for each state
 // locally now
 function update_filter(msg) {
-    console.log("update filters: " + msg);
-    console.log(selectedState);
+    //console.log("update filters: " + msg);
     var num_filtered_clusters = 0;
     if (selectedState != "init") {
 
@@ -431,9 +430,7 @@ function show_sidebar__btn(className) {
 
 
 function show_loading_cluster(){
-    console.log("#" + get_cluster_type() + "-spin")
     spinId = $("#" + get_cluster_type() + "-spin")[0];
-    console.log(spinId)
     spinId.className = show_sidebar__btn(spinId.className);
 }
 
@@ -1091,6 +1088,7 @@ function update_centroids(msg){
     centroids_layer_id = centroids_layer_ids[selectedState][cluster_type]
     //update the filters
     update_filter()
+    hide_loading_cluster();
   }
 };
 
@@ -1136,12 +1134,12 @@ function filter_centroid_keys(){
       //if activated clusters are off-grid-clusters
     if (centroids[key].feature.properties.hasOwnProperty('percentage_building_area')){
       if (
-        centroids[key].feature.properties.grid_dist_km > currentfilter.ogmindtg && 
-        centroids[key].feature.properties.grid_dist_km < currentfilter.ogmaxdtg && 
-        centroids[key].feature.properties.building_count > currentfilter.ogminb && 
-        centroids[key].feature.properties.building_count < currentfilter.ogmaxb &&
-        centroids[key].feature.properties.percentage_building_area > currentfilter.ogminbfp && 
-        centroids[key].feature.properties.percentage_building_area < currentfilter.ogmaxbfp
+        centroids[key].feature.properties.grid_dist_km >= currentfilter.ogmindtg && 
+        centroids[key].feature.properties.grid_dist_km <= currentfilter.ogmaxdtg &&
+        centroids[key].feature.properties.building_count >= currentfilter.ogminb &&
+        centroids[key].feature.properties.building_count <= currentfilter.ogmaxb &&
+        centroids[key].feature.properties.percentage_building_area >= currentfilter.ogminbfp &&
+        centroids[key].feature.properties.percentage_building_area <= currentfilter.ogmaxbfp
       ){
         filtered_centroids_keys.push({"key": key, "area": centroids[key].feature.properties.area_km2});
         og_centroids_dict[centroids[key].feature.properties.cluster_offgrid_id] = key;
@@ -1149,10 +1147,10 @@ function filter_centroid_keys(){
     }
     else if (centroids[key].feature.properties.hasOwnProperty('cluster_all_id')){
       if (
-        centroids[key].feature.properties.area_km2 > currentfilter.minarea && 
-        centroids[key].feature.properties.area_km2 < currentfilter.maxarea &&
-        centroids[key].feature.properties.grid_dist_km > currentfilter.mindtg && 
-        centroids[key].feature.properties.grid_dist_km < currentfilter.maxdtg
+        centroids[key].feature.properties.area_km2 >= currentfilter.minarea &&
+        centroids[key].feature.properties.area_km2 <= currentfilter.maxarea &&
+        centroids[key].feature.properties.grid_dist_km >= currentfilter.mindtg &&
+        centroids[key].feature.properties.grid_dist_km <= currentfilter.maxdtg
       ){
         filtered_centroids_keys.push({"key": key, "area": centroids[key].feature.properties.area_km2});
         all_centroids_dict[centroids[key].feature.properties.cluster_all_id] = key;
@@ -1202,7 +1200,7 @@ function next_selection_fun(){
   }
   // else if the selected centroid is the last one, keep it selected
   else if (filtered_centroids_keys.indexOf(currently_featured_centroid_id) == filtered_centroids_keys.length -1){
-    console.log("last element")
+    //console.log("last element")
   }
   // else set the selected centroid to be the next one via index
   else{
@@ -1230,7 +1228,7 @@ function prev_selection_fun(){
   // else if the selected centroid is the first one, keep it selected
   else if (filtered_centroids_keys.indexOf(currently_featured_centroid_id) == 0){
     currently_featured_centroid_id = filtered_centroids_keys[0];
-    console.log("first element")
+    //console.log("first element")
   }
   // else set the selected centroid to be the previous one via index
   else{currently_featured_centroid_id = filtered_centroids_keys[filtered_centroids_keys.indexOf(currently_featured_centroid_id) - 1 ]; 
