@@ -1091,6 +1091,7 @@ function update_centroids(msg){
     centroids_layer_id = centroids_layer_ids[selectedState][cluster_type]
     //update the filters
     update_filter()
+    hide_loading_cluster();
   }
 };
 
