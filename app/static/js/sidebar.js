@@ -1136,12 +1136,12 @@ function filter_centroid_keys(){
       //if activated clusters are off-grid-clusters
     if (centroids[key].feature.properties.hasOwnProperty('percentage_building_area')){
       if (
-        centroids[key].feature.properties.grid_dist_km > currentfilter.ogmindtg && 
-        centroids[key].feature.properties.grid_dist_km < currentfilter.ogmaxdtg && 
-        centroids[key].feature.properties.building_count > currentfilter.ogminb && 
-        centroids[key].feature.properties.building_count < currentfilter.ogmaxb &&
-        centroids[key].feature.properties.percentage_building_area > currentfilter.ogminbfp && 
-        centroids[key].feature.properties.percentage_building_area < currentfilter.ogmaxbfp
+        centroids[key].feature.properties.grid_dist_km >= currentfilter.ogmindtg && 
+        centroids[key].feature.properties.grid_dist_km <= currentfilter.ogmaxdtg &&
+        centroids[key].feature.properties.building_count >= currentfilter.ogminb &&
+        centroids[key].feature.properties.building_count <= currentfilter.ogmaxb &&
+        centroids[key].feature.properties.percentage_building_area >= currentfilter.ogminbfp &&
+        centroids[key].feature.properties.percentage_building_area <= currentfilter.ogmaxbfp
       ){
         filtered_centroids_keys.push({"key": key, "area": centroids[key].feature.properties.area_km2});
         og_centroids_dict[centroids[key].feature.properties.cluster_offgrid_id] = key;
@@ -1149,10 +1149,10 @@ function filter_centroid_keys(){
     }
     else if (centroids[key].feature.properties.hasOwnProperty('cluster_all_id')){
       if (
-        centroids[key].feature.properties.area_km2 > currentfilter.minarea && 
-        centroids[key].feature.properties.area_km2 < currentfilter.maxarea &&
-        centroids[key].feature.properties.grid_dist_km > currentfilter.mindtg && 
-        centroids[key].feature.properties.grid_dist_km < currentfilter.maxdtg
+        centroids[key].feature.properties.area_km2 >= currentfilter.minarea &&
+        centroids[key].feature.properties.area_km2 <= currentfilter.maxarea &&
+        centroids[key].feature.properties.grid_dist_km >= currentfilter.mindtg &&
+        centroids[key].feature.properties.grid_dist_km <= currentfilter.maxdtg
       ){
         filtered_centroids_keys.push({"key": key, "area": centroids[key].feature.properties.area_km2});
         all_centroids_dict[centroids[key].feature.properties.cluster_all_id] = key;
