@@ -95,7 +95,7 @@ Here is a template for new release sections
 - The `filter_centroid_keys` function is only called in `update_filter` (#274)
 - The `filtered_centroids_keys` variable is only accessed via get and set functions (#274)
 - Endpoint `/filtered-cluster` is not used anymore to get filter info, rather it is the `filtered_centroids_keys` function (#274)
-- Adapt filters to show clusters that are 0km distance from grid (#278)
+- Adapt filters to show clusters that are 0km distance from grid (#278, #280)
 
 
 ### Removed
