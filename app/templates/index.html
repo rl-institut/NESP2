@@ -133,6 +133,7 @@
 
         {{ checkbox.input(id="clusters", label="Identified settlements by satellite imagery", visible={'state': 'show', 'village': 'show'}, filter_func=True) }}
 
+
         <div class="grid-x">
           <div class="cell n_hide s_show v_show">
             <div class="sidebar-panel sidebar-panel-content content-filter hidden-filter sidebar-panel-filter-label" name="clustersContent">
@@ -300,6 +301,7 @@
     <div id="map" class="cell large-9"></div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script type="text/javascript">
+      var screen_width_threshold = 1024;
       var csrf_token = "{{ csrf_token() }}";
       $.ajaxSetup({
         beforeSend: function(xhr, settings) {
@@ -326,6 +328,7 @@
     <script src="{{ url_for('static', filename='js/layers.js') }}"></script>
     <script src="{{ url_for('static', filename='js/map.js') }}"></script>
     <script type=text/javascript>
+
       var stateCheckBox = document.getElementById("statesCheckbox")
       {% if states_content is defined %}
           var states_content = {{ states_content|safe }};
@@ -346,9 +349,8 @@
       if (grid_content != gCheckBox.checked){
           gCheckBox.click()
       }
-
   $(document).ready(function(){
-
+      $(document).foundation();
       $('.filter_icon').on("mouseenter", function(){
           // Change src attribute of image
           $(this).attr("src", "../static/img/icons/i_funnel_dark_gray.svg");
@@ -359,6 +361,10 @@
           $(this).attr("src", "../static/img/icons/i_funnel_gray.svg");
 
       });
+      //display a warning for small screens
+      if($(window).width() < screen_width_threshold) {
+        $('#warning-mobile').foundation('toggle');
+      }
   });
 
     </script>
