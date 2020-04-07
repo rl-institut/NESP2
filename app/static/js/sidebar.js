@@ -812,8 +812,14 @@ function clusters_cb_fun(trigger=null) {
     add_layer(clusterLayer[selectedState]);
     // update the number of clusters available
     update_clusterInfo("all");
-    // enable actions with filter icon
-    filter_icon.className = enable_sidebar__filter(filter_icon.className);
+    // enable actions with filter icon if screen is not mobile phone
+    if($(window).width() > screen_width_threshold) {
+        filter_icon.className = enable_sidebar__filter(filter_icon.className);
+    }
+    else{
+        filter_icon.className = disable_sidebar__filter(filter_icon.className);
+    }
+
   } else {
   // set panel side to grey
     document.getElementById("clustersPanel").style.borderLeft = '.25rem solid #eeeff1';
@@ -901,8 +907,13 @@ function ogClusters_cb_fun(trigger=null) {
     add_layer(ogClusterLayers[selectedState]);
     // update the number of clusters available
     update_clusterInfo("og");
-    // enable actions with filter icon
-    filter_icon.className = enable_sidebar__filter(filter_icon.className);
+    // enable actions with filter icon if screen is not mobile phone
+    if($(window).width() > screen_width_threshold) {
+        filter_icon.className = enable_sidebar__filter(filter_icon.className);
+    }
+    else{
+        filter_icon.className = disable_sidebar__filter(filter_icon.className);
+    }
 
   } else {
   // set panel side to grey
