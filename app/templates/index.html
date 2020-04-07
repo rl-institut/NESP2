@@ -27,6 +27,17 @@
 
 {% block content %}
 
+  <div class="reveal level" id="warning-mobile" data-reveal>
+    <h2>Warning</h2>
+    <p>This webmap is currently not yet optimized for mobile devices.</p>
+    <p>For the full functionality please visit from a desktop/laptop computer.</p>
+    <div class="sidebar__btn">
+      <button data-close aria-label="Close modal" type="button">
+        Understood
+      </button>
+    </div>
+  </div>
+
   <div id="map-content" class="grid-x">
     <div id="sidebar" class="cell large-3" data-sticky-container>
       <div id="header-maps" class="grid-x">
