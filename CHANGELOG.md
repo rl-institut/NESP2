@@ -53,6 +53,7 @@ Here is a template for new release sections
 - Replace tilelayer for borders with geojson (#267)
 - Show Number of selected cluster (#239)
 - Filter the cluster by area (#274)
+- Warning popup if screen width is below 1024 pixels (#281)
 
 ### Changed
 - Filter slider get reasonable steps (#167)
@@ -96,6 +97,7 @@ Here is a template for new release sections
 - The `filtered_centroids_keys` variable is only accessed via get and set functions (#274)
 - Endpoint `/filtered-cluster` is not used anymore to get filter info, rather it is the `filtered_centroids_keys` function (#274)
 - Adapt filters to show clusters that are 0km distance from grid (#278, #280)
+- Filter are not clickable if screen width is below 1024 pixels (#281)
 
 
 ### Removed
