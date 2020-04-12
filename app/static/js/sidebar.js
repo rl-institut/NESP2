@@ -275,9 +275,8 @@ noUiSlider.create(ogDistanceSlider, {
   tooltips: [wNumb({decimals: 0, suffix: ' km',}), dtgSliderMaxFormat ],
   start: [5, 1000],
   range: {
-    'min': [0, 0.1],
-    '25%': [5, 0.5],
-    '75%': [10, 1],
+    'min': [5, 0.5],
+    '50%': [10, 1],
     'max': 50,
   }
 });
