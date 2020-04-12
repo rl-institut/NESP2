@@ -1154,7 +1154,7 @@ function filter_centroid_keys(){
         centroids[key].feature.properties.percentage_building_area >= currentfilter.ogminbfp &&
         centroids[key].feature.properties.percentage_building_area <= currentfilter.ogmaxbfp
       ){
-        filtered_centroids_keys.push({"key": key, "area": centroids[key].feature.properties.area_km2});
+        filtered_centroids_keys.push({"key": key, "area": centroids[key].feature.properties.building_count});
         og_centroids_dict[centroids[key].feature.properties.cluster_offgrid_id] = key;
       }
     }
@@ -1171,7 +1171,7 @@ function filter_centroid_keys(){
       }
     }
   }
-  // sort the keys according to area
+  // sort the keys according to area (for og clusters, the area is replaced by building count)
   filtered_centroids_keys.sort(function(a, b) {
       return a.area < b.area;
   });
