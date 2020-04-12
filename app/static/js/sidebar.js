@@ -334,14 +334,11 @@ ogBuildingsFootprintSlider.noUiSlider.on("change", changeogBuildingsFootprintSli
 ogBuildingsFootprintSlider.noUiSlider.on("end", update_filter);
 
 
-// TODO: check if a POST to db is needed at all as info to clusters is available for each state
-// locally now
 function update_filter(msg) {
-    //console.log("update filters: " + msg);
     var num_filtered_clusters = 0;
     if (selectedState != "init") {
 
-        var filtered_centroids_keys = filter_centroid_keys();
+        var [filtered_centroids_keys, total_clusters] = filter_centroid_keys();
         set_filtered_centroids_keys(filtered_centroids_keys)
         num_filtered_clusters = filtered_centroids_keys.length;
         if (get_cluster_type() == "og"){
@@ -350,10 +347,14 @@ function update_filter(msg) {
         else{
             var filter_title = $("#n_clusters");
         }
-        var new_text = "= " + num_filtered_clusters + " settlements";
+        var new_text = " " + num_filtered_clusters + " filtered settlements";
         if (num_filtered_clusters == 1){
-            new_text = "= " + num_filtered_clusters + " settlement";
+            new_text = " " + num_filtered_clusters + " filtered settlement";
         };
+
+        new_text = new_text + " out of " + total_clusters;
+
+        // only update the message if the clusters are not being downloaded
         if (downloadingClusters == false){
             filter_title.text(new_text);
             filter_title = $("#filtered-clusters-num");
@@ -1140,10 +1141,12 @@ function filter_centroid_keys(){
   set_current_cluster_centroids();
   centroids = get_current_centroids_from_layer();
   const keys = Object.keys(centroids);
+  var total_clusters = 0;
   // interates though cluster centroids and pushes keys of clusters that fall within filter settings
   for (const key of keys) {
       //if activated clusters are off-grid-clusters
     if (centroids[key].feature.properties.hasOwnProperty('percentage_building_area')){
+      total_clusters = total_clusters + 1;
       if (
         centroids[key].feature.properties.grid_dist_km >= currentfilter.ogmindtg && 
         centroids[key].feature.properties.grid_dist_km <= currentfilter.ogmaxdtg &&
@@ -1157,6 +1160,7 @@ function filter_centroid_keys(){
       }
     }
     else if (centroids[key].feature.properties.hasOwnProperty('cluster_all_id')){
+      total_clusters = total_clusters + 1;
       if (
         centroids[key].feature.properties.area_km2 >= currentfilter.minarea &&
         centroids[key].feature.properties.area_km2 <= currentfilter.maxarea &&
@@ -1177,7 +1181,7 @@ function filter_centroid_keys(){
   for (var i = 0; i<filtered_centroids_keys.length; i++) {
       answer[i] = filtered_centroids_keys[i].key;
   }
-  return answer;
+  return [answer, total_clusters];
 }
 
 function update_cluster_info(filtered_centroids_keys){
