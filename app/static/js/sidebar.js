@@ -321,7 +321,7 @@ function changeogBuildingsFootprintSlider(str, h, values) {
 var ogBuildingsFootprintSlider = document.getElementById('ogBuildingsFootprintSlider');
 noUiSlider.create(ogBuildingsFootprintSlider, {
   ...sliderOptions,
-  tooltips: [wNumb({suffix: ' %', decimals: 2}) , wNumb({suffix: ' %', decimals: 2})],
+  tooltips: [wNumb({decimals: 2}) , wNumb({decimals: 2})],
   start: [0, 0.8],
   range: {
     'min': [0, 0.01],
