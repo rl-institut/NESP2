@@ -507,6 +507,7 @@ function adapt_view_to_national_level() {
     document.getElementById("nationalGridCheckbox").checked = true;
     set_clusters_toggle(false);
     set_og_clusters_toggle(false);
+    document.getElementById("gridCheckbox").checked = false;
   }
   if (previous_level == "state" || previous_level == "village") {
     document.getElementById("heatmapCheckbox").checked = document.getElementById("clustersCheckbox").checked;
