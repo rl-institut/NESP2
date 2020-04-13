@@ -52,12 +52,17 @@
   <div class="cell {{ assign_visibility(visible) }}">
     <div class="sidebar-panel sidebar-panel-content content-filter hidden-filter" name="{{ name }}">
       <div class="sidebar-panel-item sidebar-panel-item-filter">
-        <p href="#" class="sidebar-panel-item-title-filterlabel">{{ label }}</p>
-        {% if help_button %}
-          <p title="{{ help_text }}">
+        <p href="#" class="sidebar-panel-item-title-filterlabel">
+          {{ label }}
+          {% if help_icon %}
+          <button type="button" data-toggle="{{ id }}-filter-info">
             <img src="{{ url_for('static', filename='img/icons/i_info.svg') }}">
-          </p>
-        {% endif %}
+          </button>
+          <div class="dropdown-pane" id="{{ id }}-filter-info" data-dropdown data-hover="true" data-hover-pane="true" data-position="right" data-alignment="bottom">
+            {{ help_text }}
+          </div>
+          {% endif %}
+        </p>
         <div class="filter">
           <div class="filter__slider" id="{{ id }}"></div>
         </div>
