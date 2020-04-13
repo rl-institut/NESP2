@@ -479,6 +479,12 @@ p.sidebar-panel-item-title {
   display: inline;
 }
 
+.sidebar-panel-item-title-filterlabel img {
+ height: 18px;
+ width: 18px;
+ padding-left: 0.1rem;
+}
+
 .sidebar-panel-item-filter {
   height: auto;
   padding-top: 1rem;

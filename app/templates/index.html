@@ -144,7 +144,7 @@
         {{ checkbox.filter_opt(id="ogAreaSlider", label="Area in km²", name="ogClustersContent", visible={}) }}
         {{ checkbox.filter_opt(id="ogDistanceSlider", label="Distance to grid", name="ogClustersContent") }}
         {{ checkbox.filter_opt(id="ogBuildingsSlider", label="Buildings", name="ogClustersContent") }}
-        {{ checkbox.filter_opt(id="ogBuildingsFootprintSlider", label="Built-up ratio", name="ogClustersContent") }}
+        {{ checkbox.filter_opt(id="ogBuildingsFootprintSlider", label="Built-up ratio", help_icon=True, help_text="Built-up ratio is the fraction of building footprint within the cluster area. A built-up ratio of 0 means that there are no buildings in the cluster (not possible) whereas a built-up ration of 1 means that the cluster area is only made up of buildings", name="ogClustersContent") }}
         {{ checkbox.filter_download_btn(id="download_ogClusters", label="Download selection", name="ogClustersContent") }}
 
       </div>
