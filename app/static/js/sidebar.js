@@ -1214,6 +1214,7 @@ function next_selection_fun(){
   }
   // else if the selected centroid is the last one, keep it selected
   else if (filtered_centroids_keys.indexOf(currently_featured_centroid_id) == filtered_centroids_keys.length -1){
+    currently_featured_centroid_id = filtered_centroids_keys[0];
     //console.log("last element")
   }
   // else set the selected centroid to be the next one via index
@@ -1241,7 +1242,7 @@ function prev_selection_fun(){
   }
   // else if the selected centroid is the first one, keep it selected
   else if (filtered_centroids_keys.indexOf(currently_featured_centroid_id) == 0){
-    currently_featured_centroid_id = filtered_centroids_keys[0];
+    currently_featured_centroid_id = filtered_centroids_keys[filtered_centroids_keys.length - 1];
     //console.log("first element")
   }
   // else set the selected centroid to be the previous one via index
