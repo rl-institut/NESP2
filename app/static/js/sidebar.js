@@ -551,7 +551,7 @@ function adapt_view_to_national_level() {
 function adapt_view_to_state_level() {
   give_status("adapt_view_to_state_level");
 
-  map.options.minZoom = 8;
+  map.options.minZoom = 7;
   map.options.maxZoom = 18;
   map.options.zoomSnap = 1,
 
