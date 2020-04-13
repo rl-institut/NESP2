@@ -52,7 +52,13 @@
           </a>
         </div>
         <div id="header-maps-logo-nigeria" class="cell small-3">
-          <img src="{{ url_for('static', filename='logos/logo-2-crest.png') }}">
+          {% if nesp2_website is defined %}
+          <a href="{{ url_for('maps.index')}}">
+          {% else %}
+          <a href="{{ url_for('landing')}}">
+          {% endif %}
+            <img src="{{ url_for('static', filename='logos/logo-2-crest.png') }}">
+          </a>
         </div>
       </div>
 
