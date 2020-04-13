@@ -29,3 +29,55 @@
 {%- endmacro %}
 
 
+{% macro filter_title(id, label, name, spin_id, visible={'state': 'show', 'village': 'show'}) -%}
+<div class="grid-x">
+  <div class="cell {{ assign_visibility(visible) }}">
+    <div class="sidebar-panel sidebar-panel-content content-filter hidden-filter sidebar-panel-filter-label" name="{{ name }}">
+      <div class="sidebar-panel-item sidebar-panel-item-filter grid-x">
+        <div href="#" class="cell small-10 sidebar-panel-item-title sidebar-panel-item-title-filter">
+          {{ label }}<span id="{{ id }}"></span>
+        </div>
+        <div class="cell small-2">
+          <div id="{{ spin_id }}" class="sp sp-circle is-hidden"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{%- endmacro %}
+
+
+{% macro filter_opt(id, label, name, visible={'state': 'show', 'village': 'show'}, help_icon=False, help_text="") -%}
+<div class="grid-x">
+  <div class="cell {{ assign_visibility(visible) }}">
+    <div class="sidebar-panel sidebar-panel-content content-filter hidden-filter" name="{{ name }}">
+      <div class="sidebar-panel-item sidebar-panel-item-filter">
+        <p href="#" class="sidebar-panel-item-title-filterlabel">{{ label }}</p>
+        {% if help_button %}
+          <p title="{{ help_text }}">
+            <img src="{{ url_for('static', filename='img/icons/i_info.svg') }}">
+          </p>
+        {% endif %}
+        <div class="filter">
+          <div class="filter__slider" id="{{ id }}"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{%- endmacro %}
+
+
+{% macro filter_download_btn(id, label, name, visible={'state': 'show', 'village': 'show'}) -%}
+<div class="grid-x">
+  <div class="cell {{ assign_visibility(visible) }}">
+    <div class="sidebar-panel sidebar-panel-content content-filter hidden-filter" name="{{ name }}">
+      <div class="sidebar-panel-item sidebar-panel-item--download">
+        <div id="{{ id }}" class="download__btn">
+          <button onclick="download_clusters_fun()">{{ label}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{%- endmacro %}
