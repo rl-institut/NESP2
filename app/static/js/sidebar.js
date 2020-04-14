@@ -197,19 +197,31 @@ var sliderOptions = {
 function changeAreaSlider(str, h, values) {
   currentfilter.minarea = values[0];
   currentfilter.maxarea = values[1];
+  if (values[1] == 200) {currentfilter.maxarea = 20000;}
   map.fireEvent("filterchange", currentfilter);
 };
+
+var maxAreaSliderFormat = wNumb({
+    decimals: 0,
+    suffix: ' km²',
+    // show plus after value if it's 50
+	edit: function( value ){
+        if (value == '200 km²') {return('200+ km²');}
+		else {return(value);}
+	},
+});
+
 var areaSlider = document.getElementById('areaSlider');
 noUiSlider.create(areaSlider, {
   ...sliderOptions,
   start: [0.1, 10],
-  tooltips: [wNumb({decimals: 1, suffix: ' km²',}), wNumb({decimals: 0, suffix: ' km²',})],
+  tooltips: [wNumb({decimals: 1, suffix: ' km²',}), maxAreaSliderFormat],
   range: {
     'min': [0, 0.1],
     '40%': [1, 0.5],
     '70%': [10, 1],
-    '90%': [100, 100],
-    'max': 1100,
+    '90%': [100, 10],
+    'max': 200,
   },
 });
 areaSlider.noUiSlider.on("change", changeAreaSlider);
