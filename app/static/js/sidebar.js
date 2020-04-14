@@ -287,7 +287,7 @@ function changeogDistanceSlider(str, h, values) {
 var ogDistanceSlider = document.getElementById('ogDistanceSlider');
 noUiSlider.create(ogDistanceSlider, {
   ...sliderOptions,
-  tooltips: [wNumb({decimals: 0, suffix: ' km',}), dtgSliderMaxFormat ],
+  tooltips: [wNumb({decimals: 0, suffix: ' km',}), dtgSliderFormat ],
   start: [5, 1000],
   range: {
     'min': [5, 0.5],
