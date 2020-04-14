@@ -218,22 +218,25 @@ areaSlider.noUiSlider.on("end", update_filter);
 function changedtgSlider(str, h, values) {
   currentfilter.mindtg = values[0];
   currentfilter.maxdtg = values[1];
+  if (values[1] == 0) {currentfilter.maxdtg = 1;}
   map.fireEvent("filterchange", currentfilter);
 };
 
-var dtgSliderMaxFormat = wNumb({
+var dtgSliderFormat = wNumb({
     decimals: 0,
     suffix: ' km',
     // show plus after value if it's 50
 	edit: function( value ){
-		return (value == '50 km') ? '50+ km' : value;
+        if (value == '50 km') {return('50+ km');}
+        else if (value == '0 km') {return('< 1 km');}
+		else {return(value);}
 	},
 });
 
 var dtgSlider = document.getElementById('dtgSlider');
 noUiSlider.create(dtgSlider, {
   ...sliderOptions,
-  tooltips: [wNumb({decimals: 0, suffix: ' km',}), dtgSliderMaxFormat ],
+  tooltips: [dtgSliderFormat, dtgSliderFormat],
   start: [0, 50],
   range: {
     'min': [0, 1],
