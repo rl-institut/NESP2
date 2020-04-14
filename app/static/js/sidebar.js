@@ -507,6 +507,7 @@ function adapt_view_to_national_level() {
     document.getElementById("nationalGridCheckbox").checked = true;
     set_clusters_toggle(false);
     set_og_clusters_toggle(false);
+    document.getElementById("gridCheckbox").checked = false;
   }
   if (previous_level == "state" || previous_level == "village") {
     document.getElementById("heatmapCheckbox").checked = document.getElementById("clustersCheckbox").checked;
@@ -551,7 +552,7 @@ function adapt_view_to_national_level() {
 function adapt_view_to_state_level() {
   give_status("adapt_view_to_state_level");
 
-  map.options.minZoom = 8;
+  map.options.minZoom = 7;
   map.options.maxZoom = 18;
   map.options.zoomSnap = 1,
 
