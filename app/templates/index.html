@@ -137,138 +137,21 @@
 
         {{ checkbox.input(id="heatmap", label="Identified settlements by satellite imagery", visible={'national': 'show'}) }}
 
+        <!-- Filter for ISSI -->
         {{ checkbox.input(id="clusters", label="Identified settlements by satellite imagery", visible={'state': 'show', 'village': 'show'}, filter_func=True) }}
+        {{ checkbox.filter_title(id="n_clusters", label="Number of sites: ", name="clustersContent", spin_id="all-spin") }}
+        {{ checkbox.filter_opt(id="dtgSlider", label="Distance to grid", name="clustersContent") }}
+        {{ checkbox.filter_opt(id="areaSlider", label="Area", name="clustersContent") }}
+        {{ checkbox.filter_download_btn(id="download_clusters", label="Download selection", name="clustersContent") }}
 
-
-        <div class="grid-x">
-          <div class="cell n_hide s_show v_show">
-            <div class="sidebar-panel sidebar-panel-content content-filter hidden-filter sidebar-panel-filter-label" name="clustersContent">
-              <div class="sidebar-panel-item sidebar-panel-item-filter grid-x">
-                <div href="#" class="cell small-10 sidebar-panel-item-title sidebar-panel-item-title-filter">FILTERS <span id="n_clusters"></span></div>
-                <div class="cell small-2">
-                  <div id="all-spin" class="sp sp-circle is-hidden"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="grid-x">
-          <div class="cell n_hide s_show v_show">
-            <div class="sidebar-panel sidebar-panel-content content-filter hidden-filter" name="clustersContent">
-              <div class="sidebar-panel-item">
-                <p href="#" class="sidebar-panel-item-title-filterlabel">Distance to grid</p>
-                <div class="filter">
-                  <div class="filter__slider" id="dtgSlider"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="grid-x">
-          <div class="cell n_hide s_show v_show">
-            <div class="sidebar-panel sidebar-panel-content content-filter hidden-filter" name="clustersContent">
-              <div class="sidebar-panel-item sidebar-panel-item-filter">
-                <p href="#" class="sidebar-panel-item-title-filterlabel">Area</p>
-                <div class="filter">
-                  <div class="filter__slider filterslider" id="areaSlider"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="grid-x">
-          <div class="cell n_hide s_show v_show">
-            <div class="sidebar-panel sidebar-panel-content content-filter hidden-filter" name="clustersContent">
-              <div class="sidebar-panel-item sidebar-panel-item--download">
-                <div id="download_clusters" class="download__btn">
-                  <button onclick="download_clusters_fun()">Download selection</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {{ checkbox.input(id="ogClusters", label="Remotely mapped settlements", visible={'national': 'grey', 'state': 'show', 'village': 'show'}, filter_func=True) }}
-
-        <div class="grid-x">
-          <div class="cell n_hide s_show v_show">
-            <div class="sidebar-panel sidebar-panel-content content-filter hidden-filter sidebar-panel-filter-label" name="ogClustersContent">
-              <div class="sidebar-panel-item sidebar-panel-item-filter grid-x">
-                <div href="#" class="cell small-10 sidebar-panel-item-title sidebar-panel-item-title-filter">FILTERS <span id="n_ogclusters"></span></div>
-                <div class="cell small-2">
-                  <div id="og-spin" class="sp sp-circle is-hidden"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="grid-x">
-          <div class="cell n_hide s_hide v_hide">
-            <div class="sidebar-panel sidebar-panel-content content-filter hidden-filter" name="ogClustersContent">
-              <div class="sidebar-panel-item sidebar-panel-item-filter">
-                <p href="#" class="sidebar-panel-item-title-filterlabel">Area in km²</p>
-                <div class="filter">
-                  <div class="filter__slider" id="ogAreaSlider"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="grid-x">
-          <div class="cell n_hide s_show v_show">
-            <div class="sidebar-panel sidebar-panel-content content-filter hidden-filter" name="ogClustersContent">
-              <div class="sidebar-panel-item sidebar-panel-item-filter">
-                <p href="#" class="sidebar-panel-item-title-filterlabel">Distance to grid</p>
-                <div class="filter">
-                  <div class="filter__slider" id="ogDistanceSlider"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="grid-x">
-          <div class="cell n_hide s_show v_show">
-            <div class="sidebar-panel sidebar-panel-content content-filter hidden-filter" name="ogClustersContent">
-              <div class="sidebar-panel-item">
-                <p href="#" class="sidebar-panel-item-title-filterlabel">Buildings</p>
-                <div class="filter">
-                  <div class="filter__slider" id="ogBuildingsSlider"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="grid-x">
-          <div class="cell n_hide s_show v_show">
-            <div class="sidebar-panel sidebar-panel-content content-filter hidden-filter" name="ogClustersContent">
-              <div title="Built-up density is the percentage of building footprint within the cluster area. A built-up density of 0% means that there are no buildings in the cluster (not possible) whereas a built up density of 100% means that the cluster area is only made up of buildings" class="sidebar-panel-item">
-                <p href="#" class="sidebar-panel-item-title-filterlabel">Built-up density (%)</p>
-                <div class="filter">
-                  <div class="filter__slider" id="ogBuildingsFootprintSlider"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="grid-x">
-          <div class="cell n_hide s_show v_show">
-            <div class="sidebar-panel sidebar-panel-content content-filter hidden-filter" name="ogClustersContent">
-              <div class="sidebar-panel-item  sidebar-panel-item--download">
-                <div id="download_ogClusters" class="download__btn">
-                  <button onclick="download_clusters_fun()">Download selection</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <!-- Filter for RMS -->
+        {{ checkbox.input(id="ogClusters", label="Remotely mapped settlements", visible={'national': 'grey', 'state': 'show', 'village': 'show'}, filter_func=True, help_icon=True, help_text="Off-Grid Settlements with more than 5 km distance to the grid. For more information please <a>click here</a>.") }}
+        {{ checkbox.filter_title(id="n_ogclusters", label="Number of sites: ", name="ogClustersContent", spin_id="og-spin") }}
+        {{ checkbox.filter_opt(id="ogAreaSlider", label="Area in km²", name="ogClustersContent", visible={}) }}
+        {{ checkbox.filter_opt(id="ogDistanceSlider", label="Distance to grid", name="ogClustersContent") }}
+        {{ checkbox.filter_opt(id="ogBuildingsSlider", label="Buildings", name="ogClustersContent") }}
+        {{ checkbox.filter_opt(id="ogBuildingsFootprintSlider", label="Built-up ratio", help_icon=True, help_text="Built-up ratio is the fraction of building footprint within the cluster area. A built-up ratio of 0 means that there are no buildings in the cluster (not possible) whereas a built-up ration of 1 means that the cluster area is only made up of buildings", name="ogClustersContent") }}
+        {{ checkbox.filter_download_btn(id="download_ogClusters", label="Download selection", name="ogClustersContent") }}
 
       </div>
 

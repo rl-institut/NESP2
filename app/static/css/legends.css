@@ -21,3 +21,11 @@
     font-family: 'Source Sans Pro', sans-serif;
     font-weight: 400;
 }
+
+.checkbox-tooltip, .filter-tooltip {
+
+}
+
+.checkbox-tooltip {
+    width: 200px;
+}

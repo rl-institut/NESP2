@@ -197,19 +197,31 @@ var sliderOptions = {
 function changeAreaSlider(str, h, values) {
   currentfilter.minarea = values[0];
   currentfilter.maxarea = values[1];
+  if (values[1] == 200) {currentfilter.maxarea = 20000;}
   map.fireEvent("filterchange", currentfilter);
 };
+
+var maxAreaSliderFormat = wNumb({
+    decimals: 0,
+    suffix: ' km²',
+    // show plus after value if it's 50
+	edit: function( value ){
+        if (value == '200 km²') {return('200+ km²');}
+		else {return(value);}
+	},
+});
+
 var areaSlider = document.getElementById('areaSlider');
 noUiSlider.create(areaSlider, {
   ...sliderOptions,
   start: [0.1, 10],
-  tooltips: [wNumb({decimals: 1, suffix: ' km²',}), wNumb({decimals: 0, suffix: ' km²',})],
+  tooltips: [wNumb({decimals: 1, suffix: ' km²',}), maxAreaSliderFormat],
   range: {
     'min': [0, 0.1],
     '40%': [1, 0.5],
     '70%': [10, 1],
-    '90%': [100, 100],
-    'max': 1100,
+    '90%': [100, 10],
+    'max': 200,
   },
 });
 areaSlider.noUiSlider.on("change", changeAreaSlider);
@@ -218,22 +230,25 @@ areaSlider.noUiSlider.on("end", update_filter);
 function changedtgSlider(str, h, values) {
   currentfilter.mindtg = values[0];
   currentfilter.maxdtg = values[1];
+  if (values[1] == 0) {currentfilter.maxdtg = 1;}
   map.fireEvent("filterchange", currentfilter);
 };
 
-var dtgSliderMaxFormat = wNumb({
+var dtgSliderFormat = wNumb({
     decimals: 0,
     suffix: ' km',
     // show plus after value if it's 50
 	edit: function( value ){
-		return (value == '50 km') ? '50+ km' : value;
+        if (value == '50 km') {return('50+ km');}
+        else if (value == '0 km') {return('< 1 km');}
+		else {return(value);}
 	},
 });
 
 var dtgSlider = document.getElementById('dtgSlider');
 noUiSlider.create(dtgSlider, {
   ...sliderOptions,
-  tooltips: [wNumb({decimals: 0, suffix: ' km',}), dtgSliderMaxFormat ],
+  tooltips: [dtgSliderFormat, dtgSliderFormat],
   start: [0, 50],
   range: {
     'min': [0, 1],
@@ -272,12 +287,11 @@ function changeogDistanceSlider(str, h, values) {
 var ogDistanceSlider = document.getElementById('ogDistanceSlider');
 noUiSlider.create(ogDistanceSlider, {
   ...sliderOptions,
-  tooltips: [wNumb({decimals: 0, suffix: ' km',}), dtgSliderMaxFormat ],
+  tooltips: [wNumb({decimals: 0, suffix: ' km',}), dtgSliderFormat ],
   start: [5, 1000],
   range: {
-    'min': [0, 0.1],
-    '25%': [5, 0.5],
-    '75%': [10, 1],
+    'min': [5, 0.5],
+    '50%': [10, 1],
     'max': 50,
   }
 });
@@ -321,7 +335,7 @@ function changeogBuildingsFootprintSlider(str, h, values) {
 var ogBuildingsFootprintSlider = document.getElementById('ogBuildingsFootprintSlider');
 noUiSlider.create(ogBuildingsFootprintSlider, {
   ...sliderOptions,
-  tooltips: [wNumb({suffix: ' %', decimals: 2}) , wNumb({suffix: ' %', decimals: 2})],
+  tooltips: [wNumb({decimals: 2}) , wNumb({decimals: 2})],
   start: [0, 0.8],
   range: {
     'min': [0, 0.01],
@@ -334,14 +348,11 @@ ogBuildingsFootprintSlider.noUiSlider.on("change", changeogBuildingsFootprintSli
 ogBuildingsFootprintSlider.noUiSlider.on("end", update_filter);
 
 
-// TODO: check if a POST to db is needed at all as info to clusters is available for each state
-// locally now
 function update_filter(msg) {
-    //console.log("update filters: " + msg);
     var num_filtered_clusters = 0;
     if (selectedState != "init") {
 
-        var filtered_centroids_keys = filter_centroid_keys();
+        var [filtered_centroids_keys, total_clusters] = filter_centroid_keys();
         set_filtered_centroids_keys(filtered_centroids_keys)
         num_filtered_clusters = filtered_centroids_keys.length;
         if (get_cluster_type() == "og"){
@@ -350,10 +361,14 @@ function update_filter(msg) {
         else{
             var filter_title = $("#n_clusters");
         }
-        var new_text = "= " + num_filtered_clusters + " settlements";
+        var new_text = " " + num_filtered_clusters + " filtered settlements";
         if (num_filtered_clusters == 1){
-            new_text = "= " + num_filtered_clusters + " settlement";
+            new_text = " " + num_filtered_clusters + " filtered settlement";
         };
+
+        new_text = new_text + " out of " + total_clusters;
+
+        // only update the message if the clusters are not being downloaded
         if (downloadingClusters == false){
             filter_title.text(new_text);
             filter_title = $("#filtered-clusters-num");
@@ -1141,10 +1156,12 @@ function filter_centroid_keys(){
   set_current_cluster_centroids();
   centroids = get_current_centroids_from_layer();
   const keys = Object.keys(centroids);
+  var total_clusters = 0;
   // interates though cluster centroids and pushes keys of clusters that fall within filter settings
   for (const key of keys) {
       //if activated clusters are off-grid-clusters
     if (centroids[key].feature.properties.hasOwnProperty('percentage_building_area')){
+      total_clusters = total_clusters + 1;
       if (
         centroids[key].feature.properties.grid_dist_km >= currentfilter.ogmindtg && 
         centroids[key].feature.properties.grid_dist_km <= currentfilter.ogmaxdtg &&
@@ -1153,11 +1170,12 @@ function filter_centroid_keys(){
         centroids[key].feature.properties.percentage_building_area >= currentfilter.ogminbfp &&
         centroids[key].feature.properties.percentage_building_area <= currentfilter.ogmaxbfp
       ){
-        filtered_centroids_keys.push({"key": key, "area": centroids[key].feature.properties.area_km2});
+        filtered_centroids_keys.push({"key": key, "area": centroids[key].feature.properties.building_count});
         og_centroids_dict[centroids[key].feature.properties.cluster_offgrid_id] = key;
       }
     }
     else if (centroids[key].feature.properties.hasOwnProperty('cluster_all_id')){
+      total_clusters = total_clusters + 1;
       if (
         centroids[key].feature.properties.area_km2 >= currentfilter.minarea &&
         centroids[key].feature.properties.area_km2 <= currentfilter.maxarea &&
@@ -1169,7 +1187,7 @@ function filter_centroid_keys(){
       }
     }
   }
-  // sort the keys according to area
+  // sort the keys according to area (for og clusters, the area is replaced by building count)
   filtered_centroids_keys.sort(function(a, b) {
       return a.area < b.area;
   });
@@ -1178,7 +1196,7 @@ function filter_centroid_keys(){
   for (var i = 0; i<filtered_centroids_keys.length; i++) {
       answer[i] = filtered_centroids_keys[i].key;
   }
-  return answer;
+  return [answer, total_clusters];
 }
 
 function update_cluster_info(filtered_centroids_keys){
@@ -1212,6 +1230,7 @@ function next_selection_fun(){
   }
   // else if the selected centroid is the last one, keep it selected
   else if (filtered_centroids_keys.indexOf(currently_featured_centroid_id) == filtered_centroids_keys.length -1){
+    currently_featured_centroid_id = filtered_centroids_keys[0];
     //console.log("last element")
   }
   // else set the selected centroid to be the next one via index
@@ -1239,7 +1258,7 @@ function prev_selection_fun(){
   }
   // else if the selected centroid is the first one, keep it selected
   else if (filtered_centroids_keys.indexOf(currently_featured_centroid_id) == 0){
-    currently_featured_centroid_id = filtered_centroids_keys[0];
+    currently_featured_centroid_id = filtered_centroids_keys[filtered_centroids_keys.length - 1];
     //console.log("first element")
   }
   // else set the selected centroid to be the previous one via index
