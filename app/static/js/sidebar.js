@@ -12,6 +12,7 @@ var level = "national";
 var previous_level = level;
 var statesList = ["Abia", "Adamawa", "Akwa Ibom", "Anambra", "Bauchi", "Bayelsa", "Benue", "Borno", "Cross River", "Delta", "Ebonyi", "Edo", "Ekiti", "Enugu", "Federal Capital Territory", "Gombe", "Imo", "Jigawa", "Kaduna", "Kano", "Katsina", "Kebbi", "Kogi", "Kwara", "Lagos", "Nasarawa", "Niger", "Ogun", "Ondo", "Osun", "Oyo", "Plateau", "Rivers", "Sokoto", "Taraba", "Yobe", "Zamfara"];
 var selectedState = "init";
+var selectedStateAvailability = 0;
 var prevState = selectedState;
 var selectedStateOptions = {bounds: null};
 var filteredClusters = 0;
@@ -494,8 +495,12 @@ function adapt_sidebar_to_selection_level(selectionLevel) {
   document.getElementById("state").className = "cell small-6 level sidebar__btn";
   document.getElementById("village").className = "cell small-6 level sidebar__btn";
 
-  if (selectionLevel == "national"){ 
+  if (selectionLevel == "national"){
     document.getElementById("village").className = "cell small-6 level sidebar__btn inert disabled";
+  }
+
+  if (selectionLevel == "state" && selectedStateAvailability % 4 < 2) {
+    document.getElementById("ogClustersTopLevelPanel").className = disable_sidebar__btn(document.getElementById("ogClustersTopLevelPanel").className);
   }
 
   document.getElementById(selectionLevel).className = "cell small-6 level sidebar__btn active";
