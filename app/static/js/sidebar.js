@@ -25,7 +25,7 @@ var all_centroids_dict = {};
 var centroids_layer_ids = {};
 var current_cluster_centroids = Object();
 var currently_featured_centroid_id = 0;
-var flying_to_next_cluster = false;
+var currently_flying_to_cluster = false;
 var downloadingClusters = false;
 var statesWithOgClusters = [
     'Jigawa',
@@ -1206,12 +1206,12 @@ function update_cluster_info(filtered_centroids_keys){
     update_clusterInfo(centroid.feature.properties, selectedClustersNum, clusterNum);
 }
 
-// flyTo-function including a with reset of 'flying_to_next_cluster' to false in order to allow level change via manual zoom afterwards
+// flyTo-function including a with reset of 'currently_flying_to_cluster' to false in order to allow level change via manual zoom afterwards
 function flyToClusterBounds(target){
-  flying_to_next_cluster = true;
+  currently_flying_to_cluster = true;
   map.flyToBounds(target);
     map.once('moveend', function() {
-      flying_to_next_cluster = false;
+      currently_flying_to_cluster = false;
     });
 }
 
