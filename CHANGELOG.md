@@ -54,6 +54,7 @@ Here is a template for new release sections
 - Show Number of selected cluster (#239)
 - Filter the cluster by area (#274)
 - Warning popup if screen width is below 1024 pixels (#281)
+- Link to "about this map" opens in new tab (#289)
 
 ### Changed
 - Filter slider get reasonable steps (#167)
@@ -98,7 +99,7 @@ Here is a template for new release sections
 - Endpoint `/filtered-cluster` is not used anymore to get filter info, rather it is the `filtered_centroids_keys` function (#274)
 - Adapt filters to show clusters that are 0km distance from grid (#278, #280)
 - Filter are not clickable if screen width is below 1024 pixels (#281)
-
+- Browsing settlements works periodically (#289)
 
 ### Removed
 - redundant accordion menu (#10)
