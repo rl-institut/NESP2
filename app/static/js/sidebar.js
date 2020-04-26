@@ -12,6 +12,7 @@ var level = "national";
 var previous_level = level;
 var statesList = ["Abia", "Adamawa", "Akwa Ibom", "Anambra", "Bauchi", "Bayelsa", "Benue", "Borno", "Cross River", "Delta", "Ebonyi", "Edo", "Ekiti", "Enugu", "Federal Capital Territory", "Gombe", "Imo", "Jigawa", "Kaduna", "Kano", "Katsina", "Kebbi", "Kogi", "Kwara", "Lagos", "Nasarawa", "Niger", "Ogun", "Ondo", "Osun", "Oyo", "Plateau", "Rivers", "Sokoto", "Taraba", "Yobe", "Zamfara"];
 var selectedState = "init";
+var selectedStateAvailability = 0;
 var prevState = selectedState;
 var selectedStateOptions = {bounds: null};
 var filteredClusters = 0;
@@ -300,6 +301,7 @@ ogDistanceSlider.noUiSlider.on("end", update_filter);
 
 function changeogBuildingsSlider(str, h, values) {
   currentfilter.ogminb = values[0];
+  if (values[0] == 300) {currentfilter.ogminb = 0;}
   currentfilter.ogmaxb = values[1];
   map.fireEvent("ogfilterchange", currentfilter);
 };
@@ -494,8 +496,12 @@ function adapt_sidebar_to_selection_level(selectionLevel) {
   document.getElementById("state").className = "cell small-6 level sidebar__btn";
   document.getElementById("village").className = "cell small-6 level sidebar__btn";
 
-  if (selectionLevel == "national"){ 
+  if (selectionLevel == "national"){
     document.getElementById("village").className = "cell small-6 level sidebar__btn inert disabled";
+  }
+
+  if (selectionLevel == "state" && selectedStateAvailability % 4 < 2) {
+    document.getElementById("ogClustersTopLevelPanel").className = disable_sidebar__btn(document.getElementById("ogClustersTopLevelPanel").className);
   }
 
   document.getElementById(selectionLevel).className = "cell small-6 level sidebar__btn active";
@@ -634,8 +640,8 @@ function national_button_fun(trigger="button") {
 function state_button_fun(trigger="button") {
   previous_level = level;
   level = "state";
+  selectedStateAvailability = statesAvailability[selectedState];
   adapt_sidebar_to_selection_level(level);
-
   // click on the state level button from national level
   if (previous_level == "national" && trigger == "button"){
       // select a random state which has off-grid clusters
@@ -1085,7 +1091,6 @@ function update_centroids(msg){
             var centroids = convert_light_json_to_geojson(data, cluster_type)
             // Creates a geojson-layer with the data
 
-            console.log(centroids);
             var centroids_layer = L.geoJSON(centroids, {
                 pointToLayer: function (feature, latlng) {
                     return L.circleMarker(latlng, {

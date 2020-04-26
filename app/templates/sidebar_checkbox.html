@@ -1,6 +1,6 @@
  {% macro input(id, label, visible=['national', 'state', 'village'],filter_func=False,help_icon=False, help_text="") -%}
     <div class="grid-x">
-      <div class="cell sidebar-panel {{ assign_visibility(visible) }}">
+      <div class="cell sidebar-panel {{ assign_visibility(visible) }}" id="{{ id }}TopLevelPanel">
         <div class="grid-x sidebar-panel-item is-active" id="{{ id }}Panel" data-accordion-item>
           <div class="cell small-8">
             <p href="#" class="sidebar-panel-item-title">
