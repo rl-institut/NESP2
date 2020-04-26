@@ -302,6 +302,7 @@ ogDistanceSlider.noUiSlider.on("end", update_filter);
 function changeogBuildingsSlider(str, h, values) {
   currentfilter.ogminb = values[0];
   if (values[0] == 300) {currentfilter.ogminb = 0;}
+  if (values[1] == 10000) {currentfilter.ogmaxb = 11000;}
   currentfilter.ogmaxb = values[1];
   map.fireEvent("ogfilterchange", currentfilter);
 };
@@ -315,15 +316,24 @@ var ogBuildingsSliderMinFormat = wNumb({
 	},
 });
 
+var ogBuildingsSliderMaxFormat = wNumb({
+    decimals: 0,
+    // show < before value if it's 300
+	edit: function( value ){
+		return (value == '10000') ? '10000+' : value;
+	},
+});
+
+
 var ogBuildingsSlider = document.getElementById('ogBuildingsSlider');
 noUiSlider.create(ogBuildingsSlider, {
   ...sliderOptions,
-  tooltips: [ogBuildingsSliderMinFormat, wNumb({decimals: 0})],
+  tooltips: [ogBuildingsSliderMinFormat, ogBuildingsSliderMaxFormat],
   start: [300, 5000],
   range: {
     'min': [300, 10],
     '80%': [1000, 100],
-    'max': 11000,
+    'max': 10000,
   }
 });
 ogBuildingsSlider.noUiSlider.on("change", changeogBuildingsSlider);
