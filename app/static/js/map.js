@@ -251,7 +251,7 @@ map.on("zoom", function(e) {
         }
         else {
             // Don't change to state level if just flying to next village
-            if (flying_to_next_cluster == false) {
+            if (currently_flying_to_cluster == false) {
                 state_button_fun(trigger="zoom");
             }
         }
