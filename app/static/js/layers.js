@@ -104,6 +104,7 @@ function highlight_state(feature, layer) {
     // Update the name of the selected state only if different from the currently selected
     if (selectedState != feature.properties["name"]) {
       prevState = selectedState;
+      //update availability of state for display in side menu
       selectedStateAvailability = feature.properties.availability;
       //update the selected state
       selectedState = feature.properties["name"];

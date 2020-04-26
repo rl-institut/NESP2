@@ -640,8 +640,8 @@ function national_button_fun(trigger="button") {
 function state_button_fun(trigger="button") {
   previous_level = level;
   level = "state";
+  selectedStateAvailability = statesAvailability[selectedState];
   adapt_sidebar_to_selection_level(level);
-
   // click on the state level button from national level
   if (previous_level == "national" && trigger == "button"){
       // select a random state which has off-grid clusters
@@ -1091,7 +1091,6 @@ function update_centroids(msg){
             var centroids = convert_light_json_to_geojson(data, cluster_type)
             // Creates a geojson-layer with the data
 
-            console.log(centroids);
             var centroids_layer = L.geoJSON(centroids, {
                 pointToLayer: function (feature, latlng) {
                     return L.circleMarker(latlng, {
