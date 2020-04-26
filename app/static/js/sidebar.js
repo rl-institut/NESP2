@@ -301,6 +301,7 @@ ogDistanceSlider.noUiSlider.on("end", update_filter);
 
 function changeogBuildingsSlider(str, h, values) {
   currentfilter.ogminb = values[0];
+  if (values[0] == 300) {currentfilter.ogminb = 0;}
   currentfilter.ogmaxb = values[1];
   map.fireEvent("ogfilterchange", currentfilter);
 };
