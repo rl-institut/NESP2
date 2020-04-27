@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset=utf-8 />
+    <title>{% block title %}{% endblock %}</title>
+
+	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+        <script type=text/javascript>
+           $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+        </script>
+    {% block head %}{% endblock %}
+</head>
+
+<body>
+
+  {% block content %}{% endblock %}
+
+
+</body>
+
+</html>

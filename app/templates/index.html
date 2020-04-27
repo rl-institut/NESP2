@@ -1,0 +1,261 @@
+{% if nesp2_website is defined %}
+{% extends 'maps/maps_base.html' %}
+{% else %}
+{% extends 'base.html' %}
+{% endif %}
+{% block title %}NIGERIA SE4ALL Webmap{% endblock %}
+
+{% block head %}
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ==" crossorigin="" />
+<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js" integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew==" crossorigin=""></script>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" integrity="sha384-X7L1bhgb36bF1iFvaqvhgpaGpayKM+vXNNYRlF89BFA5s3vi1qZ8EX9086RlZjy1" crossorigin="" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.3.0/dist/MarkerCluster.css" integrity="sha384-lPzjPsFQL6te2x+VxmV6q1DpRxpRk0tmnl2cpwAO5y04ESyc752tnEWPKDfl1olr" crossorigin="" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.3.0/dist/MarkerCluster.Default.css" integrity="sha384-5kMSQJ6S4Qj5i09mtMNrWpSi8iXw230pKU76xTmrpezGnNJQzj0NzXjQLLg+jE7k" crossorigin="" />
+
+<!-- Compressed CSS -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/maps.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/foundation.min.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/nouislider.min.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/Control.Loading.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/legends.css') }}" />
+<script type=text/javascript> $SCRIPT_ROOT={{ request.script_root|tojson|safe }}; </script>
+
+
+{% endblock %}
+
+{% block content %}
+
+  <div class="reveal level" id="warning-mobile" data-reveal>
+    <h2>Warning</h2>
+    <p>This webmap is currently not yet optimized for mobile devices.</p>
+    <p>For the full functionality please visit from a desktop/laptop computer.</p>
+    <div class="sidebar__btn">
+      <button data-close aria-label="Close modal" type="button">
+        Understood
+      </button>
+    </div>
+  </div>
+
+  <div id="map-content" class="grid-x">
+    <div id="sidebar" class="cell large-3" data-sticky-container>
+      <div id="header-maps" class="grid-x">
+        <div id="header-maps-blitz-div" class="cell small-9">
+          {% if nesp2_website is defined %}
+          <a href="{{ url_for('maps.index')}}">
+          {% else %}
+          <a href="{{ url_for('landing')}}">
+          {% endif %}
+            <img src="{{ url_for('static', filename='logos/logo-5-blitz.png') }}">
+            <h2>Nigeria Se4All</h2>
+          </a>
+        </div>
+        <div id="header-maps-logo-nigeria" class="cell small-3">
+          {% if nesp2_website is defined %}
+          <a href="{{ url_for('maps.index')}}">
+          {% else %}
+          <a href="{{ url_for('landing')}}">
+          {% endif %}
+            <img src="{{ url_for('static', filename='logos/logo-2-crest.png') }}">
+          </a>
+        </div>
+      </div>
+
+      <div class="sidebar-accordion">
+        <div class="grid-x sidebar-levels">
+          <div id="national" class="cell small-2 level sidebar__btn active" title="national level">
+            <button onclick="national_button_fun()">National <br> overview</button>
+          </div>
+          <div id="state" class="cell small-2 level sidebar__btn" title="state level">
+            <button onclick="state_button_fun()">State <br> level</button>
+          </div>
+          <div id="village" class="cell small-2 level sidebar__btn" title="village level">
+            <button onclick="village_button_fun()">Village <br> level</button>
+          </div>
+          <!-- hidden link used for csv download of the data -->
+          <a style="display: none" id="export_csv" href="#"></a>
+        </div>
+
+        <div class="grid-x align-center sidebar-dropdown" title="select a state">
+          <div class="cell sidebar__btn active small-8 n_show s_show v_grey" data-toggle="state-dropdown">
+            <select id="stateSelect" class="dropdown-button" onchange="state_dropdown_fun();">
+              <option value="init" disabled selected>Select a state</option>
+              <option value="Abia">Abia</option>
+              <option value="Adamawa">Adamawa</option>
+              <option value="Akwa Ibom">Akwa Ibom</option>
+              <option value="Anambra">Anambra</option>
+              <option value="Bauchi">Bauchi</option>
+              <option value="Bayelsa">Bayelsa</option>
+              <option value="Benue">Benue</option>
+              <option value="Borno">Borno</option>
+              <option value="Cross River">Cross River</option>
+              <option value="Delta">Delta</option>
+              <option value="Ebonyi">Ebonyi</option>
+              <option value="Edo">Edo</option>
+              <option value="Ekiti">Ekiti</option>
+              <option value="Enugu">Enugu</option>
+              <option value="Federal Capital Territory">Federal Capital Territory</option>
+              <option value="Gombe">Gombe</option>
+              <option value="Imo">Imo</option>
+              <option value="Jigawa">Jigawa</option>
+              <option value="Kaduna">Kaduna</option>
+              <option value="Kano">Kano</option>
+              <option value="Katsina">Katsina</option>
+              <option value="Kebbi">Kebbi</option>
+              <option value="Kogi">Kogi</option>
+              <option value="Kwara">Kwara</option>
+              <option value="Lagos">Lagos</option>
+              <option value="Nasarawa">Nasarawa</option>
+              <option value="Niger">Niger</option>
+              <option value="Ogun">Ogun</option>
+              <option value="Ondo">Ondo</option>
+              <option value="Osun">Osun</option>
+              <option value="Oyo">Oyo</option>
+              <option value="Plateau">Plateau</option>
+              <option value="Rivers">Rivers</option>
+              <option value="Sokoto">Sokoto</option>
+              <option value="Taraba">Taraba</option>
+              <option value="Yobe">Yobe</option>
+              <option value="Zamfara">Zamfara</option>
+            </select>
+          </div>
+        </div>
+
+        {% if nesp2_website is defined %}
+          {% import "maps/sidebar_checkbox.html" as checkbox %}
+        {% else %}
+          {% import "sidebar_checkbox.html" as checkbox %}
+        {% endif %}
+
+        {{ checkbox.input(id="states", label="States (availability)", visible={}) }}
+        {{ checkbox.input(id="buildingDensity", label="Buildings", visible={}) }}
+        <!-- grid layer on national level only -->
+        {{ checkbox.input(id="nationalGrid", label="Medium voltage grid", visible={'national': 'show'}) }}
+        <!-- grid layer on state and village level only -->
+        {{ checkbox.input(id="grid", label="Medium voltage grid", visible={'state': 'show', 'village': 'show'}) }}
+
+        {{ checkbox.input(id="heatmap", label="Identified settlements by satellite imagery", visible={'national': 'show'}) }}
+
+        <!-- Filter for ISSI -->
+        {{ checkbox.input(id="clusters", label="Identified settlements by satellite imagery", visible={'state': 'show', 'village': 'show'}, filter_func=True) }}
+        {{ checkbox.filter_title(id="n_clusters", label="Number of sites: ", name="clustersContent", spin_id="all-spin") }}
+        {{ checkbox.filter_opt(id="dtgSlider", label="Distance to grid", name="clustersContent") }}
+        {{ checkbox.filter_opt(id="areaSlider", label="Area", name="clustersContent") }}
+        {{ checkbox.filter_download_btn(id="download_clusters", label="Download selection", name="clustersContent") }}
+
+        <!-- Filter for RMS -->
+        {{ checkbox.input(id="ogClusters", label="Remotely mapped settlements", visible={'national': 'grey', 'state': 'show', 'village': 'show'}, filter_func=True, help_icon=True, help_text="Off-Grid Settlements with more than 5 km distance to the grid. For more information please <a>click here</a>.") }}
+        {{ checkbox.filter_title(id="n_ogclusters", label="Number of sites: ", name="ogClustersContent", spin_id="og-spin") }}
+        {{ checkbox.filter_opt(id="ogAreaSlider", label="Area in km²", name="ogClustersContent", visible={}) }}
+        {{ checkbox.filter_opt(id="ogDistanceSlider", label="Distance to grid", name="ogClustersContent") }}
+        {{ checkbox.filter_opt(id="ogBuildingsSlider", label="Buildings", name="ogClustersContent") }}
+        {{ checkbox.filter_opt(id="ogBuildingsFootprintSlider", label="Built-up ratio", help_icon=True, help_text="Built-up ratio is the fraction of building footprint within the cluster area. A built-up ratio of 0 means that there are no buildings in the cluster (not possible) whereas a built-up ration of 1 means that the cluster area is only made up of buildings", name="ogClustersContent") }}
+        {{ checkbox.filter_download_btn(id="download_ogClusters", label="Download selection", name="ogClustersContent") }}
+
+      </div>
+
+      <div id="footer-maps" class="grid-x">
+        <div class="cell footer-maps__text">
+          <p>Provided with the financial support of:</p>
+        </div>
+        <div id="footer-maps-logos-eu-ger" class="cell">
+          <a href="https://europa.eu/european-union/index_en" target="_blank" rel="noreferrer">
+          <img class="footer-maps-logos__eu" src="{{ url_for('static', filename='logos/logo-1-eu.png') }}">
+          </a>
+          <a href="http://www.bmz.de/en/index.html" target="_blank" rel="noreferrer">
+          <img class="footer-maps-logos__coop" src="{{ url_for('static', filename='logos/logo-4-ger-coop.png') }}">
+          </a>
+          <a href="https://www.giz.de/en/html/index.html" target="_blank" rel="noreferrer">
+          <img class="footer-maps-logos__giz" src="{{ url_for('static', filename='logos/logo-3-giz.png') }}">
+          </a>
+        </div>
+        <div id="footer-maps-logos-giz" class="cell">
+            
+        </div>
+      </div>
+
+      <div class="grid-x">
+        <div class="cell footer-about">
+          <div class="helper"></div>
+          <a href="{{ url_for('about_map') }}" target="_blank">
+            <img src="{{ url_for('static', filename='img/icons/i_info.svg') }}">
+            <span>About this map</span>
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <div id="map" class="cell large-9"></div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript">
+      var screen_width_threshold = 1024;
+      var csrf_token = "{{ csrf_token() }}";
+      $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+          if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", csrf_token);
+          }
+        }
+      });
+    </script>
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.3.0/dist/leaflet.markercluster-src.js" integrity="sha384-NAOEbWFcjnXc7U9GkULPhupHZNAbqru9dS3c+4ANYAwtFoVAWuVuMVDH0DIy4ESp" crossorigin=""></script>
+    <script src="https://unpkg.com/leaflet.vectorgrid@1.3.0/dist/Leaflet.VectorGrid.bundled.js" integrity="sha384-FON5fTjCTtPuBgUS1r2H/PGXstH0Rk23YKjZmB6qITkbFqBcqtey/rPo9eXwOWpx" crossorigin=""></script>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet-sidebar-v2@3.0.2/js/leaflet-sidebar.min.js" integrity="sha384-LzTQ6yhqVy/ipjMq5MMk98mo0E64Wtu9K1Jm5OeKPolnqrlv3FMdc457RoOANGMb" crossorigin=""></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/wnumb/1.1.0/wNumb.min.js" integrity="sha384-9NhfMwMkkA6dDFEyj5CxOiYaL6KqLjKINTJkR7e5SlZthrndR9oB/SJsi5PBNnjw" crossorigin=""></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/11.0.3/nouislider.min.js" integrity="sha384-sxnhs+25aQQN+rABTQEEYOIX5CW20SBJyXt9oGMT5VDacFTTWGXKotTEAe8BUiwb" crossorigin=""></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.6.2/js/foundation.min.js" integrity="sha256-oHB8FhYB/xjn1XTj2quOHoLyAgFgGXVKRuguQG0BJmU=" crossorigin="anonymous"></script>
+    <!-- local scripts -->
+    <script src="{{ url_for('static', filename='js/general_functions.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/Control.Loading.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/nigeria_states_availability.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/notnigeria.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/sidebar.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/layerstyles.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/layers.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/map.js') }}"></script>
+    <script type=text/javascript>
+
+      var stateCheckBox = document.getElementById("statesCheckbox")
+      {% if states_content is defined %}
+          var states_content = {{ states_content|safe }};
+      {% else %}
+          var states_content=false;
+      {% endif %}
+      if (states_content != stateCheckBox.checked){
+          stateCheckBox.click()
+      }
+
+      var gCheckBox = document.getElementById("gridCheckbox")
+      {% if grid_content is defined %}
+          var grid_content = {{ grid_content|safe }};
+      {% else %}
+          var grid_content=false;
+      {% endif %}
+
+      if (grid_content != gCheckBox.checked){
+          gCheckBox.click()
+      }
+  $(document).ready(function(){
+      $(document).foundation();
+      $('.filter_icon').on("mouseenter", function(){
+          // Change src attribute of image
+          $(this).attr("src", "../static/img/icons/i_funnel_dark_gray.svg");
+
+      });
+      $('.filter_icon').on("mouseleave", function(){
+          // Change src attribute of image
+          $(this).attr("src", "../static/img/icons/i_funnel_gray.svg");
+
+      });
+      //display a warning for small screens
+      if($(window).width() < screen_width_threshold) {
+        $('#warning-mobile').foundation('toggle');
+      }
+  });
+
+    </script>
+  </div>
+{% endblock %}

@@ -1,0 +1,7 @@
+# IDE
+.idea/*
+
+*.pyc
+__pycache__/*
+app/instance/*
+setup.sh
