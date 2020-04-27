@@ -80,7 +80,8 @@ def create_app(test_config=None):
                     'area_km2',
                     'building_count',
                     'percentage_building_area',
-                    'grid_dist_km'
+                    'grid_dist_km',
+                    'ST_AsGeoJSON(centroid) as lnglat'
                 )
                 records = query_filtered_og_clusters(
                     state,
@@ -98,7 +99,8 @@ def create_app(test_config=None):
                     'cluster_all_id',
                     'fid',
                     'area_km2',
-                    'grid_dist_km'
+                    'grid_dist_km',
+                    'ST_AsGeoJSON(centroid) as lnglat'
                 )
                 records = query_filtered_clusters(
                     state,
@@ -108,10 +110,23 @@ def create_app(test_config=None):
                     keys=keys
                 )
 
+            columns = list(keys)
+            columns[-1] = "lnglat"
+            column_names = list(keys)
+            column_names[-1] = "longitude"
+            column_names.append("latitude")
             csv = list()
-            csv.append(", ".join(keys))
+            csv.append(", ".join(column_names))
             for line in records:
-                csv.append(", ".join([str(line[k]) for k in keys]))
+                csv_line = list()
+                for k in columns:
+                    if k == "lnglat":
+                        lnglat = json.loads(line[k])["coordinates"]
+                        csv_line.append(str(lnglat[0]))
+                        csv_line.append(str(lnglat[1]))
+                    else:
+                        csv_line.append(str(line[k]))
+                csv.append(", ".join(csv_line))
             csv = "\n".join(csv) + "\n"
         else:
             csv = "1,2,3\n4,5,6\n"
