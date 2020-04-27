@@ -18,6 +18,14 @@ Here is a template for new release sections
 ```
 
 ## [Unreleased]
+### Added
+-
+### Changed
+-
+### Removed
+-
+
+## [1.0.0] 2020-04-27
 
 ### Added
 - Satellite imagery layer (#7)
