@@ -19,11 +19,12 @@ Here is a template for new release sections
 
 ## [Unreleased]
 ### Added
--
+- Centroid latitude and longitude information in csv file download (#299)
+
 ### Changed
--
+
 ### Removed
--
+
 
 ## [1.0.0] 2020-04-27
 
