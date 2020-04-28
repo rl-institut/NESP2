@@ -113,8 +113,8 @@ def create_app(test_config=None):
             columns = list(keys)
             columns[-1] = "lnglat"
             column_names = list(keys)
-            column_names[-1] = "longitude"
-            column_names.append("latitude")
+            column_names[-1] = "longitude on WGS 84"
+            column_names.append("latitude on WGS 84")
             csv = list()
             csv.append(", ".join(column_names))
             for line in records:
