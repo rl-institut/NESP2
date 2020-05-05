@@ -667,31 +667,44 @@ p.sidebar-panel-item-title {
   text-align: left;
 }
 
+.footer-maps__text__center {
+  text-align: center;
+}
+
 #footer-maps .footer-maps__text p {
   font-size: 10pt;
   line-height: 18pt;
   font-weight: 400;
-  padding-left: 1rem;
+  padding-left: 0.75rem;
   color: #464646;
 }
 
 img.footer-maps-logos__eu {
   max-width: 8rem;
-  width: 28%;
-
-
+  width: 110px;
 }
 
 img.footer-maps-logos__coop {
   max-width: 8rem;
-  width: 28%;
+  width: 110px;
+}
 
+.maps-footer-logos__img {
+    height: 86px;
+}
+
+.maps-footer-logos__img--giz{
+    display:flex;
+    align-items: center;
+    justify-content: center;
 }
 
 img.footer-maps-logos__giz {
-  width: 19.202%; /*(w_g = 0.686 w_coop) */
+  width: 75.46px; /*(w_g = 0.686 w_coop) */
   max-width: 5.48rem;
 }
+
+
 
 .footer-about {
   height: 3rem;
@@ -723,7 +736,7 @@ img.footer-maps-logos__giz {
   padding-left: .25rem;
 }
 
-@media only screen and (min-width: 1024px) and (max-width: 1300px) {
+@media only screen and (min-width: 1024px) and (max-width: 1420px) {
   #sidebar {
     width: 33%;
   }
