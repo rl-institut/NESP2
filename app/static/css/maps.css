@@ -676,18 +676,21 @@ p.sidebar-panel-item-title {
 }
 
 img.footer-maps-logos__eu {
-  max-width: 10rem;
-  width: 35%;
+  max-width: 8rem;
+  width: 28%;
+
+
 }
 
 img.footer-maps-logos__coop {
-  max-width: 10rem;
-  width: 35%;
+  max-width: 8rem;
+  width: 28%;
+
 }
 
 img.footer-maps-logos__giz {
-  width: 24.045%; /*(w_g = 0.687 w_coop) */
-  max-width: 6.87rem;
+  width: 19.202%; /*(w_g = 0.686 w_coop) */
+  max-width: 5.48rem;
 }
 
 .footer-about {
