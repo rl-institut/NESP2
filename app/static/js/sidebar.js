@@ -876,49 +876,6 @@ function clusters_cb_fun(trigger=null) {
   */
 }
 
-function template_filter_fun(id) {
-  var newFilter = document.getElementsByName(id + "Content");
-  var checkBox = document.getElementById(id + "Checkbox");
-  if (checkBox.checked == true) {
-    var i;
-    for (i = 0; i < newFilter.length; i++) {
-      newFilter[i].className = toggle_sidebar_filter(newFilter[i].className)
-    }
-
-    var prevFilter = document.querySelectorAll(".content-filter");
-    var j;
-    for (j = 0; j < prevFilter.length; j++) {
-
-      if (prevFilter[j].attributes.name.value !== id + "Content") {
-        prevFilter[j].className = disable_sidebar_filter(prevFilter[j].className);
-      }
-    }
-    if (id == "clusters") {
-        map.fireEvent("filterchange", currentfilter);
-        update_filter();
-    }
-    else{
-        map.fireEvent("ogfilterchange", currentfilter);
-        update_filter();
-    }
-  } else {
-    var prevFilter = document.querySelectorAll(".content-filter");
-    var j;
-    for (j = 0; j < prevFilter.length; j++) {
-
-      if (prevFilter[j].attributes.name.value === id + "Content") {
-        prevFilter[j].className = disable_sidebar_filter(prevFilter[j].className);
-      }
-    }
-
-  }
-}
-
-function clusters_filter_fun() {
-  template_filter_fun("clusters");
-}
-
-
 function ogClusters_cb_fun(trigger=null) {
   var filter_icon = document.getElementById("ogClusters_filter");
 
@@ -961,9 +918,51 @@ function ogClusters_cb_fun(trigger=null) {
   }
 }
 
+function template_filter_fun(id) {
+  var newFilter = document.getElementsByName(id + "Content");
+  var checkBox = document.getElementById(id + "Checkbox");
+  if (checkBox.checked == true) {
+    var i;
+    for (i = 0; i < newFilter.length; i++) {
+      newFilter[i].className = toggle_sidebar_filter(newFilter[i].className)
+    }
+
+    var prevFilter = document.querySelectorAll(".content-filter");
+    var j;
+    for (j = 0; j < prevFilter.length; j++) {
+
+      if (prevFilter[j].attributes.name.value !== id + "Content") {
+        prevFilter[j].className = disable_sidebar_filter(prevFilter[j].className);
+      }
+    }
+    if (id == "clusters") {
+        map.fireEvent("filterchange", currentfilter);
+        update_filter();
+    }
+    else{
+        map.fireEvent("ogfilterchange", currentfilter);
+        update_filter();
+    }
+  } else {
+    var prevFilter = document.querySelectorAll(".content-filter");
+    var j;
+    for (j = 0; j < prevFilter.length; j++) {
+
+      if (prevFilter[j].attributes.name.value === id + "Content") {
+        prevFilter[j].className = disable_sidebar_filter(prevFilter[j].className);
+      }
+    }
+
+  }
+}
+
+function clusters_filter_fun() {
+  template_filter_fun("clusters");
+}
 function ogClusters_filter_fun() {
   template_filter_fun("ogClusters");
 }
+
 
 
 // Triggered by the checkbox Grid
