@@ -12,7 +12,6 @@ var level = "national";
 var previous_level = level;
 var statesList = ["Abia", "Adamawa", "Akwa Ibom", "Anambra", "Bauchi", "Bayelsa", "Benue", "Borno", "Cross River", "Delta", "Ebonyi", "Edo", "Ekiti", "Enugu", "Federal Capital Territory", "Gombe", "Imo", "Jigawa", "Kaduna", "Kano", "Katsina", "Kebbi", "Kogi", "Kwara", "Lagos", "Nasarawa", "Niger", "Ogun", "Ondo", "Osun", "Oyo", "Plateau", "Rivers", "Sokoto", "Taraba", "Yobe", "Zamfara"];
 var selectedState = "init";
-var selectedStateAvailability = 0;
 var prevState = selectedState;
 var selectedStateOptions = {bounds: null};
 var filteredClusters = 0;
@@ -28,20 +27,8 @@ var current_cluster_centroids = Object();
 var currently_featured_centroid_id = 0;
 var currently_flying_to_cluster = false;
 var downloadingClusters = false;
-var statesWithOgClusters = [
-    'Jigawa',
-     'Kano',
-     'Katsina',
-     'Sokoto',
-     'Kebbi',
-     'Nasarawa',
-     'Edo',
-     'Osun',
-     'Enugu',
-     'Kogi',
-     'Kwara'
-];
-
+var statesWithOgClusters = [];
+var ogClustersAvailability = false;
 var currentfilter = {
   minarea: 0.1,
   maxarea: 10,
@@ -134,11 +121,6 @@ var OGClusterLayers = {
   "Taraba": "",
   "Yobe": "nesp2_state_offgrid_clusters_yobe",
   "Zamfara": "nesp2_state_offgrid_clusters_zamfara",
-}
-// define dictionary with availability status of states
-var statesAvailability = {};
-for(const key of Object.keys(nigeria_states_simplified.features)){
-  statesAvailability[nigeria_states_simplified.features[key].properties.name] = nigeria_states_simplified.features[key].properties.availability;
 }
 
 // fetch info about states which have og_clusters
@@ -510,8 +492,10 @@ function adapt_sidebar_to_selection_level(selectionLevel) {
     document.getElementById("village").className = "cell small-6 level sidebar__btn inert disabled";
   }
 
-  if (selectionLevel == "state" && selectedStateAvailability % 4 < 2) {
+  if (ogClustersAvailability == false) {
     document.getElementById("ogClustersTopLevelPanel").className = disable_sidebar__btn(document.getElementById("ogClustersTopLevelPanel").className);
+  } else {
+    document.getElementById("ogClustersTopLevelPanel").className = enable_sidebar__btn(document.getElementById("ogClustersTopLevelPanel").className);
   }
 
   document.getElementById(selectionLevel).className = "cell small-6 level sidebar__btn active";
@@ -601,7 +585,7 @@ function adapt_view_to_state_level() {
   if (previous_level == "national" && prevState == "init") {
 
       // In States where there is no Grid, All Clusters should be shown instead of mapped village clusters
-      if (statesAvailability[selectedState] / 4 < 1) {
+      if (ogClustersAvailability == false) {
         set_clusters_toggle(true);
       }
       else {
@@ -650,8 +634,7 @@ function national_button_fun(trigger="button") {
 function state_button_fun(trigger="button") {
   previous_level = level;
   level = "state";
-  selectedStateAvailability = statesAvailability[selectedState];
-  adapt_sidebar_to_selection_level(level);
+
   // click on the state level button from national level
   if (previous_level == "national" && trigger == "button"){
       // select a random state which has off-grid clusters
@@ -659,6 +642,11 @@ function state_button_fun(trigger="button") {
       // Update the states menu list
       document.getElementById("stateSelect").value = selectedState;
   };
+
+  // check if the og clusters are available
+  ogClustersAvailability = statesWithOgClusters.includes(selectedState)
+  //selectedStateAvailability = statesAvailability[selectedState];
+  adapt_sidebar_to_selection_level(level);
 
   // updates the bounds of the selected state's layer
   updateSelectedStateBounds()
