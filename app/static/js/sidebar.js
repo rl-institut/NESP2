@@ -598,6 +598,12 @@ function adapt_view_to_state_level() {
         // Load the remotely mapped villages clusters
         set_og_clusters_toggle(true);
     }
+    else {
+        if (document.getElementById("clustersCheckbox").checked == true) {
+            // Load the remotely mapped villages clusters
+            set_og_clusters_toggle(true);
+        }
+    }
   }
 
   clusters_cb_fun();
@@ -771,6 +777,12 @@ function heatmap_cb_fun(trigger=null) {
     document.getElementById("heatmapPanel").style.borderLeft = '.25rem solid #eeeff1';
     remove_layer(national_heatmap);
     national_heatmap.bringToFront();
+    if (trigger == "user") {
+        //deactivate all clusters
+        set_clusters_toggle(false);
+        clusters_cb_fun();
+        ogClusters_cb_fun();
+  }
   }
 }
 
