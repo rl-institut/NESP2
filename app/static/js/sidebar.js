@@ -586,18 +586,20 @@ function adapt_view_to_state_level() {
   if(previous_level == "national") {
     document.getElementById("gridCheckbox").checked = document.getElementById("nationalGridCheckbox").checked ;
   }
-  // Apply only when choosing state right after landing, otherwise keep user options
-  if (previous_level == "national" && prevState == "init") {
 
-      // In States where there is no Grid, All Clusters should be shown instead of mapped village clusters
-      if (ogClustersAvailability == false) {
-        set_clusters_toggle(true);
-      }
-      else {
+  // In States where there is no Grid, All Clusters should be shown instead of mapped village clusters
+  if (ogClustersAvailability == false) {
+    set_clusters_toggle(true);
+  }
+  else {
+    // Choose remotely mapped settlements only when choosing state right after landing, otherwise
+    // keep user options
+    if (prevState == "init") {
         // Load the remotely mapped villages clusters
         set_og_clusters_toggle(true);
-      }
+    }
   }
+
   clusters_cb_fun();
   ogClusters_cb_fun();
 
@@ -650,7 +652,6 @@ function state_button_fun(trigger="button") {
 
   // check if the og clusters are available
   ogClustersAvailability = statesWithOgClusters.includes(selectedState)
-  //selectedStateAvailability = statesAvailability[selectedState];
   adapt_sidebar_to_selection_level(level);
 
   // updates the bounds of the selected state's layer
