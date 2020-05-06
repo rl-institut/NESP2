@@ -741,12 +741,26 @@ function state_dropdown_fun() {
   }
 };
 
-// Triggered by the checkbox Populated Areas
-function heatmap_cb_fun() {
+/*
+Triggered by the checkbox Identified settlements by satellite imagery on national level only
+
+Parameters
+----------
+    :trigger: str, can be one of ('user', 'map-click', 'zoom', 'random-cluster', 'init', 'button')
+*/
+function heatmap_cb_fun(trigger=null) {
   var checkBox = document.getElementById("heatmapCheckbox");
   if (checkBox.checked == true) {
     document.getElementById("heatmapPanel").style.borderLeft = '.25rem solid #1DD069';
     add_layer(national_heatmap);
+    if (trigger == "user") {
+        //activate all clusters
+        set_clusters_toggle(true);
+        // deactivate og clusters
+        set_og_clusters_toggle(false);
+        clusters_cb_fun();
+        ogClusters_cb_fun();
+  }
   } else {
     document.getElementById("heatmapPanel").style.borderLeft = '.25rem solid #eeeff1';
     remove_layer(national_heatmap);
