@@ -768,7 +768,7 @@ function heatmap_cb_fun(trigger=null) {
   }
 }
 
-// Triggered by the checkbox Medium Voltage Grid
+// Triggered by the checkbox Medium Voltage Grid on national level only
 function nationalGrid_cb_fun() {
   var checkBox = document.getElementById("nationalGridCheckbox");
   if (checkBox.checked == true) {
@@ -826,6 +826,13 @@ function download_clusters_fun() {
   export_csv_link.click()
 }
 
+/*
+Triggered by the checkbox Identified settlements by satellite imagery on state level only
+
+Parameters
+----------
+    :trigger: str, can be one of ('user', 'map-click', 'zoom', 'random-cluster', 'init', 'button')
+*/
 function clusters_cb_fun(trigger=null) {
   var filter_icon = document.getElementById("clusters_filter");
 
@@ -878,6 +885,13 @@ function clusters_cb_fun(trigger=null) {
   */
 }
 
+/*
+Triggered by the checkbox Remotely mapped settlements on state level only
+
+Parameters
+----------
+    :trigger: str, can be one of ('user', 'map-click', 'zoom', 'random-cluster', 'init', 'button')
+*/
 function ogClusters_cb_fun(trigger=null) {
   var filter_icon = document.getElementById("ogClusters_filter");
 
