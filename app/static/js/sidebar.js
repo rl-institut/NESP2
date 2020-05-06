@@ -492,10 +492,15 @@ function adapt_sidebar_to_selection_level(selectionLevel) {
     document.getElementById("village").className = "cell small-6 level sidebar__btn inert disabled";
   }
 
-  if (ogClustersAvailability == false) {
+  if (selectionLevel == "national") {
     document.getElementById("ogClustersTopLevelPanel").className = disable_sidebar__btn(document.getElementById("ogClustersTopLevelPanel").className);
-  } else {
-    document.getElementById("ogClustersTopLevelPanel").className = enable_sidebar__btn(document.getElementById("ogClustersTopLevelPanel").className);
+  }
+  else {
+      if (ogClustersAvailability == false) {
+        document.getElementById("ogClustersTopLevelPanel").className = disable_sidebar__btn(document.getElementById("ogClustersTopLevelPanel").className);
+      } else {
+        document.getElementById("ogClustersTopLevelPanel").className = enable_sidebar__btn(document.getElementById("ogClustersTopLevelPanel").className);
+      }
   }
 
   document.getElementById(selectionLevel).className = "cell small-6 level sidebar__btn active";
