@@ -12,7 +12,6 @@ var level = "national";
 var previous_level = level;
 var statesList = ["Abia", "Adamawa", "Akwa Ibom", "Anambra", "Bauchi", "Bayelsa", "Benue", "Borno", "Cross River", "Delta", "Ebonyi", "Edo", "Ekiti", "Enugu", "Federal Capital Territory", "Gombe", "Imo", "Jigawa", "Kaduna", "Kano", "Katsina", "Kebbi", "Kogi", "Kwara", "Lagos", "Nasarawa", "Niger", "Ogun", "Ondo", "Osun", "Oyo", "Plateau", "Rivers", "Sokoto", "Taraba", "Yobe", "Zamfara"];
 var selectedState = "init";
-var selectedStateAvailability = 0;
 var prevState = selectedState;
 var selectedStateOptions = {bounds: null};
 var filteredClusters = 0;
@@ -28,20 +27,8 @@ var current_cluster_centroids = Object();
 var currently_featured_centroid_id = 0;
 var currently_flying_to_cluster = false;
 var downloadingClusters = false;
-var statesWithOgClusters = [
-    'Jigawa',
-     'Kano',
-     'Katsina',
-     'Sokoto',
-     'Kebbi',
-     'Nasarawa',
-     'Edo',
-     'Osun',
-     'Enugu',
-     'Kogi',
-     'Kwara'
-];
-
+var statesWithOgClusters = [];
+var ogClustersAvailability = false;
 var currentfilter = {
   minarea: 0.1,
   maxarea: 10,
@@ -134,11 +121,6 @@ var OGClusterLayers = {
   "Taraba": "",
   "Yobe": "nesp2_state_offgrid_clusters_yobe",
   "Zamfara": "nesp2_state_offgrid_clusters_zamfara",
-}
-// define dictionary with availability status of states
-var statesAvailability = {};
-for(const key of Object.keys(nigeria_states_simplified.features)){
-  statesAvailability[nigeria_states_simplified.features[key].properties.name] = nigeria_states_simplified.features[key].properties.availability;
 }
 
 // fetch info about states which have og_clusters
@@ -510,8 +492,15 @@ function adapt_sidebar_to_selection_level(selectionLevel) {
     document.getElementById("village").className = "cell small-6 level sidebar__btn inert disabled";
   }
 
-  if (selectionLevel == "state" && selectedStateAvailability % 4 < 2) {
+  if (selectionLevel == "national") {
     document.getElementById("ogClustersTopLevelPanel").className = disable_sidebar__btn(document.getElementById("ogClustersTopLevelPanel").className);
+  }
+  else {
+      if (ogClustersAvailability == false) {
+        document.getElementById("ogClustersTopLevelPanel").className = disable_sidebar__btn(document.getElementById("ogClustersTopLevelPanel").className);
+      } else {
+        document.getElementById("ogClustersTopLevelPanel").className = enable_sidebar__btn(document.getElementById("ogClustersTopLevelPanel").className);
+      }
   }
 
   document.getElementById(selectionLevel).className = "cell small-6 level sidebar__btn active";
@@ -597,18 +586,26 @@ function adapt_view_to_state_level() {
   if(previous_level == "national") {
     document.getElementById("gridCheckbox").checked = document.getElementById("nationalGridCheckbox").checked ;
   }
-  // Apply only when choosing state right after landing, otherwise keep user options
-  if (previous_level == "national" && prevState == "init") {
 
-      // In States where there is no Grid, All Clusters should be shown instead of mapped village clusters
-      if (statesAvailability[selectedState] / 4 < 1) {
-        set_clusters_toggle(true);
-      }
-      else {
+  // In States where there is no Grid, All Clusters should be shown instead of mapped village clusters
+  if (ogClustersAvailability == false) {
+    set_clusters_toggle(true);
+  }
+  else {
+    // Choose remotely mapped settlements only when choosing state right after landing, otherwise
+    // keep user options
+    if (prevState == "init") {
         // Load the remotely mapped villages clusters
         set_og_clusters_toggle(true);
-      }
+    }
+    else {
+        if (document.getElementById("clustersCheckbox").checked == true) {
+            // Load the remotely mapped villages clusters
+            set_og_clusters_toggle(true);
+        }
+    }
   }
+
   clusters_cb_fun();
   ogClusters_cb_fun();
 
@@ -650,8 +647,7 @@ function national_button_fun(trigger="button") {
 function state_button_fun(trigger="button") {
   previous_level = level;
   level = "state";
-  selectedStateAvailability = statesAvailability[selectedState];
-  adapt_sidebar_to_selection_level(level);
+
   // click on the state level button from national level
   if (previous_level == "national" && trigger == "button"){
       // select a random state which has off-grid clusters
@@ -659,6 +655,10 @@ function state_button_fun(trigger="button") {
       // Update the states menu list
       document.getElementById("stateSelect").value = selectedState;
   };
+
+  // check if the og clusters are available
+  ogClustersAvailability = statesWithOgClusters.includes(selectedState)
+  adapt_sidebar_to_selection_level(level);
 
   // updates the bounds of the selected state's layer
   updateSelectedStateBounds()
@@ -753,20 +753,40 @@ function state_dropdown_fun() {
   }
 };
 
-// Triggered by the checkbox Populated Areas
-function heatmap_cb_fun() {
+/*
+Triggered by the checkbox Identified settlements by satellite imagery on national level only
+
+Parameters
+----------
+    :trigger: str, can be one of ('user', 'map-click', 'zoom', 'random-cluster', 'init', 'button')
+*/
+function heatmap_cb_fun(trigger=null) {
   var checkBox = document.getElementById("heatmapCheckbox");
   if (checkBox.checked == true) {
     document.getElementById("heatmapPanel").style.borderLeft = '.25rem solid #1DD069';
     add_layer(national_heatmap);
+    if (trigger == "user") {
+        //activate all clusters
+        set_clusters_toggle(true);
+        // deactivate og clusters
+        set_og_clusters_toggle(false);
+        clusters_cb_fun();
+        ogClusters_cb_fun();
+  }
   } else {
     document.getElementById("heatmapPanel").style.borderLeft = '.25rem solid #eeeff1';
     remove_layer(national_heatmap);
     national_heatmap.bringToFront();
+    if (trigger == "user") {
+        //deactivate all clusters
+        set_clusters_toggle(false);
+        clusters_cb_fun();
+        ogClusters_cb_fun();
+  }
   }
 }
 
-// Triggered by the checkbox Medium Voltage Grid
+// Triggered by the checkbox Medium Voltage Grid on national level only
 function nationalGrid_cb_fun() {
   var checkBox = document.getElementById("nationalGridCheckbox");
   if (checkBox.checked == true) {
@@ -824,6 +844,13 @@ function download_clusters_fun() {
   export_csv_link.click()
 }
 
+/*
+Triggered by the checkbox Identified settlements by satellite imagery on state level only
+
+Parameters
+----------
+    :trigger: str, can be one of ('user', 'map-click', 'zoom', 'random-cluster', 'init', 'button')
+*/
 function clusters_cb_fun(trigger=null) {
   var filter_icon = document.getElementById("clusters_filter");
 
@@ -876,49 +903,13 @@ function clusters_cb_fun(trigger=null) {
   */
 }
 
-function template_filter_fun(id) {
-  var newFilter = document.getElementsByName(id + "Content");
-  var checkBox = document.getElementById(id + "Checkbox");
-  if (checkBox.checked == true) {
-    var i;
-    for (i = 0; i < newFilter.length; i++) {
-      newFilter[i].className = toggle_sidebar_filter(newFilter[i].className)
-    }
+/*
+Triggered by the checkbox Remotely mapped settlements on state level only
 
-    var prevFilter = document.querySelectorAll(".content-filter");
-    var j;
-    for (j = 0; j < prevFilter.length; j++) {
-
-      if (prevFilter[j].attributes.name.value !== id + "Content") {
-        prevFilter[j].className = disable_sidebar_filter(prevFilter[j].className);
-      }
-    }
-    if (id == "clusters") {
-        map.fireEvent("filterchange", currentfilter);
-        update_filter();
-    }
-    else{
-        map.fireEvent("ogfilterchange", currentfilter);
-        update_filter();
-    }
-  } else {
-    var prevFilter = document.querySelectorAll(".content-filter");
-    var j;
-    for (j = 0; j < prevFilter.length; j++) {
-
-      if (prevFilter[j].attributes.name.value === id + "Content") {
-        prevFilter[j].className = disable_sidebar_filter(prevFilter[j].className);
-      }
-    }
-
-  }
-}
-
-function clusters_filter_fun() {
-  template_filter_fun("clusters");
-}
-
-
+Parameters
+----------
+    :trigger: str, can be one of ('user', 'map-click', 'zoom', 'random-cluster', 'init', 'button')
+*/
 function ogClusters_cb_fun(trigger=null) {
   var filter_icon = document.getElementById("ogClusters_filter");
 
@@ -961,9 +952,51 @@ function ogClusters_cb_fun(trigger=null) {
   }
 }
 
+function template_filter_fun(id) {
+  var newFilter = document.getElementsByName(id + "Content");
+  var checkBox = document.getElementById(id + "Checkbox");
+  if (checkBox.checked == true) {
+    var i;
+    for (i = 0; i < newFilter.length; i++) {
+      newFilter[i].className = toggle_sidebar_filter(newFilter[i].className)
+    }
+
+    var prevFilter = document.querySelectorAll(".content-filter");
+    var j;
+    for (j = 0; j < prevFilter.length; j++) {
+
+      if (prevFilter[j].attributes.name.value !== id + "Content") {
+        prevFilter[j].className = disable_sidebar_filter(prevFilter[j].className);
+      }
+    }
+    if (id == "clusters") {
+        map.fireEvent("filterchange", currentfilter);
+        update_filter();
+    }
+    else{
+        map.fireEvent("ogfilterchange", currentfilter);
+        update_filter();
+    }
+  } else {
+    var prevFilter = document.querySelectorAll(".content-filter");
+    var j;
+    for (j = 0; j < prevFilter.length; j++) {
+
+      if (prevFilter[j].attributes.name.value === id + "Content") {
+        prevFilter[j].className = disable_sidebar_filter(prevFilter[j].className);
+      }
+    }
+
+  }
+}
+
+function clusters_filter_fun() {
+  template_filter_fun("clusters");
+}
 function ogClusters_filter_fun() {
   template_filter_fun("ogClusters");
 }
+
 
 
 // Triggered by the checkbox Grid

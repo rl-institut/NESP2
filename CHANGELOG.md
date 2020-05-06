@@ -22,8 +22,11 @@ Here is a template for new release sections
 - Centroid latitude and longitude information in csv file download (#299)
 
 ### Changed
-
+- Cluster toggles in sidebar automatically switch on or off depending on OG clusters availability
+ (#303)
 ### Removed
+- Unused `selectedStateAvailability` variable (#303)
+- Unused `statesAvailability` variable (#303)
 
 
 ## [1.0.0] 2020-04-27
