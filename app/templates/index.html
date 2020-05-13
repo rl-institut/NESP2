@@ -145,7 +145,7 @@
         {{ checkbox.filter_download_btn(id="download_clusters", label="Download selection", name="clustersContent") }}
 
         <!-- Filter for RMS -->
-        {{ checkbox.input(id="ogClusters", label="Remotely mapped settlements", visible={'national': 'grey', 'state': 'show', 'village': 'show'}, filter_func=True, help_icon=True, help_link="surveytools") }}
+        {{ checkbox.input(id="ogClusters", label="Remotely mapped settlements", visible={'national': 'grey', 'state': 'show', 'village': 'show'}, filter_func=True, help_icon=True, help_link="osm") }}
         {{ checkbox.filter_title(id="n_ogclusters", label="Number of sites: ", name="ogClustersContent", spin_id="og-spin") }}
         {{ checkbox.filter_opt(id="ogAreaSlider", label="Area in km²", name="ogClustersContent", visible={}) }}
         {{ checkbox.filter_opt(id="ogDistanceSlider", label="Distance to grid", name="ogClustersContent") }}
