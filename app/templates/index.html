@@ -131,21 +131,21 @@
         {{ checkbox.input(id="states", label="States (availability)", visible={}) }}
         {{ checkbox.input(id="buildingDensity", label="Buildings", visible={}) }}
         <!-- grid layer on national level only -->
-        {{ checkbox.input(id="nationalGrid", label="Medium voltage grid", visible={'national': 'show'}) }}
+        {{ checkbox.input(id="nationalGrid", label="Medium voltage grid", visible={'national': 'show'}, help_icon=True, help_link="ongridmapping") }}
         <!-- grid layer on state and village level only -->
-        {{ checkbox.input(id="grid", label="Medium voltage grid", visible={'state': 'show', 'village': 'show'}) }}
+        {{ checkbox.input(id="grid", label="Medium voltage grid", visible={'state': 'show', 'village': 'show'}, help_icon=True, help_link="ongridmapping") }}
 
-        {{ checkbox.input(id="heatmap", label="Identified settlements by satellite imagery", visible={'national': 'show'}) }}
+        {{ checkbox.input(id="heatmap", label="Identified settlements by satellite imagery", visible={'national': 'show'}, help_icon=True, help_link="clusteridentification") }}
 
         <!-- Filter for ISSI -->
-        {{ checkbox.input(id="clusters", label="Identified settlements by satellite imagery", visible={'state': 'show', 'village': 'show'}, filter_func=True) }}
+        {{ checkbox.input(id="clusters", label="Identified settlements by satellite imagery", visible={'state': 'show', 'village': 'show'}, filter_func=True, help_icon=True, help_link="clusteridentification") }}
         {{ checkbox.filter_title(id="n_clusters", label="Number of sites: ", name="clustersContent", spin_id="all-spin") }}
         {{ checkbox.filter_opt(id="dtgSlider", label="Distance to grid", name="clustersContent") }}
         {{ checkbox.filter_opt(id="areaSlider", label="Area", name="clustersContent") }}
         {{ checkbox.filter_download_btn(id="download_clusters", label="Download selection", name="clustersContent") }}
 
         <!-- Filter for RMS -->
-        {{ checkbox.input(id="ogClusters", label="Remotely mapped settlements", visible={'national': 'grey', 'state': 'show', 'village': 'show'}, filter_func=True, help_icon=True, help_text="Off-Grid Settlements with more than 5 km distance to the grid. For more information please <a>click here</a>.") }}
+        {{ checkbox.input(id="ogClusters", label="Remotely mapped settlements", visible={'national': 'grey', 'state': 'show', 'village': 'show'}, filter_func=True, help_icon=True, help_link="surveytools") }}
         {{ checkbox.filter_title(id="n_ogclusters", label="Number of sites: ", name="ogClustersContent", spin_id="og-spin") }}
         {{ checkbox.filter_opt(id="ogAreaSlider", label="Area in km²", name="ogClustersContent", visible={}) }}
         {{ checkbox.filter_opt(id="ogDistanceSlider", label="Distance to grid", name="ogClustersContent") }}
