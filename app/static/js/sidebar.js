@@ -223,7 +223,7 @@ var dtgSliderFormat = wNumb({
     // show plus after value if it's 50
 	edit: function( value ){
         if (value == '50 km') {return('50+ km');}
-        else if (value == '0 km') {return('< 1 km');}
+        else if (value == '0 km') {return('0 km');}
 		else {return(value);}
 	},
 });

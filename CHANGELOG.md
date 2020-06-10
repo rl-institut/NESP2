@@ -112,6 +112,7 @@ Here is a template for new release sections
 - Adapt filters to show clusters that are 0km distance from grid (#278, #280)
 - Filter are not clickable if screen width is below 1024 pixels (#281)
 - Browsing settlements works periodically (#289)
+- Distance to grid is shown as 0 km when selected (#305)
 
 ### Removed
 - redundant accordion menu (#10)
