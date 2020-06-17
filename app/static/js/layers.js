@@ -20,13 +20,13 @@ var esri = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Wor
 // Basic png-tile taken from wmflabs
 var osm_gray = L.tileLayer("https://tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png", {
   maxZoom: 19,
-  attribution: '&copy; Tiles style from OpenStreetMap, hosted by wmflabs. <a href="https://wmflabs.org"></a>'
+  attribution: 'Gray tiles &copy OpenStreetMap, hosted by <a href="https://wmflabs.org">wmflabs</a>.'
 });
 
 // Basic png-tile layer for background taken from tile server serves zoom levels 5-9
 var national_background = L.tileLayer(tileserver + "nesp2_national_background/{z}/{x}/{y}.png", {
   maxZoom: 19,
-  attribution: '☮'
+  attribution: 'National tiles <a href="http://se4allwebpage.westeurope.cloudapp.azure.com/about-map"> &copy se4all</a>'
 });
 
 // Basic png-tile layer for overlays taken from tile server serves zoom levels 5-9
