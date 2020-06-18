@@ -264,6 +264,19 @@
       if($(window).width() < screen_width_threshold) {
         $('#warning-mobile').foundation('toggle');
       }
+
+      //display a warning for not supported browser (the list is in __init__.py in the variable
+      // UNSUPPORTED_USER_AGENT_STRINGS)
+      {% if not_supported == True %}
+          var not_supported = true;
+      {% else %}
+          var not_supported=false;
+      {% endif %}
+      if (not_supported == true){
+          $('#warning-browser-not-supported').foundation('toggle');
+      }
+
+
   });
 
     </script>
