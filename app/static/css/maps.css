@@ -319,7 +319,7 @@ background-color: #fff;
     margin: 0;
     overflow-y: auto;
     height: 100%;
-    z-index: 99999;
+    z-index: 1000;
   }
 }
 
