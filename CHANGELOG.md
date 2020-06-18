@@ -20,7 +20,7 @@ Here is a template for new release sections
 ## [Unreleased]
 ### Added
 - Centroid latitude and longitude information in csv file download (#299)
-
+- Popup to warn against unsupported browsers (#311)
 ### Changed
 - Cluster toggles in sidebar automatically switch on or off depending on OG clusters availability
  (#303)
