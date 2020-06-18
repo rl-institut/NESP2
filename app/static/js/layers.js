@@ -1,3 +1,6 @@
+const website_url = "http://se4allwebpage.westeurope.cloudapp.azure.com";
+
+
 // Basic png-tile layer taken from OpenStreetMap
 var osm = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
   maxZoom: 19,
@@ -26,7 +29,7 @@ var osm_gray = L.tileLayer("https://tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png"
 // Basic png-tile layer for background taken from tile server serves zoom levels 5-9
 var national_background = L.tileLayer(tileserver + "nesp2_national_background/{z}/{x}/{y}.png", {
   maxZoom: 19,
-  attribution: 'National tiles <a href="http://se4allwebpage.westeurope.cloudapp.azure.com/about-map"> &copy se4all</a>'
+  attribution: 'National tiles <a href="' + website_url +  '/about-map"> &copy se4all</a>'
 });
 
 // Basic png-tile layer for overlays taken from tile server serves zoom levels 5-9
