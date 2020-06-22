@@ -535,8 +535,9 @@ function adapt_view_to_national_level() {
   }
   // load the populated areas
   heatmap_cb_fun();
-  // load the medium voltage grid
+  // load the medium voltage grid on national level and untick the one on the state level
   nationalGrid_cb_fun();
+  stateGrid_cb_fun();
 
   // Remotely mapped villages layer
   remove_layer(clusterLayer[selectedState]);
@@ -609,9 +610,8 @@ function adapt_view_to_state_level() {
   clusters_cb_fun();
   ogClusters_cb_fun();
 
-
   add_layer(nigeria_states_borders_geojson);
-  update_grid_layer();
+
   add_layer(osm_gray);
 
   // remove the medium voltage grid
@@ -619,6 +619,7 @@ function adapt_view_to_state_level() {
   heatmap_cb_fun();
   // remove the populated areas
   document.getElementById("nationalGridCheckbox").checked = false;
+  stateGrid_cb_fun();
   nationalGrid_cb_fun();
 
   remove_layer(hot);
@@ -1004,10 +1005,10 @@ function stateGrid_cb_fun() {
   var checkBox = document.getElementById("stateGridCheckbox");
   if (checkBox.checked == true) {
     document.getElementById("gridPanel").style.borderLeft = '.25rem solid #1DD069';
-    add_layer(grid_layer);
+    add_layer(state_grid_layer);
   } else {
     document.getElementById("gridPanel").style.borderLeft = '.25rem solid #eeeff1';
-    remove_layer(grid_layer);
+    remove_layer(state_grid_layer);
   }
 
   /*$.get({url: $SCRIPT_ROOT,

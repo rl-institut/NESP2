@@ -172,12 +172,12 @@ function zoomToSelectedState() {
     map.flyToBounds(selectedStateOptions.bounds, {maxZoom: 19});
 };
 
-// Definitions and functions for the grid_layer
+// Definitions and functions for the state_grid_layer
 
 // Vector tiles layer that is adapted (URL) depending on the chosen state. Contains layers '11kV' and '33kV' Columns: several, but of no interest to the map
 
 //Always Using the entire Grid
-var grid_layer = L.vectorGrid.protobuf(tileserver + "nesp2_state_grid/{z}/{x}/{y}.pbf", {
+var state_grid_layer = L.vectorGrid.protobuf(tileserver + "nesp2_state_grid/{z}/{x}/{y}.pbf", {
   rendererFactory: L.canvas.tile,
   vectorTileLayerStyles: {
     '33_kV': function(prop, zoom) {
@@ -205,14 +205,6 @@ function redefine_grid_layer() {
       },
     }
   });
-};
-
-// Update the state level grid layer with tiles
-function update_grid_layer() {
-  //remove_layer(grid_layer);
-  //redefine_grid_layer();
-  // Add the grid layer depending on grid checkbox value
-  grid_cb_fun();
 };
 
 // Adds functions for filters and styling to a defined input grid-cluster-Layer
