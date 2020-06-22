@@ -189,24 +189,6 @@ var state_grid_layer = L.vectorGrid.protobuf(tileserver + "nesp2_state_grid/{z}/
   }
 });
 
-// Assign the selected state grid tile to the grid_layer
-function redefine_grid_layer() {
-// Vector tiles layer that is adapted (URL) depending on the chosen state. Contains layers '11kV' and '33kV' Columns: several, but of no interest to the map
-
-//Always Using the entire Grid
-  grid_layer = L.vectorGrid.protobuf(tileserver + "nesp2_state_grid/{z}/{x}/{y}.pbf", {
-    rendererFactory: L.canvas.tile,
-    vectorTileLayerStyles: {
-      '33_kV': function(prop, zoom) {
-        return gridStyle33kv
-      },
-      '11_kV': function(prop, zoom) {
-        return gridStyle11kv
-      },
-    }
-  });
-};
-
 // Adds functions for filters and styling to a defined input grid-cluster-Layer
 function addFunctionsToClusterLayer(layer) {
   layer.on("click", function(e) {
