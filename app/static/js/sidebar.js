@@ -1004,10 +1004,10 @@ function ogClusters_filter_fun() {
 function stateGrid_cb_fun() {
   var checkBox = document.getElementById("stateGridCheckbox");
   if (checkBox.checked == true) {
-    document.getElementById("gridPanel").style.borderLeft = '.25rem solid #1DD069';
+    document.getElementById("stateGridPanel").style.borderLeft = '.25rem solid #1DD069';
     add_layer(state_grid_layer);
   } else {
-    document.getElementById("gridPanel").style.borderLeft = '.25rem solid #eeeff1';
+    document.getElementById("stateGridPanel").style.borderLeft = '.25rem solid #eeeff1';
     remove_layer(state_grid_layer);
   }
 
