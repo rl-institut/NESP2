@@ -527,11 +527,11 @@ function adapt_view_to_national_level() {
     document.getElementById("nationalGridCheckbox").checked = true;
     set_clusters_toggle(false);
     set_og_clusters_toggle(false);
-    document.getElementById("gridCheckbox").checked = false;
+    document.getElementById("stateGridCheckbox").checked = false;
   }
   if (previous_level == "state" || previous_level == "village") {
     document.getElementById("heatmapCheckbox").checked = document.getElementById("clustersCheckbox").checked;
-    document.getElementById("nationalGridCheckbox").checked = document.getElementById("gridCheckbox").checked;
+    document.getElementById("nationalGridCheckbox").checked = document.getElementById("stateGridCheckbox").checked;
   }
   // load the populated areas
   heatmap_cb_fun();
@@ -584,7 +584,7 @@ function adapt_view_to_state_level() {
   states_cb_fun();
 
   if(previous_level == "national") {
-    document.getElementById("gridCheckbox").checked = document.getElementById("nationalGridCheckbox").checked ;
+    document.getElementById("stateGridCheckbox").checked = document.getElementById("nationalGridCheckbox").checked ;
   }
 
   // In States where there is no Grid, All Clusters should be shown instead of mapped village clusters
@@ -1000,8 +1000,8 @@ function ogClusters_filter_fun() {
 
 
 // Triggered by the checkbox Grid
-function grid_cb_fun() {
-  var checkBox = document.getElementById("gridCheckbox");
+function stateGrid_cb_fun() {
+  var checkBox = document.getElementById("stateGridCheckbox");
   if (checkBox.checked == true) {
     document.getElementById("gridPanel").style.borderLeft = '.25rem solid #1DD069';
     add_layer(grid_layer);
