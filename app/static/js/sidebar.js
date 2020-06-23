@@ -147,7 +147,7 @@ function set_filtered_centroids_keys(value) {
     browse_centroids_keys = value;
 }
 
-function give_status(context=null, display=false) {
+function give_status(context=null, display=true) {
     if (display == true) {
         console.log("Status on");
         if (context) {
@@ -557,9 +557,6 @@ function adapt_view_to_national_level() {
   map.addLayer(osm_gray);
   map.addLayer(national_background);
 
-  // Linked to the checkbox Grid
-  remove_layer(grid_layer);
-
   // reactive fitting of Nigeria on the map
   map.fitBounds(L.latLngBounds(L.latLng(14, 15), L.latLng(4, 2.5)))
   // if the fitBound has smaller zoom level, update the min zoom level
@@ -567,6 +564,10 @@ function adapt_view_to_national_level() {
 
   // update the info box on the top left
   update_infoBox()
+
+  // Linked to the checkbox Grid
+  remove_layer(state_grid_layer,msg="state_layer");
+
 
 };
 

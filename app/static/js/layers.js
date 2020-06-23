@@ -53,15 +53,27 @@ var welcome_view = L.tileLayer(tileserver + "nesp2_national_welcome-view/{z}/{x}
 var centroidsGroup = L.layerGroup().addTo(map);
 
 
-function remove_layer(layer) {
+function remove_layer(layer, msg=null) {
   if (map.hasLayer(layer) == true) {
     map.removeLayer(layer);
   }
+  else{
+    if (msg != null){
+        console.log("Cannot remove unexisting layer");
+        console.log(msg);
+    }
+  }
 };
 
-function add_layer(layer) {
+function add_layer(layer, msg=null) {
   if (map.hasLayer(layer) == false) {
     map.addLayer(layer);
+  }
+  else{
+    if (msg != null){
+        console.log("Cannot add already existing layer");
+        console.log(msg);
+    }
   }
 };
 
