@@ -147,7 +147,7 @@ function set_filtered_centroids_keys(value) {
     browse_centroids_keys = value;
 }
 
-function give_status(context=null, display=true) {
+function give_status(context=null, display=false) {
     if (display == true) {
         console.log("Status on");
         if (context) {
@@ -566,7 +566,7 @@ function adapt_view_to_national_level() {
   update_infoBox()
 
   // Linked to the checkbox Grid
-  remove_layer(state_grid_layer,msg="state_layer");
+  remove_layer(state_grid_layer);
 
 
 };
