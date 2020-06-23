@@ -554,8 +554,8 @@ function adapt_view_to_national_level() {
 
   remove_basemaps();
 
-  map.addLayer(osm_gray);
-  map.addLayer(national_background);
+  add_layer(osm_gray);
+  add_layer(national_background);
 
   // reactive fitting of Nigeria on the map
   map.fitBounds(L.latLngBounds(L.latLng(14, 15), L.latLng(4, 2.5)))
