@@ -133,7 +133,7 @@
         <!-- grid layer on national level only -->
         {{ checkbox.input(id="nationalGrid", label="Medium voltage grid", visible={'national': 'show'}, help_icon=True, help_link="ongridmapping") }}
         <!-- grid layer on state and village level only -->
-        {{ checkbox.input(id="grid", label="Medium voltage grid", visible={'state': 'show', 'village': 'show'}, help_icon=True, help_link="ongridmapping") }}
+        {{ checkbox.input(id="stateGrid", label="Medium voltage grid", visible={'state': 'show', 'village': 'show'}, help_icon=True, help_link="ongridmapping") }}
 
         {{ checkbox.input(id="heatmap", label="Identified settlements by satellite imagery", visible={'national': 'show'}, help_icon=True, help_link="clusteridentification") }}
 
@@ -228,26 +228,6 @@
     <script src="{{ url_for('static', filename='js/map.js') }}"></script>
     <script type=text/javascript>
 
-      var stateCheckBox = document.getElementById("statesCheckbox")
-      {% if states_content is defined %}
-          var states_content = {{ states_content|safe }};
-      {% else %}
-          var states_content=false;
-      {% endif %}
-      if (states_content != stateCheckBox.checked){
-          stateCheckBox.click()
-      }
-
-      var gCheckBox = document.getElementById("gridCheckbox")
-      {% if grid_content is defined %}
-          var grid_content = {{ grid_content|safe }};
-      {% else %}
-          var grid_content=false;
-      {% endif %}
-
-      if (grid_content != gCheckBox.checked){
-          gCheckBox.click()
-      }
   $(document).ready(function(){
       $(document).foundation();
       $('.filter_icon').on("mouseenter", function(){

@@ -24,9 +24,12 @@ Here is a template for new release sections
 ### Changed
 - Cluster toggles in sidebar automatically switch on or off depending on OG clusters availability
  (#303)
+- Rename `gridCheckbox` to `stateGridCheckbox (#312)
+- Rename `grid_layer` to `state_grid_layer (#312)
 ### Removed
 - Unused `selectedStateAvailability` variable (#303)
 - Unused `statesAvailability` variable (#303)
+- Javascript code in `index.html` to initialize state_grid and state_level toggles (#312)
 
 
 ## [1.0.0] 2020-04-27

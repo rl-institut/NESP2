@@ -527,16 +527,17 @@ function adapt_view_to_national_level() {
     document.getElementById("nationalGridCheckbox").checked = true;
     set_clusters_toggle(false);
     set_og_clusters_toggle(false);
-    document.getElementById("gridCheckbox").checked = false;
+    document.getElementById("stateGridCheckbox").checked = false;
   }
   if (previous_level == "state" || previous_level == "village") {
     document.getElementById("heatmapCheckbox").checked = document.getElementById("clustersCheckbox").checked;
-    document.getElementById("nationalGridCheckbox").checked = document.getElementById("gridCheckbox").checked;
+    document.getElementById("nationalGridCheckbox").checked = document.getElementById("stateGridCheckbox").checked;
   }
   // load the populated areas
   heatmap_cb_fun();
-  // load the medium voltage grid
+  // load the medium voltage grid on national level and untick the one on the state level
   nationalGrid_cb_fun();
+  stateGrid_cb_fun();
 
   // Remotely mapped villages layer
   remove_layer(clusterLayer[selectedState]);
@@ -553,11 +554,8 @@ function adapt_view_to_national_level() {
 
   remove_basemaps();
 
-  map.addLayer(osm_gray);
-  map.addLayer(national_background);
-
-  // Linked to the checkbox Grid
-  remove_layer(grid_layer);
+  add_layer(osm_gray);
+  add_layer(national_background);
 
   // reactive fitting of Nigeria on the map
   map.fitBounds(L.latLngBounds(L.latLng(14, 15), L.latLng(4, 2.5)))
@@ -566,6 +564,10 @@ function adapt_view_to_national_level() {
 
   // update the info box on the top left
   update_infoBox()
+
+  // Linked to the checkbox Grid
+  remove_layer(state_grid_layer);
+
 
 };
 
@@ -584,7 +586,7 @@ function adapt_view_to_state_level() {
   states_cb_fun();
 
   if(previous_level == "national") {
-    document.getElementById("gridCheckbox").checked = document.getElementById("nationalGridCheckbox").checked ;
+    document.getElementById("stateGridCheckbox").checked = document.getElementById("nationalGridCheckbox").checked ;
   }
 
   // In States where there is no Grid, All Clusters should be shown instead of mapped village clusters
@@ -609,9 +611,8 @@ function adapt_view_to_state_level() {
   clusters_cb_fun();
   ogClusters_cb_fun();
 
-
   add_layer(nigeria_states_borders_geojson);
-  update_grid_layer();
+
   add_layer(osm_gray);
 
   // remove the medium voltage grid
@@ -619,6 +620,7 @@ function adapt_view_to_state_level() {
   heatmap_cb_fun();
   // remove the populated areas
   document.getElementById("nationalGridCheckbox").checked = false;
+  stateGrid_cb_fun();
   nationalGrid_cb_fun();
 
   remove_layer(hot);
@@ -1000,14 +1002,14 @@ function ogClusters_filter_fun() {
 
 
 // Triggered by the checkbox Grid
-function grid_cb_fun() {
-  var checkBox = document.getElementById("gridCheckbox");
+function stateGrid_cb_fun() {
+  var checkBox = document.getElementById("stateGridCheckbox");
   if (checkBox.checked == true) {
-    document.getElementById("gridPanel").style.borderLeft = '.25rem solid #1DD069';
-    add_layer(grid_layer);
+    document.getElementById("stateGridPanel").style.borderLeft = '.25rem solid #1DD069';
+    add_layer(state_grid_layer);
   } else {
-    document.getElementById("gridPanel").style.borderLeft = '.25rem solid #eeeff1';
-    remove_layer(grid_layer);
+    document.getElementById("stateGridPanel").style.borderLeft = '.25rem solid #eeeff1';
+    remove_layer(state_grid_layer);
   }
 
   /*$.get({url: $SCRIPT_ROOT,
