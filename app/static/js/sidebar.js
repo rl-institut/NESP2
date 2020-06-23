@@ -1003,15 +1003,16 @@ function ogClusters_filter_fun() {
 
 // Triggered by the checkbox Grid
 function stateGrid_cb_fun() {
-  var checkBox = document.getElementById("stateGridCheckbox");
-  if (checkBox.checked == true) {
-    document.getElementById("stateGridPanel").style.borderLeft = '.25rem solid #1DD069';
-    add_layer(state_grid_layer);
-  } else {
-    document.getElementById("stateGridPanel").style.borderLeft = '.25rem solid #eeeff1';
-    remove_layer(state_grid_layer);
+  if(level != "national") {
+      var checkBox = document.getElementById("stateGridCheckbox");
+      if (checkBox.checked == true) {
+        document.getElementById("stateGridPanel").style.borderLeft = '.25rem solid #1DD069';
+        add_layer(state_grid_layer);
+      } else {
+        document.getElementById("stateGridPanel").style.borderLeft = '.25rem solid #eeeff1';
+        remove_layer(state_grid_layer);
+      }
   }
-
   /*$.get({url: $SCRIPT_ROOT,
   data: {
     grid_content: gCheckBox.checked,
