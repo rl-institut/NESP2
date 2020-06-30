@@ -13,6 +13,11 @@ from .database import (
     convert_web_mat_view_to_light_json
 )
 
+UNSUPPORTED_USER_AGENT_STRINGS = (
+    "Edge",
+    "MSIE",  # Internet Explorer
+    "Trident"  # Internet Explorer (newer versions)
+)
 
 STATE_CODES_DICT = get_state_codes()
 CODES_STATE_DICT = {v: k for k, v in STATE_CODES_DICT.items()}
@@ -50,9 +55,15 @@ def create_app(test_config=None):
 
     @app.route('/')
     def index():
+        user_agent = request.headers.get('User-Agent')
+        not_supported = False
+        for ua in UNSUPPORTED_USER_AGENT_STRINGS:
+            if ua in user_agent:
+                not_supported = True
         defaultArgs = {
             "states_content": 1,
-            "grid_content": 0
+            "grid_content": 0,
+            "not_supported": not_supported
         }
         if request.args == {}:
             request.args = defaultArgs

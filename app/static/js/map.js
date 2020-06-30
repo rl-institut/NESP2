@@ -1,5 +1,5 @@
-map.addLayer(national_background);
-map.addLayer(osm_gray);
+add_layer(national_background);
+add_layer(osm_gray);
 
 // legend located at the lower right for datasets on national level
 var legend = L.control({
