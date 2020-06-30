@@ -32,13 +32,13 @@ var national_background = L.tileLayer(tileserver + "nesp2_national_background/{z
 // Basic png-tile layer for overlays taken from tile server serves zoom levels 5-9
 var national_heatmap = L.tileLayer(tileserver + "nesp2_national_heatmap/{z}/{x}/{y}.png", {
   maxZoom: 19,
-  attribution: ''
+  attribution: 'Identified settlements from satellite imagery: High Resolution Settlement Layer (HRSL). Source imagery for HRSL © 2016 DigitalGlobe. Accessed DAY MONTH YEAR. Modified by © Deutsche Gesellschaft für Internationale Zusammenarbeit (GIZ) GmbH and the Federal Ministry of Power (FMP)'
 });
 
 // Basic png-tile layer for overlays taken from tile server serves zoom levels 5-9
 var national_grid = L.tileLayer(tileserver + "nesp2_national_grid/{z}/{x}/{y}.png", {
   maxZoom: 19,
-  attribution: ''
+  attribution: '© Columbia University Earth Institute. Accessed from energydata.info, © Deutsche Gesellschaft für Internationale Zusammenarbeit (GIZ) GmbH and the Federal Ministry of Power (FMP) , Facebook Connectivity Lab and Center for International Earth Science Information Network - CIESIN - Columbia University. 2016'
 });
 
 // Basic png-tile layer combines national grid, heatmap and background. Redundant. Serves Levels 5-9
