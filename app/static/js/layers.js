@@ -23,25 +23,25 @@ var esri = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Wor
 // Basic png-tile taken from wmflabs
 var osm_gray = L.tileLayer("https://tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png", {
   maxZoom: 19,
-  attribution: 'Gray tiles &copy OpenStreetMap, hosted by <a href="https://wmflabs.org">wmflabs</a>.'
+  attribution: '&copy OpenStreetMap, <a href="https://wmflabs.org">wmflabs</a>.'
 });
 
 // Basic png-tile layer for background taken from tile server serves zoom levels 5-9
 var national_background = L.tileLayer(tileserver + "nesp2_national_background/{z}/{x}/{y}.png", {
   maxZoom: 19,
-  attribution: 'National tiles <a href="' + website_url +  '/about-map"> &copy se4all</a>'
+  attribution: 'Background Tiles <a href="' + website_url +  '/about-map"> &copy se4all</a>'
 });
 
 // Basic png-tile layer for overlays taken from tile server serves zoom levels 5-9
 var national_heatmap = L.tileLayer(tileserver + "nesp2_national_heatmap/{z}/{x}/{y}.png", {
   maxZoom: 19,
-  attribution: ''
+  attribution: 'Heatmap <a href="' + website_url +  '/about-map">© SE4ALL</a>'
 });
 
 // Basic png-tile layer for overlays taken from tile server serves zoom levels 5-9
 var national_grid = L.tileLayer(tileserver + "nesp2_national_grid/{z}/{x}/{y}.png", {
   maxZoom: 19,
-  attribution: ''
+  attribution: 'Grid <a href="' + website_url +  '/about-map">© SE4ALL</a>'
 });
 
 // Basic png-tile layer combines national grid, heatmap and background. Redundant. Serves Levels 5-9
@@ -191,6 +191,7 @@ function zoomToSelectedState() {
 //Always Using the entire Grid
 var state_grid_layer = L.vectorGrid.protobuf(tileserver + "nesp2_state_grid/{z}/{x}/{y}.pbf", {
   rendererFactory: L.canvas.tile,
+  attribution: 'Grid <a href="' + website_url +  '/about-map">© SE4ALL</a>',
   vectorTileLayerStyles: {
     '33_kV': function(prop, zoom) {
       return gridStyle33kv
@@ -325,6 +326,7 @@ function createNewClusterLayer(clusterString) {
     minZoom: 5,
     interactive: true,
     tolerance: 10,
+    attribution: 'Settlements <a href="' + website_url +  '/about-map">© SE4ALL</a>',
     getFeatureId: function(f) {
       if (f.properties.cluster_all_id !== undefined) {
         return f.properties.cluster_all_id;
@@ -464,6 +466,7 @@ function createNewOGClusterLayer(ogClusterString) {
     minZoom: 5,
     interactive: true,
     tolerance: 10,
+    attribution: 'Settlements <a href="' + website_url +  '/about-map">© SE4ALL</a>',
     getFeatureId: function(f) {
       if (f.properties.cluster_offgrid_id !== undefined) {
         return f.properties.cluster_offgrid_id;
