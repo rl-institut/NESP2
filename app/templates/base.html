@@ -10,21 +10,14 @@
         <script type=text/javascript>
            $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
         </script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha512-bnIvzh6FU75ZKxp0GXLH9bewza/OIw6dLVh9ICg0gogclmYGguQJWl8U30WpbsGTqbIiAwxTsbe76DErLq5EDQ==" crossorigin="anonymous"></script>
+
     {% block head %}{% endblock %}
 </head>
 
 <body>
 
-  <div class="reveal level" id="warning-browser-not-supported" data-reveal>
-    <h2>Warning</h2>
-    <p>This webmap is not optimized for browsers other than Chrome, Firefox and Opera.</p>
-    <p>For the full functionality please visit from one of these browsers.</p>
-    <div class="sidebar__btn">
-      <button data-close aria-label="Close modal" type="button">
-        Understood
-      </button>
-    </div>
-  </div>
+  {% include 'popups.html' %}
 
   {% block content %}{% endblock %}
 

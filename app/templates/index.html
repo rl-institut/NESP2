@@ -38,6 +38,7 @@
     </div>
   </div>
 
+
   <div id="map-content" class="grid-x">
     <div id="sidebar" class="cell large-3" data-sticky-container>
       <div id="header-maps" class="grid-x">
@@ -213,7 +214,6 @@
     </div>
 
     <div id="map" class="cell large-9"></div>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script type="text/javascript">
       var screen_width_threshold = 1024;
       var csrf_token = "{{ csrf_token() }}";
@@ -292,7 +292,13 @@
           $('#warning-browser-not-supported').foundation('toggle');
       }
 
-
+      //display a popup with the video the first time a user land on this page
+      var showVideo = sessionStorage.getItem('popupdisplayed');
+      if(showVideo === null) {
+        //save in local storage
+        sessionStorage.setItem('popupdisplayed', true);
+        $('#video-popup').foundation('toggle');
+      }
   });
 
     </script>
