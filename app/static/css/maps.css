@@ -713,13 +713,14 @@ img.footer-maps-logos__giz {
 }
 
 .footer-about .helper {
-  display: inline-block;
+  display: flex;
+  justify-content: center;
   height: 100%;
-  vertical-align: middle;
 }
 
-.footer.about a {
-  vertical-align: middle;
+.footer-about a {
+  display: flex;
+  align-items: center;
 }
 
 .footer-about a,
@@ -732,7 +733,6 @@ img.footer-maps-logos__giz {
 }
 
 .footer-about span {
-  vertical-align: middle;
   padding-left: .25rem;
 }
 
