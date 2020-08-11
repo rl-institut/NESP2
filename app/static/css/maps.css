@@ -376,6 +376,7 @@ background-color: #fff;
 }
 .download__btn {
     display: flex;
+    display: flex;
     justify-content: right;
 }
 
@@ -384,12 +385,14 @@ background-color: #fff;
   margin-left: 1rem;
   font-size: 10pt;
   font-weight: bold;
+  font-family: 'Source Sans Pro', sans-serif;
   padding: 12px 30px 12px 30px;
   border-radius: 4px;
   cursor: pointer;
   background-color: #1DD069;
   color: #ffffff;
 }
+
 
 /* clusterInfo box */
 
@@ -641,6 +644,54 @@ p.sidebar-panel-item-title {
 #header-maps-logo-nigeria img {
     height: 3.25rem;
 }
+
+#geoportal-btn {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+#geoportal-btn span{
+    font-size: 10pt;
+    font-family: 'Source Sans Pro', sans-serif;
+}
+
+#geoportal-btn img{
+    margin-left: 0.5rem;
+}
+
+#geoportal-btn a{
+    display: flex;
+    justify-content: center;
+}
+
+.cta,
+.cta:hover,
+.cta:focus,
+.cta:active {
+    display: block;
+    width: fit-content;
+    width: -moz-fit-content;
+    background-color: #1DD069;
+    color: #ffffff;
+    font-size: 18pt;
+    font-weight: bold;
+    padding: 10px 30px 10px 30px;
+    border-radius: 4px;
+}
+
+.cta {
+    -webkit-transition: all .2s ease-in;
+    transition: all .2s ease-in;
+}
+
+.cta:hover,
+.cta:focus,
+.cta:active {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
+    cursor: pointer;
+}
+
 
 /* Footer */
 
