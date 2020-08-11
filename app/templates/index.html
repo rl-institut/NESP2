@@ -153,6 +153,14 @@
         {{ checkbox.filter_opt(id="ogBuildingsFootprintSlider", label="Built-up ratio", help_icon=True, help_text="Built-up ratio is the fraction of building footprint within the cluster area. A built-up ratio of 0 means that there are no buildings in the cluster (not possible) whereas a built-up ration of 1 means that the cluster area is only made up of buildings", name="ogClustersContent") }}
         {{ checkbox.filter_download_btn(id="download_ogClusters", label="Download selection", name="ogClustersContent") }}
 
+
+        <div id="geoportal-btn" class="grid-x align-center">
+          <a class="cell small-7 cta" href="https://se4allgeonode.westeurope.cloudapp.azure.com/" target="_blank" rel="noreferrer">
+            <span>Download geodata</span>
+            <img src="{{ url_for('static', filename='img/icons/i_download_w.svg') }}">
+          </a>
+        </div>
+
       </div>
 
       <div id="footer-maps" class="grid-x">
@@ -187,22 +195,16 @@
 
       <div class="grid-x">
         <div class="cell grid-x footer-about">
-          <div class="cell medium-4 helper">
+          <div class="cell medium-6 helper">
             <a href="{{ url_for('landing') }}" target="_blank">
               <img src="{{ url_for('static', filename='img/icons/i_curved_arrow_left.svg') }}">
               <span>Go back to website</span>
             </a>
           </div>
-          <div class="cell medium-4 helper">
+          <div class="cell medium-6 helper">
             <a href="{{ url_for('about_map') }}" target="_blank">
               <img src="{{ url_for('static', filename='img/icons/i_info.svg') }}">
               <span>About this map</span>
-            </a>
-          </div>
-          <div class="cell medium-4 helper">
-            <a href="https://se4allgeonode.westeurope.cloudapp.azure.com/" target="_blank" rel="noreferrer">
-              <img src="{{ url_for('static', filename='img/icons/i_download.svg') }}">
-              <span>Download geodata</span>
             </a>
           </div>
         </div>

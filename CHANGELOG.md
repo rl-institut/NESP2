@@ -22,6 +22,7 @@ Here is a template for new release sections
 - Centroid latitude and longitude information in csv file download (#299)
 - Popup to warn against unsupported browsers (#311)
 - Links back to main page and to data portal (#318)
+- Visible button for data portal link (#319)
 ### Changed
 - Cluster toggles in sidebar automatically switch on or off depending on OG clusters availability
  (#303)
