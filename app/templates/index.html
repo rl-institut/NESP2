@@ -186,12 +186,25 @@
       </div>
 
       <div class="grid-x">
-        <div class="cell footer-about">
-          <div class="helper"></div>
-          <a href="{{ url_for('about_map') }}" target="_blank">
-            <img src="{{ url_for('static', filename='img/icons/i_info.svg') }}">
-            <span>About this map</span>
-          </a>
+        <div class="cell grid-x footer-about">
+          <div class="cell medium-4 helper">
+            <a href="{{ url_for('landing') }}" target="_blank">
+              <img src="{{ url_for('static', filename='img/icons/i_curved_arrow_left.svg') }}">
+              <span>Go back to website</span>
+            </a>
+          </div>
+          <div class="cell medium-4 helper">
+            <a href="{{ url_for('about_map') }}" target="_blank">
+              <img src="{{ url_for('static', filename='img/icons/i_info.svg') }}">
+              <span>About this map</span>
+            </a>
+          </div>
+          <div class="cell medium-4 helper">
+            <a href="https://se4allgeonode.westeurope.cloudapp.azure.com/" target="_blank" rel="noreferrer">
+              <img src="{{ url_for('static', filename='img/icons/i_download.svg') }}">
+              <span>Download geodata</span>
+            </a>
+          </div>
         </div>
       </div>
 
