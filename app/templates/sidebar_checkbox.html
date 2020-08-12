@@ -1,17 +1,14 @@
- {% macro input(id, label, visible=['national', 'state', 'village'],filter_func=False,help_icon=False, help_text="") -%}
+ {% macro input(id, label, visible=['national', 'state', 'village'],filter_func=False,help_icon=False, help_link="") -%}
     <div class="grid-x">
-      <div class="cell sidebar-panel {{ assign_visibility(visible) }}">
+      <div class="cell sidebar-panel {{ assign_visibility(visible) }}" id="{{ id }}TopLevelPanel">
         <div class="grid-x sidebar-panel-item is-active" id="{{ id }}Panel" data-accordion-item>
           <div class="cell small-8">
             <p href="#" class="sidebar-panel-item-title">
               {{ label }}
               {% if help_icon %}
-                <button type="button" data-toggle="{{ id }}-filter-info">
+                <a href="{{ url_for('resources.selection', resc_name=help_link) }}" target="_blank" rel="noreferrer">
                   <img src="{{ url_for('static', filename='img/icons/i_info.svg') }}">
-                </button>
-                <div class="dropdown-pane checkbox-tooltip" id="{{ id }}-filter-info" data-dropdown data-hover="true" data-hover-pane="true" data-position="right" data-alignment="bottom">
-                  {{ help_text|safe }}
-                </div>
+                </a>
               {% endif %}
             </p>
           </div>
@@ -66,7 +63,7 @@
           {{ label }}
           {% if help_icon %}
           <button type="button" data-toggle="{{ id }}-filter-info">
-            <img src="{{ url_for('static', filename='img/icons/i_info.svg') }}">
+            <img src="{{ url_for('static', filename='img/icons/i_info_w.svg') }}">
           </button>
           <div class="dropdown-pane filter-tooltip" id="{{ id }}-filter-info" data-dropdown data-hover="true" data-hover-pane="true" data-position="right" data-alignment="bottom">
             {{ help_text|safe }}

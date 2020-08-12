@@ -1,3 +1,6 @@
+const website_url = "http://se4allwebpage.westeurope.cloudapp.azure.com";
+
+
 // Basic png-tile layer taken from OpenStreetMap
 var osm = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
   maxZoom: 19,
@@ -20,25 +23,25 @@ var esri = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Wor
 // Basic png-tile taken from wmflabs
 var osm_gray = L.tileLayer("https://tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png", {
   maxZoom: 19,
-  attribution: '&copy; Tiles style from OpenStreetMap, hosted by wmflabs. <a href="https://wmflabs.org"></a>'
+  attribution: '&copy OpenStreetMap, <a href="https://wmflabs.org">wmflabs</a>.'
 });
 
 // Basic png-tile layer for background taken from tile server serves zoom levels 5-9
 var national_background = L.tileLayer(tileserver + "nesp2_national_background/{z}/{x}/{y}.png", {
   maxZoom: 19,
-  attribution: '☮'
+  attribution: 'Background Tiles <a href="' + website_url +  '/about-map"> &copy se4all</a>'
 });
 
 // Basic png-tile layer for overlays taken from tile server serves zoom levels 5-9
 var national_heatmap = L.tileLayer(tileserver + "nesp2_national_heatmap/{z}/{x}/{y}.png", {
   maxZoom: 19,
-  attribution: ''
+  attribution: 'Heatmap <a href="' + website_url +  '/about-map">© SE4ALL</a>'
 });
 
 // Basic png-tile layer for overlays taken from tile server serves zoom levels 5-9
 var national_grid = L.tileLayer(tileserver + "nesp2_national_grid/{z}/{x}/{y}.png", {
   maxZoom: 19,
-  attribution: ''
+  attribution: 'Grid <a href="' + website_url +  '/about-map">© SE4ALL</a>'
 });
 
 // Basic png-tile layer combines national grid, heatmap and background. Redundant. Serves Levels 5-9
@@ -50,15 +53,27 @@ var welcome_view = L.tileLayer(tileserver + "nesp2_national_welcome-view/{z}/{x}
 var centroidsGroup = L.layerGroup().addTo(map);
 
 
-function remove_layer(layer) {
+function remove_layer(layer, msg=null) {
   if (map.hasLayer(layer) == true) {
     map.removeLayer(layer);
   }
+  else{
+    if (msg != null){
+        console.log("Cannot remove unexisting layer");
+        console.log(msg);
+    }
+  }
 };
 
-function add_layer(layer) {
+function add_layer(layer, msg=null) {
   if (map.hasLayer(layer) == false) {
     map.addLayer(layer);
+  }
+  else{
+    if (msg != null){
+        console.log("Cannot add already existing layer");
+        console.log(msg);
+    }
   }
 };
 
@@ -169,13 +184,14 @@ function zoomToSelectedState() {
     map.flyToBounds(selectedStateOptions.bounds, {maxZoom: 19});
 };
 
-// Definitions and functions for the grid_layer
+// Definitions and functions for the state_grid_layer
 
 // Vector tiles layer that is adapted (URL) depending on the chosen state. Contains layers '11kV' and '33kV' Columns: several, but of no interest to the map
 
 //Always Using the entire Grid
-var grid_layer = L.vectorGrid.protobuf(tileserver + "nesp2_state_grid/{z}/{x}/{y}.pbf", {
+var state_grid_layer = L.vectorGrid.protobuf(tileserver + "nesp2_state_grid/{z}/{x}/{y}.pbf", {
   rendererFactory: L.canvas.tile,
+  attribution: 'Grid <a href="' + website_url +  '/about-map">© SE4ALL</a>',
   vectorTileLayerStyles: {
     '33_kV': function(prop, zoom) {
       return gridStyle33kv
@@ -185,32 +201,6 @@ var grid_layer = L.vectorGrid.protobuf(tileserver + "nesp2_state_grid/{z}/{x}/{y
     },
   }
 });
-
-// Assign the selected state grid tile to the grid_layer
-function redefine_grid_layer() {
-// Vector tiles layer that is adapted (URL) depending on the chosen state. Contains layers '11kV' and '33kV' Columns: several, but of no interest to the map
-
-//Always Using the entire Grid
-  grid_layer = L.vectorGrid.protobuf(tileserver + "nesp2_state_grid/{z}/{x}/{y}.pbf", {
-    rendererFactory: L.canvas.tile,
-    vectorTileLayerStyles: {
-      '33_kV': function(prop, zoom) {
-        return gridStyle33kv
-      },
-      '11_kV': function(prop, zoom) {
-        return gridStyle11kv
-      },
-    }
-  });
-};
-
-// Update the state level grid layer with tiles
-function update_grid_layer() {
-  //remove_layer(grid_layer);
-  //redefine_grid_layer();
-  // Add the grid layer depending on grid checkbox value
-  grid_cb_fun();
-};
 
 // Adds functions for filters and styling to a defined input grid-cluster-Layer
 function addFunctionsToClusterLayer(layer) {
@@ -336,6 +326,7 @@ function createNewClusterLayer(clusterString) {
     minZoom: 5,
     interactive: true,
     tolerance: 10,
+    attribution: 'Settlements <a href="' + website_url +  '/about-map">© SE4ALL</a>',
     getFeatureId: function(f) {
       if (f.properties.cluster_all_id !== undefined) {
         return f.properties.cluster_all_id;
@@ -475,6 +466,7 @@ function createNewOGClusterLayer(ogClusterString) {
     minZoom: 5,
     interactive: true,
     tolerance: 10,
+    attribution: 'Settlements <a href="' + website_url +  '/about-map">© SE4ALL</a>',
     getFeatureId: function(f) {
       if (f.properties.cluster_offgrid_id !== undefined) {
         return f.properties.cluster_offgrid_id;

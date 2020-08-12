@@ -3,6 +3,7 @@ import json
 from flask import Flask, render_template, request, jsonify, url_for, safe_join, redirect, Response
 from flask_wtf.csrf import CSRFProtect
 from .utils import define_function_jinja
+from .blueprints import resources
 from .database import (
     get_state_codes,
     query_random_og_cluster,
@@ -12,6 +13,11 @@ from .database import (
     convert_web_mat_view_to_light_json
 )
 
+UNSUPPORTED_USER_AGENT_STRINGS = (
+    "Edge",
+    "MSIE",  # Internet Explorer
+    "Trident"  # Internet Explorer (newer versions)
+)
 
 STATE_CODES_DICT = get_state_codes()
 CODES_STATE_DICT = {v: k for k, v in STATE_CODES_DICT.items()}
@@ -45,11 +51,19 @@ def create_app(test_config=None):
 
     csrf = CSRFProtect(app)
 
+    app.register_blueprint(resources.bp)
+
     @app.route('/')
     def index():
+        user_agent = request.headers.get('User-Agent')
+        not_supported = False
+        for ua in UNSUPPORTED_USER_AGENT_STRINGS:
+            if ua in user_agent:
+                not_supported = True
         defaultArgs = {
             "states_content": 1,
-            "grid_content": 0
+            "grid_content": 0,
+            "not_supported": not_supported
         }
         if request.args == {}:
             request.args = defaultArgs
@@ -69,7 +83,7 @@ def create_app(test_config=None):
         args = request.args
         state = args.get("state")
         cluster_type = args.get("cluster_type")
-        fname = state
+        fname = state.replace(" ", "_")
 
         if os.environ.get("POSTGRES_URL", None) is not None:
             if "og" in cluster_type:
@@ -80,7 +94,8 @@ def create_app(test_config=None):
                     'area_km2',
                     'building_count',
                     'percentage_building_area',
-                    'grid_dist_km'
+                    'grid_dist_km',
+                    'ST_AsGeoJSON(centroid) as lnglat'
                 )
                 records = query_filtered_og_clusters(
                     state,
@@ -98,7 +113,8 @@ def create_app(test_config=None):
                     'cluster_all_id',
                     'fid',
                     'area_km2',
-                    'grid_dist_km'
+                    'grid_dist_km',
+                    'ST_AsGeoJSON(centroid) as lnglat'
                 )
                 records = query_filtered_clusters(
                     state,
@@ -108,10 +124,23 @@ def create_app(test_config=None):
                     keys=keys
                 )
 
+            columns = list(keys)
+            columns[-1] = "lnglat"
+            column_names = list(keys)
+            column_names[-1] = "longitude on WGS 84"
+            column_names.append("latitude on WGS 84")
             csv = list()
-            csv.append(", ".join(keys))
+            csv.append(", ".join(column_names))
             for line in records:
-                csv.append(", ".join([str(line[k]) for k in keys]))
+                csv_line = list()
+                for k in columns:
+                    if k == "lnglat":
+                        lnglat = json.loads(line[k])["coordinates"]
+                        csv_line.append(str(lnglat[0]))
+                        csv_line.append(str(lnglat[1]))
+                    else:
+                        csv_line.append(str(line[k]))
+                csv.append(", ".join(csv_line))
             csv = "\n".join(csv) + "\n"
         else:
             csv = "1,2,3\n4,5,6\n"
