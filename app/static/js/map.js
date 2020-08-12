@@ -177,7 +177,7 @@ function update_clusterInfo(properties, selectedClustersNum=0, clusterNum="?") {
         '<div class="grid-x browse-box__items">\
           <div class="browse-box--left">Area (km²):</div><div class="browse-box--right"></div>\
           <div class="browse-box--left">Building count:</div><div class="browse-box--right"></div>\
-          <div class="browse-box--left">Built-up ratio:</div><div class="browse-box--right"></div>\
+          <div class="browse-box--left">Built-up percentage:</div><div class="browse-box--right"></div>\
           <div class="browse-box--left">Distance to grid (km):</div><div class="browse-box--right"></div>\
         </div>';
     };
@@ -188,7 +188,7 @@ function update_clusterInfo(properties, selectedClustersNum=0, clusterNum="?") {
         '<div class="grid-x browse-box__items">\
           <div class="browse-box--left">Area (km²):</div><div class="browse-box--right">' + parseFloat(properties.area_km2).toFixed(2) + '</div>\
           <div class="browse-box--left">Building count:</div><div class="browse-box--right">' + parseFloat(properties.building_count).toFixed(0) + '</div>\
-          <div class="browse-box--left">Built-up ratio:</div><div class="browse-box--right">' +parseFloat(properties.percentage_building_area).toFixed(2) + '</div>\
+          <div class="browse-box--left">Built-up percentage:</div><div class="browse-box--right">' +parseFloat(properties.percentage_building_area).toFixed(2) + '</div>\
           <div class="browse-box--left">Distance to grid (km):</div><div class="browse-box--right">' + parseFloat(properties.grid_dist_km).toFixed(1) + '</div>\
         </div>';
         settlements_content = '<div class="browse-box__clusters"><div><span>' + clusterNum + ' </span> of <span id="filtered-clusters-num">' + selectedClustersNum + '</span></div></div>'

@@ -53,7 +53,7 @@ var currentfilter = {
   ogminb: 0,
   ogmaxb: 5000,
   ogminbfp: 0,
-  ogmaxbfp: 0.8,
+  ogmaxbfp: 100,
 };
 var gridLayers = {
   "Abia": "",
@@ -336,12 +336,11 @@ var ogBuildingsFootprintSlider = document.getElementById('ogBuildingsFootprintSl
 noUiSlider.create(ogBuildingsFootprintSlider, {
   ...sliderOptions,
   tooltips: [wNumb({decimals: 2}) , wNumb({decimals: 2})],
-  start: [0, 0.8],
+  start: [0, 100],
+  step: 1,
   range: {
-    'min': [0, 0.01],
-    '50%': [0.1, 0.01],
-    '75%': [0.2, 0.05],
-    'max': 1,
+    'min': 0,
+    'max': 100,
   }
 });
 ogBuildingsFootprintSlider.noUiSlider.on("change", changeogBuildingsFootprintSlider);
