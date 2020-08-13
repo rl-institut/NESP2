@@ -310,6 +310,10 @@
         var videoId = "{{ video_id |safe }}";
         $('#nigeria-se4all-video')[0].src = "https://www.youtube-nocookie.com/embed/" + videoId + "?autoplay=1&enablejsapi=1&version=3&playerapiid=ytplayer"
       }
+      else{
+        // if the page reload on the same session, make sure the video is not replayed
+        $('#nigeria-se4all-video')[0].src = ""
+      }
 
       $('[data-reveal]').on('closed.zf.reveal', function () {
         var modal = $(this);
