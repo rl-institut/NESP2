@@ -299,6 +299,13 @@
         sessionStorage.setItem('popupdisplayed', true);
         $('#video-popup').foundation('toggle');
       }
+
+      $('[data-reveal]').on('closed.zf.reveal', function () {
+        var modal = $(this);
+        // trick taken from https://codepen.io/briangelhaus/pen/meeLRO
+        $(".nigeria-se4all-video")[0].contentWindow.postMessage('{"event":"command","func":"' + 'stopVideo' + '","args":""}', '*');
+      });
+
   });
 
     </script>
