@@ -63,7 +63,8 @@ def create_app(test_config=None):
         defaultArgs = {
             "states_content": 1,
             "grid_content": 0,
-            "not_supported": not_supported
+            "not_supported": not_supported,
+            "video_id": "r2Yb_zt2x9w"
         }
         if request.args == {}:
             request.args = defaultArgs

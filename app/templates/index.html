@@ -292,18 +292,33 @@
           $('#warning-browser-not-supported').foundation('toggle');
       }
 
+      function stop_video(videoClass){
+        // trick taken from https://codepen.io/briangelhaus/pen/meeLRO
+        $("." + videoClass)[0].contentWindow.postMessage('{"event":"command","func":"' + 'stopVideo' + '","args":""}', '*');
+      }
+
       //display a popup with the video the first time a user land on this page
       var showVideo = sessionStorage.getItem('popupdisplayed');
+
+
       if(showVideo === null) {
         //save in local storage
         sessionStorage.setItem('popupdisplayed', true);
+        // show the popup
         $('#video-popup').foundation('toggle');
+        // the id of the video is provided in __init__.py under the video_id variable
+        var videoId = "{{ video_id |safe }}";
+        $('#nigeria-se4all-video')[0].src = "https://www.youtube-nocookie.com/embed/" + videoId + "?autoplay=1&enablejsapi=1&version=3&playerapiid=ytplayer"
+      }
+      else{
+        // if the page reload on the same session, make sure the video is not replayed
+        $('#nigeria-se4all-video')[0].src = ""
       }
 
       $('[data-reveal]').on('closed.zf.reveal', function () {
         var modal = $(this);
-        // trick taken from https://codepen.io/briangelhaus/pen/meeLRO
-        $(".nigeria-se4all-video")[0].contentWindow.postMessage('{"event":"command","func":"' + 'stopVideo' + '","args":""}', '*');
+
+        stop_video("nigeria-se4all-video");
       });
 
   });
