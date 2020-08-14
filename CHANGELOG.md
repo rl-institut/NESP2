@@ -23,7 +23,7 @@ Here is a template for new release sections
 - Popup to warn against unsupported browsers (#311)
 - Links back to main page and to data portal (#318)
 - Visible button for data portal link (#319)
-- Video popup upon landing on main endpoint (#320, #321, #322)
+- Video popup upon landing on main endpoint (#320, #321, #322, #323)
 ### Changed
 - Cluster toggles in sidebar automatically switch on or off depending on OG clusters availability
  (#303)
