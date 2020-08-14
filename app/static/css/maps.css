@@ -965,7 +965,7 @@ img.footer-maps-logos__giz {
 #video-popup p{
     height: 4rem;
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
     padding-right: 3rem;
     align-items: center;
 }
