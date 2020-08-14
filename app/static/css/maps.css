@@ -950,6 +950,11 @@ img.footer-maps-logos__giz {
     border-width: 0;
 }
 
+/* Remove border around popups in chrome */
+.reveal:focus {
+    outline: none;
+}
+
 .popup-title {
     color: #464646;
     font-family: Poppins;
@@ -965,7 +970,7 @@ img.footer-maps-logos__giz {
 #video-popup p{
     height: 4rem;
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
     padding-right: 3rem;
     align-items: center;
 }
