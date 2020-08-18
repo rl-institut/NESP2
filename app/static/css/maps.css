@@ -959,7 +959,7 @@ img.footer-maps-logos__giz {
     color: #464646;
     font-family: Poppins;
     font-weight: bold;
-    font-size: 14pt;
+    font-size: 17pt;
     height: 4rem;
     display: flex;
     justify-content: center;
@@ -983,7 +983,7 @@ img.footer-maps-logos__giz {
 #video-popup button{
     color: #93939F;
     font-family: 'Source Sans Pro', Arial, sans-serif;
-    font-size: 18pt;
+    font-size: 16pt;
     font-weight: 400;
 }
 
