@@ -181,7 +181,7 @@ function update_nigeria_states_borders_geojson() {
 };
 
 function zoomToSelectedState() {
-    map.flyToBounds(selectedStateOptions.bounds, {maxZoom: 19});
+    map.flyToBounds(selectedStateOptions.bounds, {maxZoom: 19, animation:false});
 };
 
 // Definitions and functions for the state_grid_layer
@@ -236,7 +236,7 @@ function addFunctionsToClusterLayer(layer) {
     map.flyToBounds([
       [e.layer.properties.bb_south, e.layer.properties.bb_west],
       [e.layer.properties.bb_north, e.layer.properties.bb_east]
-    ])
+    ],{animation:false})
   });
   layer.filter = function(filter) {
     let newhiddenIDs = [];
@@ -384,7 +384,7 @@ function addFunctionsToOGClusterLayer(layer) {
     map.flyToBounds([
       [e.layer.properties.bb_south, e.layer.properties.bb_west],
       [e.layer.properties.bb_north, e.layer.properties.bb_east]
-    ])
+    ],{animation:false})
   });
   layer.filter = function(filter) {
     let newhiddenIDs = [];
