@@ -940,3 +940,60 @@ img.footer-maps-logos__giz {
     padding-left: 10px;
     padding-right: 10px;
 }
+
+/*popup*/
+
+#video-popup{
+    background-color: #EEEFF1;
+    border-radius: 2rem;
+    padding: 0;
+    border-width: 0;
+}
+
+/* Remove border around popups in chrome */
+.reveal:focus {
+    outline: none;
+}
+
+.popup-title {
+    color: #464646;
+    font-family: Poppins;
+    font-weight: bold;
+    font-size: 17pt;
+    height: 4rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+#video-popup p{
+    height: 4rem;
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 3rem;
+    align-items: center;
+}
+
+#video-popup iframe{
+    padding: 0;
+    margin: 0;
+}
+
+#video-popup button{
+    color: #93939F;
+    font-family: 'Source Sans Pro', Arial, sans-serif;
+    font-size: 16pt;
+    font-weight: 400;
+}
+
+#video-popup img{
+    height: 23px;
+    width: 23px;
+    padding-right: 0.25rem;
+}
+
+
+.reveal-overlay{
+    background-color: rgba(70,70,70,0.5);
+}

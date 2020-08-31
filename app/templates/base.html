@@ -17,6 +17,20 @@
 
 <body>
 
+    <div class="reveal level grid-x" id="video-popup" data-reveal>
+      <div class="cell popup-title">Get a tour of the NIGERIA SE4ALL map</div>
+      <div class="cell">
+        <!-- the src of the iframe is defined in maps/index.html-->
+        <iframe id="nigeria-se4all-video" class="nigeria-se4all-video" width="600" height="338" src="" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+      <p class="cell">
+
+          <button data-close aria-label="Close modal" type="button">
+            <img src="{{ url_for('static', filename='img/icons/i_skip_g.svg') }}">
+            Skip
+          </button></p>
+    </div>
+
   {% include 'popups.html' %}
 
   {% block content %}{% endblock %}
