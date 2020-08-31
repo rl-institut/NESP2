@@ -809,7 +809,7 @@ function get_random_ogCluster_fun() {
             success: function(data){
                 random_cluster = true;
                 //this will trigger a fly to the point
-                map.flyTo(L.latLng(data.lat, data.lng), 14, {animation:false});
+                map.flyTo(L.latLng(data.lat, data.lng), 14, {animate:false});
             }
     }).done(function (data) {random_cluster = false;});
 }
@@ -1259,10 +1259,10 @@ function update_cluster_info(filtered_centroids_keys){
 // flyTo-function including a with reset of 'currently_flying_to_cluster' to false in order to allow level change via manual zoom afterwards
 function flyToClusterBounds(target){
   currently_flying_to_cluster = true;
-  map.flyToBounds(target,{animation:false});
+  map.flyToBounds(target,{animate:false});
     map.once('moveend', function() {
       currently_flying_to_cluster = false;
-    },{animation:false});
+    },{animate:false});
 }
 
 function next_selection_fun(){
@@ -1286,7 +1286,7 @@ function next_selection_fun(){
   // get the centroid from its id and fly to its bounds
   centroid = (current_cluster_centroids[centroids_layer_id]._layers[currently_featured_centroid_id]);
   target = get_bbox_from_cluster_centroid(centroid);
-  flyToClusterBounds(target,{animation:false});
+  flyToClusterBounds(target,{animate:false});
   update_cluster_info(filtered_centroids_keys);
 }
 
@@ -1310,6 +1310,6 @@ function prev_selection_fun(){
   // get the centroid from its id and fly to its bounds
   centroid = get_centroid_by_id(currently_featured_centroid_id);
   target = get_bbox_from_cluster_centroid(centroid);
-  flyToClusterBounds(target,{animation:false});
+  flyToClusterBounds(target,{animate:false});
   update_cluster_info(filtered_centroids_keys);
 }
