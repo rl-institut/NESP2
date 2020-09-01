@@ -191,6 +191,7 @@ function zoomToSelectedState() {
 //Always Using the entire Grid
 var state_grid_layer = L.vectorGrid.protobuf(tileserver + "nesp2_state_grid/{z}/{x}/{y}.pbf", {
   rendererFactory: L.canvas.tile,
+  maxZoom:15,
   attribution: 'Grid <a href="' + website_url +  '/about-map">© SE4ALL</a>',
   vectorTileLayerStyles: {
     '33_kV': function(prop, zoom) {
