@@ -1,10 +1,16 @@
+//define the maxBounds which are visible for the map
+var southWest = L.latLng(0.0334, 17.602),
+    northEast = L.latLng(21.484, -5.298),
+    maxBoundsDefault = L.latLngBounds(southWest, northEast);
+
 var options = {
   center: [9, 7],
   zoomSnap: 0.5,
-  zoom: 6.6,
-  minZoom: 5,
+  zoom: 7,
+  minZoom: 7,
   maxZoom: 19,
-  zoomControl: false
+  zoomControl: false,
+  maxBounds: maxBoundsDefault
 };
 var map = L.map("map", options);
 var tileserver = "http://se4allwebpage.westeurope.cloudapp.azure.com:8080/data/"
