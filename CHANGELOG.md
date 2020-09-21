@@ -30,6 +30,7 @@ Here is a template for new release sections
 - Rename `gridCheckbox` to `stateGridCheckbox (#312)
 - Rename `grid_layer` to `state_grid_layer (#312)
 - Keep the darker funnel image as long as filter is expanded (#326)
+- The area legend is not shaped like a line anymore but like a rectangle (#327)
 ### Removed
 - Unused `selectedStateAvailability` variable (#303)
 - Unused `statesAvailability` variable (#303)

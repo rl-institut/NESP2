@@ -136,8 +136,8 @@ a {
 
 
 .legend-color {
-  height: .5rem;
-  width: 3rem;
+  height: 1rem;
+  width: 2.5rem;
   border-radius: 100px;
   position: absolute;
   top: 50%;
@@ -149,12 +149,6 @@ a {
 .legend-color-grid {
   height: .25rem;
   width: 3rem;
-  border-radius: 100px;
-  position: absolute;
-  top: 50%;
-  -ms-transform: translateY(-50%);
-  transform: translateY(-50%);
-  right: 1rem;
 }
 
 .legend-color--green {
