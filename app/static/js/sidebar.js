@@ -48,6 +48,7 @@ var currentfilter = {
   ogmaxb: 5000,
   ogminbfp: 0,
   ogmaxbfp: 100,
+  filterID: ""
 };
 var gridLayers = {
   "Abia": "",
@@ -963,6 +964,16 @@ function template_filter_fun(id) {
   var newFilter = document.getElementsByName(id + "Content");
   var checkBox = document.getElementById(id + "Checkbox");
   if (checkBox.checked == true) {
+    // reset the current filter id
+    if (currentfilter["filterID"] == ""){
+        // if currentfilter id is empty, then it means that the filter will be expanded
+        currentfilter["filterID"] = id;
+    }
+    else if (currentfilter["filterID"] == id){
+        // if currentfilter id is the same as id, then the filter will be hidden
+        currentfilter["filterID"] = "";
+    }
+
     var i;
     for (i = 0; i < newFilter.length; i++) {
       newFilter[i].className = toggle_sidebar_filter(newFilter[i].className)
@@ -974,6 +985,7 @@ function template_filter_fun(id) {
 
       if (prevFilter[j].attributes.name.value !== id + "Content") {
         prevFilter[j].className = disable_sidebar_filter(prevFilter[j].className);
+
       }
     }
     if (id == "clusters") {
@@ -985,6 +997,8 @@ function template_filter_fun(id) {
         update_filter();
     }
   } else {
+    // reset the current filter to default
+    currentfilter["filterID"] = "";
     var prevFilter = document.querySelectorAll(".content-filter");
     var j;
     for (j = 0; j < prevFilter.length; j++) {
