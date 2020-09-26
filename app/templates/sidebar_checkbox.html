@@ -65,7 +65,7 @@
           <button type="button" data-toggle="{{ id }}-filter-info">
             <img src="{{ url_for('static', filename='img/icons/i_info_w.svg') }}">
           </button>
-          <div class="dropdown-pane filter-tooltip" id="{{ id }}-filter-info" data-dropdown data-hover="true" data-hover-pane="true" data-position="right" data-alignment="bottom">
+          <div class="dropdown-pane filter-tooltip" id="{{ id }}-filter-info" data-dropdown data-hover="true" data-hover-pane="true" data-position="top" data-alignment="center" data-allow-overlap="true">
             {{ help_text|safe }}
           </div>
           {% endif %}
