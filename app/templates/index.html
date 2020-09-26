@@ -266,18 +266,6 @@
 
   $(document).ready(function(){
       $(document).foundation();
-      $('.filter_icon').on("mouseenter", function(){
-          // Change src attribute of image
-          $(this).attr("src", "../static/img/icons/i_funnel_dark_gray.svg");
-
-      });
-      $('.filter_icon').on("mouseleave", function(){
-          // Change src attribute of image if the filter is not selected
-          var filter_section = $(this).attr("id").split('_')[0];
-          if (currentfilter["filterID"] != filter_section) {
-            $(this).attr("src", "../static/img/icons/i_funnel_gray.svg");
-          }
-      });
 
       //display a warning for small screens
       if($(window).width() < screen_width_threshold) {
