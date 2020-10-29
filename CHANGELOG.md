@@ -19,11 +19,23 @@ Here is a template for new release sections
 
 ## [Unreleased]
 ### Added
--
+- Centroid latitude and longitude information in csv file download (#299)
+- Popup to warn against unsupported browsers (#311)
+- Links back to main page and to data portal (#318)
+- Visible button for data portal link (#319)
+- Video popup upon landing on main endpoint (#320, #321, #322, #323)
 ### Changed
--
+- Cluster toggles in sidebar automatically switch on or off depending on OG clusters availability
+ (#303)
+- Rename `gridCheckbox` to `stateGridCheckbox (#312)
+- Rename `grid_layer` to `state_grid_layer (#312)
+- Keep the darker funnel image as long as filter is expanded (#326)
+- The area legend is not shaped like a line anymore but like a rectangle (#327)
 ### Removed
--
+- Unused `selectedStateAvailability` variable (#303)
+- Unused `statesAvailability` variable (#303)
+- Javascript code in `index.html` to initialize state_grid and state_level toggles (#312)
+
 
 ## [1.0.0] 2020-04-27
 
@@ -108,6 +120,7 @@ Here is a template for new release sections
 - Adapt filters to show clusters that are 0km distance from grid (#278, #280)
 - Filter are not clickable if screen width is below 1024 pixels (#281)
 - Browsing settlements works periodically (#289)
+- Distance to grid is shown as 0 km when selected (#305)
 
 ### Removed
 - redundant accordion menu (#10)

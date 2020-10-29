@@ -1,5 +1,5 @@
-map.addLayer(national_background);
-map.addLayer(osm_gray);
+add_layer(national_background);
+add_layer(osm_gray);
 
 // legend located at the lower right for datasets on national level
 var legend = L.control({
@@ -12,7 +12,7 @@ legend.onAdd = function(map) {
   return this._div;
 };
 legend.update = function(props) {
-  this._div.innerHTML = '<div class="grid-x"><div class="small-3 map-legend__text"><div class="legend-color-grid legend-color--green"></div></div><div class="small-9 map-legend__label"><p>Datasets available</p></div><div class="small-3 map-legend__text"><div class="legend-color-grid legend-color--gray"></div></div><div class="small-9 map-legend__label"><p>Datasets <span class="map-legend--highlight">not yet</span> available</p></div></div>'
+  this._div.innerHTML = '<div class="grid-x"><div class="small-3 map-legend__text"><div class="legend-color legend-color--green"></div></div><div class="small-9 map-legend__label"><p>Datasets available</p></div><div class="small-3 map-legend__text"><div class="legend-color legend-color--gray"></div></div><div class="small-9 map-legend__label"><p>Datasets <span class="map-legend--highlight">not yet</span> available</p></div></div>'
 };
 legend.addTo(map);
 
@@ -30,7 +30,7 @@ gridLegend.onAdd = function(map) {
 };
 
 gridLegend.update = function(props) {
-  this._div.innerHTML = '<div class="grid-x"><div class="small-3 map-legend__text"><div class="legend-color-grid legend-color--brown"></div></div><div class="small-9 map-legend__label">11 kV Grid</div><div class="small-3 map-legend__text"><div class="legend-color legend-color-grid legend-color--red"></div></div><div class="small-9 map-legend__label">33 kV Grid</div></div>'
+  this._div.innerHTML = '<div class="grid-x"><div class="small-3 map-legend__text"><div class="legend-color legend-color-grid legend-color--brown"></div></div><div class="small-9 map-legend__label">11 kV Grid</div><div class="small-3 map-legend__text"><div class="legend-color legend-color-grid legend-color--red"></div></div><div class="small-9 map-legend__label">33 kV Grid</div></div>'
   };
 
 var baseMaps = {
@@ -177,7 +177,7 @@ function update_clusterInfo(properties, selectedClustersNum=0, clusterNum="?") {
         '<div class="grid-x browse-box__items">\
           <div class="browse-box--left">Area (km²):</div><div class="browse-box--right"></div>\
           <div class="browse-box--left">Building count:</div><div class="browse-box--right"></div>\
-          <div class="browse-box--left">Built-up ratio:</div><div class="browse-box--right"></div>\
+          <div class="browse-box--left">Built-up percentage:</div><div class="browse-box--right"></div>\
           <div class="browse-box--left">Distance to grid (km):</div><div class="browse-box--right"></div>\
         </div>';
     };
@@ -188,7 +188,7 @@ function update_clusterInfo(properties, selectedClustersNum=0, clusterNum="?") {
         '<div class="grid-x browse-box__items">\
           <div class="browse-box--left">Area (km²):</div><div class="browse-box--right">' + parseFloat(properties.area_km2).toFixed(2) + '</div>\
           <div class="browse-box--left">Building count:</div><div class="browse-box--right">' + parseFloat(properties.building_count).toFixed(0) + '</div>\
-          <div class="browse-box--left">Built-up ratio:</div><div class="browse-box--right">' +parseFloat(properties.percentage_building_area).toFixed(2) + '</div>\
+          <div class="browse-box--left">Built-up percentage:</div><div class="browse-box--right">' +parseFloat(properties.percentage_building_area).toFixed(2) + '</div>\
           <div class="browse-box--left">Distance to grid (km):</div><div class="browse-box--right">' + parseFloat(properties.grid_dist_km).toFixed(1) + '</div>\
         </div>';
         settlements_content = '<div class="browse-box__clusters"><div><span>' + clusterNum + ' </span> of <span id="filtered-clusters-num">' + selectedClustersNum + '</span></div></div>'

@@ -1,10 +1,16 @@
+//define the maxBounds which are visible for the map
+var southWest = L.latLng(0.0334, 17.602),
+    northEast = L.latLng(21.484, -5.298),
+    maxBoundsDefault = L.latLngBounds(southWest, northEast);
+
 var options = {
   center: [9, 7],
   zoomSnap: 0.5,
-  zoom: 6.6,
-  minZoom: 5,
+  zoom: 7,
+  minZoom: 7,
   maxZoom: 19,
-  zoomControl: false
+  zoomControl: false,
+  maxBounds: maxBoundsDefault
 };
 var map = L.map("map", options);
 var tileserver = "http://se4allwebpage.westeurope.cloudapp.azure.com:8080/data/"
@@ -12,7 +18,6 @@ var level = "national";
 var previous_level = level;
 var statesList = ["Abia", "Adamawa", "Akwa Ibom", "Anambra", "Bauchi", "Bayelsa", "Benue", "Borno", "Cross River", "Delta", "Ebonyi", "Edo", "Ekiti", "Enugu", "Federal Capital Territory", "Gombe", "Imo", "Jigawa", "Kaduna", "Kano", "Katsina", "Kebbi", "Kogi", "Kwara", "Lagos", "Nasarawa", "Niger", "Ogun", "Ondo", "Osun", "Oyo", "Plateau", "Rivers", "Sokoto", "Taraba", "Yobe", "Zamfara"];
 var selectedState = "init";
-var selectedStateAvailability = 0;
 var prevState = selectedState;
 var selectedStateOptions = {bounds: null};
 var filteredClusters = 0;
@@ -28,20 +33,8 @@ var current_cluster_centroids = Object();
 var currently_featured_centroid_id = 0;
 var currently_flying_to_cluster = false;
 var downloadingClusters = false;
-var statesWithOgClusters = [
-    'Jigawa',
-     'Kano',
-     'Katsina',
-     'Sokoto',
-     'Kebbi',
-     'Nasarawa',
-     'Edo',
-     'Osun',
-     'Enugu',
-     'Kogi',
-     'Kwara'
-];
-
+var statesWithOgClusters = [];
+var ogClustersAvailability = false;
 var currentfilter = {
   minarea: 0.1,
   maxarea: 10,
@@ -54,7 +47,8 @@ var currentfilter = {
   ogminb: 0,
   ogmaxb: 5000,
   ogminbfp: 0,
-  ogmaxbfp: 0.8,
+  ogmaxbfp: 100,
+  filterID: ""
 };
 var gridLayers = {
   "Abia": "",
@@ -134,11 +128,6 @@ var OGClusterLayers = {
   "Taraba": "",
   "Yobe": "nesp2_state_offgrid_clusters_yobe",
   "Zamfara": "nesp2_state_offgrid_clusters_zamfara",
-}
-// define dictionary with availability status of states
-var statesAvailability = {};
-for(const key of Object.keys(nigeria_states_simplified.features)){
-  statesAvailability[nigeria_states_simplified.features[key].properties.name] = nigeria_states_simplified.features[key].properties.availability;
 }
 
 // fetch info about states which have og_clusters
@@ -241,7 +230,7 @@ var dtgSliderFormat = wNumb({
     // show plus after value if it's 50
 	edit: function( value ){
         if (value == '50 km') {return('50+ km');}
-        else if (value == '0 km') {return('< 1 km');}
+        else if (value == '0 km') {return('0 km');}
 		else {return(value);}
 	},
 });
@@ -348,12 +337,11 @@ var ogBuildingsFootprintSlider = document.getElementById('ogBuildingsFootprintSl
 noUiSlider.create(ogBuildingsFootprintSlider, {
   ...sliderOptions,
   tooltips: [wNumb({decimals: 2}) , wNumb({decimals: 2})],
-  start: [0, 0.8],
+  start: [0, 100],
+  step: 1,
   range: {
-    'min': [0, 0.01],
-    '50%': [0.1, 0.01],
-    '75%': [0.2, 0.05],
-    'max': 1,
+    'min': 0,
+    'max': 100,
   }
 });
 ogBuildingsFootprintSlider.noUiSlider.on("change", changeogBuildingsFootprintSlider);
@@ -510,8 +498,15 @@ function adapt_sidebar_to_selection_level(selectionLevel) {
     document.getElementById("village").className = "cell small-6 level sidebar__btn inert disabled";
   }
 
-  if (selectionLevel == "state" && selectedStateAvailability % 4 < 2) {
+  if (selectionLevel == "national") {
     document.getElementById("ogClustersTopLevelPanel").className = disable_sidebar__btn(document.getElementById("ogClustersTopLevelPanel").className);
+  }
+  else {
+      if (ogClustersAvailability == false) {
+        document.getElementById("ogClustersTopLevelPanel").className = disable_sidebar__btn(document.getElementById("ogClustersTopLevelPanel").className);
+      } else {
+        document.getElementById("ogClustersTopLevelPanel").className = enable_sidebar__btn(document.getElementById("ogClustersTopLevelPanel").className);
+      }
   }
 
   document.getElementById(selectionLevel).className = "cell small-6 level sidebar__btn active";
@@ -538,16 +533,17 @@ function adapt_view_to_national_level() {
     document.getElementById("nationalGridCheckbox").checked = true;
     set_clusters_toggle(false);
     set_og_clusters_toggle(false);
-    document.getElementById("gridCheckbox").checked = false;
+    document.getElementById("stateGridCheckbox").checked = false;
   }
   if (previous_level == "state" || previous_level == "village") {
     document.getElementById("heatmapCheckbox").checked = document.getElementById("clustersCheckbox").checked;
-    document.getElementById("nationalGridCheckbox").checked = document.getElementById("gridCheckbox").checked;
+    document.getElementById("nationalGridCheckbox").checked = document.getElementById("stateGridCheckbox").checked;
   }
   // load the populated areas
   heatmap_cb_fun();
-  // load the medium voltage grid
+  // load the medium voltage grid on national level and untick the one on the state level
   nationalGrid_cb_fun();
+  stateGrid_cb_fun();
 
   // Remotely mapped villages layer
   remove_layer(clusterLayer[selectedState]);
@@ -564,11 +560,8 @@ function adapt_view_to_national_level() {
 
   remove_basemaps();
 
-  map.addLayer(osm_gray);
-  map.addLayer(national_background);
-
-  // Linked to the checkbox Grid
-  remove_layer(grid_layer);
+  add_layer(osm_gray);
+  add_layer(national_background);
 
   // reactive fitting of Nigeria on the map
   map.fitBounds(L.latLngBounds(L.latLng(14, 15), L.latLng(4, 2.5)))
@@ -577,6 +570,10 @@ function adapt_view_to_national_level() {
 
   // update the info box on the top left
   update_infoBox()
+
+  // Linked to the checkbox Grid
+  remove_layer(state_grid_layer);
+
 
 };
 
@@ -595,26 +592,33 @@ function adapt_view_to_state_level() {
   states_cb_fun();
 
   if(previous_level == "national") {
-    document.getElementById("gridCheckbox").checked = document.getElementById("nationalGridCheckbox").checked ;
+    document.getElementById("stateGridCheckbox").checked = document.getElementById("nationalGridCheckbox").checked ;
   }
-  // Apply only when choosing state right after landing, otherwise keep user options
-  if (previous_level == "national" && prevState == "init") {
 
-      // In States where there is no Grid, All Clusters should be shown instead of mapped village clusters
-      if (statesAvailability[selectedState] / 4 < 1) {
-        set_clusters_toggle(true);
-      }
-      else {
+  // In States where there is no Grid, All Clusters should be shown instead of mapped village clusters
+  if (ogClustersAvailability == false) {
+    set_clusters_toggle(true);
+  }
+  else {
+    // Choose remotely mapped settlements only when choosing state right after landing, otherwise
+    // keep user options
+    if (prevState == "init") {
         // Load the remotely mapped villages clusters
         set_og_clusters_toggle(true);
-      }
+    }
+    else {
+        if (document.getElementById("clustersCheckbox").checked == true) {
+            // Load the remotely mapped villages clusters
+            set_og_clusters_toggle(true);
+        }
+    }
   }
+
   clusters_cb_fun();
   ogClusters_cb_fun();
 
-
   add_layer(nigeria_states_borders_geojson);
-  update_grid_layer();
+
   add_layer(osm_gray);
 
   // remove the medium voltage grid
@@ -622,6 +626,7 @@ function adapt_view_to_state_level() {
   heatmap_cb_fun();
   // remove the populated areas
   document.getElementById("nationalGridCheckbox").checked = false;
+  stateGrid_cb_fun();
   nationalGrid_cb_fun();
 
   remove_layer(hot);
@@ -650,8 +655,7 @@ function national_button_fun(trigger="button") {
 function state_button_fun(trigger="button") {
   previous_level = level;
   level = "state";
-  selectedStateAvailability = statesAvailability[selectedState];
-  adapt_sidebar_to_selection_level(level);
+
   // click on the state level button from national level
   if (previous_level == "national" && trigger == "button"){
       // select a random state which has off-grid clusters
@@ -659,6 +663,10 @@ function state_button_fun(trigger="button") {
       // Update the states menu list
       document.getElementById("stateSelect").value = selectedState;
   };
+
+  // check if the og clusters are available
+  ogClustersAvailability = statesWithOgClusters.includes(selectedState)
+  adapt_sidebar_to_selection_level(level);
 
   // updates the bounds of the selected state's layer
   updateSelectedStateBounds()
@@ -753,20 +761,40 @@ function state_dropdown_fun() {
   }
 };
 
-// Triggered by the checkbox Populated Areas
-function heatmap_cb_fun() {
+/*
+Triggered by the checkbox Identified settlements by satellite imagery on national level only
+
+Parameters
+----------
+    :trigger: str, can be one of ('user', 'map-click', 'zoom', 'random-cluster', 'init', 'button')
+*/
+function heatmap_cb_fun(trigger=null) {
   var checkBox = document.getElementById("heatmapCheckbox");
   if (checkBox.checked == true) {
     document.getElementById("heatmapPanel").style.borderLeft = '.25rem solid #1DD069';
     add_layer(national_heatmap);
+    if (trigger == "user") {
+        //activate all clusters
+        set_clusters_toggle(true);
+        // deactivate og clusters
+        set_og_clusters_toggle(false);
+        clusters_cb_fun();
+        ogClusters_cb_fun();
+  }
   } else {
     document.getElementById("heatmapPanel").style.borderLeft = '.25rem solid #eeeff1';
     remove_layer(national_heatmap);
     national_heatmap.bringToFront();
+    if (trigger == "user") {
+        //deactivate all clusters
+        set_clusters_toggle(false);
+        clusters_cb_fun();
+        ogClusters_cb_fun();
+  }
   }
 }
 
-// Triggered by the checkbox Medium Voltage Grid
+// Triggered by the checkbox Medium Voltage Grid on national level only
 function nationalGrid_cb_fun() {
   var checkBox = document.getElementById("nationalGridCheckbox");
   if (checkBox.checked == true) {
@@ -788,7 +816,7 @@ function get_random_ogCluster_fun() {
             success: function(data){
                 random_cluster = true;
                 //this will trigger a fly to the point
-                map.flyTo(L.latLng(data.lat, data.lng), 14);
+                map.flyTo(L.latLng(data.lat, data.lng), 14, {animate:false});
             }
     }).done(function (data) {random_cluster = false;});
 }
@@ -824,6 +852,13 @@ function download_clusters_fun() {
   export_csv_link.click()
 }
 
+/*
+Triggered by the checkbox Identified settlements by satellite imagery on state level only
+
+Parameters
+----------
+    :trigger: str, can be one of ('user', 'map-click', 'zoom', 'random-cluster', 'init', 'button')
+*/
 function clusters_cb_fun(trigger=null) {
   var filter_icon = document.getElementById("clusters_filter");
 
@@ -876,49 +911,13 @@ function clusters_cb_fun(trigger=null) {
   */
 }
 
-function template_filter_fun(id) {
-  var newFilter = document.getElementsByName(id + "Content");
-  var checkBox = document.getElementById(id + "Checkbox");
-  if (checkBox.checked == true) {
-    var i;
-    for (i = 0; i < newFilter.length; i++) {
-      newFilter[i].className = toggle_sidebar_filter(newFilter[i].className)
-    }
+/*
+Triggered by the checkbox Remotely mapped settlements on state level only
 
-    var prevFilter = document.querySelectorAll(".content-filter");
-    var j;
-    for (j = 0; j < prevFilter.length; j++) {
-
-      if (prevFilter[j].attributes.name.value !== id + "Content") {
-        prevFilter[j].className = disable_sidebar_filter(prevFilter[j].className);
-      }
-    }
-    if (id == "clusters") {
-        map.fireEvent("filterchange", currentfilter);
-        update_filter();
-    }
-    else{
-        map.fireEvent("ogfilterchange", currentfilter);
-        update_filter();
-    }
-  } else {
-    var prevFilter = document.querySelectorAll(".content-filter");
-    var j;
-    for (j = 0; j < prevFilter.length; j++) {
-
-      if (prevFilter[j].attributes.name.value === id + "Content") {
-        prevFilter[j].className = disable_sidebar_filter(prevFilter[j].className);
-      }
-    }
-
-  }
-}
-
-function clusters_filter_fun() {
-  template_filter_fun("clusters");
-}
-
-
+Parameters
+----------
+    :trigger: str, can be one of ('user', 'map-click', 'zoom', 'random-cluster', 'init', 'button')
+*/
 function ogClusters_cb_fun(trigger=null) {
   var filter_icon = document.getElementById("ogClusters_filter");
 
@@ -961,22 +960,78 @@ function ogClusters_cb_fun(trigger=null) {
   }
 }
 
+function template_filter_fun(id) {
+  var newFilter = document.getElementsByName(id + "Content");
+  var checkBox = document.getElementById(id + "Checkbox");
+  if (checkBox.checked == true) {
+    // reset the current filter id
+    if (currentfilter["filterID"] == ""){
+        // if currentfilter id is empty, then it means that the filter will be expanded
+        currentfilter["filterID"] = id;
+    }
+    else if (currentfilter["filterID"] == id){
+        // if currentfilter id is the same as id, then the filter will be hidden
+        currentfilter["filterID"] = "";
+    }
+
+    var i;
+    for (i = 0; i < newFilter.length; i++) {
+      newFilter[i].className = toggle_sidebar_filter(newFilter[i].className)
+    }
+
+    var prevFilter = document.querySelectorAll(".content-filter");
+    var j;
+    for (j = 0; j < prevFilter.length; j++) {
+
+      if (prevFilter[j].attributes.name.value !== id + "Content") {
+        prevFilter[j].className = disable_sidebar_filter(prevFilter[j].className);
+
+      }
+    }
+    if (id == "clusters") {
+        map.fireEvent("filterchange", currentfilter);
+        update_filter();
+    }
+    else{
+        map.fireEvent("ogfilterchange", currentfilter);
+        update_filter();
+    }
+  } else {
+    // reset the current filter to default
+    currentfilter["filterID"] = "";
+    var prevFilter = document.querySelectorAll(".content-filter");
+    var j;
+    for (j = 0; j < prevFilter.length; j++) {
+
+      if (prevFilter[j].attributes.name.value === id + "Content") {
+        prevFilter[j].className = disable_sidebar_filter(prevFilter[j].className);
+      }
+    }
+
+  }
+}
+
+function clusters_filter_fun() {
+  template_filter_fun("clusters");
+}
 function ogClusters_filter_fun() {
   template_filter_fun("ogClusters");
 }
 
 
-// Triggered by the checkbox Grid
-function grid_cb_fun() {
-  var checkBox = document.getElementById("gridCheckbox");
-  if (checkBox.checked == true) {
-    document.getElementById("gridPanel").style.borderLeft = '.25rem solid #1DD069';
-    add_layer(grid_layer);
-  } else {
-    document.getElementById("gridPanel").style.borderLeft = '.25rem solid #eeeff1';
-    remove_layer(grid_layer);
-  }
 
+// Triggered by the checkbox Grid
+function stateGrid_cb_fun() {
+  if(level != "national") {
+      var checkBox = document.getElementById("stateGridCheckbox");
+      if (checkBox.checked == true) {
+        document.getElementById("stateGridPanel").style.borderLeft = '.25rem solid #1DD069';
+        add_layer(state_grid_layer);
+      } else {
+        document.getElementById("stateGridPanel").style.borderLeft = '.25rem solid #eeeff1';
+        remove_layer(state_grid_layer);
+      }
+  }
   /*$.get({url: $SCRIPT_ROOT,
   data: {
     grid_content: gCheckBox.checked,
@@ -1224,10 +1279,10 @@ function update_cluster_info(filtered_centroids_keys){
 // flyTo-function including a with reset of 'currently_flying_to_cluster' to false in order to allow level change via manual zoom afterwards
 function flyToClusterBounds(target){
   currently_flying_to_cluster = true;
-  map.flyToBounds(target);
+  map.flyToBounds(target,{animate:false});
     map.once('moveend', function() {
       currently_flying_to_cluster = false;
-    });
+    },{animate:false});
 }
 
 function next_selection_fun(){
@@ -1251,7 +1306,7 @@ function next_selection_fun(){
   // get the centroid from its id and fly to its bounds
   centroid = (current_cluster_centroids[centroids_layer_id]._layers[currently_featured_centroid_id]);
   target = get_bbox_from_cluster_centroid(centroid);
-  flyToClusterBounds(target);
+  flyToClusterBounds(target,{animate:false});
   update_cluster_info(filtered_centroids_keys);
 }
 
@@ -1275,6 +1330,6 @@ function prev_selection_fun(){
   // get the centroid from its id and fly to its bounds
   centroid = get_centroid_by_id(currently_featured_centroid_id);
   target = get_bbox_from_cluster_centroid(centroid);
-  flyToClusterBounds(target);
+  flyToClusterBounds(target,{animate:false});
   update_cluster_info(filtered_centroids_keys);
 }

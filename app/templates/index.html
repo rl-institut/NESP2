@@ -3,7 +3,7 @@
 {% else %}
 {% extends 'base.html' %}
 {% endif %}
-{% block title %}NIGERIA SE4ALL Webmap{% endblock %}
+{% block title %}Map | Nigeria SE4ALL{% endblock %}
 
 {% block head %}
 
@@ -37,6 +37,7 @@
       </button>
     </div>
   </div>
+
 
   <div id="map-content" class="grid-x">
     <div id="sidebar" class="cell large-3" data-sticky-container>
@@ -131,64 +132,88 @@
         {{ checkbox.input(id="states", label="States (availability)", visible={}) }}
         {{ checkbox.input(id="buildingDensity", label="Buildings", visible={}) }}
         <!-- grid layer on national level only -->
-        {{ checkbox.input(id="nationalGrid", label="Medium voltage grid", visible={'national': 'show'}) }}
+        {{ checkbox.input(id="nationalGrid", label="Medium voltage grid", visible={'national': 'show'}, help_icon=True, help_link="ongridmapping") }}
         <!-- grid layer on state and village level only -->
-        {{ checkbox.input(id="grid", label="Medium voltage grid", visible={'state': 'show', 'village': 'show'}) }}
+        {{ checkbox.input(id="stateGrid", label="Medium voltage grid", visible={'state': 'show', 'village': 'show'}, help_icon=True, help_link="ongridmapping") }}
 
-        {{ checkbox.input(id="heatmap", label="Identified settlements by satellite imagery", visible={'national': 'show'}) }}
+        {{ checkbox.input(id="heatmap", label="Identified settlements by satellite imagery", visible={'national': 'show'}, help_icon=True, help_link="clusteridentification") }}
 
         <!-- Filter for ISSI -->
-        {{ checkbox.input(id="clusters", label="Identified settlements by satellite imagery", visible={'state': 'show', 'village': 'show'}, filter_func=True) }}
+        {{ checkbox.input(id="clusters", label="Identified settlements by satellite imagery", visible={'state': 'show', 'village': 'show'}, filter_func=True, help_icon=True, help_link="clusteridentification") }}
         {{ checkbox.filter_title(id="n_clusters", label="Number of sites: ", name="clustersContent", spin_id="all-spin") }}
         {{ checkbox.filter_opt(id="dtgSlider", label="Distance to grid", name="clustersContent") }}
         {{ checkbox.filter_opt(id="areaSlider", label="Area", name="clustersContent") }}
         {{ checkbox.filter_download_btn(id="download_clusters", label="Download selection", name="clustersContent") }}
 
         <!-- Filter for RMS -->
-        {{ checkbox.input(id="ogClusters", label="Remotely mapped settlements", visible={'national': 'grey', 'state': 'show', 'village': 'show'}, filter_func=True, help_icon=True, help_text="Off-Grid Settlements with more than 5 km distance to the grid. For more information please <a>click here</a>.") }}
+        {{ checkbox.input(id="ogClusters", label="Remotely mapped settlements", visible={'national': 'grey', 'state': 'show', 'village': 'show'}, filter_func=True, help_icon=True, help_link="osm") }}
         {{ checkbox.filter_title(id="n_ogclusters", label="Number of sites: ", name="ogClustersContent", spin_id="og-spin") }}
         {{ checkbox.filter_opt(id="ogAreaSlider", label="Area in km²", name="ogClustersContent", visible={}) }}
         {{ checkbox.filter_opt(id="ogDistanceSlider", label="Distance to grid", name="ogClustersContent") }}
         {{ checkbox.filter_opt(id="ogBuildingsSlider", label="Buildings", name="ogClustersContent") }}
-        {{ checkbox.filter_opt(id="ogBuildingsFootprintSlider", label="Built-up ratio", help_icon=True, help_text="Built-up ratio is the fraction of building footprint within the cluster area. A built-up ratio of 0 means that there are no buildings in the cluster (not possible) whereas a built-up ration of 1 means that the cluster area is only made up of buildings", name="ogClustersContent") }}
+        {{ checkbox.filter_opt(id="ogBuildingsFootprintSlider", label="Built-up percentage", help_icon=True, help_text="Built-up percentage is the fraction of building footprint within the cluster area. A Built-up percentage of 0 means that there are no buildings in the cluster (not possible) whereas a Built-up percentagen of 1 means that the cluster area is only made up of buildings", name="ogClustersContent") }}
         {{ checkbox.filter_download_btn(id="download_ogClusters", label="Download selection", name="ogClustersContent") }}
+
+
+        <div id="geoportal-btn" class="grid-x align-center">
+          <a class="cell small-7 cta" href="https://se4allgeonode.westeurope.cloudapp.azure.com/" target="_blank" rel="noreferrer">
+            <span>Download geodata</span>
+            <img src="{{ url_for('static', filename='img/icons/i_download_w.svg') }}">
+          </a>
+        </div>
 
       </div>
 
       <div id="footer-maps" class="grid-x">
-        <div class="cell footer-maps__text">
-          <p>Provided with the financial support of:</p>
-        </div>
-        <div id="footer-maps-logos-eu-ger" class="cell">
-          <a href="https://europa.eu/european-union/index_en" target="_blank" rel="noreferrer">
-          <img class="footer-maps-logos__eu" src="{{ url_for('static', filename='logos/logo-1-eu.png') }}">
-          </a>
-          <a href="http://www.bmz.de/en/index.html" target="_blank" rel="noreferrer">
-          <img class="footer-maps-logos__coop" src="{{ url_for('static', filename='logos/logo-4-ger-coop.png') }}">
-          </a>
-          <a href="https://www.giz.de/en/html/index.html" target="_blank" rel="noreferrer">
-          <img class="footer-maps-logos__giz" src="{{ url_for('static', filename='logos/logo-3-giz.png') }}">
-          </a>
-        </div>
-        <div id="footer-maps-logos-giz" class="cell">
-            
-        </div>
+
+          <div class="cell small-8 grid-x">
+            <div class="cell footer-maps__text">
+                <p>Provided with the financial support of:</p>
+            </div>
+            <div class="cell maps-footer-logos__img">
+                <a href="https://europa.eu/european-union/index_en" target="_blank" rel="noreferrer">
+                  <img class="footer-maps-logos__eu" src="{{ url_for('static', filename='logos/logo-1-eu.png') }}">
+                </a>
+                <a href="http://www.bmz.de/en/index.html" target="_blank" rel="noreferrer">
+                  <img class="footer-maps-logos__coop" src="{{ url_for('static', filename='logos/logo-4-ger-coop.png') }}">
+                </a>
+            </div>
+          </div>
+
+          <div class="cell small-4 grid-x ">
+             <div class="cell footer-maps__text footer-maps__text__center">
+              <p>Implemented by:</p>
+            </div>
+
+            <div class="cell maps-footer-logos__img maps-footer-logos__img--giz">
+              <a href="https://www.giz.de/en/html/index.html" target="_blank" rel="noreferrer">
+                <img class="footer-maps-logos__giz" src="{{ url_for('static', filename='logos/logo-3-giz.png') }}">
+              </a>
+            </div>
+          </div>
+
       </div>
 
       <div class="grid-x">
-        <div class="cell footer-about">
-          <div class="helper"></div>
-          <a href="{{ url_for('about_map') }}" target="_blank">
-            <img src="{{ url_for('static', filename='img/icons/i_info.svg') }}">
-            <span>About this map</span>
-          </a>
+        <div class="cell grid-x footer-about">
+          <div class="cell medium-6 helper">
+            <a href="{{ url_for('landing') }}">
+              <img src="{{ url_for('static', filename='img/icons/i_curved_arrow_left.svg') }}">
+              <span>Go back to website</span>
+            </a>
+          </div>
+          <div class="cell medium-6 helper">
+            <a href="{{ url_for('about_map') }}" target="_blank">
+              <img src="{{ url_for('static', filename='img/icons/i_info.svg') }}">
+              <span>About this map</span>
+            </a>
+          </div>
         </div>
       </div>
 
     </div>
 
     <div id="map" class="cell large-9"></div>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script type="text/javascript">
       var screen_width_threshold = 1024;
       var csrf_token = "{{ csrf_token() }}";
@@ -228,7 +253,7 @@
           stateCheckBox.click()
       }
 
-      var gCheckBox = document.getElementById("gridCheckbox")
+      var gCheckBox = document.getElementById("stateGridCheckbox")
       {% if grid_content is defined %}
           var grid_content = {{ grid_content|safe }};
       {% else %}
@@ -238,6 +263,7 @@
       if (grid_content != gCheckBox.checked){
           gCheckBox.click()
       }
+
   $(document).ready(function(){
       $(document).foundation();
       $('.filter_icon').on("mouseenter", function(){
@@ -246,14 +272,58 @@
 
       });
       $('.filter_icon').on("mouseleave", function(){
-          // Change src attribute of image
-          $(this).attr("src", "../static/img/icons/i_funnel_gray.svg");
-
+          // Change src attribute of image if the filter is not selected
+          var filter_section = $(this).attr("id").split('_')[0];
+          if (currentfilter["filterID"] != filter_section) {
+            $(this).attr("src", "../static/img/icons/i_funnel_gray.svg");
+          }
       });
+
       //display a warning for small screens
       if($(window).width() < screen_width_threshold) {
         $('#warning-mobile').foundation('toggle');
       }
+
+      //display a warning for not supported browser (the list is in __init__.py in the variable
+      // UNSUPPORTED_USER_AGENT_STRINGS)
+      {% if not_supported == True %}
+          var not_supported = true;
+      {% else %}
+          var not_supported=false;
+      {% endif %}
+      if (not_supported == true){
+          $('#warning-browser-not-supported').foundation('toggle');
+      }
+
+      function stop_video(videoClass){
+        // trick taken from https://codepen.io/briangelhaus/pen/meeLRO
+        $("." + videoClass)[0].contentWindow.postMessage('{"event":"command","func":"' + 'stopVideo' + '","args":""}', '*');
+      }
+
+      //display a popup with the video the first time a user land on this page
+      var showVideo = sessionStorage.getItem('popupdisplayed');
+
+
+      if(showVideo === null) {
+        //save in local storage
+        sessionStorage.setItem('popupdisplayed', true);
+        // show the popup
+        $('#video-popup').foundation('toggle');
+        // the id of the video is provided in __init__.py under the video_id variable
+        var videoId = "{{ video_id |safe }}";
+        $('#nigeria-se4all-video')[0].src = "https://www.youtube-nocookie.com/embed/" + videoId + "?autoplay=1&enablejsapi=1&version=3&playerapiid=ytplayer"
+      }
+      else{
+        // if the page reload on the same session, make sure the video is not replayed
+        $('#nigeria-se4all-video')[0].src = ""
+      }
+
+      $('[data-reveal]').on('closed.zf.reveal', function () {
+        var modal = $(this);
+
+        stop_video("nigeria-se4all-video");
+      });
+
   });
 
     </script>
