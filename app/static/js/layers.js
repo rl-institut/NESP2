@@ -1,4 +1,4 @@
-const website_url = "http://se4allwebpage.westeurope.cloudapp.azure.com";
+const website_url = "https://nigeriase4all.gov.ng/";
 
 
 // Basic png-tile layer taken from OpenStreetMap
