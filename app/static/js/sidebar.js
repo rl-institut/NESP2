@@ -13,7 +13,7 @@ var options = {
   maxBounds: maxBoundsDefault
 };
 var map = L.map("map", options);
-var tileserver = "http://se4allwebpage.westeurope.cloudapp.azure.com:8080/data/"
+var tileserver = "https://tileserver.nigeriase4all.gov.ng/"
 var level = "national";
 var previous_level = level;
 var statesList = ["Abia", "Adamawa", "Akwa Ibom", "Anambra", "Bauchi", "Bayelsa", "Benue", "Borno", "Cross River", "Delta", "Ebonyi", "Edo", "Ekiti", "Enugu", "Federal Capital Territory", "Gombe", "Imo", "Jigawa", "Kaduna", "Kano", "Katsina", "Kebbi", "Kogi", "Kwara", "Lagos", "Nasarawa", "Niger", "Ogun", "Ondo", "Osun", "Oyo", "Plateau", "Rivers", "Sokoto", "Taraba", "Yobe", "Zamfara"];
