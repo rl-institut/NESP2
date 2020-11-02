@@ -151,7 +151,7 @@
         {{ checkbox.filter_opt(id="ogAreaSlider", label="Area in km²", name="ogClustersContent", visible={}) }}
         {{ checkbox.filter_opt(id="ogDistanceSlider", label="Distance to grid", name="ogClustersContent") }}
         {{ checkbox.filter_opt(id="ogBuildingsSlider", label="Buildings", name="ogClustersContent") }}
-        {{ checkbox.filter_opt(id="ogBuildingsFootprintSlider", label="Built-up percentage", help_icon=True, help_text="Built-up percentage is the fraction of building footprint within the cluster area. A Built-up percentage of 0 means that there are no buildings in the cluster (not possible) whereas a Built-up percentagen of 1 means that the cluster area is only made up of buildings", name="ogClustersContent") }}
+        {{ checkbox.filter_opt(id="ogBuildingsFootprintSlider", label="Built-up percentage", help_icon=True, help_text="Built-up percentage is the fraction of build footprint within the cluster area. A Built-up percentage of 0 means that there are no buildings in the cluster (not possible) whereas a Built-up percentage of 100 means the cluster area is only made up of buildings.", name="ogClustersContent") }}
         {{ checkbox.filter_download_btn(id="download_ogClusters", label="Download selection", name="ogClustersContent") }}
 
 
@@ -266,18 +266,6 @@
 
   $(document).ready(function(){
       $(document).foundation();
-      $('.filter_icon').on("mouseenter", function(){
-          // Change src attribute of image
-          $(this).attr("src", "../static/img/icons/i_funnel_dark_gray.svg");
-
-      });
-      $('.filter_icon').on("mouseleave", function(){
-          // Change src attribute of image if the filter is not selected
-          var filter_section = $(this).attr("id").split('_')[0];
-          if (currentfilter["filterID"] != filter_section) {
-            $(this).attr("src", "../static/img/icons/i_funnel_gray.svg");
-          }
-      });
 
       //display a warning for small screens
       if($(window).width() < screen_width_threshold) {
