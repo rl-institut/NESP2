@@ -220,7 +220,7 @@ noUiSlider.create(areaSlider, {
   },
 });
 areaSlider.noUiSlider.on("change", changeAreaSlider);
-areaSlider.noUiSlider.on("end", update_filter);
+areaSlider.noUiSlider.on("end", update_filtered_settlements);
 
 function changedtgSlider(str, h, values) {
   currentfilter.mindtg = values[0];
@@ -252,7 +252,7 @@ noUiSlider.create(dtgSlider, {
   }
 });
 dtgSlider.noUiSlider.on("change", changedtgSlider);
-dtgSlider.noUiSlider.on("end", update_filter);
+dtgSlider.noUiSlider.on("end", update_filtered_settlements);
 
 function changeogAreaSlider(str, h, values) {
   currentfilter.ogminarea = values[0];
@@ -271,7 +271,7 @@ noUiSlider.create(ogAreaSlider, {
   }
 });
 ogAreaSlider.noUiSlider.on("change", changeogAreaSlider);
-ogAreaSlider.noUiSlider.on("end", update_filter);
+ogAreaSlider.noUiSlider.on("end", update_filtered_settlements);
 
 
 function changeogDistanceSlider(str, h, values) {
@@ -291,7 +291,7 @@ noUiSlider.create(ogDistanceSlider, {
   }
 });
 ogDistanceSlider.noUiSlider.on("change", changeogDistanceSlider);
-ogDistanceSlider.noUiSlider.on("end", update_filter);
+ogDistanceSlider.noUiSlider.on("end", update_filtered_settlements);
 
 function changeogBuildingsSlider(str, h, values) {
   currentfilter.ogminb = values[0];
@@ -331,7 +331,7 @@ noUiSlider.create(ogBuildingsSlider, {
   }
 });
 ogBuildingsSlider.noUiSlider.on("change", changeogBuildingsSlider);
-ogBuildingsSlider.noUiSlider.on("end", update_filter);
+ogBuildingsSlider.noUiSlider.on("end", update_filtered_settlements);
 
 function changeogBuildingsFootprintSlider(str, h, values) {
   currentfilter.ogminbfp = values[0];
@@ -350,7 +350,7 @@ noUiSlider.create(ogBuildingsFootprintSlider, {
   }
 });
 ogBuildingsFootprintSlider.noUiSlider.on("change", changeogBuildingsFootprintSlider);
-ogBuildingsFootprintSlider.noUiSlider.on("end", update_filter);
+ogBuildingsFootprintSlider.noUiSlider.on("end", update_filtered_settlements);
 
 
 function update_filtered_settlements(msg) {
@@ -990,10 +990,12 @@ function template_filter_fun(id) {
       }
     }
     if (id == "clusters") {
+
         map.fireEvent("filterchange", currentfilter);
         update_filtered_settlements();
     }
     else{
+
         map.fireEvent("ogfilterchange", currentfilter);
         update_filtered_settlements();
     }
@@ -1230,7 +1232,7 @@ function filter_settlements_ids(){
   var total_clusters = 0;
   // interates though cluster centroids and pushes keys of clusters that fall within filter settings
   for (const key of keys) {
-      //if activated clusters are off-grid-clusters
+    //if activated clusters are off-grid-clusters
     if (centroids[key].feature.properties.hasOwnProperty('percentage_building_area')){
       total_clusters = total_clusters + 1;
       if (
@@ -1262,11 +1264,12 @@ function filter_settlements_ids(){
   filtered_centroids_keys.sort(function(a, b) {
       return a.area < b.area;
   });
-  // only keep the sorted keys
+  // only keep the keys of the clusters
   var answer = [];
   for (var i = 0; i<filtered_centroids_keys.length; i++) {
       answer[i] = filtered_centroids_keys[i].key;
   }
+
   return [answer, total_clusters];
 }
 
