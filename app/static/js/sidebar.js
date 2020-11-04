@@ -1258,7 +1258,7 @@ function filter_centroid_keys(){
   return [answer, total_clusters];
 }
 
-function update_cluster_info(filtered_centroids_keys){
+function update_current_cluster(filtered_centroids_keys){
     var centroid = get_centroid_by_id(currently_featured_centroid_id);
     const clusterNum = filtered_centroids_keys.indexOf(currently_featured_centroid_id) + 1;
     const selectedClustersNum = filtered_centroids_keys.length;
@@ -1296,7 +1296,7 @@ function next_selection_fun(){
   centroid = (current_cluster_centroids[centroids_layer_id]._layers[currently_featured_centroid_id]);
   target = get_bbox_from_cluster_centroid(centroid);
   flyToClusterBounds(target,{animate:false});
-  update_cluster_info(filtered_centroids_keys);
+  update_current_cluster(filtered_centroids_keys);
 }
 
 function prev_selection_fun(){
@@ -1320,5 +1320,5 @@ function prev_selection_fun(){
   centroid = get_centroid_by_id(currently_featured_centroid_id);
   target = get_bbox_from_cluster_centroid(centroid);
   flyToClusterBounds(target,{animate:false});
-  update_cluster_info(filtered_centroids_keys);
+  update_current_cluster(filtered_centroids_keys);
 }
