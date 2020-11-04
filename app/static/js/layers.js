@@ -222,7 +222,7 @@ function addFunctionsToClusterLayer(layer) {
       if (ID in all_centroids_dict){
         var filtered_centroids_keys = get_filtered_centroids_keys();
         const clusterNum = filtered_centroids_keys.indexOf(all_centroids_dict[ID]) + 1;
-        currently_featured_centroid_id = all_centroids_dict[ID];
+        set_currently_featured_centroid_id(all_centroids_dict[ID]);
         update_clusterInfo(properties, filtered_centroids_keys.length, clusterNum);
       }
 
@@ -375,7 +375,7 @@ function addFunctionsToOGClusterLayer(layer) {
       if (ID in og_centroids_dict){
         var filtered_centroids_keys = get_filtered_centroids_keys();
         const clusterNum = filtered_centroids_keys.indexOf(og_centroids_dict[ID]) + 1;
-        currently_featured_centroid_id = og_centroids_dict[ID];
+        set_currently_featured_centroid_id(og_centroids_dict[ID]);
         update_clusterInfo(properties, filtered_centroids_keys.length, clusterNum);
       }
     }

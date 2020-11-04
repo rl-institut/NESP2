@@ -137,6 +137,11 @@ $.post({
     success: function(data){statesWithOgClusters=data.states_with_og_clusters;},
 })
 
+function set_currently_featured_centroid_id(new_value){
+    currently_featured_centroid_id = new_value;
+}
+
+
 function get_cluster_type() {
     if (document.getElementById("ogClustersCheckbox").checked == true) {answer = "og";}
     else {answer = "all";}
@@ -1282,15 +1287,15 @@ function next_selection_fun(){
   // select next cluster and to zoom to its bounds
   // if currently no centroid has been selected, set the selection to the first cluster and fly there
   if(filtered_centroids_keys.indexOf(currently_featured_centroid_id) == -1){
-    currently_featured_centroid_id = filtered_centroids_keys[0];
+    set_currently_featured_centroid_id(filtered_centroids_keys[0]);
   }
   // else if the selected centroid is the last one, select the first one
   else if (filtered_centroids_keys.indexOf(currently_featured_centroid_id) == filtered_centroids_keys.length -1){
-    currently_featured_centroid_id = filtered_centroids_keys[0];
+    set_currently_featured_centroid_id(filtered_centroids_keys[0]);
   }
   // else set the selected centroid to be the next one via index
   else{
-    currently_featured_centroid_id = filtered_centroids_keys[filtered_centroids_keys.indexOf(currently_featured_centroid_id) + 1 ];
+    set_currently_featured_centroid_id(filtered_centroids_keys[filtered_centroids_keys.indexOf(currently_featured_centroid_id) + 1 ]);
   }
   // get the centroid from its id and fly to its bounds
   centroid = (current_cluster_centroids[centroids_layer_id]._layers[currently_featured_centroid_id]);
@@ -1306,15 +1311,15 @@ function prev_selection_fun(){
   var filtered_centroids_keys = get_filtered_centroids_keys();
   // if currently no centroid has been selected, set the selection to the first cluster
   if(filtered_centroids_keys.indexOf(currently_featured_centroid_id) == -1){
-    currently_featured_centroid_id = filtered_centroids_keys[0];
+    set_currently_featured_centroid_id(filtered_centroids_keys[0]);
   }
   // else if the selected centroid is the first one, select the last one
   else if (filtered_centroids_keys.indexOf(currently_featured_centroid_id) == 0){
-    currently_featured_centroid_id = filtered_centroids_keys[filtered_centroids_keys.length - 1];
+   set_currently_featured_centroid_id(filtered_centroids_keys[0]);
   }
   // else set the selected centroid to be the previous one via index
   else{
-  currently_featured_centroid_id = filtered_centroids_keys[filtered_centroids_keys.indexOf(currently_featured_centroid_id) - 1 ];
+    set_currently_featured_centroid_id(filtered_centroids_keys[filtered_centroids_keys.indexOf(currently_featured_centroid_id) - 1 ]);
   }
   // get the centroid from its id and fly to its bounds
   centroid = get_centroid_by_id(currently_featured_centroid_id);
