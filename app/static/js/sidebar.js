@@ -353,34 +353,37 @@ ogBuildingsFootprintSlider.noUiSlider.on("change", changeogBuildingsFootprintSli
 ogBuildingsFootprintSlider.noUiSlider.on("end", update_filter);
 
 
-function update_filter(msg) {
-    var num_filtered_clusters = 0;
+function update_filtered_settlements(msg) {
+    var num_filtered_settlements = 0;
     if (selectedState != "init") {
 
-        var [filtered_centroids_keys, total_clusters] = filter_settlements_ids();
+        var [filtered_centroids_keys, num_total_settlements] = filter_settlements_ids();
+        // update the global variable
         set_filtered_centroids_keys(filtered_centroids_keys)
-        num_filtered_clusters = filtered_centroids_keys.length;
+
+        num_filtered_settlements = filtered_centroids_keys.length;
+
         if (get_cluster_type() == "og"){
             var filter_title = $("#n_ogclusters");
         }
         else{
             var filter_title = $("#n_clusters");
         }
-        var new_text = " " + num_filtered_clusters + " filtered settlements";
-        if (num_filtered_clusters == 1){
-            new_text = " " + num_filtered_clusters + " filtered settlement";
+        var new_text = " " + num_filtered_settlements + " filtered settlements";
+        if (num_filtered_settlements == 1){
+            new_text = " " + num_filtered_settlements + " filtered settlement";
         };
 
-        new_text = new_text + " out of " + total_clusters;
+        new_text = new_text + " out of " + num_total_settlements;
 
-        // only update the message if the clusters are not being downloaded
+        // only update the message if the settlements are not being downloaded
         if (downloadingClusters == false){
             filter_title.text(new_text);
             filter_title = $("#filtered-clusters-num");
-            filter_title.text(num_filtered_clusters);
+            filter_title.text(num_filtered_settlements);
         };
     }
-    return num_filtered_clusters;
+    return num_filtered_settlements;
 };
 
 
@@ -986,11 +989,11 @@ function template_filter_fun(id) {
     }
     if (id == "clusters") {
         map.fireEvent("filterchange", currentfilter);
-        update_filter();
+        update_filtered_settlements();
     }
     else{
         map.fireEvent("ogfilterchange", currentfilter);
-        update_filter();
+        update_filtered_settlements();
     }
   } else {
     var prevFilter = document.querySelectorAll(".content-filter");
@@ -1172,14 +1175,14 @@ function update_centroids(msg){
             downloadingClusters = false;
             hide_loading_cluster();
             //update the filters
-            update_filter()
+            update_filtered_settlements()
             update_clusterInfo(get_cluster_type())
         });
   }
   else{
     centroids_layer_id = centroids_layer_ids[selectedState][cluster_type]
     //update the filters
-    update_filter()
+    update_filtered_settlements()
     hide_loading_cluster();
   }
 };
