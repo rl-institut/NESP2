@@ -91,36 +91,36 @@ def filter_materialized_view(
     if area is not None:
         key = "area_km2"
         if "WHERE" in filter_cond:
-            filter_cond = filter_cond + f" AND {view_name}.{key} > {area[0]} AND" \
+            filter_cond = filter_cond + f" AND {view_name}.{key} >= {area[0]} AND" \
                                         f" {view_name}.{key} < {area[1]}"
         else:
-            filter_cond = f" WHERE {view_name}.{key} > {area[0]} AND {view_name}.{key} < {area[1]}"
+            filter_cond = f" WHERE {view_name}.{key} >= {area[0]} AND {view_name}.{key} < {area[1]}"
 
     if distance_grid is not None:
         key = "grid_dist_km"
         if "WHERE" in filter_cond:
-            filter_cond = filter_cond + f" AND {view_name}.{key} > {distance_grid[0]} AND" \
+            filter_cond = filter_cond + f" AND {view_name}.{key} >= {distance_grid[0]} AND" \
                                         f" {view_name}.{key} < {distance_grid[1]}"
         else:
-            filter_cond = f" WHERE {view_name}.{key} > {distance_grid[0]} AND" \
+            filter_cond = f" WHERE {view_name}.{key} >= {distance_grid[0]} AND" \
                           f" {view_name}.{key} < {distance_grid[1]}"
 
     if building is not None:
         key = "building_count"
         if "WHERE" in filter_cond:
-            filter_cond = filter_cond + f" AND {view_name}.{key} > {building[0]} AND" \
+            filter_cond = filter_cond + f" AND {view_name}.{key} >= {building[0]} AND" \
                                         f" {view_name}.{key} < {building[1]}"
         else:
-            filter_cond = f" WHERE {view_name}.{key} > {building[0]} AND" \
+            filter_cond = f" WHERE {view_name}.{key} >= {building[0]} AND" \
                           f" {view_name}.{key} < {building[1]}"
 
     if buildingfp is not None:
         key = "percentage_building_area"
         if "WHERE" in filter_cond:
-            filter_cond = filter_cond + f" AND {view_name}.{key} > {buildingfp[0]} AND" \
+            filter_cond = filter_cond + f" AND {view_name}.{key} >= {buildingfp[0]} AND" \
                                         f" {view_name}.{key} < {buildingfp[1]}"
         else:
-            filter_cond = f" WHERE {view_name}.{key} > {buildingfp[0]} AND" \
+            filter_cond = f" WHERE {view_name}.{key} >= {buildingfp[0]} AND" \
                           f" {view_name}.{key} < {buildingfp[1]}"
 
     if keys is None:
@@ -132,12 +132,19 @@ def filter_materialized_view(
             columns = "COUNT({})".format(keys)
     with engine.connect() as con:
         query = 'SELECT {} FROM {}{}{};'.format(columns, view_name, filter_cond, limit)
+        print("", query)
         rs = con.execute(query)
         data = rs.fetchall()
     return data
 
 
 def convert_web_mat_view_to_light_json(records, cols):
+    """
+
+    :param records:
+    :param cols:
+    :return:
+    """
     df = pd.DataFrame()
 
     for l in records:
