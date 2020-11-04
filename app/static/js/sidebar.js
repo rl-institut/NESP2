@@ -363,17 +363,19 @@ function update_filtered_settlements(msg) {
 
         num_filtered_settlements = filtered_centroids_keys.length;
 
+        // fetch the html element which displays settlements number
         if (get_cluster_type() == "og"){
             var filter_title = $("#n_ogclusters");
         }
         else{
             var filter_title = $("#n_clusters");
         }
+
+        // prepare the message with updated settlements number
         var new_text = " " + num_filtered_settlements + " filtered settlements";
         if (num_filtered_settlements == 1){
             new_text = " " + num_filtered_settlements + " filtered settlement";
         };
-
         new_text = new_text + " out of " + num_total_settlements;
 
         // only update the message if the settlements are not being downloaded
@@ -1057,8 +1059,9 @@ function update_centroids_data(handleData){
         var cluster_type = get_cluster_type();
         var centroids_file_key = selectedState
         if (selectedState == "init"){
-        centroids_file_key = "Kano";
+            centroids_file_key = "Kano";
         }
+        // this fetches the url described by the fetch_centroids() view in app/__init__.py
         $.get({
             url: "/centroids",
             dataType: "json",
