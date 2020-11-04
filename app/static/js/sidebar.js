@@ -1146,7 +1146,8 @@ function update_centroids(msg){
         // to prevent filter to update while downloading
         downloadingClusters = true;
         show_loading_cluster();
-        update_centroids_data(function(data, centroids_file_key, cluster_type){
+        // Due to the asynchronous call we must provide a function as argument of update_centroids_data
+        update_centroids_data(handleData=function(data, centroids_file_key, cluster_type){
             var centroids = convert_light_json_to_geojson(data, cluster_type)
             // Creates a geojson-layer with the data
 
@@ -1198,8 +1199,8 @@ function get_bbox_from_cluster_centroid(centroid){
   return(bbox);
 }
 
-
-function set_current_cluster_centroids(){
+/* assign the geojson layers of the currently loaded settlements clusters */
+function update_current_state_settlements(){
   current_cluster_centroids = centroidsGroup._layers;
 }
 
@@ -1217,7 +1218,7 @@ function get_centroid_by_id(centroid_id){
 //function updates the list of cluster keys in filtered_centroids_keys
 function filter_centroid_keys(){
   var filtered_centroids_keys = [];
-  set_current_cluster_centroids();
+  update_current_state_settlements();
   centroids = get_current_centroids_from_layer();
   const keys = Object.keys(centroids);
   var total_clusters = 0;
@@ -1279,8 +1280,9 @@ function flyToClusterBounds(target){
     },{animate:false});
 }
 
+/* triggered by click on right arrow of the "Browse the settlements" infoCLuster box */
 function next_selection_fun(){
-  set_current_cluster_centroids();
+  update_current_state_settlements();
   var centroid = Object();
   var target = [[0,0][0,0]];
   var filtered_centroids_keys = get_filtered_centroids_keys();
@@ -1304,8 +1306,9 @@ function next_selection_fun(){
   update_current_cluster(filtered_centroids_keys);
 }
 
+/* triggered by click on left arrow of the "Browse the settlements" infoCLuster box */
 function prev_selection_fun(){
-  set_current_cluster_centroids();
+  update_current_state_settlements();
   var centroid = Object();
   var target = [[0,0][0,0]];
   var filtered_centroids_keys = get_filtered_centroids_keys();
