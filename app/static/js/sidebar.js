@@ -357,7 +357,7 @@ function update_filter(msg) {
     var num_filtered_clusters = 0;
     if (selectedState != "init") {
 
-        var [filtered_centroids_keys, total_clusters] = filter_centroid_keys();
+        var [filtered_centroids_keys, total_clusters] = filter_settlements_ids();
         set_filtered_centroids_keys(filtered_centroids_keys)
         num_filtered_clusters = filtered_centroids_keys.length;
         if (get_cluster_type() == "og"){
@@ -1215,8 +1215,8 @@ function get_centroid_by_id(centroid_id){
 }
 
 
-//function updates the list of cluster keys in filtered_centroids_keys
-function filter_centroid_keys(){
+/* updates the list of cluster keys in filtered_centroids_keys, only used in update_filter function */
+function filter_settlements_ids(){
   var filtered_centroids_keys = [];
   update_current_state_settlements();
   centroids = get_current_centroids_from_layer();
