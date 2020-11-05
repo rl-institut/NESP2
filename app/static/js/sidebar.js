@@ -137,6 +137,11 @@ $.post({
     success: function(data){statesWithOgClusters=data.states_with_og_clusters;},
 })
 
+function set_currently_featured_centroid_id(new_value){
+    currently_featured_centroid_id = new_value;
+}
+
+
 function get_cluster_type() {
     if (document.getElementById("ogClustersCheckbox").checked == true) {answer = "og";}
     else {answer = "all";}
@@ -215,7 +220,7 @@ noUiSlider.create(areaSlider, {
   },
 });
 areaSlider.noUiSlider.on("change", changeAreaSlider);
-areaSlider.noUiSlider.on("end", update_filter);
+areaSlider.noUiSlider.on("end", update_filtered_settlements);
 
 function changedtgSlider(str, h, values) {
   currentfilter.mindtg = values[0];
@@ -247,7 +252,7 @@ noUiSlider.create(dtgSlider, {
   }
 });
 dtgSlider.noUiSlider.on("change", changedtgSlider);
-dtgSlider.noUiSlider.on("end", update_filter);
+dtgSlider.noUiSlider.on("end", update_filtered_settlements);
 
 function changeogAreaSlider(str, h, values) {
   currentfilter.ogminarea = values[0];
@@ -266,7 +271,7 @@ noUiSlider.create(ogAreaSlider, {
   }
 });
 ogAreaSlider.noUiSlider.on("change", changeogAreaSlider);
-ogAreaSlider.noUiSlider.on("end", update_filter);
+ogAreaSlider.noUiSlider.on("end", update_filtered_settlements);
 
 
 function changeogDistanceSlider(str, h, values) {
@@ -286,7 +291,7 @@ noUiSlider.create(ogDistanceSlider, {
   }
 });
 ogDistanceSlider.noUiSlider.on("change", changeogDistanceSlider);
-ogDistanceSlider.noUiSlider.on("end", update_filter);
+ogDistanceSlider.noUiSlider.on("end", update_filtered_settlements);
 
 function changeogBuildingsSlider(str, h, values) {
   currentfilter.ogminb = values[0];
@@ -326,7 +331,7 @@ noUiSlider.create(ogBuildingsSlider, {
   }
 });
 ogBuildingsSlider.noUiSlider.on("change", changeogBuildingsSlider);
-ogBuildingsSlider.noUiSlider.on("end", update_filter);
+ogBuildingsSlider.noUiSlider.on("end", update_filtered_settlements);
 
 function changeogBuildingsFootprintSlider(str, h, values) {
   currentfilter.ogminbfp = values[0];
@@ -345,37 +350,42 @@ noUiSlider.create(ogBuildingsFootprintSlider, {
   }
 });
 ogBuildingsFootprintSlider.noUiSlider.on("change", changeogBuildingsFootprintSlider);
-ogBuildingsFootprintSlider.noUiSlider.on("end", update_filter);
+ogBuildingsFootprintSlider.noUiSlider.on("end", update_filtered_settlements);
 
 
-function update_filter(msg) {
-    var num_filtered_clusters = 0;
+function update_filtered_settlements(msg) {
+    var num_filtered_settlements = 0;
     if (selectedState != "init") {
 
-        var [filtered_centroids_keys, total_clusters] = filter_centroid_keys();
+        var [filtered_centroids_keys, num_total_settlements] = filter_settlements_ids();
+        // update the global variable
         set_filtered_centroids_keys(filtered_centroids_keys)
-        num_filtered_clusters = filtered_centroids_keys.length;
+
+        num_filtered_settlements = filtered_centroids_keys.length;
+
+        // fetch the html element which displays settlements number
         if (get_cluster_type() == "og"){
             var filter_title = $("#n_ogclusters");
         }
         else{
             var filter_title = $("#n_clusters");
         }
-        var new_text = " " + num_filtered_clusters + " filtered settlements";
-        if (num_filtered_clusters == 1){
-            new_text = " " + num_filtered_clusters + " filtered settlement";
+
+        // prepare the message with updated settlements number
+        var new_text = " " + num_filtered_settlements + " filtered settlements";
+        if (num_filtered_settlements == 1){
+            new_text = " " + num_filtered_settlements + " filtered settlement";
         };
+        new_text = new_text + " out of " + num_total_settlements;
 
-        new_text = new_text + " out of " + total_clusters;
-
-        // only update the message if the clusters are not being downloaded
+        // only update the message if the settlements are not being downloaded
         if (downloadingClusters == false){
             filter_title.text(new_text);
             filter_title = $("#filtered-clusters-num");
-            filter_title.text(num_filtered_clusters);
+            filter_title.text(num_filtered_settlements);
         };
     }
-    return num_filtered_clusters;
+    return num_filtered_settlements;
 };
 
 
@@ -980,12 +990,14 @@ function template_filter_fun(id) {
       }
     }
     if (id == "clusters") {
+
         map.fireEvent("filterchange", currentfilter);
-        update_filter();
+        update_filtered_settlements();
     }
     else{
+
         map.fireEvent("ogfilterchange", currentfilter);
-        update_filter();
+        update_filtered_settlements();
     }
   } else {
     var prevFilter = document.querySelectorAll(".content-filter");
@@ -1049,8 +1061,9 @@ function update_centroids_data(handleData){
         var cluster_type = get_cluster_type();
         var centroids_file_key = selectedState
         if (selectedState == "init"){
-        centroids_file_key = "Kano";
+            centroids_file_key = "Kano";
         }
+        // this fetches the url described by the fetch_centroids() view in app/__init__.py
         $.get({
             url: "/centroids",
             dataType: "json",
@@ -1141,7 +1154,8 @@ function update_centroids(msg){
         // to prevent filter to update while downloading
         downloadingClusters = true;
         show_loading_cluster();
-        update_centroids_data(function(data, centroids_file_key, cluster_type){
+        // Due to the asynchronous call we must provide a function as argument of update_centroids_data
+        update_centroids_data(handleData=function(data, centroids_file_key, cluster_type){
             var centroids = convert_light_json_to_geojson(data, cluster_type)
             // Creates a geojson-layer with the data
 
@@ -1166,14 +1180,14 @@ function update_centroids(msg){
             downloadingClusters = false;
             hide_loading_cluster();
             //update the filters
-            update_filter()
+            update_filtered_settlements()
             update_clusterInfo(get_cluster_type())
         });
   }
   else{
     centroids_layer_id = centroids_layer_ids[selectedState][cluster_type]
     //update the filters
-    update_filter()
+    update_filtered_settlements()
     hide_loading_cluster();
   }
 };
@@ -1193,8 +1207,8 @@ function get_bbox_from_cluster_centroid(centroid){
   return(bbox);
 }
 
-
-function set_current_cluster_centroids(){
+/* assign the geojson layers of the currently loaded settlements clusters */
+function update_current_state_settlements(){
   current_cluster_centroids = centroidsGroup._layers;
 }
 
@@ -1209,16 +1223,16 @@ function get_centroid_by_id(centroid_id){
 }
 
 
-//function updates the list of cluster keys in filtered_centroids_keys
-function filter_centroid_keys(){
+/* updates the list of cluster keys in filtered_centroids_keys, only used in update_filter function */
+function filter_settlements_ids(){
   var filtered_centroids_keys = [];
-  set_current_cluster_centroids();
+  update_current_state_settlements();
   centroids = get_current_centroids_from_layer();
   const keys = Object.keys(centroids);
   var total_clusters = 0;
   // interates though cluster centroids and pushes keys of clusters that fall within filter settings
   for (const key of keys) {
-      //if activated clusters are off-grid-clusters
+    //if activated clusters are off-grid-clusters
     if (centroids[key].feature.properties.hasOwnProperty('percentage_building_area')){
       total_clusters = total_clusters + 1;
       if (
@@ -1250,15 +1264,16 @@ function filter_centroid_keys(){
   filtered_centroids_keys.sort(function(a, b) {
       return a.area < b.area;
   });
-  // only keep the sorted keys
+  // only keep the keys of the clusters
   var answer = [];
   for (var i = 0; i<filtered_centroids_keys.length; i++) {
       answer[i] = filtered_centroids_keys[i].key;
   }
+
   return [answer, total_clusters];
 }
 
-function update_cluster_info(filtered_centroids_keys){
+function update_current_cluster(filtered_centroids_keys){
     var centroid = get_centroid_by_id(currently_featured_centroid_id);
     const clusterNum = filtered_centroids_keys.indexOf(currently_featured_centroid_id) + 1;
     const selectedClustersNum = filtered_centroids_keys.length;
@@ -1274,51 +1289,53 @@ function flyToClusterBounds(target){
     },{animate:false});
 }
 
+/* triggered by click on right arrow of the "Browse the settlements" infoCLuster box */
 function next_selection_fun(){
-  set_current_cluster_centroids();
+  update_current_state_settlements();
   var centroid = Object();
   var target = [[0,0][0,0]];
   var filtered_centroids_keys = get_filtered_centroids_keys();
   // select next cluster and to zoom to its bounds
   // if currently no centroid has been selected, set the selection to the first cluster and fly there
   if(filtered_centroids_keys.indexOf(currently_featured_centroid_id) == -1){
-    currently_featured_centroid_id = filtered_centroids_keys[0];
+    set_currently_featured_centroid_id(filtered_centroids_keys[0]);
   }
   // else if the selected centroid is the last one, select the first one
   else if (filtered_centroids_keys.indexOf(currently_featured_centroid_id) == filtered_centroids_keys.length -1){
-    currently_featured_centroid_id = filtered_centroids_keys[0];
+    set_currently_featured_centroid_id(filtered_centroids_keys[0]);
   }
   // else set the selected centroid to be the next one via index
   else{
-    currently_featured_centroid_id = filtered_centroids_keys[filtered_centroids_keys.indexOf(currently_featured_centroid_id) + 1 ];
+    set_currently_featured_centroid_id(filtered_centroids_keys[filtered_centroids_keys.indexOf(currently_featured_centroid_id) + 1 ]);
   }
   // get the centroid from its id and fly to its bounds
   centroid = (current_cluster_centroids[centroids_layer_id]._layers[currently_featured_centroid_id]);
   target = get_bbox_from_cluster_centroid(centroid);
   flyToClusterBounds(target,{animate:false});
-  update_cluster_info(filtered_centroids_keys);
+  update_current_cluster(filtered_centroids_keys);
 }
 
+/* triggered by click on left arrow of the "Browse the settlements" infoCLuster box */
 function prev_selection_fun(){
-  set_current_cluster_centroids();
+  update_current_state_settlements();
   var centroid = Object();
   var target = [[0,0][0,0]];
   var filtered_centroids_keys = get_filtered_centroids_keys();
   // if currently no centroid has been selected, set the selection to the first cluster
   if(filtered_centroids_keys.indexOf(currently_featured_centroid_id) == -1){
-    currently_featured_centroid_id = filtered_centroids_keys[0];
+    set_currently_featured_centroid_id(filtered_centroids_keys[0]);
   }
   // else if the selected centroid is the first one, select the last one
   else if (filtered_centroids_keys.indexOf(currently_featured_centroid_id) == 0){
-    currently_featured_centroid_id = filtered_centroids_keys[filtered_centroids_keys.length - 1];
+   set_currently_featured_centroid_id(filtered_centroids_keys[0]);
   }
   // else set the selected centroid to be the previous one via index
   else{
-  currently_featured_centroid_id = filtered_centroids_keys[filtered_centroids_keys.indexOf(currently_featured_centroid_id) - 1 ];
+    set_currently_featured_centroid_id(filtered_centroids_keys[filtered_centroids_keys.indexOf(currently_featured_centroid_id) - 1 ]);
   }
   // get the centroid from its id and fly to its bounds
   centroid = get_centroid_by_id(currently_featured_centroid_id);
   target = get_bbox_from_cluster_centroid(centroid);
   flyToClusterBounds(target,{animate:false});
-  update_cluster_info(filtered_centroids_keys);
+  update_current_cluster(filtered_centroids_keys);
 }
