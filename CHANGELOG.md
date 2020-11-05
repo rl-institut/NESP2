@@ -32,6 +32,14 @@ Here is a template for new release sections
 - Keep the darker funnel image as long as filter is expanded (#326)
 - The area legend is not shaped like a line anymore but like a rectangle (#327)
 - Explanatory text for built-up percentage (#331)
+- The settlements filters do not filter out elements on filter boundaries (#333)
+- Rename `update_filter` to `update_filtered_settlements` (#333)
+- Rename `set_current_cluster_centroids` to `update_current_state_settlements` (#333)
+- Rename `filter_centroid_keys` to `filter_settlements_ids` (#333)
+- Rename `update_cluster_info` to `update_current_cluster` (#333)
+- Convert query parameters to float or int before sending sql request (#333)
+
+
 ### Removed
 - Unused `selectedStateAvailability` variable (#303)
 - Unused `statesAvailability` variable (#303)
