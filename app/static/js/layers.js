@@ -203,8 +203,12 @@ var state_grid_layer = L.vectorGrid.protobuf(tileserver + "nesp2_state_grid/{z}/
   }
 });
 
+
 // Adds functions for filters and styling to a defined input grid-cluster-Layer
+/* normal settlements layer */
 function addFunctionsToClusterLayer(layer) {
+
+
   layer.on("click", function(e) {
     this.clearHighlight();
     let properties = e.layer.properties;
@@ -222,7 +226,7 @@ function addFunctionsToClusterLayer(layer) {
       if (ID in all_centroids_dict){
         var filtered_centroids_keys = get_filtered_centroids_keys();
         const clusterNum = filtered_centroids_keys.indexOf(all_centroids_dict[ID]) + 1;
-        currently_featured_centroid_id = all_centroids_dict[ID];
+        set_currently_featured_centroid_id(all_centroids_dict[ID]);
         update_clusterInfo(properties, filtered_centroids_keys.length, clusterNum);
       }
 
@@ -239,6 +243,7 @@ function addFunctionsToClusterLayer(layer) {
       [e.layer.properties.bb_north, e.layer.properties.bb_east]
     ],{animate:false})
   });
+
   layer.filter = function(filter) {
     let newhiddenIDs = [];
     let vt = this._vectorTiles;
@@ -309,6 +314,8 @@ function addFunctionsToClusterLayer(layer) {
   });
 }
 
+
+/* normal settlements layer */
 function createNewClusterLayer(clusterString) {
   var layer = L.vectorGrid.protobuf(tileserver + "nesp2_state_clusters_" + clusterString + "/{z}/{x}/{y}.pbf", {
     rendererFactory: L.canvas.tile,
@@ -352,43 +359,76 @@ statesList.forEach(function(item){
 
 
 // Adds functions for filters and styling to a defined input off-grid-cluster-Layer
+/* remotely mapped settlements layer */
 function addFunctionsToOGClusterLayer(layer) {
+
+  layer.highlight = null;
+  layer.hidden = null;
+  layer.hiddenstyle = {
+    fillColor: "grey",
+    fillOpacity: 0.2,
+    opacity: 0.2,
+    fill: true,
+    color: "grey"
+  };
+
+
+  map.addEventListener("ogfilterchange", function(filter_props) {
+    layer.apply_filter(filter_props);
+  });
+
+  map.on("click", function() {
+    layer.clearHighlight();
+  });
+
+
+  layer.on("mouseover", function(e){
+    console.log("Hover properties")
+    console.log(e.layer.properties)
+  });
+
+  layer.on("load", function(e) {
+    layer.apply_filter(currentfilter);
+  });
+
   layer.on("click", function(e) {
+    // call function defined below
     this.clearHighlight();
+
+    map.on("click", function() {
+      clusterInfo.remove();
+    });
     let properties = e.layer.properties;
     if (properties.cluster_offgrid_id !== undefined) {
-      var type = "c";
       var ID = properties.cluster_offgrid_id;
-    } else {
-      var type = "r";
-      var ID = "r" + properties.OBJECTID;
-    }
-    if (type != "r") {
       // Update clusterInfo based on the properties
       update_clusterInfo(properties, "?")
       this.highlight = ID;
-      let style = ogClusterSelectionStyle;
-      this.setFeatureStyle(ID, style);
+      // the style is defined in this file
+      this.setFeatureStyle(ID, ogClusterSelectionStyle);
       L.DomEvent.stop(e);
+
       var cluster_type = get_cluster_type();
       // if selected cluster within list of filtered clusters, update info with number/length
       if (ID in og_centroids_dict){
         var filtered_centroids_keys = get_filtered_centroids_keys();
         const clusterNum = filtered_centroids_keys.indexOf(og_centroids_dict[ID]) + 1;
-        currently_featured_centroid_id = og_centroids_dict[ID];
+        set_currently_featured_centroid_id(og_centroids_dict[ID]);
         update_clusterInfo(properties, filtered_centroids_keys.length, clusterNum);
       }
     }
-    map.on("click", function() {
-      clusterInfo.remove();
-    });
+
     map.flyToBounds([
       [e.layer.properties.bb_south, e.layer.properties.bb_west],
       [e.layer.properties.bb_north, e.layer.properties.bb_east]
     ],{animate:false})
   });
-  layer.filter = function(filter) {
+
+
+  layer.apply_filter = function(filter) {
     let newhiddenIDs = [];
+    let highlighted_IDs = [];
+
     let vt = this._vectorTiles;
     for (let vtkey in vt) {
       let f = vt[vtkey]._features;
@@ -396,7 +436,7 @@ function addFunctionsToOGClusterLayer(layer) {
 
         let prop = f[fkey].feature.properties;
         if (typeof prop.area_km2 !== 'undefined') {
-          if (!(prop.area_km2 >= filter.ogminarea && prop.area_km2 < filter.ogmaxarea && prop.grid_dist_km >= filter.ogmindtg && prop.grid_dist_km < filter.ogmaxdtg && prop.building_count >= filter.ogminb && prop.building_count < filter.ogmaxb && prop.percentage_building_area >= filter.ogminbfp && prop.percentage_building_area < filter.ogmaxbfp)) {
+          if (!(prop.area_km2 >= filter.ogminarea && prop.area_km2 <= filter.ogmaxarea && prop.grid_dist_km >= filter.ogmindtg && prop.grid_dist_km <=filter.ogmaxdtg && prop.building_count >= filter.ogminb && prop.building_count <=filter.ogmaxb && prop.percentage_building_area >= filter.ogminbfp && prop.percentage_building_area <=filter.ogmaxbfp)) {
             newhiddenIDs.push(prop.cluster_offgrid_id);
             if (this.hiddenIDs.indexOf(prop.cluster_offgrid_id) == -1) {
               this.setFeatureStyle(prop.cluster_offgrid_id, this.hiddenstyle);
@@ -410,15 +450,7 @@ function addFunctionsToOGClusterLayer(layer) {
     this.hiddenIDs = newhiddenIDs;
   };
 
-  layer.highlight = null;
-  layer.hidden = null;
-  layer.hiddenstyle = {
-    fillColor: "lightgray",
-    fillOpacity: 0.3,
-    opacity: 0,
-    fill: true,
-    color: "lightgray"
-  };
+  /* loop over the hidden clusters and display them again */
   layer.clearHidden = function() {
     if (this.hiddenIDs) {
       for (let i = 0, len = this.hiddenIDs.length; i < len; i++) {
@@ -437,17 +469,7 @@ function addFunctionsToOGClusterLayer(layer) {
     }
     this.highlight = null;
   };
-  layer.on("load", function(e) {
-    layer.filter(currentfilter);
-  });
-
-  map.addEventListener("ogfilterchange", function(filter) {
-    layer.filter(currentfilter);
-  });
-  map.on("click", function() {
-    layer.clearHighlight();
-  });
-}
+};
 
 function createNewOGClusterLayer(ogClusterString) {
   var layer = L.vectorGrid.protobuf(tileserver + "nesp2_state_offgrid_clusters_" + ogClusterString + "/{z}/{x}/{y}.pbf", {
