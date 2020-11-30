@@ -73,6 +73,40 @@ searchControl.on('results', function (data) {
 
     results.clearLayers();
 
+    state = ""
+
+    occurrences = 0
+
+    /* simple search of the name of the state in the search text
+     * this will always only consider the last occurrence in the
+     * state list
+    */
+    statesList.forEach(function(item){
+        if(data.text.includes(item) == true){
+            occurrences += 1;
+            state=item;
+        }
+    });
+
+    /* if more than one occurrences in the last search
+     * we search which state intersects the lat, long of the
+     * research result
+    */
+    if(occurrences > 1){
+
+        nigeria_states_borders_geojson.eachLayer(function(layer){
+            if(turf.booleanPointInPolygon(turf.point([data.latlng.lng, data.latlng.lat]), layer.feature)){
+                state=layer.feature.properties.name;
+            }
+        });
+
+    }
+
+    if(state != ""){
+        selectedState = state;
+        state_button_fun(trigger="search");
+     }
+
     for (var i = data.results.length - 1; i >= 0; i--) {
        /* uncomment if you want to add a marker at the search location */
       //results.addLayer(L.marker(data.results[i].latlng));
