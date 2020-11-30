@@ -57,6 +57,29 @@ L.control.zoom({
   position: "topright"
 }).addTo(map);
 
+/* add a search button for the map */
+var searchControl = L.esri.Geocoding.geosearch(
+{
+  position: 'topright',
+  searchBounds: maxBoundsDefault,
+  allowMultipleResults: false
+});
+searchControl.addTo(map);
+
+/* useful to add a marker to the search field only*/
+var results = L.layerGroup().addTo(map);
+
+searchControl.on('results', function (data) {
+
+    results.clearLayers();
+
+    for (var i = data.results.length - 1; i >= 0; i--) {
+       /* uncomment if you want to add a marker at the search location */
+      //results.addLayer(L.marker(data.results[i].latlng));
+    }
+});
+
+
 var infoBox = L.control({
   position: 'topleft'
 });
