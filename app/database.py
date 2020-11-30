@@ -4,6 +4,7 @@ import pandas as pd
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.sql import text
+import geoalchemy2
 from sqlalchemy import Table, MetaData
 from sqlalchemy.ext.declarative import declarative_base
 import random
