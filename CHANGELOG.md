@@ -38,6 +38,7 @@ Here is a template for new release sections
 - Rename `filter_centroid_keys` to `filter_settlements_ids` (#333)
 - Rename `update_cluster_info` to `update_current_cluster` (#333)
 - Convert query parameters to float or int before sending sql request (#333)
+- Search bar for locations within Nigeria (#336)
 
 
 ### Removed
