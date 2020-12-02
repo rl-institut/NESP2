@@ -53,9 +53,6 @@ function remove_basemaps_except_osm_gray() {
   remove_layer(national_background);
 };
 
-L.control.zoom({
-  position: "topright"
-}).addTo(map);
 
 var infoBox = L.control({
   position: 'topleft'
@@ -277,10 +274,100 @@ let logFormat = function(decimals) {
   })
 };
 
+
+/* add a search button for the map */
+var searchControl = L.esri.Geocoding.geosearch(
+{
+  position: 'topright',
+  expanded: true,
+  collapseAfterResult: false,
+  searchBounds: maxBoundsDefault,
+  allowMultipleResults: false
+});
+searchControl.addTo(map);
+
+
+
+/* useful to add a marker to the search field only*/
+var results = L.layerGroup().addTo(map);
+
+searchControl.on('results', function (data) {
+
+    results.clearLayers();
+
+    state = ""
+
+    occurrences = 0
+
+    /* simple search of the name of the state in the search text
+     * this will always only consider the last occurrence in the
+     * state list
+    */
+    statesList.forEach(function(item){
+        if(data.text.includes(item) == true){
+            occurrences += 1;
+            state=item;
+        }
+    });
+
+    /* if more than one occurrences in the last search
+     * we search which state intersects the lat, long of the
+     * research result
+    */
+    if(occurrences > 1){
+
+        nigeria_states_borders_geojson.eachLayer(function(layer){
+            if(turf.booleanPointInPolygon(turf.point([data.latlng.lng, data.latlng.lat]), layer.feature)){
+                state=layer.feature.properties.name;
+            }
+        });
+
+    }
+
+    if(state != ""){
+        selectedState = state;
+        state_button_fun(trigger="search");
+     }
+
+    for (var i = data.results.length - 1; i >= 0; i--) {
+       /* uncomment if you want to add a marker at the search location */
+      //results.addLayer(L.marker(data.results[i].latlng));
+    }
+});
+
+var zoomControl= L.control.zoom({
+  position: "topright"
+})
+zoomControl.addTo(map);
+
+
 let overlayMaps = {
   // "Priority Clusters": markers
 };
-L.control.layers(baseMaps, overlayMaps).addTo(map);
+var mapsControl = L.control.layers(baseMaps, overlayMaps);
+mapsControl.addTo(map);
+
+var scaleControl = L.control.scale({
+  position: "topright"
+});
+scaleControl.addTo(map);
+
+// spinning wheel when loading layers
+var loadingControl = L.Control.loading({
+    position: "topright"
+});
+loadingControl.addTo(map);
+
+/*var top_container = document.querySelectorAll(".leaflet-top.leaflet-right")[0];
+top_container.className += ' grid-x';
+searchControl.getContainer().className += ' cell small-6';
+zoomControl.getContainer().className += ' cell small-1';
+mapsControl.getContainer().className += ' cell small-offset-10 shrink';
+scaleControl.getContainer().className += ' cell small-offset-10 shrink';
+loadingControl.getContainer().className += ' cell';*/
+
+
+
 map.on("layeradd", function() {
   //vecTileLayer.bringToFront();
   national_heatmap.bringToFront();
@@ -295,13 +382,6 @@ map.on("layeradd", function() {
 map.fireEvent("filterchange", currentfilter);
 map.fireEvent("ogfilterchange", currentfilter);
 
-L.control.scale({
-  position: "topright"
-}).addTo(map);
 
-// spinning wheel when loading layers
-L.Control.loading({
-    position: "topright"
-}).addTo(map);
 
 national_button_fun(trigger="init");
