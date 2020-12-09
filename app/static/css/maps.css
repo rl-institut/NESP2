@@ -992,3 +992,11 @@ img.footer-maps-logos__giz {
 .reveal-overlay{
     background-color: rgba(70,70,70,0.5);
 }
+
+#geoportal-text-container{
+  margin-top: 2vw;
+  padding-top: 2vw;
+  padding-left: 2vw;
+  padding-right: 2vw;
+  text-align: center;
+}
