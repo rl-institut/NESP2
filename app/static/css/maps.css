@@ -641,12 +641,12 @@ p.sidebar-panel-item-title {
 }
 
 #geoportal-btn {
-    margin-top: 2rem;
     margin-bottom: 2rem;
 }
 
 #geoportal-btn span{
     font-size: 10pt;
+    text-align: center;
     font-family: 'Source Sans Pro', sans-serif;
 }
 
