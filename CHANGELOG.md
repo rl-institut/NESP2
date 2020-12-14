@@ -32,6 +32,15 @@ Here is a template for new release sections
 - Keep the darker funnel image as long as filter is expanded (#326)
 - The area legend is not shaped like a line anymore but like a rectangle (#327)
 - Explanatory text for built-up percentage (#331)
+- The settlements filters do not filter out elements on filter boundaries (#333)
+- Rename `update_filter` to `update_filtered_settlements` (#333)
+- Rename `set_current_cluster_centroids` to `update_current_state_settlements` (#333)
+- Rename `filter_centroid_keys` to `filter_settlements_ids` (#333)
+- Rename `update_cluster_info` to `update_current_cluster` (#333)
+- Convert query parameters to float or int before sending sql request (#333)
+- Search bar for locations within Nigeria (#336)
+
+
 ### Removed
 - Unused `selectedStateAvailability` variable (#303)
 - Unused `statesAvailability` variable (#303)
@@ -115,7 +124,7 @@ Here is a template for new release sections
 - Draw tiles from azure tileserver (#269)
 - Drop two elements in info box (#271)
 - Change to clusterInfo legend box to match required design (#266)
-- The `filter_centroid_keys` function is only called in `update_filter` (#274)
+- The `filter_centroid_keys` function is only called in `update_filtered_settlements` (#274)
 - The `filtered_centroids_keys` variable is only accessed via get and set functions (#274)
 - Endpoint `/filtered-cluster` is not used anymore to get filter info, rather it is the `filtered_centroids_keys` function (#274)
 - Adapt filters to show clusters that are 0km distance from grid (#278, #280)
