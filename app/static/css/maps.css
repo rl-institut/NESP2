@@ -643,6 +643,7 @@ p.sidebar-panel-item-title {
 #geoportal-btn {
     margin-top: 2rem;
     margin-bottom: 2rem;
+    text-align: center;
 }
 
 #geoportal-btn span{
@@ -991,4 +992,11 @@ img.footer-maps-logos__giz {
 
 .reveal-overlay{
     background-color: rgba(70,70,70,0.5);
+}
+
+#geoportal-text-container{
+  margin-top: 2vw;
+}
+.geocoder-control-list-image{
+  width: 30px;
 }
