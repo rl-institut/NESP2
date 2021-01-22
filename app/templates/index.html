@@ -158,14 +158,19 @@
         {{ checkbox.filter_opt(id="ogBuildingsFootprintSlider", label="Built-up percentage", help_icon=True, help_text="Built-up percentage is the fraction of build footprint within the cluster area. A Built-up percentage of 0 means that there are no buildings in the cluster (not possible) whereas a Built-up percentage of 100 means the cluster area is only made up of buildings.", name="ogClustersContent") }}
         {{ checkbox.filter_download_btn(id="download_ogClusters", label="Download selection", name="ogClustersContent") }}
 
+        <div id="geoportal-container">
 
-        <div id="geoportal-btn" class="grid-x align-center">
-          <a class="cell small-7 cta" href="https://se4allgeonode.westeurope.cloudapp.azure.com/" target="_blank" rel="noreferrer">
-            <span>Download geodata</span>
-            <img src="{{ url_for('static', filename='img/icons/i_download_w.svg') }}">
-          </a>
+          <div id="geoportal-text-container" class="grid-x align-center">
+            <p id="geoportal-text">Download the full dataset used to make the webmap using the Download Portal</p>
+          </div>
+
+          <div id="geoportal-btn" class="grid-x align-center">
+            <a class="cell small-7 cta" href="https://se4allgeonode.westeurope.cloudapp.azure.com/" target="_blank" rel="noreferrer">
+              <span>Go to the Download Portal</span>
+              <img src="{{ url_for('static', filename='img/icons/i_download_w.svg') }}">
+            </a>
+          </div>
         </div>
-
       </div>
 
       <div id="footer-maps" class="grid-x">
