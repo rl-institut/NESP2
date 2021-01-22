@@ -642,6 +642,7 @@ p.sidebar-panel-item-title {
 
 #geoportal-btn {
     margin-bottom: 2rem;
+    text-align: center;
 }
 
 #geoportal-btn span{
@@ -995,8 +996,7 @@ img.footer-maps-logos__giz {
 
 #geoportal-text-container{
   margin-top: 2vw;
-  padding-top: 2vw;
-  padding-left: 2vw;
-  padding-right: 2vw;
-  text-align: center;
+}
+.geocoder-control-list-image{
+  width: 30px;
 }

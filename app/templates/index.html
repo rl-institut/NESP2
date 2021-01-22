@@ -21,6 +21,7 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/nouislider.min.css') }}" />
 <link rel="stylesheet" href="{{ url_for('static', filename='css/Control.Loading.css') }}" />
 <link rel="stylesheet" href="{{ url_for('static', filename='css/legends.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/Control.Geocoder.css') }}" />
 
 
 <script type=text/javascript> $SCRIPT_ROOT={{ request.script_root|tojson|safe }}; </script>
@@ -245,6 +246,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@turf/turf@5.1.6/turf.min.js"></script>
 
     <!-- local scripts -->
+    <script src="{{ url_for('static', filename='js/Control.Geocoder.js') }}"></script>
     <script src="{{ url_for('static', filename='js/general_functions.js') }}"></script>
     <script src="{{ url_for('static', filename='js/Control.Loading.js') }}"></script>
     <script src="{{ url_for('static', filename='js/nigeria_states_availability.js') }}"></script>
@@ -253,6 +255,7 @@
     <script src="{{ url_for('static', filename='js/layerstyles.js') }}"></script>
     <script src="{{ url_for('static', filename='js/layers.js') }}"></script>
     <script src="{{ url_for('static', filename='js/map.js') }}"></script>
+    
     <script type=text/javascript>
 
       var stateCheckBox = document.getElementById("statesCheckbox")
