@@ -274,24 +274,27 @@ let logFormat = function(decimals) {
   })
 };
 
-
-/* add a search button for the map */
-var searchControl = L.esri.Geocoding.geosearch(
-{
-  position: 'topright',
-  expanded: true,
-  collapseAfterResult: false,
-  searchBounds: maxBoundsDefault,
-  allowMultipleResults: false
-});
-searchControl.addTo(map);
-
-
+//initiate the search-bar by using the nominati OSM database
+//here we filter only on cities and villages whereby both will be 
+//displayed with different icons 
+//Code taken from https://github.com/perliedman/leaflet-control-geocoder
+var searchControl = 
+L.Control.geocoder({
+    collapsed: false,
+    placeholder: "Search for location ...",
+    showResultIcons: true,
+    defaultMarkGeocode: false,
+  geocoder: L.Control.Geocoder.nominatim({
+    //limit the results to Nigeria 
+    geocodingQueryParams: {countrycodes: 'ng'}
+  })
+}).addTo(map);
 
 /* useful to add a marker to the search field only*/
 var results = L.layerGroup().addTo(map);
 
-searchControl.on('results', function (data) {
+//define what happens when the user hits one result 
+searchControl.on('markgeocode', function (data) {
 
     results.clearLayers();
 
@@ -304,7 +307,7 @@ searchControl.on('results', function (data) {
      * state list
     */
     statesList.forEach(function(item){
-        if(data.text.includes(item) == true){
+        if(data.geocode.properties.address.state.includes(item) == true){
             occurrences += 1;
             state=item;
         }
@@ -321,7 +324,6 @@ searchControl.on('results', function (data) {
                 state=layer.feature.properties.name;
             }
         });
-
     }
 
     if(state != ""){
@@ -329,10 +331,9 @@ searchControl.on('results', function (data) {
         state_button_fun(trigger="search");
      }
 
-    for (var i = data.results.length - 1; i >= 0; i--) {
-       /* uncomment if you want to add a marker at the search location */
-      //results.addLayer(L.marker(data.results[i].latlng));
-    }
+     //render the marker
+     var latlng = L.latLng(data.geocode.properties.lat, data.geocode.properties.lon);
+     results.addLayer(L.marker(latlng));
 });
 
 var zoomControl= L.control.zoom({
