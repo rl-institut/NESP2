@@ -329,6 +329,7 @@ searchControl.on('markgeocode', function (data) {
     if(state != ""){
         selectedState = state;
         state_button_fun(trigger="search");
+        document.getElementById("stateSelect").value = selectedState;
      }
 
      //render the marker
