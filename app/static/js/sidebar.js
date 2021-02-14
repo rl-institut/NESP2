@@ -1013,9 +1013,13 @@ function electricityTab_cb_fun(trigger=null){
 
     if(checkBox.checked == true){
         // TODO: turn features from subpanels on map if their toggle button are on
+        stateGrid_cb_fun();
+        gridGeneration_cb_fun();
+        substations_cb_fun();
     }
     else{
         // TODO: turn all features from subpanels on map off
+        remove_layer(state_grid_layer);
     }
 
 }
