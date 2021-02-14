@@ -104,7 +104,25 @@
 {%- endmacro %}
 
 
-{% macro filter_opt(id, label, name, visible={'state': 'show', 'village': 'show'}, help_icon=False, help_text="") -%}
+{% macro filter_opt_toggle(id, label, name, visible={'state': 'show', 'village': 'show'}, help_icon=False, help_text="", extra_class="") -%}
+ <div class="grid-x">
+  <div class="cell sidebar-panel {{ assign_visibility(visible) }}">
+    <div class="grid-x sidebar-panel sidebar-panel-content content-filter hidden-filter {{ extra_class }}" name="{{ name }}">
+
+      <div class="cell small-8 sidebar-panel-item sidebar-panel-item-filter">
+        <p class="sidebar-panel-item-title-filterlabel"> <img class="filter_icon" src="{{ url_for('static', filename='img/icons/i_funnel_dark_gray.svg') }}" > {{ label }}</p>
+      </div>
+      <div class="cell small-2">
+        <div class="sidebar-panel-item-button">
+          <input class="switch-input" id="{{ id }}Checkbox" type="checkbox" onclick="{{ id }}_cb_fun(trigger='user')" value="false">
+          <label class="switch-paddle" for="{{ id }}Checkbox">
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{%- endmacro %}
 <div class="grid-x">
   <div class="cell {{ assign_visibility(visible) }}">
     <div class="sidebar-panel sidebar-panel-content content-filter hidden-filter" name="{{ name }}">
