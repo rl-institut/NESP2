@@ -442,6 +442,15 @@ function hide_sidebar__btn(className) {
   return className;
 };
 
+function expand_sidebar__btn(className) {
+  let answer = className;
+  if (className.includes(" is-hidden")) {
+    className = className.replace(" is-hidden", "");
+  }
+  return className;
+};
+
+
 function show_sidebar__btn(className) {
   let answer = className;
   if (className.includes(" is-disabled")) {
@@ -1009,12 +1018,9 @@ function gridGeneration_cb_fun(trigger=null) {
 }
 
 
+
 /*
 Triggered by the arrow next of the Electricity Infrastructure tab, either expand or hide the sub panels
-
-Parameters
-----------
-    :trigger: str, can be one of ('user', 'map-click', 'zoom', 'random-cluster', 'init', 'button')
 */
 function electricityTab_toggle_fun(){
     var tab_state = document.getElementById("electricityTab_expand");
@@ -1039,11 +1045,12 @@ function electricityTab_toggle_fun(){
             sub_panels[j].className = hide_sidebar__btn(sub_panels[j].className);
         }
         else{
-            sub_panels[j].className = show_sidebar__btn(sub_panels[j].className);
+            sub_panels[j].className = expand_sidebar__btn(sub_panels[j].className);
         }
     }
 
 }
+
 function template_filter_fun(id) {
   var newFilter = document.getElementsByName(id + "Content");
   var checkBox = document.getElementById(id + "Checkbox");
