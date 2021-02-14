@@ -138,18 +138,22 @@
         <!-- grid layer on national level only -->
         {{ checkbox.input(id="nationalGrid", label="Superfluous grid", visible={'national': 'show'}, help_icon=True, help_link="ongridmapping") }}
 
-        {{ checkbox.input(id="electricityTab", label="Electricity Infrastructure", visible={'national': 'show'}, help_icon=True, help_link="http://google.com", sub_panels=True)}}
+        {{ checkbox.input(id="electricityTab", label="Electricity Infrastructure", visible={'national': 'show', 'state': 'show', 'village': 'show'}, help_icon=True, help_link="http://google.com", sub_panels=True)}}
         <!-- grid layer on state and village level only -->
         {{ checkbox.sub_panel(id="stateGrid", label="Medium voltage grid", visible={'national': 'show', 'state': 'show', 'village': 'show'}, help_icon=True, help_link="ongridmapping") }}
 
-        {{ checkbox.sub_panel(id="gridGeneration", label="On-grid and off-grid generation", visible={'national': 'show', 'state': 'show', village: 'show'}, filter_func=True) }}
+        {{ checkbox.sub_panel(id="gridGeneration", label="On-grid and off-grid generation", visible={'national': 'show', 'state': 'show', 'village': 'show'}, filter_func=True) }}
         <!-- Filter for grid generation -->
-        {{ checkbox.filter_title(id="n_grid_generation", label="Number of sites: ", name="gridGenerationContent", visible={'national': 'show', 'state': 'show', village: 'show'}, spin_id="gen-spin") }}
-        {{ checkbox.filter_opt(id="kVSlider", label="Distance to grid", name="gridGenerationContent", visible={'national': 'show', 'state': 'show', village: 'show'}) }}
+        {{ checkbox.filter_title(id="n_grid_generation", label="Number of sites: ", name="gridGenerationContent", visible={'national': 'show', 'state': 'show', 'village': 'show'}, spin_id="gen-spin", extra_class="subpanel") }}
+        {{ checkbox.filter_opt_toggle(id="hydro", label="Hydro", name="gridGenerationContent", visible={'national': 'show', 'state': 'show', 'village': 'show'}, extra_class="subpanel") }}
+        {{ checkbox.filter_opt_toggle(id="solar", label="Solar", name="gridGenerationContent", visible={'national': 'show', 'state': 'show', 'village': 'show'}, extra_class="subpanel") }}
+        {{ checkbox.filter_opt_toggle(id="fossil", label="Gas / fossil fuel", name="gridGenerationContent", visible={'national': 'show', 'state': 'show', 'village': 'show'}, extra_class="subpanel") }}
+        {{ checkbox.filter_opt(id="generationSlider", label="Generation size", name="gridGenerationContent", visible={'national': 'show', 'state': 'show', 'village': 'show'}, extra_class="subpanel") }}
 
-        {{ checkbox.sub_panel(id="substations", label="Transmission and substations", visible={'national': 'show'}, help_link="ongridmapping") }}
+        {{ checkbox.sub_panel(id="substations", label="Transmission and substations", visible={'national': 'show', 'state': 'show', 'village': 'show'}, help_link="ongridmapping") }}
+
+
         {{ checkbox.input(id="heatmap", label="Identified settlements by satellite imagery", visible={'national': 'show'}, help_icon=True, help_link="clusteridentification") }}
-
         <!-- Filter for ISSI -->
         {{ checkbox.input(id="clusters", label="Identified settlements by satellite imagery", visible={'state': 'show', 'village': 'show'}, filter_func=True, help_icon=True, help_link="clusteridentification") }}
         {{ checkbox.filter_title(id="n_clusters", label="Number of sites: ", name="clustersContent", spin_id="all-spin") }}

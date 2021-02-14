@@ -47,7 +47,7 @@
     </div>
 {%- endmacro %}
 
-  {% macro sub_panel(id, label, visible=['national', 'state', 'village'],filter_func=False,help_icon=False, help_link="") -%}
+{% macro sub_panel(id, label, visible=['national', 'state', 'village'],filter_func=False,help_icon=False, help_link="") -%}
     <div class="grid-x">
       <div class="cell sidebar-panel sidebar-subpanel {{ assign_visibility(visible) }}" id="{{ id }}TopLevelPanel">
         <div class="grid-x sidebar-panel-item is-active" id="{{ id }}Panel" data-accordion-item>
@@ -86,13 +86,13 @@
 
 
 
-{% macro filter_title(id, label, name, spin_id, visible={'state': 'show', 'village': 'show'}) -%}
+{% macro filter_title(id, label, name, spin_id, visible={'state': 'show', 'village': 'show'}, extra_class="") -%}
 <div class="grid-x">
   <div class="cell {{ assign_visibility(visible) }}">
-    <div class="sidebar-panel sidebar-panel-content content-filter hidden-filter sidebar-panel-filter-label" name="{{ name }}">
+    <div class="sidebar-panel sidebar-panel-content content-filter hidden-filter sidebar-panel-filter-label {{ extra_class }}" name="{{ name }}">
       <div class="sidebar-panel-item sidebar-panel-item-filter grid-x">
         <div href="#" class="cell small-10 sidebar-panel-item-title sidebar-panel-item-title-filter">
-          {{ label }}<span id="{{ id }}"></span>
+          <p>{{ label }}<span id="{{ id }}"></span></p>
         </div>
         <div class="cell small-2">
           <div id="{{ spin_id }}" class="sp sp-circle is-hidden"></div>
@@ -123,9 +123,11 @@
   </div>
 </div>
 {%- endmacro %}
+
+{% macro filter_opt(id, label, name, visible={'state': 'show', 'village': 'show'}, help_icon=False, help_text="", extra_class="") -%}
 <div class="grid-x">
   <div class="cell {{ assign_visibility(visible) }}">
-    <div class="sidebar-panel sidebar-panel-content content-filter hidden-filter" name="{{ name }}">
+    <div class="sidebar-panel sidebar-panel-content content-filter hidden-filter {{ extra_class }}" name="{{ name }}">
       <div class="sidebar-panel-item sidebar-panel-item-filter">
         <p href="#" class="sidebar-panel-item-title-filterlabel">
           {{ label }}
