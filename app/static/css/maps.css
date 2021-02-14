@@ -459,6 +459,12 @@ button {
   color: #464646;
 }
 
+
+.sidebar-panel-item-title.sidebar-subpanel {
+  font-style: italic;
+  padding-left: 3.75rem;
+}
+
 .sidebar-panel-item-title img {
  height: 18px;
  width: 18px;
