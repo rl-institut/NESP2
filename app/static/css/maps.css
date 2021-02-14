@@ -203,6 +203,7 @@ a {
     display: none;
 }
 
+
 .sidebar-panel-item--download {
   background-color: #91919f;
 }
@@ -459,11 +460,23 @@ button {
   color: #464646;
 }
 
-
 .sidebar-panel-item-title.sidebar-subpanel {
   font-style: italic;
   padding-left: 3.75rem;
 }
+
+.subpanel.content-filter{
+    padding-bottom:0.5rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.subpanel.content-filter.hidden-filter{
+    display: none;
+}
+
 
 .sidebar-panel-item-title img {
  height: 18px;
@@ -474,6 +487,7 @@ button {
 p.sidebar-panel-item-title {
   margin-bottom: 0;
 }
+
 
 .sidebar-panel-item-title-filter {
   padding-left: 1.75rem;
