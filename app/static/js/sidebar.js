@@ -48,7 +48,9 @@ var currentfilter = {
   ogmaxb: 5000,
   ogminbfp: 0,
   ogmaxbfp: 100,
-  filterID: ""
+  filterID: "",
+  mingen: 0,
+  maxgen: 13000
 };
 var gridLayers = {
   "Abia": "",
@@ -353,6 +355,34 @@ ogBuildingsFootprintSlider.noUiSlider.on("change", changeogBuildingsFootprintSli
 ogBuildingsFootprintSlider.noUiSlider.on("end", update_filtered_settlements);
 
 
+function changedGenerationSlider(str, h, values) {
+  currentfilter.mingen = values[0];
+  currentfilter.maxgen = values[1];
+  if (values[1] == 0) {currentfilter.maxdtg = 1;}
+  map.fireEvent("filterchange", currentfilter);
+};
+
+var generationSliderFormat = wNumb({
+    decimals: 0,
+    suffix: ' kW',
+});
+
+var generationSlider = document.getElementById('generationSlider');
+noUiSlider.create(generationSlider, {
+  ...sliderOptions,
+  tooltips: [generationSliderFormat, generationSliderFormat],
+  start: [0, 1300],
+  range: {
+    'min': 0,
+    'max': 1300
+  }
+});
+generationSlider.noUiSlider.on("change", changedGenerationSlider);
+generationSlider.noUiSlider.on("end", update_filtered_grid_generation);
+
+
+
+
 function update_filtered_settlements(msg) {
     var num_filtered_settlements = 0;
     if (selectedState != "init") {
@@ -388,6 +418,9 @@ function update_filtered_settlements(msg) {
     return num_filtered_settlements;
 };
 
+
+function update_filtered_grid_generation() {
+};
 
 function set_toggle_value(toggle_id, value) {
     document.getElementById(toggle_id).checked = value;
