@@ -143,6 +143,9 @@
         {{ checkbox.sub_panel(id="stateGrid", label="Medium voltage grid", visible={'national': 'show', 'state': 'show', 'village': 'show'}, help_icon=True, help_link="ongridmapping") }}
 
         {{ checkbox.sub_panel(id="gridGeneration", label="On-grid and off-grid generation", visible={'national': 'show', 'state': 'show', village: 'show'}, filter_func=True) }}
+        <!-- Filter for grid generation -->
+        {{ checkbox.filter_title(id="n_grid_generation", label="Number of sites: ", name="gridGenerationContent", visible={'national': 'show', 'state': 'show', village: 'show'}, spin_id="gen-spin") }}
+        {{ checkbox.filter_opt(id="kVSlider", label="Distance to grid", name="gridGenerationContent", visible={'national': 'show', 'state': 'show', village: 'show'}) }}
 
         {{ checkbox.sub_panel(id="substations", label="Transmission and substations", visible={'national': 'show'}, help_link="ongridmapping") }}
         {{ checkbox.input(id="heatmap", label="Identified settlements by satellite imagery", visible={'national': 'show'}, help_icon=True, help_link="clusteridentification") }}
