@@ -1008,6 +1008,42 @@ function gridGeneration_cb_fun(trigger=null) {
   }
 }
 
+
+/*
+Triggered by the arrow next of the Electricity Infrastructure tab, either expand or hide the sub panels
+
+Parameters
+----------
+    :trigger: str, can be one of ('user', 'map-click', 'zoom', 'random-cluster', 'init', 'button')
+*/
+function electricityTab_toggle_fun(){
+    var tab_state = document.getElementById("electricityTab_expand");
+
+    var sub_panels = document.querySelectorAll(".sidebar-subpanel");
+    var j;
+
+    // arrow was up and the sub panels were expanded --> close them
+    if(tab_state.name == "expanded"){
+        tab_state.name = "hidden";
+        tab_state.src = tab_state.src.replace("up", "down");
+    }
+    // arrow was down and the sub panels were closed --> expand them
+    else{
+      tab_state.name = "expanded";
+      tab_state.src = tab_state.src.replace("down", "up");
+
+    }
+
+    for (j = 0; j < sub_panels.length; j++) {
+        if(tab_state.name == "hidden"){
+            sub_panels[j].className = hide_sidebar__btn(sub_panels[j].className);
+        }
+        else{
+            sub_panels[j].className = show_sidebar__btn(sub_panels[j].className);
+        }
+    }
+
+}
 function template_filter_fun(id) {
   var newFilter = document.getElementsByName(id + "Content");
   var checkBox = document.getElementById(id + "Checkbox");
