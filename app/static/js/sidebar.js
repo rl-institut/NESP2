@@ -1054,6 +1054,33 @@ function gridGeneration_cb_fun(trigger=null) {
 }
 
 
+/*
+Triggered by the checkbox Transmission stations
+
+Parameters
+----------
+    :trigger: str, can be one of ('user', 'map-click', 'zoom', 'random-cluster', 'init', 'button')
+*/
+function substations_cb_fun(trigger=null) {
+
+  if (document.getElementById("substationsCheckbox").checked == true) {
+    // set panel side to green
+    document.getElementById("substationsPanel").style.borderLeft = '.25rem solid #1DD069';
+
+    //TODO show transmission substations on map
+
+  } else {
+    // set panel side to grey
+    document.getElementById("substationsPanel").style.borderLeft = '.25rem solid #eeeff1';
+
+    //TODO hide transmission substations on map
+
+  }
+}
+
+
+
+
 
 /*
 Triggered by the arrow next of the Electricity Infrastructure tab, either expand or hide the sub panels
