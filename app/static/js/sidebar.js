@@ -970,6 +970,44 @@ function ogClusters_cb_fun(trigger=null) {
   }
 }
 
+
+/*
+Triggered by the checkbox On-grid and off-grid generation
+
+Parameters
+----------
+    :trigger: str, can be one of ('user', 'map-click', 'zoom', 'random-cluster', 'init', 'button')
+*/
+function gridGeneration_cb_fun(trigger=null) {
+  var filter_icon = document.getElementById("gridGeneration_filter");
+
+  if (document.getElementById("gridGenerationCheckbox").checked == true) {
+    // set panel side to green
+    document.getElementById("gridGenerationPanel").style.borderLeft = '.25rem solid #1DD069';
+    // enable actions with filter icon if screen is not mobile phone
+    if($(window).width() > screen_width_threshold) {
+        filter_icon.className = enable_sidebar__filter(filter_icon.className);
+    }
+    else{
+        filter_icon.className = disable_sidebar__filter(filter_icon.className);
+    }
+
+    //TODO show grid generation on map
+
+  } else {
+    // set panel side to grey
+    document.getElementById("gridGenerationPanel").style.borderLeft = '.25rem solid #eeeff1';
+    // Close the filters if they were available
+    gridGeneration_filter_fun();
+    // disable actions with filter icon
+    filter_icon.className = disable_sidebar__filter(filter_icon.className);
+
+
+    //TODO hide grid generation on map
+
+  }
+}
+
 function template_filter_fun(id) {
   var newFilter = document.getElementsByName(id + "Content");
   var checkBox = document.getElementById(id + "Checkbox");
@@ -1017,6 +1055,9 @@ function clusters_filter_fun() {
 }
 function ogClusters_filter_fun() {
   template_filter_fun("ogClusters");
+}
+function gridGeneration_filter_fun() {
+  template_filter_fun("gridGeneration");
 }
 
 
