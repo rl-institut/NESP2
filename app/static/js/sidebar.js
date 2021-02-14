@@ -553,6 +553,7 @@ function adapt_view_to_national_level() {
     set_clusters_toggle(false);
     set_og_clusters_toggle(false);
     document.getElementById("stateGridCheckbox").checked = false;
+    document.getElementById("electricityTabCheckbox").checked = true;
   }
   if (previous_level == "state" || previous_level == "village") {
     document.getElementById("heatmapCheckbox").checked = document.getElementById("clustersCheckbox").checked;
@@ -977,6 +978,41 @@ function ogClusters_cb_fun(trigger=null) {
         clusterInfo.remove()
     }
   }
+}
+
+
+
+/*
+Triggered by the Electricity Infrastructure tab, toggle
+
+Parameters
+----------
+    :trigger: str, can be one of ('user', 'map-click', 'zoom', 'random-cluster', 'init', 'button')
+
+*/
+function electricityTab_cb_fun(trigger=null){
+
+    var sub_panels = document.querySelectorAll(".sidebar-subpanel");
+    var j;
+
+    var checkBox = document.getElementById("electricityTabCheckbox");
+
+    for (j = 0; j < sub_panels.length; j++) {
+        if(checkBox.checked == true){
+            sub_panels[j].className = enable_sidebar__btn(sub_panels[j].className);
+        }
+        else{
+            sub_panels[j].className = disable_sidebar__btn(sub_panels[j].className);
+        }
+    }
+
+    if(checkBox.checked == true){
+        // TODO: turn features from subpanels on map if their toggle button are on
+    }
+    else{
+        // TODO: turn all features from subpanels on map off
+    }
+
 }
 
 
