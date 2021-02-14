@@ -549,6 +549,7 @@ function adapt_view_to_national_level() {
   // Apply only at first landing
   if (selectedState == "init" && prevState == "init") {
     document.getElementById("heatmapCheckbox").checked = true;
+    //TODO: remove once the grid has been unified on state and national level
     document.getElementById("nationalGridCheckbox").checked = true;
     set_clusters_toggle(false);
     set_og_clusters_toggle(false);
@@ -557,15 +558,17 @@ function adapt_view_to_national_level() {
   }
   if (previous_level == "state" || previous_level == "village") {
     document.getElementById("heatmapCheckbox").checked = document.getElementById("clustersCheckbox").checked;
+    //TODO: remove once the grid has been unified on state and national level
     document.getElementById("nationalGridCheckbox").checked = document.getElementById("stateGridCheckbox").checked;
   }
   // load the populated areas
   heatmap_cb_fun();
-  // load the medium voltage grid on national level and untick the one on the state level
+  //TODO: remove once the grid has been unified on state and national level
   nationalGrid_cb_fun();
   stateGrid_cb_fun();
   gridGeneration_cb_fun();
   substations_cb_fun();
+
 
   // Remotely mapped villages layer
   remove_layer(clusterLayer[selectedState]);
@@ -613,6 +616,7 @@ function adapt_view_to_state_level() {
   document.getElementById("statesCheckbox").checked = true;
   states_cb_fun();
 
+  //TODO: remove once the grid has been unified on state and national level
   if(previous_level == "national") {
     document.getElementById("stateGridCheckbox").checked = document.getElementById("nationalGridCheckbox").checked ;
   }
@@ -647,8 +651,11 @@ function adapt_view_to_state_level() {
   document.getElementById("heatmapCheckbox").checked = false;
   heatmap_cb_fun();
   // remove the populated areas
+  //TODO: remove once the grid has been unified on state and national level
   document.getElementById("nationalGridCheckbox").checked = false;
   stateGrid_cb_fun();
+
+  //TODO: remove once the grid has been unified on state and national level
   nationalGrid_cb_fun();
 
   gridGeneration_cb_fun();
@@ -819,6 +826,7 @@ function heatmap_cb_fun(trigger=null) {
   }
 }
 
+//TODO: remove once the grid has been unified on state and national level
 // Triggered by the checkbox Medium Voltage Grid on national level only
 function nationalGrid_cb_fun() {
   var checkBox = document.getElementById("nationalGridCheckbox");
@@ -830,6 +838,7 @@ function nationalGrid_cb_fun() {
     remove_layer(national_grid);
   }
 }
+
 var random_cluster = false;
 //pick a random cluster among the large ones and display it
 function get_random_ogCluster_fun() {

@@ -136,7 +136,7 @@
         {{ checkbox.input(id="states", label="States (availability)", visible={}) }}
         {{ checkbox.input(id="buildingDensity", label="Buildings", visible={}) }}
         <!-- grid layer on national level only -->
-        {{ checkbox.input(id="nationalGrid", label="Medium voltage grid", visible={'national': 'show'}, help_icon=True, help_link="ongridmapping") }}
+        {{ checkbox.input(id="nationalGrid", label="Superfluous grid", visible={'national': 'show'}, help_icon=True, help_link="ongridmapping") }}
 
         {{ checkbox.input(id="electricityTab", label="Electricity Infrastructure", visible={'national': 'show'}, help_icon=True, help_link="http://google.com", sub_panels=True)}}
         <!-- grid layer on state and village level only -->
