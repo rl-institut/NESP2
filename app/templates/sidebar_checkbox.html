@@ -1,9 +1,58 @@
- {% macro input(id, label, visible=['national', 'state', 'village'],filter_func=False,help_icon=False, help_link="") -%}
+ {% macro input(id, label, visible=['national', 'state', 'village'],filter_func=False,help_icon=False, help_link="", sub_panels=False) -%}
     <div class="grid-x">
       <div class="cell sidebar-panel {{ assign_visibility(visible) }}" id="{{ id }}TopLevelPanel">
         <div class="grid-x sidebar-panel-item is-active" id="{{ id }}Panel" data-accordion-item>
           <div class="cell small-8">
             <p href="#" class="sidebar-panel-item-title">
+              {{ label }}
+              {% if help_icon %}
+                <a href="{{ url_for('resources.selection', resc_name=help_link) }}" target="_blank" rel="noreferrer">
+                  <img src="{{ url_for('static', filename='img/icons/i_info.svg') }}">
+                </a>
+              {% endif %}
+            </p>
+          </div>
+          {% if filter_func %}
+          <div class="cell small-2 sidebar-panel-item-icon">
+            <img
+                    id="{{ id }}_filter"
+                    class="filter_icon"
+                    src="{{ url_for('static', filename='img/icons/i_funnel_dark_gray.svg') }}"
+                    onclick="{{ id }}_filter_fun()"
+                    title="Click on the funnel to expand filters"
+            >
+          </div>
+          {% endif %}
+          {% if sub_panels %}
+          <div class="cell small-2 sidebar-panel-item-icon">
+            <img
+                    id="{{ id }}_expand"
+                    class="expand_icon"
+                    src="{{ url_for('static', filename='img/icons/i_arrow_up_g.svg') }}"
+                    onclick="{{ id }}_toggle_fun()"
+                    title="Click on the funnel to expand filters"
+                    name="expanded"
+            >
+          </div>
+          {% endif %}
+          <div class="cell small-2">
+            <div class="sidebar-panel-item-button">
+              <input class="switch-input" id="{{ id }}Checkbox" type="checkbox" onclick="{{ id }}_cb_fun(trigger='user')" value="false">
+              <label class="switch-paddle" for="{{ id }}Checkbox">
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+{%- endmacro %}
+
+  {% macro sub_panel(id, label, visible=['national', 'state', 'village'],filter_func=False,help_icon=False, help_link="") -%}
+    <div class="grid-x">
+      <div class="cell sidebar-panel sidebar-subpanel {{ assign_visibility(visible) }}" id="{{ id }}TopLevelPanel">
+        <div class="grid-x sidebar-panel-item is-active" id="{{ id }}Panel" data-accordion-item>
+          <div class="cell small-8">
+            <p href="#" class="sidebar-panel-item-title sidebar-subpanel">
               {{ label }}
               {% if help_icon %}
                 <a href="{{ url_for('resources.selection', resc_name=help_link) }}" target="_blank" rel="noreferrer">
@@ -34,6 +83,7 @@
       </div>
     </div>
 {%- endmacro %}
+
 
 
 {% macro filter_title(id, label, name, spin_id, visible={'state': 'show', 'village': 'show'}) -%}
