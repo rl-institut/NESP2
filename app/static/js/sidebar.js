@@ -50,7 +50,7 @@ var currentfilter = {
   ogmaxbfp: 100,
   filterID: "",
   mingen: 0,
-  maxgen: 13000
+  maxgen: 13200000
 };
 var gridLayers = {
   "Abia": "",
@@ -161,7 +161,7 @@ function set_filtered_centroids_keys(value) {
     browse_centroids_keys = value;
 }
 
-function give_status(context=null, display=false) {
+function give_status(context=null, display=true) {
     if (display == true) {
         console.log("Status on");
         if (context) {
@@ -371,10 +371,10 @@ var generationSlider = document.getElementById('generationSlider');
 noUiSlider.create(generationSlider, {
   ...sliderOptions,
   tooltips: [generationSliderFormat, generationSliderFormat],
-  start: [0, 1300],
+  start: [0, 1320000],
   range: {
     'min': 0,
-    'max': 1300
+    'max': 1320000
   }
 });
 generationSlider.noUiSlider.on("change", changedGenerationSlider);
@@ -420,6 +420,7 @@ function update_filtered_settlements(msg) {
 
 
 function update_filtered_grid_generation() {
+    update_generation_assets_layer()
 };
 
 function set_toggle_value(toggle_id, value) {
@@ -1078,6 +1079,15 @@ function gridGeneration_cb_fun(trigger=null) {
   var filter_icon = document.getElementById("gridGeneration_filter");
 
   if (document.getElementById("gridGenerationCheckbox").checked == true) {
+
+
+    // only at initialization have all option ticked on
+    if (selectedState == "init" && prevState == "init"){
+        document.getElementById("hydroCheckbox").checked = true;
+        document.getElementById("solarCheckbox").checked = true;
+        document.getElementById("fossilCheckbox").checked = true;
+    }
+
     // set panel side to green
     document.getElementById("gridGenerationPanel").style.borderLeft = '.25rem solid #1DD069';
     // enable actions with filter icon if screen is not mobile phone
@@ -1103,6 +1113,16 @@ function gridGeneration_cb_fun(trigger=null) {
     remove_layer(generation_assets_layer);
 
   }
+}
+
+function solar_cb_fun() {
+    update_generation_assets_layer();
+}
+function hydro_cb_fun() {
+    update_generation_assets_layer();
+}
+function fossil_cb_fun() {
+    update_generation_assets_layer();
 }
 
 

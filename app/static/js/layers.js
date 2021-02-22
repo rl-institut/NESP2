@@ -213,7 +213,20 @@ var state_grid_layer = L.vectorGrid.protobuf(tileserver + "nesp2_state_grid/{z}/
 // Geojson layer formed from local json file. Used for hovering styles and clicking. Columns: id, name, source, type, wikidata, wikipedia, availability (int)
 var generation_assets_layer = L.geoJSON(null, {
   filter: function(feature) {
-    return (feature.properties["capacity_kw"] >= currentfilter.mingen || feature.properties["capacity_kw"] <= currentfilter.maxgen)
+    var display_technology = false;
+    var technology_type = feature.properties["technology_type"];
+    // refers to options added in index.html under `checkbox.sub_panel(id="gridGeneration" ... )`
+    if(document.getElementById("hydroCheckbox").checked == true && technology_type.includes("Hydro")){
+        display_technology = true;
+    }
+    if(document.getElementById("solarCheckbox").checked == true && technology_type.includes("Solar")){
+        display_technology = true;
+    }
+    if(document.getElementById("fossilCheckbox").checked == true && technology_type.includes("Gas")){
+        display_technology = true;
+    }
+
+    return (feature.properties["capacity_kw"] >= currentfilter.mingen && feature.properties["capacity_kw"] <= currentfilter.maxgen && display_technology)
   }
 });
 
