@@ -50,6 +50,8 @@ var welcome_view = L.tileLayer(tileserver + "nesp2_national_welcome-view/{z}/{x}
   attribution: ''
 });
 
+var generation_assets_geojson = null;
+
 var centroidsGroup = L.layerGroup().addTo(map);
 
 
@@ -203,6 +205,38 @@ var state_grid_layer = L.vectorGrid.protobuf(tileserver + "nesp2_state_grid/{z}/
   }
 });
 
+
+
+/* On and off grid generation layer */
+
+
+// Geojson layer formed from local json file. Used for hovering styles and clicking. Columns: id, name, source, type, wikidata, wikipedia, availability (int)
+var generation_assets_layer = L.geoJSON(null, {
+  filter: function(feature) {
+    return (feature.properties["capacity_kw"] >= currentfilter.mingen || feature.properties["capacity_kw"] <= currentfilter.maxgen)
+  }
+});
+
+// Make use of the filter function of the geoJSON layer
+function update_generation_assets_layer() {
+    give_status("update generation_asset layer")
+    //remove the features
+    generation_assets_layer.clearLayers();
+    //add the features which will trigger the filter
+    generation_assets_layer.addData(generation_assets_geojson);
+};
+
+
+if(generation_assets_geojson == null){
+    // this fetches the url described by the fetch_generation_assets() view in app/__init__.py
+    $.get({
+        url: "/generation_assets",
+        success: function(data){
+            generation_assets_geojson = data;
+            update_generation_assets_layer();
+        }
+    });
+};
 
 // Adds functions for filters and styling to a defined input grid-cluster-Layer
 /* normal settlements layer */

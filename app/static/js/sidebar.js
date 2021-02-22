@@ -1088,7 +1088,8 @@ function gridGeneration_cb_fun(trigger=null) {
         filter_icon.className = disable_sidebar__filter(filter_icon.className);
     }
 
-    //TODO show grid generation on map
+    update_generation_assets_layer();
+    add_layer(generation_assets_layer);
 
   } else {
     // set panel side to grey
@@ -1099,7 +1100,7 @@ function gridGeneration_cb_fun(trigger=null) {
     filter_icon.className = disable_sidebar__filter(filter_icon.className);
 
 
-    //TODO hide grid generation on map
+    remove_layer(generation_assets_layer);
 
   }
 }
