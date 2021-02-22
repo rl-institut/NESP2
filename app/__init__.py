@@ -10,7 +10,8 @@ from .database import (
     query_filtered_clusters,
     query_filtered_og_clusters,
     query_available_og_clusters,
-    convert_web_mat_view_to_light_json
+    convert_web_mat_view_to_light_json,
+    query_generation_assets,
 )
 
 UNSUPPORTED_USER_AGENT_STRINGS = (
@@ -226,6 +227,14 @@ def create_app(test_config=None):
                 "values": []
             }
         resp = jsonify(answer)
+        resp.status_code = 200
+        return resp
+
+    @app.route('/generation_assets', methods=["GET"])
+    def fetch_generation_assets():
+        assets = query_generation_assets()
+
+        resp = jsonify(assets)
         resp.status_code = 200
         return resp
 
