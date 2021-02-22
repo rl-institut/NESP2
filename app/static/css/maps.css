@@ -460,6 +460,13 @@ button {
   color: #464646;
 }
 
+.sidebar-panel-item-title-filterlabel > img.option_icon {
+    height: 30px;
+    width: 30px;
+    padding-right: 0.3rem;
+
+}
+
 .sidebar-panel-item-title.sidebar-subpanel {
   font-style: italic;
   padding-left: 3.75rem;

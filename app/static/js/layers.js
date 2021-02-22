@@ -212,11 +212,7 @@ var state_grid_layer = L.vectorGrid.protobuf(tileserver + "nesp2_state_grid/{z}/
 
 var GenIcon = L.Icon.extend({
     options: {
-        //shadowUrl: 'leaf-shadow.png',
-        //shadowSize:   [50, 64],
-        iconAnchor:   [0, 0],
-        //shadowAnchor: [4, 62],
-        popupAnchor:  [-3, -76]
+        popupAnchor:  [0, 0],
     }
 });
 
@@ -225,7 +221,8 @@ function gen_asset_marker(asset_props){
 
     var technology_type = asset_props["technology_type"];
 
-    var iconType =  new GenIcon({iconUrl: "static/img/icons/generation_icon_green.svg", iconSize: [20,20]});
+    // TODO: make it dependend ont the capacity size
+
 
     var iconType =  new GenIcon({iconUrl: "static/img/icons/generation_icon_solar.svg", iconSize: [20,20]});
 
@@ -244,8 +241,10 @@ function gen_asset_marker(asset_props){
 
 // Geojson layer formed from local json file. Used for hovering styles and clicking. Columns: id, name, source, type, wikidata, wikipedia, availability (int)
 var generation_assets_layer = L.geoJSON(null, {
+
   pointToLayer: function (feature, latlng) {
-      return new L.Marker(latlng, gen_asset_marker(feature.properties));
+      m = new L.Marker(latlng, gen_asset_marker(feature.properties)).bindPopup("Capacity: " + feature.properties["capacity_kw"] + "kW</br>Technology: " + feature.properties["technology_type"] + "</br>Asset: " + feature.properties["asset_type"]);
+      return m
   },
   // Only add the feature if the correct technology is selected and its capacity is within the slider range
   // in the generationGrid options in the sidebar
