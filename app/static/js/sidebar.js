@@ -161,7 +161,7 @@ function set_filtered_centroids_keys(value) {
     browse_centroids_keys = value;
 }
 
-function give_status(context=null, display=true) {
+function give_status(context=null, display=false) {
     if (display == true) {
         console.log("Status on");
         if (context) {

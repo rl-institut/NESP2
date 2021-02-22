@@ -210,8 +210,45 @@ var state_grid_layer = L.vectorGrid.protobuf(tileserver + "nesp2_state_grid/{z}/
 /* On and off grid generation layer */
 
 
+var GenIcon = L.Icon.extend({
+    options: {
+        //shadowUrl: 'leaf-shadow.png',
+        //shadowSize:   [50, 64],
+        iconAnchor:   [0, 0],
+        //shadowAnchor: [4, 62],
+        popupAnchor:  [-3, -76]
+    }
+});
+
+
+function gen_asset_marker(asset_props){
+
+    var technology_type = asset_props["technology_type"];
+
+    var iconType =  new GenIcon({iconUrl: "static/img/icons/generation_icon_green.svg", iconSize: [20,20]});
+
+    var iconType =  new GenIcon({iconUrl: "static/img/icons/generation_icon_solar.svg", iconSize: [20,20]});
+
+    if(technology_type.includes("Hydro")){
+        iconType =  new GenIcon({iconUrl: "static/img/icons/generation_icon_hydro.svg", iconSize: [15,15]});
+    };
+    if(technology_type.includes("Solar")){
+        iconType =  new GenIcon({iconUrl: "static/img/icons/generation_icon_solar.svg", iconSize: [20,20]});
+    };
+    if(technology_type.includes("Gas")){
+        iconType =  new GenIcon({iconUrl: "static/img/icons/generation_icon_fossil.svg", iconSize: [35,35]});
+    };
+
+    return  {icon: iconType};
+};
+
 // Geojson layer formed from local json file. Used for hovering styles and clicking. Columns: id, name, source, type, wikidata, wikipedia, availability (int)
 var generation_assets_layer = L.geoJSON(null, {
+  pointToLayer: function (feature, latlng) {
+      return new L.Marker(latlng, gen_asset_marker(feature.properties));
+  },
+  // Only add the feature if the correct technology is selected and its capacity is within the slider range
+  // in the generationGrid options in the sidebar
   filter: function(feature) {
     var display_technology = false;
     var technology_type = feature.properties["technology_type"];
