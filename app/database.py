@@ -5,9 +5,11 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.sql import text
 import geoalchemy2
+import geoalchemy2.functions as func
 from sqlalchemy import Table, MetaData
 from sqlalchemy.ext.declarative import declarative_base
 import random
+import geojson
 from geojson import Point, Feature, FeatureCollection
 from shapely.wkt import loads as loadswkt
 
@@ -48,10 +50,19 @@ class BoundaryAdmin(Base):
 class AdmStatus(Base):
     __table__ = Table('boundary_adm1_status', Base.metadata, autoload=True, autoload_with=engine)
 
+
 class GenerationAssets(Base):
     __table__ = Table(
         "generation_assets", Base.metadata, autoload=True, autoload_with=engine
     )
+
+
+class PowerLines(Base):
+    __table__ = Table('osm_power_line', Base.metadata, autoload=True, autoload_with=engine)
+
+
+class PowerStations(Base):
+    __table__ = Table('osm_power_substation', Base.metadata, autoload=True, autoload_with=engine)
 
 
 def query_available_og_clusters():
@@ -60,6 +71,7 @@ def query_available_og_clusters():
         AdmStatus.adm1_pcode
     ).filter(AdmStatus.cluster_all & AdmStatus.cluster_offgrid).all()
     return [r.adm1_pcode for r in res]
+
 
 def get_state_codes():
     res = db_session.query(
@@ -98,6 +110,30 @@ def query_generation_assets():
                 },
             )
             features.append(gjson)
+
+    return FeatureCollection(features)
+
+
+def query_osm_power_lines():
+    lines = db_session.query(func.ST_AsGeoJSON(func.ST_Union(func.ST_Transform(func.ST_AsEWKB(PowerLines.geom), 4326)))).limit(1)
+
+    return Feature(geometry=geojson.loads(lines[0][0]))
+
+
+def query_osm_power_stations():
+    res = db_session.query(
+        func.ST_AsText(func.ST_Transform(func.ST_AsEWKB(PowerStations.geom), 4326)).label("geom"),
+        PowerStations.tags
+    )
+
+    features = []
+
+    for r in res:
+        if r.geom is not None:
+            features.append(Feature(
+                geometry=Point(loadswkt(r.geom).coords[0]),
+                properties=r.tags
+            ))
 
     return FeatureCollection(features)
 
