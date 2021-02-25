@@ -1248,6 +1248,7 @@ function stateGrid_cb_fun() {
   if (checkBox.checked == true) {
     document.getElementById("stateGridPanel").style.borderLeft = '.25rem solid #1DD069';
     add_layer(state_grid_layer);
+    state_grid_layer.bringToFront();
   } else {
     document.getElementById("stateGridPanel").style.borderLeft = '.25rem solid #eeeff1';
     remove_layer(state_grid_layer);
