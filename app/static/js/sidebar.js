@@ -1139,13 +1139,15 @@ function substations_cb_fun(trigger=null) {
     // set panel side to green
     document.getElementById("substationsPanel").style.borderLeft = '.25rem solid #1DD069';
 
-    //TODO show transmission substations on map
+   add_layer(osm_power_stations_layer);
+   add_layer(osm_power_lines_layer);
 
   } else {
     // set panel side to grey
     document.getElementById("substationsPanel").style.borderLeft = '.25rem solid #eeeff1';
 
-    //TODO hide transmission substations on map
+   remove_layer(osm_power_stations_layer);
+   remove_layer(osm_power_lines_layer);
 
   }
 }

@@ -112,3 +112,18 @@ var notNigeriaStyle = {
 
 var points_style = {
 };
+
+var osmPowerLinesStyle = {
+    color: "#821b20",
+    weight: 3,
+    opacity: 0.65,
+};
+
+var osmPowerStationMarkerStyle = {
+    radius: 4,
+    fillColor: "#f54a2b",
+    color: "#821b20",
+    weight: 1,
+    opacity: 1,
+    fillOpacity: 0.8
+};

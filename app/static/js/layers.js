@@ -51,6 +51,8 @@ var welcome_view = L.tileLayer(tileserver + "nesp2_national_welcome-view/{z}/{x}
 });
 
 var generation_assets_geojson = null;
+var osm_power_lines_geojson = null;
+var osm_power_stations_geojson = null;
 
 var centroidsGroup = L.layerGroup().addTo(map);
 
@@ -286,6 +288,56 @@ if(generation_assets_geojson == null){
         }
     });
 };
+
+
+
+// Geojson layer
+var osm_power_lines_layer = L.geoJSON(null, {
+
+    style: osmPowerLinesStyle,
+
+});
+
+function fetch_power_lines(handleData){
+    // this fetches the url described by the fetch_power_lines() view in app/__init__.py
+    $.get({
+        url: "/power_lines",
+        success: function(data){
+            handleData(data);
+            }
+    });
+};
+
+// using this way allows to make the process asynchronous
+if(osm_power_lines_geojson == null){
+    fetch_power_lines(handleData=function(data){
+        osm_power_lines_geojson = data;
+        osm_power_lines_layer.addData(data);
+    });
+};
+
+
+// Geojson layer
+var osm_power_stations_layer = L.geoJSON(null, {
+
+  pointToLayer: function (feature, latlng) {
+      m = L.circleMarker(latlng, osmPowerStationMarkerStyle);
+      return m
+  },
+
+});
+
+if(osm_power_stations_geojson == null){
+    $.get({
+        url: "/power_stations",
+        success: function(data){
+            osm_power_stations_geojson = data;
+            osm_power_stations_layer.addData(data);
+        }
+    });
+};
+
+
 
 // Adds functions for filters and styling to a defined input grid-cluster-Layer
 /* normal settlements layer */
