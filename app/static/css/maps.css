@@ -668,6 +668,7 @@ p.sidebar-panel-item-title {
 }
 
 #geoportal-btn {
+    margin-top: 1.5rem;
     margin-bottom: 2rem;
     text-align: center;
 }
