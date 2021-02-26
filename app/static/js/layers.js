@@ -215,6 +215,7 @@ var state_grid_layer = L.vectorGrid.protobuf(tileserver + "nesp2_state_grid/{z}/
 var GenIcon = L.Icon.extend({
     options: {
         popupAnchor:  [0, 0],
+        iconSize: [20,20]
     }
 });
 
@@ -226,16 +227,16 @@ function gen_asset_marker(asset_props){
     // TODO: make it dependend ont the capacity size
 
 
-    var iconType =  new GenIcon({iconUrl: "static/img/icons/generation_icon_solar.svg", iconSize: [20,20]});
+    var iconType =  new GenIcon({iconUrl: "static/img/icons/generation_icon_solar.svg"});
 
     if(technology_type.includes("Hydro")){
-        iconType =  new GenIcon({iconUrl: "static/img/icons/generation_icon_hydro.svg", iconSize: [15,15]});
+        iconType =  new GenIcon({iconUrl: "static/img/icons/generation_icon_hydro.svg"});
     };
     if(technology_type.includes("Solar")){
-        iconType =  new GenIcon({iconUrl: "static/img/icons/generation_icon_solar.svg", iconSize: [20,20]});
+        iconType =  new GenIcon({iconUrl: "static/img/icons/generation_icon_solar.svg"});
     };
     if(technology_type.includes("Gas")){
-        iconType =  new GenIcon({iconUrl: "static/img/icons/generation_icon_fossil.svg", iconSize: [35,35]});
+        iconType =  new GenIcon({iconUrl: "static/img/icons/generation_icon_fossil.svg"});
     };
 
     return  {icon: iconType};
