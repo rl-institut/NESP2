@@ -58,6 +58,12 @@ var gridStyle33kv = {
 var gridStyle11kv = {
   color: "#7c0e14",
   weight: 1
+
+
+var gridStyleModelled = {
+  color: "#f54a2b",
+  dashArray: "7",
+  weight: 3
 };
 
 var clustersStyle = {

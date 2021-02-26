@@ -204,6 +204,9 @@ var state_grid_layer = L.vectorGrid.protobuf(tileserver + "nesp2_state_grid/{z}/
     '11_kV': function(prop, zoom) {
       return gridStyle11kv
     },
+    'modelled': function(prop, zoom) {
+      return gridStyleModelled
+    },
   }
 });
 
