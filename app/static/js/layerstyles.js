@@ -125,5 +125,5 @@ var osmPowerStationMarkerStyle = {
     color: "#821b20",
     weight: 1,
     opacity: 1,
-    fillOpacity: 0.8
+    fillOpacity: 1
 };

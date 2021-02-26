@@ -1139,8 +1139,9 @@ function substations_cb_fun(trigger=null) {
     // set panel side to green
     document.getElementById("substationsPanel").style.borderLeft = '.25rem solid #1DD069';
 
-   add_layer(osm_power_stations_layer);
    add_layer(osm_power_lines_layer);
+   add_layer(osm_power_stations_layer);
+   osm_power_stations_layer.bringToFront();
 
   } else {
     // set panel side to grey
