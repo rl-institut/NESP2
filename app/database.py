@@ -4,14 +4,13 @@ import pandas as pd
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.sql import text
-import geoalchemy2
 import geoalchemy2.functions as func
 from sqlalchemy import Table, MetaData
 from sqlalchemy.ext.declarative import declarative_base
 import random
-import geojson
-from geojson import Point, Feature, FeatureCollection
+from geojson import Point, Feature, FeatureCollection, LineString
 from shapely.wkt import loads as loadswkt
+from shapely.wkb import loads as loadswkb
 
 
 def get_env_variable(name):
@@ -115,9 +114,19 @@ def query_generation_assets():
 
 
 def query_osm_power_lines():
-    lines = db_session.query(func.ST_AsGeoJSON(func.ST_Union(func.ST_Transform(func.ST_AsEWKB(PowerLines.geom), 4326)))).limit(1)
+    lines = db_session.query(
+        func.ST_Transform(PowerLines.geom, 4326).label("geom")
+    )
 
-    return Feature(geometry=geojson.loads(lines[0][0]))
+    features = []
+
+    for r in lines:
+        if r.geom is not None:
+            features.append(Feature(
+                geometry=LineString(loadswkb(bytes(r.geom.data)).coords),
+            ))
+
+    return FeatureCollection(features)
 
 
 def query_osm_power_stations():
