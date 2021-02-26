@@ -215,7 +215,10 @@ var state_grid_layer = L.vectorGrid.protobuf(tileserver + "nesp2_state_grid/{z}/
 var GenIcon = L.Icon.extend({
     options: {
         popupAnchor:  [0, 0],
-        iconSize: [20,20]
+        iconSize: [20,20],
+        shadowUrl: "static/img/icons/generation_icon_shadow.svg",
+        shadowSize:   [20, 20],
+        shadowAnchor: [6, 7],
     }
 });
 

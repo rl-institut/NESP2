@@ -9,13 +9,13 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="210mm"
-   height="297mm"
-   viewBox="0 0 210 297"
+   width="25.867983mm"
+   height="26.473587mm"
+   viewBox="0 0 25.867983 26.473587"
    version="1.1"
    id="svg8"
-   inkscape:version="0.92.4 (5da689c313, 2019-01-14)"
-   sodipodi:docname="generation_asset_grey.svg">
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"
+   sodipodi:docname="generation_icon_fossil.svg">
   <defs
      id="defs2" />
   <sodipodi:namedview
@@ -26,16 +26,21 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="3.959798"
-     inkscape:cx="333.02798"
-     inkscape:cy="850.66503"
+     inkscape:cx="-6.5681716"
+     inkscape:cy="16.826563"
      inkscape:document-units="mm"
      inkscape:current-layer="g833"
      showgrid="false"
      inkscape:window-width="1920"
-     inkscape:window-height="1137"
-     inkscape:window-x="1912"
-     inkscape:window-y="-8"
-     inkscape:window-maximized="1" />
+     inkscape:window-height="1031"
+     inkscape:window-x="0"
+     inkscape:window-y="25"
+     inkscape:window-maximized="1"
+     inkscape:pagecheckerboard="true"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0" />
   <metadata
      id="metadata5">
     <rdf:RDF>
@@ -51,7 +56,8 @@
   <g
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
-     id="layer1">
+     id="layer1"
+     transform="translate(-79.595013,-50.173921)">
     <g
        id="g833"
        transform="matrix(0.26458333,0,0,0.26458333,79.421983,50.016145)">
