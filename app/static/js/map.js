@@ -74,7 +74,7 @@ function update_infoBox(stateName=null, availability=0, defineSelectedState=fals
     var avail = {
         gridTracking: '<img class="state_info__img" src="../static/img/icons/i_cross_square.svg">',
         remoteMapping: '<img class="state_info__img" src="../static/img/icons/i_cross_square.svg">',
-        Surveying: '<img class="state_info__img" src="../static/img/icons/i_cross_square.svg">',
+        //Surveying: '<img class="state_info__img" src="../static/img/icons/i_cross_square.svg">',
     }
     if (availability >= 4) {
         avail.gridTracking = '<img class="state_info__img" src="../static/img/icons/i_tick_square.svg">'
@@ -82,9 +82,9 @@ function update_infoBox(stateName=null, availability=0, defineSelectedState=fals
     if (availability % 4 >= 2) {
         avail.remoteMapping = '<img class="state_info__img" src="../static/img/icons/i_tick_square.svg">'
     }
-    if (availability % 2 === 1) {
+    /*if (availability % 2 === 1) {
         avail.Surveying = '<img class="state_info__img" src="../static/img/icons/i_tick_square.svg">'
-    }
+    }*/
     if(stateName != undefined) {
         var control_content =
           '<div class="grid-x info-box legend-box">' +
@@ -95,7 +95,7 @@ function update_infoBox(stateName=null, availability=0, defineSelectedState=fals
               '<div class="grid-x">' +
                 '<div class="cell small-9 info-box__item">Grid tracking</div><div class="cell small-3 info-box__icon">' + avail.gridTracking + '</div>' +
                 '<div class="cell small-9 info-box__item">Remote mapping</div><div class="cell small-3 info-box__icon">' + avail.remoteMapping + '</div>' +
-                '<div class="cell small-9 info-box__item">Field surveys</div><div class="cell small-3 info-box__icon">' + avail.Surveying + '</div>' +
+                //'<div class="cell small-9 info-box__item">Field surveys</div><div class="cell small-3 info-box__icon">' + avail.Surveying + '</div>' +
               '</div>' +
             '</div>' +
           '</div>';
@@ -117,7 +117,7 @@ function update_infoBox(stateName=null, availability=0, defineSelectedState=fals
           '<div class="grid-x">' +
             '<div class="cell small-9 info-box__item">Grid tracking</div><div class="cell small-3"></div>' +
             '<div class="cell small-9 info-box__item">Remote mapping</div><div class="cell small-3"></div>' +
-            '<div class="cell small-9 info-box__item">Field surveys</div><div class="cell small-3"></div>' +
+            //'<div class="cell small-9 info-box__item">Field surveys</div><div class="cell small-3"></div>' +
           '</div>' +
         '</div>' +
       '</div>';
