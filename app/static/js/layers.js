@@ -199,13 +199,31 @@ var state_grid_layer = L.vectorGrid.protobuf(tileserver + "nesp2_state_grid/{z}/
   attribution: 'Grid <a href="' + website_url +  '/about-map">© SE4ALL</a>',
   vectorTileLayerStyles: {
     '33_kV': function(prop, zoom) {
-      return gridStyle33kv
+        // TODO make different weight for different zoom levels
+        if(zoom >=7){
+            return gridStyle33kv
+        }
+        else{
+            return gridStyle33kvNational
+        }
     },
     '11_kV': function(prop, zoom) {
-      return gridStyle11kv
+    if(zoom >=7){
+            return gridStyle11kv
+        }
+        else{
+            return gridStyle11kvNational
+        }
+
     },
     'modelled': function(prop, zoom) {
-      return gridStyleModelled
+    if(zoom >=7){
+            return gridStyleModelled
+        }
+        else{
+            return gridStyleModelledNational
+        }
+
     },
   }
 });

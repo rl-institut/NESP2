@@ -582,26 +582,18 @@ function adapt_view_to_national_level() {
 
   // Apply only at first landing
   if (selectedState == "init" && prevState == "init") {
-    document.getElementById("heatmapCheckbox").checked = true;
-    //TODO: remove once the grid has been unified on state and national level
-    document.getElementById("nationalGridCheckbox").checked = true;
+    set_toggle_value("heatmapCheckbox", true);
     set_clusters_toggle(false);
     set_og_clusters_toggle(false);
-    document.getElementById("stateGridCheckbox").checked = false;
-    document.getElementById("electricityTabCheckbox").checked = true;
+    set_toggle_value("electricityTabCheckbox", true);
+    set_toggle_value("stateGridCheckbox", true);
   }
   if (previous_level == "state" || previous_level == "village") {
     document.getElementById("heatmapCheckbox").checked = document.getElementById("clustersCheckbox").checked;
-    //TODO: remove once the grid has been unified on state and national level
-    document.getElementById("nationalGridCheckbox").checked = document.getElementById("stateGridCheckbox").checked;
   }
   // load the populated areas
+  electricityTab_cb_fun();
   heatmap_cb_fun();
-  //TODO: remove once the grid has been unified on state and national level
-  nationalGrid_cb_fun();
-  stateGrid_cb_fun();
-  gridGeneration_cb_fun();
-  substations_cb_fun();
 
 
   // Remotely mapped villages layer
@@ -629,11 +621,6 @@ function adapt_view_to_national_level() {
 
   // update the info box on the top left
   update_infoBox()
-
-  // Linked to the checkbox Grid
-  remove_layer(state_grid_layer);
-
-
 };
 
 function adapt_view_to_state_level() {
@@ -647,13 +634,8 @@ function adapt_view_to_state_level() {
   gridLegend.addTo(map);
 
   // load the states boundaries
-  document.getElementById("statesCheckbox").checked = true;
+  set_toggle_value("statesCheckbox", true);
   states_cb_fun();
-
-  //TODO: remove once the grid has been unified on state and national level
-  if(previous_level == "national") {
-    document.getElementById("stateGridCheckbox").checked = document.getElementById("nationalGridCheckbox").checked ;
-  }
 
   // In States where there is no Grid, All Clusters should be shown instead of mapped village clusters
   if (ogClustersAvailability == false) {
@@ -681,19 +663,13 @@ function adapt_view_to_state_level() {
 
   add_layer(osm_gray);
 
-  // remove the medium voltage grid
-  document.getElementById("heatmapCheckbox").checked = false;
-  heatmap_cb_fun();
   // remove the populated areas
-  //TODO: remove once the grid has been unified on state and national level
-  document.getElementById("nationalGridCheckbox").checked = false;
-  stateGrid_cb_fun();
+  set_toggle_value("heatmapCheckbox", false);
+  heatmap_cb_fun();
 
-  //TODO: remove once the grid has been unified on state and national level
-  nationalGrid_cb_fun();
+  // manage electricity tab
+  electricityTab_cb_fun();
 
-  gridGeneration_cb_fun();
-  substations_cb_fun();
 
   remove_layer(hot);
 
@@ -705,11 +681,14 @@ function adapt_view_to_village_level() {
   remove_layer(osm_gray);
   infoBox.remove();
   add_layer(hot);
+  // manage electricity tab
+  electricityTab_cb_fun();
 };
 
 /*
  * triggered by the click on the level buttons
  */
+
 
 function national_button_fun(trigger="button") {
   previous_level = level;
@@ -846,7 +825,7 @@ function heatmap_cb_fun(trigger=null) {
         set_og_clusters_toggle(false);
         clusters_cb_fun();
         ogClusters_cb_fun();
-  }
+    }
   } else {
     document.getElementById("heatmapPanel").style.borderLeft = '.25rem solid #eeeff1';
     remove_layer(national_heatmap);
@@ -860,18 +839,6 @@ function heatmap_cb_fun(trigger=null) {
   }
 }
 
-//TODO: remove once the grid has been unified on state and national level
-// Triggered by the checkbox Medium Voltage Grid on national level only
-function nationalGrid_cb_fun() {
-  var checkBox = document.getElementById("nationalGridCheckbox");
-  if (checkBox.checked == true) {
-    document.getElementById("nationalGridPanel").style.borderLeft = '.25rem solid #1DD069';
-    add_layer(national_grid);
-  } else {
-    document.getElementById("nationalGridPanel").style.borderLeft = '.25rem solid #eeeff1';
-    remove_layer(national_grid);
-  }
-}
 
 var random_cluster = false;
 //pick a random cluster among the large ones and display it
@@ -1055,14 +1022,15 @@ function electricityTab_cb_fun(trigger=null){
     }
 
     if(checkBox.checked == true){
-        // TODO: turn features from subpanels on map if their toggle button are on
         stateGrid_cb_fun();
         gridGeneration_cb_fun();
         substations_cb_fun();
     }
     else{
-        // TODO: turn all features from subpanels on map off
         remove_layer(state_grid_layer);
+        remove_layer(osm_power_lines_layer);
+        remove_layer(osm_power_stations_layer);
+        remove_layer(generation_assets_layer);
     }
 
 }
@@ -1141,7 +1109,8 @@ function substations_cb_fun(trigger=null) {
 
    add_layer(osm_power_lines_layer);
    add_layer(osm_power_stations_layer);
-   osm_power_stations_layer.bringToFront();
+   osm_power_lines_layer.setZIndex(50);
+   osm_power_stations_layer.setZIndex(99);
 
   } else {
     // set panel side to grey
