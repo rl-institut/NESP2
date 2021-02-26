@@ -89,8 +89,8 @@ def query_generation_assets():
 
     res = db_session.query(
         GenerationAssets.name,
-        geoalchemy2.functions.ST_AsText(
-            geoalchemy2.functions.ST_GeomFromWKB(GenerationAssets.geom, srid=3857)
+        func.ST_AsText(
+            func.ST_Transform(func.ST_GeomFromWKB(GenerationAssets.geom, srid=3857), 4326)
         ).label("geom"),
         GenerationAssets.capacity_kw,
         GenerationAssets.asset_type,
