@@ -355,32 +355,33 @@ ogBuildingsFootprintSlider.noUiSlider.on("change", changeogBuildingsFootprintSli
 ogBuildingsFootprintSlider.noUiSlider.on("end", update_filtered_settlements);
 
 
-function changedGenerationSlider(str, h, values) {
-  currentfilter.mingen = values[0];
-  currentfilter.maxgen = values[1];
-  if (values[1] == 0) {currentfilter.maxdtg = 1;}
-  map.fireEvent("filterchange", currentfilter);
-};
-
-var generationSliderFormat = wNumb({
-    decimals: 0,
-    suffix: ' kW',
-});
-
-var generationSlider = document.getElementById('generationSlider');
-noUiSlider.create(generationSlider, {
-  ...sliderOptions,
-  tooltips: [generationSliderFormat, generationSliderFormat],
-  start: [0, 1320000],
-  range: {
-    'min': 0,
-    'max': 1320000
-  }
-});
-generationSlider.noUiSlider.on("change", changedGenerationSlider);
-generationSlider.noUiSlider.on("end", update_filtered_grid_generation);
-
-
+/*
+*function changedGenerationSlider(str, h, values) {
+*  currentfilter.mingen = values[0];
+*  currentfilter.maxgen = values[1];
+*  if (values[1] == 0) {currentfilter.maxdtg = 1;}
+*  map.fireEvent("filterchange", currentfilter);
+*};
+*
+*var generationSliderFormat = wNumb({
+*    decimals: 0,
+*    suffix: ' kW',
+*});
+*
+*var generationSlider = document.getElementById('generationSlider');
+*noUiSlider.create(generationSlider, {
+*  ...sliderOptions,
+*  tooltips: [generationSliderFormat, generationSliderFormat],
+*  start: [0, 1320000],
+*  range: {
+*    'min': 0,
+*    'max': 1320000
+*  }
+*});
+*generationSlider.noUiSlider.on("change", changedGenerationSlider);
+*generationSlider.noUiSlider.on("end", update_filtered_grid_generation);
+*
+*/
 
 
 function update_filtered_settlements(msg) {
@@ -1051,6 +1052,8 @@ function gridGeneration_cb_fun(trigger=null) {
         document.getElementById("hydroCheckbox").checked = true;
         document.getElementById("solarCheckbox").checked = true;
         document.getElementById("fossilCheckbox").checked = true;
+        document.getElementById("minigridTickbox").checked = true;
+        document.getElementById("powerplantTickbox").checked = true;
     }
 
     // set panel side to green
@@ -1087,6 +1090,12 @@ function hydro_cb_fun() {
     update_generation_assets_layer();
 }
 function fossil_cb_fun() {
+    update_generation_assets_layer();
+}
+function minigrid_cb_fun() {
+    update_generation_assets_layer();
+}
+function powerplant_cb_fun() {
     update_generation_assets_layer();
 }
 

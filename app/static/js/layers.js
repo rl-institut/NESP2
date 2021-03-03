@@ -279,6 +279,7 @@ var generation_assets_layer = L.geoJSON(null, {
   filter: function(feature) {
     var display_technology = false;
     var technology_type = feature.properties["technology_type"];
+    var asset_type = feature.properties["asset_type"];
     // refers to options added in index.html under `checkbox.sub_panel(id="gridGeneration" ... )`
     if(document.getElementById("hydroCheckbox").checked == true && technology_type.includes("Hydro")){
         display_technology = true;
@@ -289,6 +290,19 @@ var generation_assets_layer = L.geoJSON(null, {
     if(document.getElementById("fossilCheckbox").checked == true && technology_type.includes("Gas")){
         display_technology = true;
     }
+   if(document.getElementById("minigridTickbox").checked == true && asset_type.includes("minigrid")){
+        display_technology = true;
+    }
+    else{
+        if(document.getElementById("powerplantTickbox").checked == true && asset_type.includes("power_plant")){
+        display_technology = true;
+        }
+        else{
+            display_technology = false;
+        }
+    }
+
+
 
     return (feature.properties["capacity_kw"] >= currentfilter.mingen && feature.properties["capacity_kw"] <= currentfilter.maxgen && display_technology)
   }
