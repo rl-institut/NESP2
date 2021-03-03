@@ -572,8 +572,6 @@ function adapt_view_to_national_level() {
   map.options.maxZoom = 9;
   map.options.zoomSnap = 0.5;
 
-  legend.addTo(map);
-  gridLegend.remove();
   clusterInfo.remove();
 
   // load the states boundaries
@@ -587,6 +585,8 @@ function adapt_view_to_national_level() {
     set_og_clusters_toggle(false);
     set_toggle_value("electricityTabCheckbox", true);
     set_toggle_value("stateGridCheckbox", true);
+    gridLegend.addTo(map);
+
   }
   if (previous_level == "state" || previous_level == "village") {
     document.getElementById("heatmapCheckbox").checked = document.getElementById("clustersCheckbox").checked;
@@ -629,9 +629,6 @@ function adapt_view_to_state_level() {
   map.options.minZoom = 7;
   map.options.maxZoom = 18;
   map.options.zoomSnap = 1,
-
-  legend.remove();
-  gridLegend.addTo(map);
 
   // load the states boundaries
   set_toggle_value("statesCheckbox", true);
