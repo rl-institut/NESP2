@@ -145,7 +145,8 @@
         {{ checkbox.filter_opt_toggle(id="hydro", label="Hydro", name="gridGenerationContent", visible={'national': 'show', 'state': 'show', 'village': 'show'}, extra_class="subpanel") }}
         {{ checkbox.filter_opt_toggle(id="solar", label="Solar", name="gridGenerationContent", visible={'national': 'show', 'state': 'show', 'village': 'show'}, extra_class="subpanel") }}
         {{ checkbox.filter_opt_toggle(id="fossil", label="Gas / fossil fuel", name="gridGenerationContent", visible={'national': 'show', 'state': 'show', 'village': 'show'}, extra_class="subpanel") }}
-        {{ checkbox.filter_opt(id="generationSlider", label="Generation size", name="gridGenerationContent", visible={'national': 'show', 'state': 'show', 'village': 'show'}, extra_class="subpanel") }}
+        <!--{{ checkbox.filter_opt(id="generationSlider", label="Generation size", name="gridGenerationContent", visible={'national': 'show', 'state': 'show', 'village': 'show'}, extra_class="subpanel") }}-->
+        {{ checkbox.filter_check_boxes(id="generation", label="Generation size", name="gridGenerationContent", visible={'national': 'show', 'state': 'show', 'village': 'show'}, extra_class="subpanel") }}
 
         {{ checkbox.sub_panel(id="substations", label="Transmission and substations", visible={'national': 'show', 'state': 'show', 'village': 'show'}, help_link="ongridmapping") }}
 

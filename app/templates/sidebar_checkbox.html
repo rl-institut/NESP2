@@ -149,6 +149,21 @@
 </div>
 {%- endmacro %}
 
+ {% macro filter_check_boxes(id, label, name, visible={'state': 'show', 'village': 'show'}, extra_class="") -%}
+<div class="grid-x">
+  <div class="cell {{ assign_visibility(visible) }}">
+    <div class="sidebar-panel sidebar-panel-content content-filter hidden-filter {{ extra_class }}" name="{{ name }}">
+      <div class="sidebar-panel-item sidebar-panel-item-filter grid-x">
+        <div class="cell small-3 sidebar-panel-item-title-filterlabel">Minigrids</div>
+        <div class="cell small-1"><input type="checkbox" class="custom_tickbox" id="minigridTickbox" onclick="minigrid_cb_fun(trigger='user')" value="false"><label class="custom_tickbox" for="minigridTickbox"></label></div>
+        <div class="cell small-3 sidebar-panel-item-title-filterlabel">Power Plants</div>
+        <div class="cell small-1"><input type="checkbox" class="custom_tickbox" id="powerplantTickbox" onclick="powerplant_cb_fun(trigger='user')" value="false"><label class="custom_tickbox" for="powerplantTickbox"></label></div>
+      </div>
+    </div>
+  </div>
+</div>
+{%- endmacro %}
+
 
 {% macro filter_download_btn(id, label, name, visible={'state': 'show', 'village': 'show'}) -%}
 <div class="grid-x">
