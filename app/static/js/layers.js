@@ -230,37 +230,38 @@ var state_grid_layer = L.vectorGrid.protobuf(tileserver + "nesp2_state_grid/{z}/
 
 
 
-/* On and off grid generation layer */
+/* Minigrids and Power Plants layers */
 
 
 var GenIcon = L.Icon.extend({
     options: {
         popupAnchor:  [0, 0],
-        iconSize: [20,20],
         shadowUrl: "static/img/icons/generation_icon_shadow.svg",
-        shadowSize:   [20, 20],
         shadowAnchor: [6, 7],
     }
 });
+
 
 
 function gen_asset_marker(asset_props){
 
     var technology_type = asset_props["technology_type"];
 
-    // TODO: make it dependend ont the capacity size
+    var icon_size = 25;
+    if(asset_props["asset_type"] == "minigrid"){
+        icon_size = 15;
+    };
 
-
-    var iconType =  new GenIcon({iconUrl: "static/img/icons/generation_icon_solar.svg"});
+    var iconType =  new GenIcon({iconUrl: "static/img/icons/generation_icon_solar.svg", iconSize: [icon_size,icon_size], shadowSize: [icon_size, icon_size]});
 
     if(technology_type.includes("Hydro")){
-        iconType =  new GenIcon({iconUrl: "static/img/icons/generation_icon_hydro.svg"});
+        iconType =  new GenIcon({iconUrl: "static/img/icons/generation_icon_hydro.svg", iconSize: [icon_size,icon_size], shadowSize: [icon_size, icon_size]});
     };
     if(technology_type.includes("Solar")){
-        iconType =  new GenIcon({iconUrl: "static/img/icons/generation_icon_solar.svg"});
+        iconType =  new GenIcon({iconUrl: "static/img/icons/generation_icon_solar.svg", iconSize: [icon_size,icon_size], shadowSize: [icon_size, icon_size]});
     };
     if(technology_type.includes("Gas")){
-        iconType =  new GenIcon({iconUrl: "static/img/icons/generation_icon_fossil.svg"});
+        iconType =  new GenIcon({iconUrl: "static/img/icons/generation_icon_fossil.svg", iconSize: [icon_size,icon_size], shadowSize: [icon_size, icon_size]});
     };
 
     return  {icon: iconType};
