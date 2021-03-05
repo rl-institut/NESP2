@@ -428,6 +428,10 @@ function set_toggle_value(toggle_id, value) {
     document.getElementById(toggle_id).checked = value;
 };
 
+function get_toggle_value(toggle_id) {
+    return document.getElementById(toggle_id).checked;
+};
+
 function set_clusters_toggle(value) {
     set_toggle_value("clustersCheckbox", value)
 };
