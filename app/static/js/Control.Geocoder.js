@@ -1621,9 +1621,9 @@ var leafletControlGeocoder = (function (L) {
         var _this2 = this;
   
         var className = 'leaflet-control-geocoder';
-        var container = L.DomUtil.create('div', className + ' leaflet-bar');
-        var icon = L.DomUtil.create('button', className + '-icon', container);
+        var container = L.DomUtil.create('div', className + ' leaflet-bar');        
         var form = this._form = L.DomUtil.create('div', className + '-form', container);
+        var icon = L.DomUtil.create('button', className + '-icon', container);
         this._map = map;
         this._container = container;
         icon.innerHTML = '&nbsp;';
