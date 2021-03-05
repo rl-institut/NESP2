@@ -111,7 +111,7 @@ grid_web_33_kv.to_file("grid/geojson/nesp2_state_grid_33kv.geojson", driver='Geo
 # generate vector tiles
 input_path = "grid/geojson/"
 output_path = "grid/vectortiles/"
-command = "tippecanoe -L 11_kV:{}nesp2_state_grid_11kv.geojson -L 33_kV:{}nesp2_state_grid_33kv.geojson -z15 -Z4 -pk -pf -f -o {}nesp2_state_grid.mbtiles -S2".format(input_path, input_path, output_path)
+command = "tippecanoe -L 11_kV:{}nesp2_state_grid_11kv.geojson -L 33_kV:{}nesp2_state_grid_33kv.geojson -z12 -Z5 -pk -pf -f -o {}nesp2_state_grid.mbtiles -S2".format(input_path, input_path, output_path)
 print("Generating Grid tiles")
 os.system(command)
 
