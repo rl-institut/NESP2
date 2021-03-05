@@ -597,7 +597,7 @@ function adapt_view_to_national_level() {
     set_toggle_value("powerplantTickbox", true);
 
     set_toggle_value("stateGridCheckbox", true);
-    gridLegend.addTo(map);
+    update_gridLegend();
   }
   if (previous_level == "state" || previous_level == "village") {
     document.getElementById("heatmapCheckbox").checked = document.getElementById("clustersCheckbox").checked;
@@ -632,6 +632,10 @@ function adapt_view_to_national_level() {
 
   // update the info box on the top left
   update_infoBox()
+
+
+  // update the legend
+  update_gridLegend();
 };
 
 function adapt_view_to_state_level() {
@@ -1030,6 +1034,7 @@ function electricityTab_cb_fun(trigger=null){
     }
 
     if(checkBox.checked == true){
+        // update the tab options
         stateGrid_cb_fun();
         gridGeneration_cb_fun();
         substations_cb_fun();
@@ -1040,7 +1045,8 @@ function electricityTab_cb_fun(trigger=null){
         remove_layer(osm_power_stations_layer);
         remove_layer(generation_assets_layer);
     }
-
+    // update the legend
+    update_gridLegend();
 }
 
 
@@ -1082,6 +1088,10 @@ function gridGeneration_cb_fun(trigger=null) {
     remove_layer(generation_assets_layer);
 
   }
+
+
+  // update the legend
+  update_gridLegend();
 }
 
 function solar_cb_fun() {
@@ -1127,6 +1137,9 @@ function substations_cb_fun(trigger=null) {
    remove_layer(osm_power_lines_layer);
 
   }
+
+  // update the legend
+  update_gridLegend();
 }
 
 
@@ -1230,6 +1243,9 @@ function stateGrid_cb_fun() {
     document.getElementById("stateGridPanel").style.borderLeft = '.25rem solid #eeeff1';
     remove_layer(state_grid_layer);
   }
+
+  // update the legend
+  update_gridLegend();
 }
 
 function buildingDensity_cb_fun() {
