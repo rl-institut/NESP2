@@ -384,7 +384,9 @@ searchControl.on('markgeocode', function (data) {
 });
 
 var zoomControl= L.control.zoom({
-  position: "topright"
+  position: "topright",
+  zoomInText: "",
+  zoomOutText: "",
 })
 zoomControl.addTo(map);
 

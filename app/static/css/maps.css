@@ -103,6 +103,44 @@ a {
   margin-bottom: 0;
 }
 
+.leaflet-control-geocoder.leaflet-bar,
+ .leaflet-control-geocoder-form input {
+	border-radius: 0.75rem;
+	border: 1px solid white;
+}
+
+.leaflet-control-layers-toggle{
+    background-image: url('../img/icons/i_layers.svg');
+}
+
+
+a.leaflet-control-zoom-in.leaflet-disabled,
+
+a.leaflet-control-zoom-in{
+background-image: url('../img/icons/i_plus_sign.svg');
+}
+
+.leaflet-control-zoom-in.leaflet-disabled{
+    background-image: url('../img/icons/i_plus_sign_g.svg');
+}
+
+a.leaflet-control-zoom-out{
+    background-image: url('../img/icons/i_minus_sign.svg');
+}
+
+a.leaflet-control-zoom-out.leaflet-disabled {
+    background-image: url('../img/icons/i_minus_sign_g.svg');
+}
+
+
+button.leaflet-control-geocoder-icon{
+    float:right;
+    background-image: url('../img/icons/i_search.svg');
+    border-radius: .75rem;
+    margin-top: .25rem;
+}
+
+
 .map-legend {
     padding: 1rem 1rem;
     -webkit-box-shadow: 4px 4px 14px 0px rgba(0,0,0,0.16);
@@ -222,16 +260,11 @@ body {
      margin: 0;
      color: #464646;
 }
- html,body, #map {
-     height: 100%;
-     font: 'Source Sans Pro', sans-serif;
+#map {
+     height: 100vh;
      font-family: 'Source Sans Pro', sans-serif;
      font-size: 10pt;
      line-height: 150%;
-}
-
-#map{
-  height: 100vh;
 }
 
 @media only screen and (min-width: 1024px) {

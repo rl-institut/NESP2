@@ -16,12 +16,12 @@
 <link rel="stylesheet" href="https://unpkg.com/esri-leaflet-geocoder@2.3.3/dist/esri-leaflet-geocoder.css" integrity="sha512-IM3Hs+feyi40yZhDH6kV8vQMg4Fh20s9OzInIIAc4nx7aMYMfo+IenRUekoYsHZqGkREUgx0VvlEsgm7nCDW9g==" crossorigin="">
 
 <!-- Compressed CSS -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/Control.Geocoder.css') }}" />
 <link rel="stylesheet" href="{{ url_for('static', filename='css/maps.css') }}" />
 <link rel="stylesheet" href="{{ url_for('static', filename='css/foundation.min.css') }}" />
 <link rel="stylesheet" href="{{ url_for('static', filename='css/nouislider.min.css') }}" />
 <link rel="stylesheet" href="{{ url_for('static', filename='css/Control.Loading.css') }}" />
 <link rel="stylesheet" href="{{ url_for('static', filename='css/legends.css') }}" />
-<link rel="stylesheet" href="{{ url_for('static', filename='css/Control.Geocoder.css') }}" />
 
 
 <script type=text/javascript> $SCRIPT_ROOT={{ request.script_root|tojson|safe }}; </script>
@@ -322,6 +322,8 @@
 
         stop_video("nigeria-se4all-video");
       });
+
+
 
   });
 
