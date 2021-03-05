@@ -38,16 +38,10 @@ var national_heatmap = L.tileLayer(tileserver + "nesp2_national_heatmap/{z}/{x}/
   attribution: 'Heatmap <a href="' + website_url +  '/about-map">© SE4ALL</a>'
 });
 
-// Basic png-tile layer for overlays taken from tile server serves zoom levels 5-9
-var national_grid = L.tileLayer(tileserver + "nesp2_national_grid/{z}/{x}/{y}.png", {
-  maxZoom: 19,
-  attribution: 'Grid <a href="' + website_url +  '/about-map">© SE4ALL</a>'
-});
 
-// Basic png-tile layer combines national grid, heatmap and background. Redundant. Serves Levels 5-9
-var welcome_view = L.tileLayer(tileserver + "nesp2_national_welcome-view/{z}/{x}/{y}.png", {
-  maxZoom: 19,
-  attribution: ''
+// Basic png-tile layer with osm power lines.
+var osm_power_lines_layer = L.tileLayer(tileserver + "transmission_line/{z}/{x}/{y}.png", {
+  attribution: 'Transmission lines <a href="' + website_url +  '/about-map">© SE4ALL</a>'
 });
 
 var generation_assets_geojson = null;
@@ -334,30 +328,31 @@ if(generation_assets_geojson == null){
 
 
 
-// Geojson layer
-var osm_power_lines_layer = L.geoJSON(null, {
+/* Geojson layer
+    var osm_power_lines_layer = L.geoJSON(null, {
 
-    style: osmPowerLinesStyle,
+        style: osmPowerLinesStyle,
 
-});
-
-function fetch_power_lines(handleData){
-    // this fetches the url described by the fetch_power_lines() view in app/__init__.py
-    $.get({
-        url: "/power_lines",
-        success: function(data){
-            handleData(data);
-            }
     });
-};
 
-// using this way allows to make the process asynchronous
-if(osm_power_lines_geojson == null){
-    fetch_power_lines(handleData=function(data){
-        osm_power_lines_geojson = data;
-        osm_power_lines_layer.addData(data);
-    });
-};
+    function fetch_power_lines(handleData){
+        // this fetches the url described by the fetch_power_lines() view in app/__init__.py
+        $.get({
+            url: "/power_lines",
+            success: function(data){
+                handleData(data);
+                }
+        });
+    };
+
+    // using this way allows to make the process asynchronous
+    if(osm_power_lines_geojson == null){
+        fetch_power_lines(handleData=function(data){
+            osm_power_lines_geojson = data;
+            osm_power_lines_layer.addData(data);
+        });
+    };
+*/
 
 
 // Geojson layer
