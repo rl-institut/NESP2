@@ -151,12 +151,21 @@ a {
   width: 3rem;
 }
 
-.legend-color--green {
- background-color: #8DE6B4; 
+.legend-color-stations {
+  height: .65rem;
+  width: .65rem;
+  right: 46%;
+  background-color: #f54a2b;
+  border-radius: 50%;
+  border: 2px solid #821b20;
 }
 
-.legend-color--gray {
-  background-color: #C5C4CF; 
+.legend-color--dark-red {
+ background-color: #821b20;
+}
+
+.legend-color--red-dotted {
+  border-bottom: .25rem dashed #F64A2B;
  }
 
 .legend-color--brown {
@@ -259,6 +268,7 @@ body {
 
 .map-legend-grid {
     padding-left: 3rem;
+    width: 350px;
 }
 
 .split {
