@@ -281,24 +281,27 @@ var generation_assets_layer = L.geoJSON(null, {
     var technology_type = feature.properties["technology_type"];
     var asset_type = feature.properties["asset_type"];
     // refers to options added in index.html under `checkbox.sub_panel(id="gridGeneration" ... )`
-    if(document.getElementById("hydroCheckbox").checked == true && technology_type.includes("Hydro")){
-        display_technology = true;
-    }
-    if(document.getElementById("solarCheckbox").checked == true && technology_type.includes("Solar")){
-        display_technology = true;
-    }
-    if(document.getElementById("fossilCheckbox").checked == true && technology_type.includes("Gas")){
-        display_technology = true;
-    }
+
    if(document.getElementById("minigridTickbox").checked == true && asset_type.includes("minigrid")){
-        display_technology = true;
-    }
-    else{
-        if(document.getElementById("powerplantTickbox").checked == true && asset_type.includes("power_plant")){
+        if(document.getElementById("hydroCheckbox").checked == true && technology_type.includes("Hydro")){
         display_technology = true;
         }
-        else{
-            display_technology = false;
+        if(document.getElementById("solarCheckbox").checked == true && technology_type.includes("Solar")){
+            display_technology = true;
+        }
+        if(document.getElementById("fossilCheckbox").checked == true && technology_type.includes("Gas")){
+            display_technology = true;
+        }
+    }
+    if(document.getElementById("powerplantTickbox").checked == true && asset_type.includes("power_plant")){
+        if(document.getElementById("hydroCheckbox").checked == true && technology_type.includes("Hydro")){
+        display_technology = true;
+        }
+        if(document.getElementById("solarCheckbox").checked == true && technology_type.includes("Solar")){
+            display_technology = true;
+        }
+        if(document.getElementById("fossilCheckbox").checked == true && technology_type.includes("Gas")){
+            display_technology = true;
         }
     }
 
