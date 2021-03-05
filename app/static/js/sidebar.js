@@ -585,9 +585,15 @@ function adapt_view_to_national_level() {
     set_clusters_toggle(false);
     set_og_clusters_toggle(false);
     set_toggle_value("electricityTabCheckbox", true);
+    // filter options of Minigrid and Power Plants
+    set_toggle_value("hydroCheckbox", true);
+    set_toggle_value("solarCheckbox", true);
+    set_toggle_value("fossilCheckbox", true);
+    set_toggle_value("minigridTickbox", true);
+    set_toggle_value("powerplantTickbox", true);
+
     set_toggle_value("stateGridCheckbox", true);
     gridLegend.addTo(map);
-
   }
   if (previous_level == "state" || previous_level == "village") {
     document.getElementById("heatmapCheckbox").checked = document.getElementById("clustersCheckbox").checked;
@@ -1046,15 +1052,6 @@ function gridGeneration_cb_fun(trigger=null) {
 
   if (document.getElementById("gridGenerationCheckbox").checked == true) {
 
-
-    // only at initialization have all option ticked on
-    if (selectedState == "init" && prevState == "init"){
-        document.getElementById("hydroCheckbox").checked = true;
-        document.getElementById("solarCheckbox").checked = true;
-        document.getElementById("fossilCheckbox").checked = true;
-        document.getElementById("minigridTickbox").checked = true;
-        document.getElementById("powerplantTickbox").checked = true;
-    }
 
     // set panel side to green
     document.getElementById("gridGenerationPanel").style.borderLeft = '.25rem solid #1DD069';
