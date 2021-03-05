@@ -589,6 +589,8 @@ function adapt_view_to_national_level() {
     set_clusters_toggle(false);
     set_og_clusters_toggle(false);
     set_toggle_value("electricityTabCheckbox", true);
+
+    set_toggle_value("stateGridCheckbox", true);
     // filter options of Minigrid and Power Plants
     set_toggle_value("hydroCheckbox", true);
     set_toggle_value("solarCheckbox", true);
@@ -596,7 +598,8 @@ function adapt_view_to_national_level() {
     set_toggle_value("minigridTickbox", true);
     set_toggle_value("powerplantTickbox", true);
 
-    set_toggle_value("stateGridCheckbox", true);
+    set_toggle_value("substationsCheckbox", true);
+
     update_gridLegend();
   }
   if (previous_level == "state" || previous_level == "village") {
@@ -841,7 +844,6 @@ function heatmap_cb_fun(trigger=null) {
   } else {
     document.getElementById("heatmapPanel").style.borderLeft = '.25rem solid #eeeff1';
     remove_layer(national_heatmap);
-    national_heatmap.bringToFront();
     if (trigger == "user") {
         //deactivate all clusters
         set_clusters_toggle(false);
@@ -1126,8 +1128,8 @@ function substations_cb_fun(trigger=null) {
 
    add_layer(osm_power_lines_layer);
    add_layer(osm_power_stations_layer);
-   osm_power_lines_layer.setZIndex(50);
-   osm_power_stations_layer.setZIndex(99);
+
+
 
   } else {
     // set panel side to grey
@@ -1238,7 +1240,6 @@ function stateGrid_cb_fun() {
   if (checkBox.checked == true) {
     document.getElementById("stateGridPanel").style.borderLeft = '.25rem solid #1DD069';
     add_layer(state_grid_layer);
-    state_grid_layer.bringToFront();
   } else {
     document.getElementById("stateGridPanel").style.borderLeft = '.25rem solid #eeeff1';
     remove_layer(state_grid_layer);

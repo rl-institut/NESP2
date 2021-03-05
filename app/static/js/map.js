@@ -417,10 +417,10 @@ loadingControl.getContainer().className += ' cell';*/
 
 
 map.on("layeradd", function() {
-  //vecTileLayer.bringToFront();
   national_heatmap.bringToFront();
   state_grid_layer.bringToFront();
-  //selected_state_pbf.bringToFront();
+  osm_power_lines_layer.bringToFront();
+  osm_power_stations_layer.bringToFront();
   national_background.bringToBack();
   esri.bringToBack();
   hot.bringToBack();
