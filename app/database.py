@@ -4,10 +4,14 @@ import pandas as pd
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.sql import text
-import geoalchemy2
+import geoalchemy2.functions as func
 from sqlalchemy import Table, MetaData
 from sqlalchemy.ext.declarative import declarative_base
 import random
+from geojson import Point, Feature, FeatureCollection, LineString
+from shapely.wkt import loads as loadswkt
+from shapely.wkb import loads as loadswkb
+
 
 def get_env_variable(name):
     try:
@@ -46,12 +50,27 @@ class AdmStatus(Base):
     __table__ = Table('boundary_adm1_status', Base.metadata, autoload=True, autoload_with=engine)
 
 
+class GenerationAssets(Base):
+    __table__ = Table(
+        "generation_assets", Base.metadata, autoload=True, autoload_with=engine
+    )
+
+
+class PowerLines(Base):
+    __table__ = Table('osm_power_line', Base.metadata, autoload=True, autoload_with=engine)
+
+
+class PowerStations(Base):
+    __table__ = Table('osm_power_substation', Base.metadata, autoload=True, autoload_with=engine)
+
+
 def query_available_og_clusters():
     """Look for state which have true set for both clusters and og_clusters"""
     res = db_session.query(
         AdmStatus.adm1_pcode
     ).filter(AdmStatus.cluster_all & AdmStatus.cluster_offgrid).all()
     return [r.adm1_pcode for r in res]
+
 
 def get_state_codes():
     res = db_session.query(
@@ -62,6 +81,70 @@ def get_state_codes():
 
 OG_CLUSTERS_COLUMNS = ('adm1_pcode', 'cluster_offgrid_id', 'area_km2',
     'building_count', 'percentage_building_area', 'grid_dist_km', 'geom')
+
+
+def query_generation_assets():
+    """Look for on and off grid generation assets"""
+
+    res = db_session.query(
+        GenerationAssets.name,
+        func.ST_AsText(
+            func.ST_Transform(func.ST_GeomFromWKB(GenerationAssets.geom, srid=3857), 4326)
+        ).label("geom"),
+        GenerationAssets.capacity_kw,
+        GenerationAssets.asset_type,
+        GenerationAssets.technology_type,
+    )
+
+    features = []
+    for r in res:
+        if r.geom is not None:
+            gjson = Feature(
+                geometry=Point(loadswkt(r.geom).coords[0]),
+                properties={
+                    "name": r.name,
+                    "capacity_kw": r.capacity_kw,
+                    "technology_type": r.technology_type,
+                    "asset_type": r.asset_type
+                },
+            )
+            features.append(gjson)
+
+    return FeatureCollection(features)
+
+
+def query_osm_power_lines():
+    lines = db_session.query(
+        func.ST_Transform(PowerLines.geom, 4326).label("geom")
+    )
+
+    features = []
+
+    for r in lines:
+        if r.geom is not None:
+            features.append(Feature(
+                geometry=LineString(loadswkb(bytes(r.geom.data)).coords),
+            ))
+
+    return FeatureCollection(features)
+
+
+def query_osm_power_stations():
+    res = db_session.query(
+        func.ST_AsText(func.ST_Transform(func.ST_AsEWKB(PowerStations.geom), 4326)).label("geom"),
+        PowerStations.tags
+    )
+
+    features = []
+
+    for r in res:
+        if r.geom is not None:
+            features.append(Feature(
+                geometry=Point(loadswkt(r.geom).coords[0]),
+                properties=r.tags
+            ))
+
+    return FeatureCollection(features)
 
 
 def filter_materialized_view(

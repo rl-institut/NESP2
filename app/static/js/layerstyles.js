@@ -52,12 +52,35 @@ var SLstateSelection = {
 
 var gridStyle33kv = {
   color: "#f54a2b",
-  weight: 2
+  weight: 4
+};
+
+var gridStyle33kvNational = {
+  color: "#f54a2b",
+  weight: 1.5
 };
 
 var gridStyle11kv = {
   color: "#7c0e14",
-  weight: 1
+  weight: 3
+};
+
+var gridStyle11kvNational = {
+  color: "#7c0e14",
+  weight: 1.5
+};
+
+
+var gridStyleModelled = {
+  color: "#f54a2b",
+  dashArray: "7",
+  weight: 3
+};
+
+var gridStyleModelledNational = {
+  color: "#f54a2b",
+  dashArray: "7",
+  weight: 1.5
 };
 
 var clustersStyle = {
@@ -111,4 +134,19 @@ var notNigeriaStyle = {
 };
 
 var points_style = {
+};
+
+var osmPowerLinesStyle = {
+    color: "#821b20",
+    weight: 3,
+    opacity: 0.65,
+};
+
+var osmPowerStationMarkerStyle = {
+    radius: 4,
+    fillColor: "#f54a2b",
+    color: "#821b20",
+    weight: 1,
+    opacity: 1,
+    fillOpacity: 1
 };

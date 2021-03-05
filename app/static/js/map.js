@@ -1,20 +1,6 @@
 add_layer(national_background);
 add_layer(osm_gray);
 
-// legend located at the lower right for datasets on national level
-var legend = L.control({
-  position: 'bottomright'
-});
-legend.onAdd = function(map) {
-  this._div = L.DomUtil.create('div', 'legend-box map-legend'); // create a div with classes
-  this.update();
-
-  return this._div;
-};
-legend.update = function(props) {
-  this._div.innerHTML = '<div class="grid-x"><div class="small-3 map-legend__text"><div class="legend-color legend-color--green"></div></div><div class="small-9 map-legend__label"><p>Datasets available</p></div><div class="small-3 map-legend__text"><div class="legend-color legend-color--gray"></div></div><div class="small-9 map-legend__label"><p>Datasets <span class="map-legend--highlight">not yet</span> available</p></div></div>'
-};
-legend.addTo(map);
 
 
 // legend located at the lower right for grid on state and village level
@@ -29,9 +15,69 @@ gridLegend.onAdd = function(map) {
   return this._div;
 };
 
-gridLegend.update = function(props) {
-  this._div.innerHTML = '<div class="grid-x"><div class="small-3 map-legend__text"><div class="legend-color legend-color-grid legend-color--brown"></div></div><div class="small-9 map-legend__label">11 kV Grid</div><div class="small-3 map-legend__text"><div class="legend-color legend-color-grid legend-color--red"></div></div><div class="small-9 map-legend__label">33 kV Grid</div></div>'
-  };
+
+// this function updates the content of the gridLegend in a centralized way
+function update_gridLegend() {
+
+    var grid_11kV = '';
+    var grid_33kV = '';
+    var grid_model = '';
+    var osm_lines = "";
+    var osm_substations = "";
+
+
+    if(get_toggle_value("stateGridCheckbox") == true) {
+        grid_11kV = '<div class="small-3 map-legend__text">'+
+                            '<div class="legend-color legend-color-grid legend-color--brown"></div>'+
+                        '</div>'+
+                        '<div class="small-9 map-legend__label">Ground truth 11 kV grid data</div>';
+
+        grid_33kV = '<div class="small-3 map-legend__text">'+
+                            '<div class="legend-color legend-color-grid legend-color--red"></div>'+
+                        '</div>'+
+                        '<div class="small-9 map-legend__label">Ground truth 33 kV grid data</div>';
+
+        grid_model = '<div class="small-3 map-legend__text">'+
+                        '<div class="legend-color legend-color-grid legend-color--red-dotted"></div>'+
+                    '</div>'+
+                    '<div class="small-9 map-legend__label">Modelled grid gata</div>';
+    }
+
+
+    if(get_toggle_value("substationsCheckbox") == true){
+        osm_lines = '<div class="small-3 map-legend__text">'+
+                            '<div class="legend-color legend-color-grid legend-color--dark-red"></div>'+
+                        '</div>'+
+                        '<div class="small-9 map-legend__label">Transmission power lines</div>';
+        osm_substations = '<div class="small-3 map-legend__text">'+
+                            '<div class="legend-color legend-color-stations"></div>'+
+                        '</div>'+
+                        '<div class="small-9 map-legend__label">Power substations</div>';
+    };
+
+
+    var control_content = '<div class="grid-x">' +
+                          grid_33kV +
+                          grid_11kV +
+                          grid_model +
+                          osm_lines +
+                          osm_substations +
+                          '</div>'
+
+    gridLegend.remove();
+    if(get_toggle_value("electricityTabCheckbox") == true && control_content != '<div class="grid-x"></div>') {
+        gridLegend.update = function() {
+        this._div.innerHTML = control_content;
+        };
+        // the addTo function will trigger the update() function
+        gridLegend.addTo(map);
+    };
+
+};
+
+
+
+
 
 var baseMaps = {
   "Humanitarian OSM": hot,
@@ -74,7 +120,7 @@ function update_infoBox(stateName=null, availability=0, defineSelectedState=fals
     var avail = {
         gridTracking: '<img class="state_info__img" src="../static/img/icons/i_cross_square.svg">',
         remoteMapping: '<img class="state_info__img" src="../static/img/icons/i_cross_square.svg">',
-        Surveying: '<img class="state_info__img" src="../static/img/icons/i_cross_square.svg">',
+        //Surveying: '<img class="state_info__img" src="../static/img/icons/i_cross_square.svg">',
     }
     if (availability >= 4) {
         avail.gridTracking = '<img class="state_info__img" src="../static/img/icons/i_tick_square.svg">'
@@ -82,9 +128,9 @@ function update_infoBox(stateName=null, availability=0, defineSelectedState=fals
     if (availability % 4 >= 2) {
         avail.remoteMapping = '<img class="state_info__img" src="../static/img/icons/i_tick_square.svg">'
     }
-    if (availability % 2 === 1) {
+    /*if (availability % 2 === 1) {
         avail.Surveying = '<img class="state_info__img" src="../static/img/icons/i_tick_square.svg">'
-    }
+    }*/
     if(stateName != undefined) {
         var control_content =
           '<div class="grid-x info-box legend-box">' +
@@ -95,7 +141,7 @@ function update_infoBox(stateName=null, availability=0, defineSelectedState=fals
               '<div class="grid-x">' +
                 '<div class="cell small-9 info-box__item">Grid tracking</div><div class="cell small-3 info-box__icon">' + avail.gridTracking + '</div>' +
                 '<div class="cell small-9 info-box__item">Remote mapping</div><div class="cell small-3 info-box__icon">' + avail.remoteMapping + '</div>' +
-                '<div class="cell small-9 info-box__item">Field surveys</div><div class="cell small-3 info-box__icon">' + avail.Surveying + '</div>' +
+                //'<div class="cell small-9 info-box__item">Field surveys</div><div class="cell small-3 info-box__icon">' + avail.Surveying + '</div>' +
               '</div>' +
             '</div>' +
           '</div>';
@@ -117,7 +163,7 @@ function update_infoBox(stateName=null, availability=0, defineSelectedState=fals
           '<div class="grid-x">' +
             '<div class="cell small-9 info-box__item">Grid tracking</div><div class="cell small-3"></div>' +
             '<div class="cell small-9 info-box__item">Remote mapping</div><div class="cell small-3"></div>' +
-            '<div class="cell small-9 info-box__item">Field surveys</div><div class="cell small-3"></div>' +
+            //'<div class="cell small-9 info-box__item">Field surveys</div><div class="cell small-3"></div>' +
           '</div>' +
         '</div>' +
       '</div>';
@@ -371,10 +417,10 @@ loadingControl.getContainer().className += ' cell';*/
 
 
 map.on("layeradd", function() {
-  //vecTileLayer.bringToFront();
   national_heatmap.bringToFront();
-  national_grid.bringToFront();
-  //selected_state_pbf.bringToFront();
+  state_grid_layer.bringToFront();
+  osm_power_lines_layer.bringToFront();
+  osm_power_stations_layer.bringToFront();
   national_background.bringToBack();
   esri.bringToBack();
   hot.bringToBack();

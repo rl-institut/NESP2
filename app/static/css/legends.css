@@ -29,3 +29,37 @@
 .checkbox-tooltip {
     width: 200px;
 }
+
+/* custom tickboxes
+
+#custom_tickbox {
+    width: 50px;
+    height: 50px;
+    background:url('../img/icons/checkbox_unchecked.svg') no-repeat;
+}
+#custom_tickbox.checked {
+   width: 50px;
+   height: 50px;
+   background:url('../img/icons/checkbox_checked.svg') no-repeat;
+}
+*/
+
+input.custom_tickbox[type="checkbox"]  {
+    display: none;
+}
+label.custom_tickbox {
+  cursor: pointer;
+  color: blue;
+}
+
+input.custom_tickbox[type="checkbox"] + label{
+    display: inline-block;
+    vertical-align: middle;
+    width: 45px;
+    height: 45px;
+    background: url('../img/icons/checkbox_unchecked.svg') 0px center no-repeat;
+}
+
+input.custom_tickbox[type="checkbox"]:checked + label {
+    background: url('../img/icons/checkbox_checked.svg') 0px center no-repeat;
+}

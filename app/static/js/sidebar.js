@@ -48,7 +48,9 @@ var currentfilter = {
   ogmaxb: 5000,
   ogminbfp: 0,
   ogmaxbfp: 100,
-  filterID: ""
+  filterID: "",
+  mingen: 0,
+  maxgen: 13200000
 };
 var gridLayers = {
   "Abia": "",
@@ -353,6 +355,35 @@ ogBuildingsFootprintSlider.noUiSlider.on("change", changeogBuildingsFootprintSli
 ogBuildingsFootprintSlider.noUiSlider.on("end", update_filtered_settlements);
 
 
+/*
+*function changedGenerationSlider(str, h, values) {
+*  currentfilter.mingen = values[0];
+*  currentfilter.maxgen = values[1];
+*  if (values[1] == 0) {currentfilter.maxdtg = 1;}
+*  map.fireEvent("filterchange", currentfilter);
+*};
+*
+*var generationSliderFormat = wNumb({
+*    decimals: 0,
+*    suffix: ' kW',
+*});
+*
+*var generationSlider = document.getElementById('generationSlider');
+*noUiSlider.create(generationSlider, {
+*  ...sliderOptions,
+*  tooltips: [generationSliderFormat, generationSliderFormat],
+*  start: [0, 1320000],
+*  range: {
+*    'min': 0,
+*    'max': 1320000
+*  }
+*});
+*generationSlider.noUiSlider.on("change", changedGenerationSlider);
+*generationSlider.noUiSlider.on("end", update_filtered_grid_generation);
+*
+*/
+
+
 function update_filtered_settlements(msg) {
     var num_filtered_settlements = 0;
     if (selectedState != "init") {
@@ -389,8 +420,16 @@ function update_filtered_settlements(msg) {
 };
 
 
+function update_filtered_grid_generation() {
+    update_generation_assets_layer()
+};
+
 function set_toggle_value(toggle_id, value) {
     document.getElementById(toggle_id).checked = value;
+};
+
+function get_toggle_value(toggle_id) {
+    return document.getElementById(toggle_id).checked;
 };
 
 function set_clusters_toggle(value) {
@@ -441,6 +480,15 @@ function hide_sidebar__btn(className) {
   }
   return className;
 };
+
+function expand_sidebar__btn(className) {
+  let answer = className;
+  if (className.includes(" is-hidden")) {
+    className = className.replace(" is-hidden", "");
+  }
+  return className;
+};
+
 
 function show_sidebar__btn(className) {
   let answer = className;
@@ -529,8 +577,6 @@ function adapt_view_to_national_level() {
   map.options.maxZoom = 9;
   map.options.zoomSnap = 0.5;
 
-  legend.addTo(map);
-  gridLegend.remove();
   clusterInfo.remove();
 
   // load the states boundaries
@@ -539,21 +585,30 @@ function adapt_view_to_national_level() {
 
   // Apply only at first landing
   if (selectedState == "init" && prevState == "init") {
-    document.getElementById("heatmapCheckbox").checked = true;
-    document.getElementById("nationalGridCheckbox").checked = true;
+    set_toggle_value("heatmapCheckbox", true);
     set_clusters_toggle(false);
     set_og_clusters_toggle(false);
-    document.getElementById("stateGridCheckbox").checked = false;
+    set_toggle_value("electricityTabCheckbox", true);
+
+    set_toggle_value("stateGridCheckbox", true);
+    // filter options of Minigrid and Power Plants
+    set_toggle_value("hydroCheckbox", true);
+    set_toggle_value("solarCheckbox", true);
+    set_toggle_value("fossilCheckbox", true);
+    set_toggle_value("minigridTickbox", true);
+    set_toggle_value("powerplantTickbox", true);
+
+    set_toggle_value("substationsCheckbox", true);
+
+    update_gridLegend();
   }
   if (previous_level == "state" || previous_level == "village") {
     document.getElementById("heatmapCheckbox").checked = document.getElementById("clustersCheckbox").checked;
-    document.getElementById("nationalGridCheckbox").checked = document.getElementById("stateGridCheckbox").checked;
   }
   // load the populated areas
+  electricityTab_cb_fun();
   heatmap_cb_fun();
-  // load the medium voltage grid on national level and untick the one on the state level
-  nationalGrid_cb_fun();
-  stateGrid_cb_fun();
+
 
   // Remotely mapped villages layer
   remove_layer(clusterLayer[selectedState]);
@@ -581,10 +636,9 @@ function adapt_view_to_national_level() {
   // update the info box on the top left
   update_infoBox()
 
-  // Linked to the checkbox Grid
-  remove_layer(state_grid_layer);
 
-
+  // update the legend
+  update_gridLegend();
 };
 
 function adapt_view_to_state_level() {
@@ -594,16 +648,9 @@ function adapt_view_to_state_level() {
   map.options.maxZoom = 18;
   map.options.zoomSnap = 1,
 
-  legend.remove();
-  gridLegend.addTo(map);
-
   // load the states boundaries
-  document.getElementById("statesCheckbox").checked = true;
+  set_toggle_value("statesCheckbox", true);
   states_cb_fun();
-
-  if(previous_level == "national") {
-    document.getElementById("stateGridCheckbox").checked = document.getElementById("nationalGridCheckbox").checked ;
-  }
 
   // In States where there is no Grid, All Clusters should be shown instead of mapped village clusters
   if (ogClustersAvailability == false) {
@@ -631,13 +678,13 @@ function adapt_view_to_state_level() {
 
   add_layer(osm_gray);
 
-  // remove the medium voltage grid
-  document.getElementById("heatmapCheckbox").checked = false;
-  heatmap_cb_fun();
   // remove the populated areas
-  document.getElementById("nationalGridCheckbox").checked = false;
-  stateGrid_cb_fun();
-  nationalGrid_cb_fun();
+  set_toggle_value("heatmapCheckbox", false);
+  heatmap_cb_fun();
+
+  // manage electricity tab
+  electricityTab_cb_fun();
+
 
   remove_layer(hot);
 
@@ -649,11 +696,14 @@ function adapt_view_to_village_level() {
   remove_layer(osm_gray);
   infoBox.remove();
   add_layer(hot);
+  // manage electricity tab
+  electricityTab_cb_fun();
 };
 
 /*
  * triggered by the click on the level buttons
  */
+
 
 function national_button_fun(trigger="button") {
   previous_level = level;
@@ -790,11 +840,10 @@ function heatmap_cb_fun(trigger=null) {
         set_og_clusters_toggle(false);
         clusters_cb_fun();
         ogClusters_cb_fun();
-  }
+    }
   } else {
     document.getElementById("heatmapPanel").style.borderLeft = '.25rem solid #eeeff1';
     remove_layer(national_heatmap);
-    national_heatmap.bringToFront();
     if (trigger == "user") {
         //deactivate all clusters
         set_clusters_toggle(false);
@@ -804,17 +853,7 @@ function heatmap_cb_fun(trigger=null) {
   }
 }
 
-// Triggered by the checkbox Medium Voltage Grid on national level only
-function nationalGrid_cb_fun() {
-  var checkBox = document.getElementById("nationalGridCheckbox");
-  if (checkBox.checked == true) {
-    document.getElementById("nationalGridPanel").style.borderLeft = '.25rem solid #1DD069';
-    add_layer(national_grid);
-  } else {
-    document.getElementById("nationalGridPanel").style.borderLeft = '.25rem solid #eeeff1';
-    remove_layer(national_grid);
-  }
-}
+
 var random_cluster = false;
 //pick a random cluster among the large ones and display it
 function get_random_ogCluster_fun() {
@@ -970,6 +1009,177 @@ function ogClusters_cb_fun(trigger=null) {
   }
 }
 
+
+
+/*
+Triggered by the Electricity Infrastructure tab, toggle
+
+Parameters
+----------
+    :trigger: str, can be one of ('user', 'map-click', 'zoom', 'random-cluster', 'init', 'button')
+
+*/
+function electricityTab_cb_fun(trigger=null){
+
+    var sub_panels = document.querySelectorAll(".sidebar-subpanel");
+    var j;
+
+    var checkBox = document.getElementById("electricityTabCheckbox");
+
+    for (j = 0; j < sub_panels.length; j++) {
+        if(checkBox.checked == true){
+            sub_panels[j].className = enable_sidebar__btn(sub_panels[j].className);
+        }
+        else{
+            sub_panels[j].className = disable_sidebar__btn(sub_panels[j].className);
+        }
+    }
+
+    if(checkBox.checked == true){
+        // update the tab options
+        stateGrid_cb_fun();
+        gridGeneration_cb_fun();
+        substations_cb_fun();
+    }
+    else{
+        remove_layer(state_grid_layer);
+        remove_layer(osm_power_lines_layer);
+        remove_layer(osm_power_stations_layer);
+        remove_layer(generation_assets_layer);
+    }
+    // update the legend
+    update_gridLegend();
+}
+
+
+/*
+Triggered by the checkbox On-grid and off-grid generation
+
+Parameters
+----------
+    :trigger: str, can be one of ('user', 'map-click', 'zoom', 'random-cluster', 'init', 'button')
+*/
+function gridGeneration_cb_fun(trigger=null) {
+  var filter_icon = document.getElementById("gridGeneration_filter");
+
+  if (document.getElementById("gridGenerationCheckbox").checked == true) {
+
+
+    // set panel side to green
+    document.getElementById("gridGenerationPanel").style.borderLeft = '.25rem solid #1DD069';
+    // enable actions with filter icon if screen is not mobile phone
+    if($(window).width() > screen_width_threshold) {
+        filter_icon.className = enable_sidebar__filter(filter_icon.className);
+    }
+    else{
+        filter_icon.className = disable_sidebar__filter(filter_icon.className);
+    }
+
+    update_generation_assets_layer();
+    add_layer(generation_assets_layer);
+
+  } else {
+    // set panel side to grey
+    document.getElementById("gridGenerationPanel").style.borderLeft = '.25rem solid #eeeff1';
+    // Close the filters if they were available
+    gridGeneration_filter_fun();
+    // disable actions with filter icon
+    filter_icon.className = disable_sidebar__filter(filter_icon.className);
+
+
+    remove_layer(generation_assets_layer);
+
+  }
+
+
+  // update the legend
+  update_gridLegend();
+}
+
+function solar_cb_fun() {
+    update_generation_assets_layer();
+}
+function hydro_cb_fun() {
+    update_generation_assets_layer();
+}
+function fossil_cb_fun() {
+    update_generation_assets_layer();
+}
+function minigrid_cb_fun() {
+    update_generation_assets_layer();
+}
+function powerplant_cb_fun() {
+    update_generation_assets_layer();
+}
+
+
+/*
+Triggered by the checkbox Transmission stations
+
+Parameters
+----------
+    :trigger: str, can be one of ('user', 'map-click', 'zoom', 'random-cluster', 'init', 'button')
+*/
+function substations_cb_fun(trigger=null) {
+
+  if (document.getElementById("substationsCheckbox").checked == true) {
+    // set panel side to green
+    document.getElementById("substationsPanel").style.borderLeft = '.25rem solid #1DD069';
+
+   add_layer(osm_power_lines_layer);
+   add_layer(osm_power_stations_layer);
+
+
+
+  } else {
+    // set panel side to grey
+    document.getElementById("substationsPanel").style.borderLeft = '.25rem solid #eeeff1';
+
+   remove_layer(osm_power_stations_layer);
+   remove_layer(osm_power_lines_layer);
+
+  }
+
+  // update the legend
+  update_gridLegend();
+}
+
+
+
+
+
+/*
+Triggered by the arrow next of the Electricity Infrastructure tab, either expand or hide the sub panels
+*/
+function electricityTab_toggle_fun(){
+    var tab_state = document.getElementById("electricityTab_expand");
+
+    var sub_panels = document.querySelectorAll(".sidebar-subpanel");
+    var j;
+
+    // arrow was up and the sub panels were expanded --> close them
+    if(tab_state.name == "expanded"){
+        tab_state.name = "hidden";
+        tab_state.src = tab_state.src.replace("up", "down");
+    }
+    // arrow was down and the sub panels were closed --> expand them
+    else{
+      tab_state.name = "expanded";
+      tab_state.src = tab_state.src.replace("down", "up");
+
+    }
+
+    for (j = 0; j < sub_panels.length; j++) {
+        if(tab_state.name == "hidden"){
+            sub_panels[j].className = hide_sidebar__btn(sub_panels[j].className);
+        }
+        else{
+            sub_panels[j].className = expand_sidebar__btn(sub_panels[j].className);
+        }
+    }
+
+}
+
 function template_filter_fun(id) {
   var newFilter = document.getElementsByName(id + "Content");
   var checkBox = document.getElementById(id + "Checkbox");
@@ -1018,27 +1228,25 @@ function clusters_filter_fun() {
 function ogClusters_filter_fun() {
   template_filter_fun("ogClusters");
 }
+function gridGeneration_filter_fun() {
+  template_filter_fun("gridGeneration");
+}
 
 
 
 // Triggered by the checkbox Grid
 function stateGrid_cb_fun() {
-  if(level != "national") {
-      var checkBox = document.getElementById("stateGridCheckbox");
-      if (checkBox.checked == true) {
-        document.getElementById("stateGridPanel").style.borderLeft = '.25rem solid #1DD069';
-        add_layer(state_grid_layer);
-      } else {
-        document.getElementById("stateGridPanel").style.borderLeft = '.25rem solid #eeeff1';
-        remove_layer(state_grid_layer);
-      }
+  var checkBox = document.getElementById("stateGridCheckbox");
+  if (checkBox.checked == true) {
+    document.getElementById("stateGridPanel").style.borderLeft = '.25rem solid #1DD069';
+    add_layer(state_grid_layer);
+  } else {
+    document.getElementById("stateGridPanel").style.borderLeft = '.25rem solid #eeeff1';
+    remove_layer(state_grid_layer);
   }
-  /*$.get({url: $SCRIPT_ROOT,
-  data: {
-    grid_content: gCheckBox.checked,
-    states_content: stateCheckBox.checked
-  },
-  });*/
+
+  // update the legend
+  update_gridLegend();
 }
 
 function buildingDensity_cb_fun() {

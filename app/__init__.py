@@ -10,7 +10,10 @@ from .database import (
     query_filtered_clusters,
     query_filtered_og_clusters,
     query_available_og_clusters,
-    convert_web_mat_view_to_light_json
+    convert_web_mat_view_to_light_json,
+    query_generation_assets,
+    query_osm_power_lines,
+    query_osm_power_stations
 )
 
 UNSUPPORTED_USER_AGENT_STRINGS = (
@@ -228,6 +231,31 @@ def create_app(test_config=None):
         resp = jsonify(answer)
         resp.status_code = 200
         return resp
+
+    @app.route('/generation_assets', methods=["GET"])
+    def fetch_generation_assets():
+        assets = query_generation_assets()
+
+        resp = jsonify(assets)
+        resp.status_code = 200
+        return resp
+
+    @app.route('/power_lines', methods=["GET"])
+    def fetch_power_lines():
+        assets = query_osm_power_lines()
+
+        resp = jsonify(assets)
+        resp.status_code = 200
+        return resp
+
+    @app.route('/power_stations', methods=["GET"])
+    def fetch_power_stations():
+        assets = query_osm_power_stations()
+
+        resp = jsonify(assets)
+        resp.status_code = 200
+        return resp
+
 
     @app.route('/random-cluster', methods=["POST"])
     def random_clusters():

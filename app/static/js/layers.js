@@ -38,17 +38,15 @@ var national_heatmap = L.tileLayer(tileserver + "nesp2_national_heatmap/{z}/{x}/
   attribution: 'Heatmap <a href="' + website_url +  '/about-map">© SE4ALL</a>'
 });
 
-// Basic png-tile layer for overlays taken from tile server serves zoom levels 5-9
-var national_grid = L.tileLayer(tileserver + "nesp2_national_grid/{z}/{x}/{y}.png", {
-  maxZoom: 19,
-  attribution: 'Grid <a href="' + website_url +  '/about-map">© SE4ALL</a>'
+
+// Basic png-tile layer with osm power lines.
+var osm_power_lines_layer = L.tileLayer(tileserver + "transmission_line/{z}/{x}/{y}.png", {
+  attribution: 'Transmission lines <a href="' + website_url +  '/about-map">© SE4ALL</a>'
 });
 
-// Basic png-tile layer combines national grid, heatmap and background. Redundant. Serves Levels 5-9
-var welcome_view = L.tileLayer(tileserver + "nesp2_national_welcome-view/{z}/{x}/{y}.png", {
-  maxZoom: 19,
-  attribution: ''
-});
+var generation_assets_geojson = null;
+var osm_power_lines_geojson = null;
+var osm_power_stations_geojson = null;
 
 var centroidsGroup = L.layerGroup().addTo(map);
 
@@ -195,13 +193,188 @@ var state_grid_layer = L.vectorGrid.protobuf(tileserver + "nesp2_state_grid/{z}/
   attribution: 'Grid <a href="' + website_url +  '/about-map">© SE4ALL</a>',
   vectorTileLayerStyles: {
     '33_kV': function(prop, zoom) {
-      return gridStyle33kv
+        // TODO make different weight for different zoom levels
+        if(zoom >=7){
+            return gridStyle33kv
+        }
+        else{
+            return gridStyle33kvNational
+        }
     },
     '11_kV': function(prop, zoom) {
-      return gridStyle11kv
+    if(zoom >=7){
+            return gridStyle11kv
+        }
+        else{
+            return gridStyle11kvNational
+        }
+
+    },
+    'modelled': function(prop, zoom) {
+    if(zoom >=7){
+            return gridStyleModelled
+        }
+        else{
+            return gridStyleModelledNational
+        }
+
     },
   }
 });
+
+
+
+/* Minigrids and Power Plants layers */
+
+
+var GenIcon = L.Icon.extend({
+    options: {
+        popupAnchor:  [0, 0],
+        shadowUrl: "static/img/icons/generation_icon_shadow.svg",
+        shadowAnchor: [6, 7],
+    }
+});
+
+
+
+function gen_asset_marker(asset_props){
+
+    var technology_type = asset_props["technology_type"];
+
+    var icon_size = 25;
+    if(asset_props["asset_type"] == "minigrid"){
+        icon_size = 15;
+    };
+
+    var iconType =  new GenIcon({iconUrl: "static/img/icons/generation_icon_solar.svg", iconSize: [icon_size,icon_size], shadowSize: [icon_size, icon_size]});
+
+    if(technology_type.includes("Hydro")){
+        iconType =  new GenIcon({iconUrl: "static/img/icons/generation_icon_hydro.svg", iconSize: [icon_size,icon_size], shadowSize: [icon_size, icon_size]});
+    };
+    if(technology_type.includes("Solar")){
+        iconType =  new GenIcon({iconUrl: "static/img/icons/generation_icon_solar.svg", iconSize: [icon_size,icon_size], shadowSize: [icon_size, icon_size]});
+    };
+    if(technology_type.includes("Gas")){
+        iconType =  new GenIcon({iconUrl: "static/img/icons/generation_icon_fossil.svg", iconSize: [icon_size,icon_size], shadowSize: [icon_size, icon_size]});
+    };
+
+    return  {icon: iconType};
+};
+
+// Geojson layer formed from local json file. Used for hovering styles and clicking. Columns: id, name, source, type, wikidata, wikipedia, availability (int)
+var generation_assets_layer = L.geoJSON(null, {
+
+  pointToLayer: function (feature, latlng) {
+      m = new L.Marker(latlng, gen_asset_marker(feature.properties)).bindPopup("Capacity: " + feature.properties["capacity_kw"] + "kW</br>Technology: " + feature.properties["technology_type"] + "</br>Asset: " + feature.properties["asset_type"]);
+      return m
+  },
+  // Only add the feature if the correct technology is selected and its capacity is within the slider range
+  // in the generationGrid options in the sidebar
+  filter: function(feature) {
+    var display_technology = false;
+    var technology_type = feature.properties["technology_type"];
+    var asset_type = feature.properties["asset_type"];
+    // refers to options added in index.html under `checkbox.sub_panel(id="gridGeneration" ... )`
+
+   if(document.getElementById("minigridTickbox").checked == true && asset_type.includes("minigrid")){
+        if(document.getElementById("hydroCheckbox").checked == true && technology_type.includes("Hydro")){
+        display_technology = true;
+        }
+        if(document.getElementById("solarCheckbox").checked == true && technology_type.includes("Solar")){
+            display_technology = true;
+        }
+        if(document.getElementById("fossilCheckbox").checked == true && technology_type.includes("Gas")){
+            display_technology = true;
+        }
+    }
+    if(document.getElementById("powerplantTickbox").checked == true && asset_type.includes("power_plant")){
+        if(document.getElementById("hydroCheckbox").checked == true && technology_type.includes("Hydro")){
+        display_technology = true;
+        }
+        if(document.getElementById("solarCheckbox").checked == true && technology_type.includes("Solar")){
+            display_technology = true;
+        }
+        if(document.getElementById("fossilCheckbox").checked == true && technology_type.includes("Gas")){
+            display_technology = true;
+        }
+    }
+
+
+
+    return (feature.properties["capacity_kw"] >= currentfilter.mingen && feature.properties["capacity_kw"] <= currentfilter.maxgen && display_technology)
+  }
+});
+
+// Make use of the filter function of the geoJSON layer
+function update_generation_assets_layer() {
+    give_status("update generation_asset layer")
+    //remove the features
+    generation_assets_layer.clearLayers();
+    //add the features which will trigger the filter
+    generation_assets_layer.addData(generation_assets_geojson);
+};
+
+
+if(generation_assets_geojson == null){
+    // this fetches the url described by the fetch_generation_assets() view in app/__init__.py
+    $.get({
+        url: "/generation_assets",
+        success: function(data){
+            generation_assets_geojson = data;
+            update_generation_assets_layer();
+        }
+    });
+};
+
+
+
+/* Geojson layer
+    var osm_power_lines_layer = L.geoJSON(null, {
+
+        style: osmPowerLinesStyle,
+
+    });
+
+    function fetch_power_lines(handleData){
+        // this fetches the url described by the fetch_power_lines() view in app/__init__.py
+        $.get({
+            url: "/power_lines",
+            success: function(data){
+                handleData(data);
+                }
+        });
+    };
+
+    // using this way allows to make the process asynchronous
+    if(osm_power_lines_geojson == null){
+        fetch_power_lines(handleData=function(data){
+            osm_power_lines_geojson = data;
+            osm_power_lines_layer.addData(data);
+        });
+    };
+*/
+
+
+// Geojson layer
+var osm_power_stations_layer = L.geoJSON(null, {
+
+  pointToLayer: function (feature, latlng) {
+      m = L.circleMarker(latlng, osmPowerStationMarkerStyle);
+      return m
+  },
+
+});
+
+if(osm_power_stations_geojson == null){
+    $.get({
+        url: "/power_stations",
+        success: function(data){
+            osm_power_stations_geojson = data;
+            osm_power_stations_layer.addData(data);
+        }
+    });
+};
+
 
 
 // Adds functions for filters and styling to a defined input grid-cluster-Layer

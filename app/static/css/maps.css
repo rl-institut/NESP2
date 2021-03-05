@@ -151,12 +151,21 @@ a {
   width: 3rem;
 }
 
-.legend-color--green {
- background-color: #8DE6B4; 
+.legend-color-stations {
+  height: .65rem;
+  width: .65rem;
+  right: 46%;
+  background-color: #f54a2b;
+  border-radius: 50%;
+  border: 2px solid #821b20;
 }
 
-.legend-color--gray {
-  background-color: #C5C4CF; 
+.legend-color--dark-red {
+ background-color: #821b20;
+}
+
+.legend-color--red-dotted {
+  border-bottom: .25rem dashed #F64A2B;
  }
 
 .legend-color--brown {
@@ -202,6 +211,7 @@ a {
 .sidebar-panel-item-hidden{
     display: none;
 }
+
 
 .sidebar-panel-item--download {
   background-color: #91919f;
@@ -258,6 +268,7 @@ body {
 
 .map-legend-grid {
     padding-left: 3rem;
+    width: 350px;
 }
 
 .split {
@@ -459,6 +470,31 @@ button {
   color: #464646;
 }
 
+.sidebar-panel-item-title-filterlabel > img.option_icon {
+    height: 30px;
+    width: 30px;
+    padding-right: 0.3rem;
+
+}
+
+.sidebar-panel-item-title.sidebar-subpanel {
+  font-style: italic;
+  padding-left: 3.75rem;
+}
+
+.subpanel.content-filter{
+    padding-bottom:0.5rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.subpanel.content-filter.hidden-filter{
+    display: none;
+}
+
+
 .sidebar-panel-item-title img {
  height: 18px;
  width: 18px;
@@ -468,6 +504,7 @@ button {
 p.sidebar-panel-item-title {
   margin-bottom: 0;
 }
+
 
 .sidebar-panel-item-title-filter {
   padding-left: 1.75rem;
@@ -641,6 +678,7 @@ p.sidebar-panel-item-title {
 }
 
 #geoportal-btn {
+    margin-top: 1.5rem;
     margin-bottom: 2rem;
     text-align: center;
 }
