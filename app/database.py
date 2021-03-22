@@ -131,8 +131,8 @@ def filter_materialized_view(
         val1 = key + "_1"
         val2 = key + "_2"
         filter_cond += [f"{view_name}.{key}>=:{val1}", f"{view_name}.{key}<=:{val2}"]
-        values[val1] = int(building[0])
-        values[val2] = int(building[1])
+        values[val1] = int(round(float(building[0]), 0))
+        values[val2] = int(round(float(building[1]), 0))
 
     if buildingfp is not None:
         key = "percentage_building_area"

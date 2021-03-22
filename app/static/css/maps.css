@@ -1000,3 +1000,13 @@ img.footer-maps-logos__giz {
 .geocoder-control-list-image{
   width: 30px;
 }
+.leaflet-control-layers-toggle {
+  background-image: url('../img/icons/i_layers.svg') !important;
+}
+.leaflet-control-geocoder-form input {
+  border-radius: 4px;
+  font-family: 'Source Sans Pro';
+}
+.leaflet-control-geocoder-expanded .leaflet-control-geocoder-form {
+  border-radius: 5px;
+}

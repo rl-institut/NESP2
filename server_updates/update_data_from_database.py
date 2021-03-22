@@ -37,11 +37,10 @@ def string_to_snake(string):
     return(string.lower().replace(' ', '_'))
 
 engine = create_engine(DB_URL)
-#tileserverlocation = "root@wam.rl-institut.de:/services/tileserver-gl/data/"
-tileserverlocation = "integrationuser@52.166.49.216:/home/integrationuser/nesp2_data/"
+tileserverlocation = ""
 
-# BOUNDARIES
-# Download boundaries of Nigeria, its states and availabilities from database and store as geojson file
+#BOUNDARIES
+#Download boundaries of Nigeria, its states and availabilities from database and store as geojson file
 
 
 with engine.connect() as con:
@@ -79,13 +78,13 @@ os.system('echo "var nigeria_states_simplified = " > boundaries/nigeria_states_a
 os.system('cat boundaries/boundaries_adm1_status_4326.geojson >> boundaries/nigeria_states_availability.js')
 
 # BOUNDARY TILES HAVE BECOME OBSOLETE
-'''
-# Copy boundary mbtiles and copy to tileserver
-print("generating boundary tiles")
-os.system('tippecanoe -L states_hr:boundaries/boundaries_adm1_status_4326.geojson -z15 -Z4 -pk -pf -f -o boundaries/nesp2_states_hr.mbtiles -S2')
-print("Uploading boundary tiles")
-os.system('scp boundaries/nesp2_states_hr.mbtiles root@wam.rl-institut.de:/services/tileserver-gl/data/nesp2_states_hr.mbtiles')
-'''
+# '''
+# # Copy boundary mbtiles and copy to tileserver
+# print("generating boundary tiles")
+# os.system('tippecanoe -L states_hr:boundaries/boundaries_adm1_status_4326.geojson -z15 -Z4 -pk -pf -f -o boundaries/nesp2_states_hr.mbtiles -S2')
+# print("Uploading boundary tiles")
+# os.system('scp boundaries/nesp2_states_hr.mbtiles root@wam.rl-institut.de:/services/tileserver-gl/data/nesp2_states_hr.mbtiles')
+# '''
 
 
 
@@ -112,7 +111,7 @@ grid_web_33_kv.to_file("grid/geojson/nesp2_state_grid_33kv.geojson", driver='Geo
 # generate vector tiles
 input_path = "grid/geojson/"
 output_path = "grid/vectortiles/"
-command = "tippecanoe -L 11_kV:{}nesp2_state_grid_11kv.geojson -L 33_kV:{}nesp2_state_grid_33kv.geojson -z15 -Z4 -pk -pf -f -o {}nesp2_state_grid.mbtiles -S2".format(input_path, input_path, output_path)
+command = "tippecanoe -L 11_kV:{}nesp2_state_grid_11kv.geojson -L 33_kV:{}nesp2_state_grid_33kv.geojson -z12 -Z5 -pk -pf -f -o {}nesp2_state_grid.mbtiles -S2".format(input_path, input_path, output_path)
 print("Generating Grid tiles")
 os.system(command)
 
@@ -234,3 +233,54 @@ for key in StatesDataFrameDictAllClusters.keys():
 # Upload offgrid cluster tiles to tileserver
 print("Uploading All Cluster tiles")
 os.system('scp cluster_all/tiles/*.mbtiles {}'.format(tileserverlocation))
+
+#Transmission
+#1. Download lines and substations
+#2. Generate Geojson's
+#3. Generate vector tiles
+#4. Upload two vector tiles 
+#Transmission Line
+print("Downloading Transmission Line")
+with engine.connect() as con:
+    sql = 'SELECT osm_power_line_id, osm_id, power_line, tags, ST_TRANSFORM(geom,4326) as geom FROM se4all.osm_power_line;'
+    trans_line_gdf = geopandas.GeoDataFrame.from_postgis(sql, con)
+
+
+# write trans_line geojson files
+trans_line_gdf.to_file("grid/geojson/trans_line_gdf.geojson", driver='GeoJSON')
+
+# generate vector tiles
+input_path = "grid/geojson/"
+output_path = "grid/vectortiles/"
+command = "tippecanoe -L trans_line:{}trans_line_gdf.geojson -z15 -Z4 -pk -pf -f -o {}trans_line.mbtiles -S2".format(input_path, output_path)
+print("Generating Transmission Line Tiles")
+os.system(command)
+
+# Upload Vector Tiles to Tileserver
+print("Uploading Transmission Line Tiles")
+command = 'scp grid/vectortiles/trans_line.mbtiles {}trans_line.mbtiles'.format(tileserverlocation)
+os.system(command)
+
+#Transmission Substations
+print("Downloading Transmission Substations")
+with engine.connect() as con:
+    sql = 'SELECT osm_power_substation_id, osm_id, power_substation, tags, ST_TRANSFORM(geom,4326) as geom FROM se4all.osm_power_substation;'
+    trans_substations_gdf = geopandas.GeoDataFrame.from_postgis(sql, con)
+
+
+# write substations geojson files
+trans_substations_gdf.to_file("grid/geojson/trans_substations_gdf.geojson", driver='GeoJSON')
+
+# generate vector tiles
+input_path = "grid/geojson/"
+output_path = "grid/vectortiles/"
+command = "tippecanoe -L trans_substations:{}trans_substations_gdf.geojson -z15 -Z4 -pk -pf -f -o {}trans_substations.mbtiles -S2".format(input_path, output_path)
+print("Generating trans_substations Tiles")
+os.system(command)
+
+# Upload Vector Tiles to Tileserver
+print("Uploading trans_substations Tiles")
+command = 'scp grid/vectortiles/trans_substations.mbtiles {}trans_substations.mbtiles'.format(tileserverlocation)
+os.system(command)
+
+
