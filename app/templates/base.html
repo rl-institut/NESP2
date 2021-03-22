@@ -4,6 +4,12 @@
 <head>
 	<meta charset=utf-8 />
     <title>{% block title %}{% endblock %}</title>
+    <meta name = "description" content = "Nigeria SE4ALL Webmap is an interactive display of geographic information on electrification planning for minigrid developers and will keep updated as new grid data is available.">
+    <meta property="og:image" content="{{ url_for('static', filename='logos/logo-5-blitz.png') }}">
+    <meta property="og:title" content="Interactive Webmap for electrification planning in Nigeria">
+    <meta property="og:type" content="Website">
+    <meta property="og:description" content="Nigeria SE4ALL Webmap is an interactive display of geographic information on electrification planning for minigrid developers and will keep updated as new grid data is available.">
+    <meta property="og:url" content="https://nigeriase4all.gov.ng/map">
 
 	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
         <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
