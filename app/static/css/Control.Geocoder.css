@@ -127,14 +127,14 @@
 }
 
 /* tiptip container */
-.tiptip {
+.tooltip-search-bar {
 position: relative;
 display: inline-block;
 border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
 }
 
 /* tiptip text */
-.tiptip .tooltiptext {
+.tooltip-search-bar .tooltiptext {
 visibility: hidden;
 width: 120px;
 background-color: #fefefe;
@@ -149,11 +149,11 @@ z-index: 1;
 }
 
 /* Show the tiptip text when you mouse over the tiptip container */
-.tiptip:hover .tooltiptext {
+.tooltip-search-bar:hover .tooltiptext {
 visibility: visible;
 }
 
-.tiptip .tooltiptext {
+.tooltip-search-bar .tooltiptext {
 top: -5px;
 right: 105%;
 }
