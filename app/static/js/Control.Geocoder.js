@@ -987,16 +987,19 @@ var leafletControlGeocoder = (function (L) {
         getJSON(this.options.serviceUrl + 'search', params, function (data) {
           var results = [];
      
-          //implementation to restrict the suggested types
-          for (var p = data.length - 1; p >= 0; p--){
-            if(!(allowedOSMTypes.includes(data[p].type))){
-              //inlcude also capital cities which have type administrative and the property city in address
-              if(data[p].type == "administrative" && "city" in data[p].address){
-                continue;
-              }
-              data.splice(p,1);
-            }                        
-          }     
+          //if an address or location was inserted fo the restriction, if it was coordinates dont restrict
+          if (!searchControl._lastGeocode.match(/^\d/)) {
+            //implementation to restrict the suggested types
+            for (var p = data.length - 1; p >= 0; p--){
+              if(!(allowedOSMTypes.includes(data[p].type))){
+                //inlcude also capital cities which have type administrative and the property city in address
+                if(data[p].type == "administrative" && "city" in data[p].address){
+                  continue;
+                }
+                data.splice(p,1);
+              }                        
+            }             
+         }
           
           for (var i = data.length - 1; i >= 0; i--) {
 
@@ -1610,6 +1613,8 @@ var leafletControlGeocoder = (function (L) {
       _proto.removeThrobberClass = function removeThrobberClass() {
         L.DomUtil.removeClass(this._container, 'leaflet-control-geocoder-throbber');
       }
+
+     
       /**
        * Returns the container DOM element for the control and add listeners on relevant map events.
        * @param map the map instance
@@ -1621,9 +1626,12 @@ var leafletControlGeocoder = (function (L) {
         var _this2 = this;
   
         var className = 'leaflet-control-geocoder';
-        var container = L.DomUtil.create('div', className + ' leaflet-bar');        
-        var form = this._form = L.DomUtil.create('div', className + '-form', container);
-        var icon = L.DomUtil.create('button', className + '-icon', container);
+        var container = L.DomUtil.create('div', className + ' leaflet-bar');
+        var tooltip_search_bar = L.DomUtil.create('div', 'tooltip-search-bar', container);
+        var tooltiptext = L.DomUtil.create('span', 'tooltiptext', tooltip_search_bar);
+        tooltiptext.innerHTML = 'Search for any location or coordinates in Lat/Long format eg. 12.010, 8.527'
+        var form = this._form = L.DomUtil.create('div', className + '-form', tooltip_search_bar);
+        var icon = L.DomUtil.create('button', className + '-icon', tooltip_search_bar);
         this._map = map;
         this._container = container;
         icon.innerHTML = '&nbsp;';
@@ -1637,7 +1645,7 @@ var leafletControlGeocoder = (function (L) {
         this._errorElement = L.DomUtil.create('div', className + '-form-no-error', container);
         this._errorElement.innerHTML = this.options.errorMessage;
         this._alts = L.DomUtil.create('ul', className + '-alternatives leaflet-control-geocoder-alternatives-minimized', container);
-        L.DomEvent.disableClickPropagation(this._alts);
+        L.DomEvent.disableClickPropagation(this._alts);        
         L.DomEvent.addListener(input, 'keydown', this._keydown, this);
   
         if (this.options.geocoder.suggest) {
@@ -1703,7 +1711,7 @@ var leafletControlGeocoder = (function (L) {
        * @param string the query string
        */
       ;
-  
+        
       _proto.setQuery = function setQuery(string) {
         this._input.value = string;
         return this;
